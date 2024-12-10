@@ -585,8 +585,8 @@ describe('ngb-accordion directive', () => {
 
 	describe('closeOthers', () => {
 		@Component({
-    imports: [NgbAccordionModule],
-    template: `
+			imports: [NgbAccordionModule],
+			template: `
 				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
 					@for (_ of state; track $index) {
 						<div [ngbAccordionItem]="keys[$index]" #item="ngbAccordionItem" [collapsed]="state[$index]">
@@ -599,8 +599,8 @@ describe('ngb-accordion directive', () => {
 						</div>
 					}
 				</div>
-			`
-})
+			`,
+		})
 		class CloseOthersComponent {
 			keys = ['one', 'two', 'three', 'four'];
 
@@ -940,8 +940,8 @@ describe('ngb-accordion directive', () => {
 
 describe('on push change detection strategy', () => {
 	@Component({
-    selector: 'test-cmp',
-    template: `
+		selector: 'test-cmp',
+		template: `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem [collapsed]="false">
 					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
@@ -957,9 +957,9 @@ describe('on push change detection strategy', () => {
 				</div>
 			</div>
 		`,
-    imports: [NgbAccordionModule],
-    changeDetection: ChangeDetectionStrategy.OnPush
-})
+		imports: [NgbAccordionModule],
+		changeDetection: ChangeDetectionStrategy.OnPush,
+	})
 	class TestOnPushComponent {}
 	it('Update the other panels accordingly', () => {
 		const fixture = TestBed.createComponent(TestOnPushComponent);
@@ -983,8 +983,8 @@ describe('on push change detection strategy', () => {
 
 it(`should allow querying from the body template`, () => {
 	@Component({
-    imports: [NgbAccordionModule],
-    template: `
+		imports: [NgbAccordionModule],
+		template: `
 			<div ngbAccordion>
 				<div ngbAccordionItem [collapsed]="false">
 					<h2 ngbAccordionHeader>
@@ -999,8 +999,8 @@ it(`should allow querying from the body template`, () => {
 					</div>
 				</div>
 			</div>
-		`
-})
+		`,
+	})
 	class QueryTestComponent {
 		@ViewChild('bar') bar: ElementRef;
 	}
@@ -1046,8 +1046,8 @@ it('should initialize inputs with provided config', () => {
 if (isBrowserVisible('ngb-accordion-directive animations')) {
 	describe('ngb-accordion-directive animations', () => {
 		@Component({
-    imports: [NgbAccordionModule],
-    template: `
+			imports: [NgbAccordionModule],
+			template: `
 				<div ngbAccordion (shown)="onShown($event)" (hidden)="onHidden($event)">
 					<div ngbAccordionItem [collapsed]="false" (shown)="onCollapseShown()" (hidden)="onCollapseHidden()">
 						<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
@@ -1059,8 +1059,8 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 					</div>
 				</div>
 			`,
-    host: { '[class.ngb-reduce-motion]': 'reduceMotion' }
-})
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+		})
 		class TestAnimationComponent {
 			reduceMotion = true;
 			onShown = (panelId) => panelId;
@@ -1216,9 +1216,9 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 }
 
 @Component({
-    selector: 'test-cmp',
-    template: '<div ngbAccordion></div>',
-    imports: [NgbAccordionModule]
+	selector: 'test-cmp',
+	template: '<div ngbAccordion></div>',
+	imports: [NgbAccordionModule],
 })
 class TestComponent {
 	destroyOnHide = true;

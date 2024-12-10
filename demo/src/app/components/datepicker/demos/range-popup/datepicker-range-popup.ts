@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-datepicker-range-popup',
-    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-    templateUrl: './datepicker-range-popup.html',
-    styles: `
+	selector: 'ngbd-datepicker-range-popup',
+	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	templateUrl: './datepicker-range-popup.html',
+	styles: `
 		.dp-hidden {
 			width: 0;
 			margin: 0;
@@ -32,7 +32,7 @@ import { JsonPipe } from '@angular/common';
 		.custom-day.faded {
 			background-color: rgba(2, 117, 216, 0.5);
 		}
-	`
+	`,
 })
 export class NgbdDatepickerRangePopup {
 	calendar = inject(NgbCalendar);

@@ -8,11 +8,11 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-    selector: 'ngbd-toast-overview',
-    imports: [NgbAlertModule, NgbNavModule, RouterLink, CodeComponent, PageHeaderComponent],
-    templateUrl: './toast-overview.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { '[class.overview]': 'true' }
+	selector: 'ngbd-toast-overview',
+	imports: [NgbAlertModule, NgbNavModule, RouterLink, CodeComponent, PageHeaderComponent],
+	templateUrl: './toast-overview.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: { '[class.overview]': 'true' },
 })
 export class NgbdToastOverviewComponent extends NgbdOverviewPage {
 	TOAST_INLINE_BASIC = Snippet({

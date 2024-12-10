@@ -182,10 +182,10 @@ describe('ngb-alert', () => {
 if (isBrowserVisible('ngb-alert animations')) {
 	describe('ngb-alert animations', () => {
 		@Component({
-    imports: [NgbAlert],
-    template: ` <ngb-alert type="success" (close)="onClose()">Cool!</ngb-alert>`,
-    host: { '[class.ngb-reduce-motion]': 'reduceMotion' }
-})
+			imports: [NgbAlert],
+			template: ` <ngb-alert type="success" (close)="onClose()">Cool!</ngb-alert>`,
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+		})
 		class TestAnimationComponent {
 			reduceMotion = true;
 			onClose = () => {};
@@ -222,7 +222,9 @@ if (isBrowserVisible('ngb-alert animations')) {
 }
 
 @Component({
-    selector: 'test-cmp', imports: [NgbAlert], template: ''
+	selector: 'test-cmp',
+	imports: [NgbAlert],
+	template: '',
 })
 class TestComponent {
 	name = 'World';

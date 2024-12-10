@@ -2,11 +2,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-tooltip-customclass',
-    imports: [NgbTooltipModule],
-    templateUrl: './tooltip-customclass.html',
-    encapsulation: ViewEncapsulation.None,
-    styles: `
+	selector: 'ngbd-tooltip-customclass',
+	imports: [NgbTooltipModule],
+	templateUrl: './tooltip-customclass.html',
+	encapsulation: ViewEncapsulation.None,
+	styles: `
 		.my-custom-class .tooltip-inner {
 			background-color: darkgreen;
 			font-size: 125%;
@@ -23,6 +23,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 		.my-custom-class.bs-tooltip-bottom .tooltip-arrow::before {
 			border-bottom-color: darkgreen;
 		}
-	`
+	`,
 })
 export class NgbdTooltipCustomclass {}

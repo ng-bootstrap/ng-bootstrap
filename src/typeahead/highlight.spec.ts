@@ -203,6 +203,8 @@ describe('ngb-highlight', () => {
 });
 
 @Component({
-    selector: 'test-cmp', imports: [NgbHighlight], template: ''
+	selector: 'test-cmp',
+	imports: [NgbHighlight],
+	template: '',
 })
 class TestComponent {}

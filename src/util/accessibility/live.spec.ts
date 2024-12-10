@@ -45,8 +45,7 @@ describe('LiveAnnouncer', () => {
 });
 
 @Component({
-    template: `<button (click)="say()">say</button>`,
-    
+	template: `<button (click)="say()">say</button>`,
 })
 class TestComponent {
 	constructor(public live: Live) {}

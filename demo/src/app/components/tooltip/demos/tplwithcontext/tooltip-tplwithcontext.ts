@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-tooltip-tplwithcontext',
-    imports: [NgbTooltipModule],
-    templateUrl: './tooltip-tplwithcontext.html'
+	selector: 'ngbd-tooltip-tplwithcontext',
+	imports: [NgbTooltipModule],
+	templateUrl: './tooltip-tplwithcontext.html',
 })
 export class NgbdTooltipTplwithcontext {
 	name = 'World';

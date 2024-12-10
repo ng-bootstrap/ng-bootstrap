@@ -481,8 +481,8 @@ if (isBrowserVisible('ScrollSpy directives')) {
 }
 
 @Component({
-    imports: [NgbScrollSpyModule, AsyncPipe],
-    template: ``
+	imports: [NgbScrollSpyModule, AsyncPipe],
+	template: ``,
 })
 class TestComponent {
 	rootScrollSpyService = inject(NgbScrollSpyService);

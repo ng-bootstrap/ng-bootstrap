@@ -6,10 +6,10 @@ import { RouterLink } from '@angular/router';
 import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-home',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CodeComponent, RouterLink, NgbAlertModule, NgbAlert],
-    templateUrl: './home.page.html'
+	selector: 'ngbd-home',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [CodeComponent, RouterLink, NgbAlertModule, NgbAlert],
+	templateUrl: './home.page.html',
 })
 export class HomePage {
 	version = inject(LIB_VERSIONS).ngBootstrap;

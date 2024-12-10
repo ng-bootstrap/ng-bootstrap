@@ -41,10 +41,10 @@ export class CustomKeyboardService extends NgbDatepickerKeyboardService {
 }
 
 @Component({
-    selector: 'ngbd-datepicker-keyboard',
-    imports: [NgbDatepickerModule, FormsModule],
-    templateUrl: './datepicker-keyboard.html',
-    providers: [{ provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService }]
+	selector: 'ngbd-datepicker-keyboard',
+	imports: [NgbDatepickerModule, FormsModule],
+	templateUrl: './datepicker-keyboard.html',
+	providers: [{ provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService }],
 })
 export class NgbdDatepickerKeyboard {
 	model: NgbDateStruct;

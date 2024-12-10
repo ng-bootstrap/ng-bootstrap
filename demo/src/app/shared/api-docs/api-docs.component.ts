@@ -15,10 +15,10 @@ import { COMPONENT_DATA } from '../../tokens';
  * The config service of a directive NgbFoo is, by convention, named NgbFooConfig.
  */
 @Component({
-    selector: 'ngbd-api-docs',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterLink, NgbdApiDocsBadge],
-    templateUrl: './api-docs.component.html'
+	selector: 'ngbd-api-docs',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, NgbdApiDocsBadge],
+	templateUrl: './api-docs.component.html',
 })
 export class NgbdApiDocs {
 	private analytics = inject(AnalyticsService);

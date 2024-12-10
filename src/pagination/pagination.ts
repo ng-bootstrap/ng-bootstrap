@@ -151,13 +151,13 @@ export class NgbPaginationPages {
  * A component that displays page numbers and allows to customize them in several ways.
  */
 @Component({
-    selector: 'ngb-pagination',
-    imports: [NgTemplateOutlet],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: {
-        role: 'navigation',
-    },
-    template: `
+	selector: 'ngb-pagination',
+	imports: [NgTemplateOutlet],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: {
+		role: 'navigation',
+	},
+	template: `
 		<ng-template #first><span aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span></ng-template>
 		<ng-template #previous><span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span></ng-template>
 		<ng-template #next><span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span></ng-template>
@@ -274,7 +274,7 @@ export class NgbPaginationPages {
 				</li>
 			}
 		</ul>
-	`
+	`,
 })
 export class NgbPagination implements OnChanges {
 	private _config = inject(NgbPaginationConfig);

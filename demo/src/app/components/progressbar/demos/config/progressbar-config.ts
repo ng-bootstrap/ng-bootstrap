@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NgbProgressbarConfig, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-progressbar-config',
-    imports: [NgbProgressbarModule],
-    templateUrl: './progressbar-config.html',
-    providers: [NgbProgressbarConfig]
+	selector: 'ngbd-progressbar-config',
+	imports: [NgbProgressbarModule],
+	templateUrl: './progressbar-config.html',
+	providers: [NgbProgressbarConfig],
 })
 export class NgbdProgressbarConfig {
 	constructor(config: NgbProgressbarConfig) {

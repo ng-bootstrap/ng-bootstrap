@@ -366,7 +366,9 @@ describe('ngb-progressbar', () => {
 });
 
 @Component({
-    selector: 'test-cmp', imports: [NgbProgressbar, NgbProgressbarStacked], template: ''
+	selector: 'test-cmp',
+	imports: [NgbProgressbar, NgbProgressbarStacked],
+	template: '',
 })
 class TestComponent {
 	value = 10;

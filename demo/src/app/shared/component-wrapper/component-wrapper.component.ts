@@ -15,20 +15,20 @@ import { filter, map } from 'rxjs/operators';
 import { NgbdComponentPage } from './component-page.class';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        SideNavComponent,
-        TitleCasePipe,
-        NgbNavModule,
-        NgbCollapseModule,
-        NgbDropdownModule,
-        RouterLink,
-        AsyncPipe,
-        NgComponentOutlet,
-        RouterOutlet,
-        NgbScrollSpyItem,
-    ],
-    templateUrl: 'component-wrapper.component.html'
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		SideNavComponent,
+		TitleCasePipe,
+		NgbNavModule,
+		NgbCollapseModule,
+		NgbDropdownModule,
+		RouterLink,
+		AsyncPipe,
+		NgComponentOutlet,
+		RouterOutlet,
+		NgbScrollSpyItem,
+	],
+	templateUrl: 'component-wrapper.component.html',
 })
 export class ComponentWrapper {
 	private scrollSpy = inject(NgbScrollSpyService);

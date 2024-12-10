@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    imports: [FormsModule, NgbModule],
-    templateUrl: './dropdown-position.component.html'
+	imports: [FormsModule, NgbModule],
+	templateUrl: './dropdown-position.component.html',
 })
 export class DropdownPositionComponent {
 	isInDom = true;

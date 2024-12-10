@@ -1004,10 +1004,10 @@ describe('popover-tooltip', () => {
 if (isBrowserVisible('ngb-popover animations')) {
 	describe('ngb-popover animations', () => {
 		@Component({
-    imports: [NgbPopover],
-    template: `<button ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
-    host: { '[class.ngb-reduce-motion]': 'reduceMotion' }
-})
+			imports: [NgbPopover],
+			template: `<button ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+		})
 		class TestAnimationComponent {
 			reduceMotion = true;
 			shown = () => {};
@@ -1126,9 +1126,9 @@ export class DestroyableCmpt implements OnDestroy {
 }
 
 @Component({
-    selector: 'test-cmpt',
-    imports: [NgbPopover, NgbTooltip, DestroyableCmpt],
-    template: ``
+	selector: 'test-cmpt',
+	imports: [NgbPopover, NgbTooltip, DestroyableCmpt],
+	template: ``,
 })
 export class TestComponent {
 	name = 'World';
@@ -1155,17 +1155,17 @@ export class TestComponent {
 }
 
 @Component({
-    selector: 'test-onpush-cmpt',
-    imports: [NgbPopover],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: ``
+	selector: 'test-onpush-cmpt',
+	imports: [NgbPopover],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: ``,
 })
 export class TestOnPushComponent {}
 
 @Component({
-    selector: 'test-hooks',
-    imports: [NgbPopover],
-    template: `<div ngbPopover="popover"></div>`
+	selector: 'test-hooks',
+	imports: [NgbPopover],
+	template: `<div ngbPopover="popover"></div>`,
 })
 export class TestHooksComponent implements AfterViewInit {
 	@ViewChild(NgbPopover, { static: true }) popover;

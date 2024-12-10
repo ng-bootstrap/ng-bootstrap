@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    imports: [FormsModule, NgbModule],
-    templateUrl: './tooltip-triggers.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+	imports: [FormsModule, NgbModule],
+	templateUrl: './tooltip-triggers.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TooltipTriggersComponent {
 	autoClose: boolean | 'inside' | 'outside' = true;

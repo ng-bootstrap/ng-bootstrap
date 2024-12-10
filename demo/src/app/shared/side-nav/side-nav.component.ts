@@ -4,10 +4,10 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { COMPONENTS, DEPRECATED_COMPONENTS } from '../../components';
 
 @Component({
-    selector: 'ngbd-side-nav',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [RouterLink, NgbCollapseModule],
-    templateUrl: './side-nav.component.html'
+	selector: 'ngbd-side-nav',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, NgbCollapseModule],
+	templateUrl: './side-nav.component.html',
 })
 export class SideNavComponent {
 	private router = inject(Router);

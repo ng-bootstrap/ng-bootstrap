@@ -3,9 +3,9 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'ngbd-collapse-navbar',
-    imports: [NgbCollapseModule, RouterLink],
-    templateUrl: './collapse-navbar.html'
+	selector: 'ngbd-collapse-navbar',
+	imports: [NgbCollapseModule, RouterLink],
+	templateUrl: './collapse-navbar.html',
 })
 export class NgbdCollapseNavbar {
 	// Step 1:

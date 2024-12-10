@@ -67,8 +67,8 @@ const states = [
 ];
 
 @Component({
-    imports: [FormsModule, NgbModule, ReactiveFormsModule],
-    templateUrl: './typeahead-validation.component.html'
+	imports: [FormsModule, NgbModule, ReactiveFormsModule],
+	templateUrl: './typeahead-validation.component.html',
 })
 export class TypeaheadValidationComponent {
 	model: any;

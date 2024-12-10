@@ -7,8 +7,8 @@ import { PageHeaderComponent } from '../../shared/page-header.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
 
 @Component({
-    imports: [CodeComponent, RouterLink, PageHeaderComponent, NgbdPageWrapper],
-    templateUrl: './animations.page.html'
+	imports: [CodeComponent, RouterLink, PageHeaderComponent, NgbdPageWrapper],
+	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {
 	bsVersion = inject(LIB_VERSIONS).bootstrap;

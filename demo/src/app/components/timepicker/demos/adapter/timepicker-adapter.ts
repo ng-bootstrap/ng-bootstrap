@@ -27,12 +27,12 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 }
 
 @Component({
-    selector: 'ngbd-timepicker-adapter',
-    imports: [NgbTimepickerModule, FormsModule],
-    templateUrl: './timepicker-adapter.html',
-    // NOTE: For this example we are only providing current component, but probably
-    // NOTE: you will want to provide your main App Module
-    providers: [{ provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter }]
+	selector: 'ngbd-timepicker-adapter',
+	imports: [NgbTimepickerModule, FormsModule],
+	templateUrl: './timepicker-adapter.html',
+	// NOTE: For this example we are only providing current component, but probably
+	// NOTE: you will want to provide your main App Module
+	providers: [{ provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter }],
 })
 export class NgbdTimepickerAdapter {
 	time: '13:30:00';

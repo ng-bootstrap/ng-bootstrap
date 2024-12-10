@@ -93,9 +93,9 @@ const COUNTRIES: Country[] = [
 ];
 
 @Component({
-    selector: 'ngbd-table-pagination',
-    imports: [DecimalPipe, FormsModule, NgbTypeaheadModule, NgbPaginationModule],
-    templateUrl: './table-pagination.html'
+	selector: 'ngbd-table-pagination',
+	imports: [DecimalPipe, FormsModule, NgbTypeaheadModule, NgbPaginationModule],
+	templateUrl: './table-pagination.html',
 })
 export class NgbdTablePagination {
 	page = 1;

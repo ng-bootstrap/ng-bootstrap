@@ -4,9 +4,9 @@ import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    imports: [FormsModule, JsonPipe],
-    templateUrl: './modal-autoclose.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+	imports: [FormsModule, JsonPipe],
+	templateUrl: './modal-autoclose.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalAutoCloseComponent {
 	private modalRef: NgbModalRef | null = null;

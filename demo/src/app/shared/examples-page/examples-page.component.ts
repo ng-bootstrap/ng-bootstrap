@@ -5,10 +5,10 @@ import { MenuItem } from '../../tokens';
 import { NgbdComponentPage } from '../component-wrapper/component-page.class';
 
 @Component({
-    selector: 'ngbd-examples-page',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgbdWidgetDemoComponent, NgComponentOutlet],
-    template: `
+	selector: 'ngbd-examples-page',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [NgbdWidgetDemoComponent, NgComponentOutlet],
+	template: `
 		@for (demo of component.demos; track demo) {
 			<ngbd-widget-demo
 				[fragment]="demo.fragment"
@@ -22,7 +22,7 @@ import { NgbdComponentPage } from '../component-wrapper/component-page.class';
 				<ng-template [ngComponentOutlet]="demo.type"></ng-template>
 			</ngbd-widget-demo>
 		}
-	`
+	`,
 })
 export class NgbdExamplesPageComponent extends NgbdComponentPage {
 	get menuItems(): MenuItem[] {

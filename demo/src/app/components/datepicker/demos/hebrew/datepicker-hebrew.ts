@@ -12,10 +12,10 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-datepicker-hebrew',
-    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-    templateUrl: './datepicker-hebrew.html',
-    styles: `
+	selector: 'ngbd-datepicker-hebrew',
+	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	templateUrl: './datepicker-hebrew.html',
+	styles: `
 		.hebrew-day {
 			text-align: right;
 			padding: 0.25rem 0.65rem 0.25rem 0.25rem;
@@ -40,10 +40,10 @@ import { JsonPipe } from '@angular/common';
 			direction: ltr;
 		}
 	`,
-    providers: [
-        { provide: NgbCalendar, useClass: NgbCalendarHebrew },
-        { provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew },
-    ]
+	providers: [
+		{ provide: NgbCalendar, useClass: NgbCalendarHebrew },
+		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew },
+	],
 })
 export class NgbdDatepickerHebrew {
 	i18n = inject(NgbDatepickerI18n);

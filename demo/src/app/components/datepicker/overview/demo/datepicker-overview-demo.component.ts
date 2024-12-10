@@ -9,10 +9,10 @@ import {
 import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-datepicker-demo-overview',
-    imports: [NgbTooltipModule, NgbDatepickerModule, DatePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
+	selector: 'ngbd-datepicker-demo-overview',
+	imports: [NgbTooltipModule, NgbDatepickerModule, DatePipe],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: `
 		<div class="mb-3">
 			<h5>Vacations</h5>
 			<p>
@@ -49,7 +49,7 @@ import { DatePipe } from '@angular/common';
 			[displayMonths]="2"
 		/>
 	`,
-    styles: `
+	styles: `
 		.custom-day {
 			text-align: center;
 			display: inline-block;
@@ -81,7 +81,7 @@ import { DatePipe } from '@angular/common';
 			background-color: rgba(2, 117, 216, 0.5);
 		}
 	`,
-    providers: [NgbDateNativeAdapter]
+	providers: [NgbDateNativeAdapter],
 })
 export class NgbdDatepickerOverviewDemoComponent {
 	today: NgbDate;
