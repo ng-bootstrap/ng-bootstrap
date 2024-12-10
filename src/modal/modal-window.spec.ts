@@ -59,6 +59,9 @@ describe('ngb-modal-dialog', () => {
 			const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
 
 			expect(fixture.nativeElement.getAttribute('role')).toBe('dialog');
+			fixture.componentInstance.windowRole = 'alertdialog';
+			fixture.detectChanges();
+			expect(fixture.nativeElement.getAttribute('role')).toBe('alertdialog');
 			expect(dialogEl.getAttribute('role')).toBe('document');
 		});
 

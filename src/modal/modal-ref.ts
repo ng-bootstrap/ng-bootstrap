@@ -51,6 +51,7 @@ const WINDOW_ATTRIBUTES: string[] = [
 	'size',
 	'windowClass',
 	'modalDialogClass',
+	'windowRole',
 ];
 const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
 
