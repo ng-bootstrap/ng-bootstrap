@@ -2,6 +2,7 @@ import {
 	AfterContentChecked,
 	AfterContentInit,
 	ChangeDetectorRef,
+	Component,
 	ContentChild,
 	ContentChildren,
 	DestroyRef,
@@ -15,6 +16,7 @@ import {
 	Output,
 	QueryList,
 	TemplateRef,
+	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -32,20 +34,29 @@ let nextId = 0;
  *
  * @since 14.1.0
  */
-@Directive({
+@Component({
 	selector: '[ngbAccordionBody]',
 	standalone: true,
+	template: `
+		<ng-container #container />
+		<ng-content />
+	`,
 	host: {
 		class: 'accordion-body',
 	},
 })
 export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
-	private _vcr = inject(ViewContainerRef);
-	private _element = inject(ElementRef<HTMLElement>).nativeElement;
 	private _item = inject(NgbAccordionItem);
-
 	private _viewRef: EmbeddedViewRef<any> | null = null;
 
+	/**
+	 * the `ElementRef` of the component
+	 *
+	 * @since 18.0.0
+	 */
+	public readonly elementRef = inject(ElementRef);
+
+	@ViewChild('container', { read: ViewContainerRef, static: true }) private _vcr: ViewContainerRef;
 	@ContentChild(TemplateRef, { static: true }) private _bodyTpl: TemplateRef<any>;
 
 	ngAfterContentChecked(): void {
@@ -71,9 +82,6 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 		if (!this._viewRef) {
 			this._viewRef = this._vcr.createEmbeddedView(this._bodyTpl);
 			this._viewRef.detectChanges();
-			for (const node of this._viewRef.rootNodes) {
-				this._element.appendChild(node);
-			}
 		}
 	}
 }
