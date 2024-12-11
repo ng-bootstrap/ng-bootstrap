@@ -1,3 +1,19 @@
+# [18.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/17.0.1...18.0.0-rc.0) (2024-12-11)
+
+This release bumps minimum required versions to Angular `19.0.0`.
+
+### Bug Fixes
+
+* **accordion:** respect `destroyOnHide` with `OnPush` ([5b64712](https://github.com/ng-bootstrap/ng-bootstrap/commit/5b647120afb157299be30dd98df175d7dbf4bced))
+* **toast:** added correct `ariaLive` values ([fc6007e](https://github.com/ng-bootstrap/ng-bootstrap/commit/fc6007e99e46a0fb83eda21a1a27b38aa6df9478))
+* **accordion**: fix hydration ([3f3173a](https://github.com/ng-bootstrap/ng-bootstrap/commit/3f3173a3fee8fe376935ee3b667ba9f5909cc293))
+
+
+### BREAKING CHANGES
+
+* `ngbAccordionBody` converted from a Directive into a Component
+
+
 ## [17.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/17.0.0...17.0.1) (2024-08-28)
 
 Hopefully fixes **that one** datepicker bug with weekday labels.
