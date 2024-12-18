@@ -8,7 +8,6 @@ import {
 	Directive,
 	ElementRef,
 	EventEmitter,
-	HostListener,
 	inject,
 	Injector,
 	Input,
@@ -33,6 +32,7 @@ import { NgbPopoverConfig } from './popover-config';
 
 import { addPopperOffset } from '../util/positioning-util';
 import { Subject } from 'rxjs';
+import { ngbCompleteTransition } from '../util/transition/ngbTransition';
 
 let nextId = 0;
 
@@ -47,6 +47,8 @@ let nextId = 0;
 		role: 'tooltip',
 		'[id]': 'id',
 		style: 'position: absolute;',
+		'(mouseenter)': 'onMouseEnter()',
+		'(mouseleave)': 'onMouseLeave()',
 	},
 	template: `
 		<div class="popover-arrow" data-popper-arrow></div>
@@ -70,21 +72,11 @@ export class NgbPopoverWindow {
 	@Input() id: string;
 	@Input() popoverClass: string;
 	@Input() context: any;
-	@Input() readonly mouseEnter: Subject<void>;
-	@Input() readonly mouseLeave: Subject<void>;
+	@Input() onMouseEnter: () => void;
+	@Input() onMouseLeave: () => void;
 
 	isTitleTemplate() {
 		return this.title instanceof TemplateRef;
-	}
-
-	@HostListener('mouseenter')
-	onMouseEnter() {
-		this.mouseEnter?.next();
-	}
-
-	@HostListener('mouseleave')
-	onMouseLeave() {
-		this.mouseLeave?.next();
 	}
 }
 
@@ -231,8 +223,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	private _positioning = ngbPositioning();
 	private _afterRenderRef: AfterRenderRef;
 
-	private _mouseEnterTooltip = new Subject<void>();
-	private _mouseLeaveTooltip = new Subject<void>();
+	private _mouseEnterPopover = new Subject<void>();
+	private _mouseLeavePopover = new Subject<void>();
+
+	private _opening = true;
+	private _transitioning = false;
 
 	/**
 	 * Opens the popover.
@@ -241,6 +236,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * The `context` is an optional value to be injected into the popover template when it is created.
 	 */
 	open(context?: any) {
+		if (!this._opening && this._transitioning) {
+			this._transitioning = false;
+			ngbCompleteTransition(this._windowRef!.location.nativeElement);
+		}
 		if (!this._windowRef && !this._isDisabled()) {
 			// this type assertion is safe because otherwise _isDisabled would return true
 			const { windowRef, transition$ } = this._popupService.open(
@@ -248,14 +247,16 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				context ?? this.popoverContext,
 				this.animation,
 			);
+			this._opening = true;
+			this._transitioning = true;
 			this._windowRef = windowRef;
 			this._windowRef.setInput('animation', this.animation);
 			this._windowRef.setInput('title', this.popoverTitle);
 			this._windowRef.setInput('context', context ?? this.popoverContext);
 			this._windowRef.setInput('popoverClass', this.popoverClass);
 			this._windowRef.setInput('id', this._ngbPopoverWindowId);
-			this._windowRef.setInput('mouseEnter', this._mouseEnterTooltip);
-			this._windowRef.setInput('mouseLeave', this._mouseLeaveTooltip);
+			this._windowRef.setInput('onMouseEnter', () => this._mouseEnterPopover.next());
+			this._windowRef.setInput('onMouseLeave', () => this._mouseLeavePopover.next());
 
 			this._getPositionTargetElement().setAttribute('aria-describedby', this._ngbPopoverWindowId);
 
@@ -303,7 +304,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				this._windowRef.location.nativeElement,
 			]);
 
-			transition$.subscribe(() => this.shown.emit());
+			transition$.subscribe(() => {
+				if (this._transitioning) {
+					this._transitioning = false;
+					this.shown.emit();
+				}
+			});
 		}
 	}
 
@@ -313,13 +319,22 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * This is considered to be a "manual" triggering of the popover.
 	 */
 	close(animation = this.animation) {
+		if (this._opening && this._transitioning) {
+			this._transitioning = false;
+			ngbCompleteTransition(this._windowRef!.location.nativeElement);
+		}
 		if (this._windowRef) {
 			this._getPositionTargetElement().removeAttribute('aria-describedby');
+			this._opening = false;
+			this._transitioning = true;
 			this._popupService.close(animation).subscribe(() => {
 				this._windowRef = null;
 				this._positioning.destroy();
 				this._afterRenderRef?.destroy();
-				this.hidden.emit();
+				if (this._transitioning) {
+					this._transitioning = false;
+					this.hidden.emit();
+				}
 				this._changeDetector.markForCheck();
 			});
 		}
@@ -354,8 +369,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 			this.close.bind(this),
 			+this.openDelay,
 			+this.closeDelay,
-			this._mouseEnterTooltip,
-			this._mouseLeaveTooltip,
+			this._mouseEnterPopover,
+			this._mouseLeavePopover,
 		);
 	}
 
@@ -371,8 +386,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
 	ngOnDestroy() {
 		this.close(false);
-		this._mouseEnterTooltip.complete();
-		this._mouseLeaveTooltip.complete();
 		// This check is needed as it might happen that ngOnDestroy is called before ngOnInit
 		// under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
 		this._unregisterListenersFn?.();
