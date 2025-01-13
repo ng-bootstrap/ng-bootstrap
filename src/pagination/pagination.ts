@@ -173,12 +173,12 @@ export class NgbPaginationPages {
 					[attr.aria-current]="pageNumber === page ? 'page' : null"
 				>
 					@if (isEllipsis(pageNumber)) {
-						<a class="page-link" tabindex="-1" aria-disabled="true">
+						<span class="page-link">
 							<ng-template
 								[ngTemplateOutlet]="tplEllipsis?.templateRef || ellipsis"
 								[ngTemplateOutletContext]="{ disabled: true, currentPage: page }"
 							/>
-						</a>
+						</span>
 					} @else {
 						<a
 							class="page-link"
