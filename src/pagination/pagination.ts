@@ -170,7 +170,6 @@ export class NgbPaginationPages {
 					class="page-item"
 					[class.active]="pageNumber === page"
 					[class.disabled]="isEllipsis(pageNumber) || disabled"
-					[attr.aria-current]="pageNumber === page ? 'page' : null"
 				>
 					@if (isEllipsis(pageNumber)) {
 						<a class="page-link" tabindex="-1" aria-disabled="true">
@@ -186,6 +185,7 @@ export class NgbPaginationPages {
 							(click)="selectPage(pageNumber); $event.preventDefault()"
 							[attr.tabindex]="disabled ? '-1' : null"
 							[attr.aria-disabled]="disabled ? 'true' : null"
+							[attr.aria-current]="pageNumber === page ? 'page' : null"
 						>
 							<ng-template
 								[ngTemplateOutlet]="tplNumber?.templateRef || defaultNumber"

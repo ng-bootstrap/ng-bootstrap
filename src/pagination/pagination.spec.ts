@@ -23,12 +23,12 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
 		if (classIndicator === '+') {
 			expect(pages[i]).toHaveCssClass('active');
 			expect(pages[i]).not.toHaveCssClass('disabled');
-			expect(pages[i].getAttribute('aria-current')).toBe('page');
+			expect(pages[i].querySelector('a')!.getAttribute('aria-current')).toBe('page');
 			expect(textContent).toEqual(pageDef.substring(1));
 		} else if (classIndicator === '-') {
 			expect(pages[i]).not.toHaveCssClass('active');
 			expect(pages[i]).toHaveCssClass('disabled');
-			expect(pages[i].getAttribute('aria-current')).toBeNull();
+			expect(pages[i].querySelector('a')!.getAttribute('aria-current')).toBeNull();
 			expect(textContent).toEqual(pageDef.substring(1));
 		} else if (classIndicator === 'c') {
 			// Custom Pages
@@ -38,7 +38,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
 		} else {
 			expect(pages[i]).not.toHaveCssClass('active');
 			expect(pages[i]).not.toHaveCssClass('disabled');
-			expect(pages[i].getAttribute('aria-current')).toBeNull();
+			expect(pages[i].querySelector('a')!.getAttribute('aria-current')).toBeNull();
 			expect(textContent).toEqual(pageDef);
 		}
 
@@ -46,7 +46,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
 		if (textContent === ellipsis) {
 			expect(pages[i]).not.toHaveCssClass('active');
 			expect(pages[i]).toHaveCssClass('disabled');
-			expect(pages[i].getAttribute('aria-current')).toBeNull();
+			expect(pages[i].querySelector('a')!.getAttribute('aria-current')).toBeNull();
 			expect(pages[i].querySelector('a')!.getAttribute('tabindex')).toEqual('-1');
 			expect(pages[i].querySelector('a')!.hasAttribute('aria-disabled')).toBeTruthy();
 		}
