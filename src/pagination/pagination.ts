@@ -82,7 +82,7 @@ export interface NgbPaginationPagesContext {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationEllipsis]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationEllipsis]' })
 export class NgbPaginationEllipsis {
 	templateRef = inject(TemplateRef<NgbPaginationLinkContext>);
 }
@@ -92,7 +92,7 @@ export class NgbPaginationEllipsis {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationFirst]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationFirst]' })
 export class NgbPaginationFirst {
 	templateRef = inject(TemplateRef<NgbPaginationLinkContext>);
 }
@@ -102,7 +102,7 @@ export class NgbPaginationFirst {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationLast]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationLast]' })
 export class NgbPaginationLast {
 	templateRef = inject(TemplateRef<NgbPaginationLinkContext>);
 }
@@ -112,7 +112,7 @@ export class NgbPaginationLast {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationNext]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationNext]' })
 export class NgbPaginationNext {
 	templateRef = inject(TemplateRef<NgbPaginationLinkContext>);
 }
@@ -122,7 +122,7 @@ export class NgbPaginationNext {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationNumber]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationNumber]' })
 export class NgbPaginationNumber {
 	templateRef = inject(TemplateRef<NgbPaginationNumberContext>);
 }
@@ -132,7 +132,7 @@ export class NgbPaginationNumber {
  *
  * @since 4.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationPrevious]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationPrevious]' })
 export class NgbPaginationPrevious {
 	templateRef = inject(TemplateRef<NgbPaginationLinkContext>);
 }
@@ -142,7 +142,7 @@ export class NgbPaginationPrevious {
  *
  * @since 9.1.0
  */
-@Directive({ selector: 'ng-template[ngbPaginationPages]', standalone: true })
+@Directive({ selector: 'ng-template[ngbPaginationPages]' })
 export class NgbPaginationPages {
 	templateRef = inject(TemplateRef<NgbPaginationPagesContext>);
 }

@@ -41,7 +41,6 @@ import { getActiveElement } from '../util/util';
  */
 @Directive({
 	selector: '[ngbDropdownItem]',
-	standalone: true,
 	host: {
 		class: 'dropdown-item',
 		'[class.disabled]': 'disabled',
@@ -73,7 +72,6 @@ export class NgbDropdownItem {
  */
 @Directive({
 	selector: 'button[ngbDropdownItem]',
-	standalone: true,
 	host: { '[disabled]': 'item.disabled' },
 })
 export class NgbDropdownButtonItem {
@@ -85,7 +83,6 @@ export class NgbDropdownButtonItem {
  */
 @Directive({
 	selector: '[ngbDropdownMenu]',
-	standalone: true,
 	host: {
 		class: 'dropdown-menu',
 		'[class.show]': 'dropdown.isOpen()',
@@ -117,7 +114,6 @@ export class NgbDropdownMenu {
  */
 @Directive({
 	selector: '[ngbDropdownAnchor]',
-	standalone: true,
 	host: {
 		class: 'dropdown-toggle',
 		'[class.show]': 'dropdown.isOpen()',
@@ -136,7 +132,6 @@ export class NgbDropdownAnchor {
  */
 @Directive({
 	selector: '[ngbDropdownToggle]',
-	standalone: true,
 	host: {
 		class: 'dropdown-toggle',
 		'[class.show]': 'dropdown.isOpen()',
@@ -159,7 +154,6 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {}
 @Directive({
 	selector: '[ngbDropdown]',
 	exportAs: 'ngbDropdown',
-	standalone: true,
 	host: { '[class.show]': 'isOpen()' },
 })
 export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestroy {

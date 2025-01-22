@@ -49,7 +49,7 @@ export interface NgbNavContentContext {
  *
  * @since 5.2.0
  */
-@Directive({ selector: 'ng-template[ngbNavContent]', standalone: true })
+@Directive({ selector: 'ng-template[ngbNavContent]' })
 export class NgbNavContent {
 	templateRef = inject(TemplateRef);
 }
@@ -61,7 +61,6 @@ export class NgbNavContent {
  */
 @Directive({
 	selector: '[ngbNavItem]:not(ng-container)',
-	standalone: true,
 	host: {
 		'[attr.role]': `role ? role : nav.roles ? 'presentation' : undefined`,
 	},
@@ -80,7 +79,7 @@ export class NgbNavItemRole {
 @Directive({
 	selector: '[ngbNavItem]',
 	exportAs: 'ngbNavItem',
-	standalone: true,
+
 	host: {
 		class: 'nav-item',
 	},
@@ -173,7 +172,6 @@ export class NgbNavItem implements OnInit {
 @Directive({
 	selector: '[ngbNav]',
 	exportAs: 'ngbNav',
-	standalone: true,
 	host: {
 		class: 'nav',
 		'[class.flex-column]': `orientation === 'vertical'`,
@@ -405,7 +403,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 
 @Directive({
 	selector: '[ngbNavLink]',
-	standalone: true,
 	host: {
 		'[id]': 'navItem.domId',
 		class: 'nav-link',
@@ -442,7 +439,6 @@ export class NgbNavLinkBase {
  */
 @Directive({
 	selector: 'button[ngbNavLink]',
-	standalone: true,
 	host: {
 		type: 'button',
 		'[disabled]': 'navItem.disabled',
@@ -458,7 +454,6 @@ export class NgbNavLinkButton extends NgbNavLinkBase {}
  */
 @Directive({
 	selector: 'a[ngbNavLink]',
-	standalone: true,
 	host: {
 		href: '',
 		'(click)': 'nav.click(navItem); $event.preventDefault()',

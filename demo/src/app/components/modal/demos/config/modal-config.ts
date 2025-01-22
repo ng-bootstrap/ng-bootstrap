@@ -3,7 +3,6 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-modal-config',
-	standalone: true,
 	templateUrl: './modal-config.html',
 	// add NgbModalConfig and NgbModal to the component providers
 	providers: [NgbModalConfig, NgbModal],

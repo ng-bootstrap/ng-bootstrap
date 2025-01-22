@@ -3,7 +3,6 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-offcanvas-options',
-	standalone: true,
 	templateUrl: './offcanvas-options.html',
 	encapsulation: ViewEncapsulation.None,
 })

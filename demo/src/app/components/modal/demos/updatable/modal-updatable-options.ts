@@ -3,7 +3,6 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-modal-updatable-options',
-	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -41,7 +40,6 @@ export class NgbdModalContent {
 
 @Component({
 	selector: 'ngbd-modal-updatable-component',
-	standalone: true,
 	templateUrl: './modal-updatable-options.html',
 })
 export class NgbdModalUpdatableOptions {

@@ -4,7 +4,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngbd-modal-stacked',
-	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -29,7 +28,6 @@ export class NgbdModal1Content {
 }
 
 @Component({
-	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -49,7 +47,6 @@ export class NgbdModal2Content {
 
 @Component({
 	selector: 'ngbd-modal-stacked',
-	standalone: true,
 	templateUrl: './modal-stacked.html',
 })
 export class NgbdModalStacked {

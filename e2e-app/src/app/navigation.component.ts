@@ -5,7 +5,6 @@ import { ROUTES } from './app.routes';
 
 @Component({
 	selector: 'app-navigation',
-	standalone: true,
 	template: `
 		<a role="button" class="btn btn-outline-primary ms-3" id="navigate-home" href="#/">Menu</a>
 		<div [hidden]="isHidden">

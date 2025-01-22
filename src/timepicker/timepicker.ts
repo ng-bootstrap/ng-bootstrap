@@ -23,7 +23,6 @@ const FILTER_REGEX = /[^0-9]/g;
 @Component({
 	exportAs: 'ngbTimepicker',
 	selector: 'ngb-timepicker',
-	standalone: true,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './timepicker.scss',
 	template: `

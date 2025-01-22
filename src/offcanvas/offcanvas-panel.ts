@@ -24,7 +24,6 @@ import { DOCUMENT } from '@angular/common';
 
 @Component({
 	selector: 'ngb-offcanvas-panel',
-	standalone: true,
 	template: '<ng-content />',
 	encapsulation: ViewEncapsulation.None,
 	host: {

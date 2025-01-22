@@ -42,7 +42,7 @@ let carouselId = 0;
 /**
  * A directive that wraps the individual carousel slide.
  */
-@Directive({ selector: 'ng-template[ngbSlide]', standalone: true })
+@Directive({ selector: 'ng-template[ngbSlide]' })
 export class NgbSlide {
 	templateRef = inject(TemplateRef);
 

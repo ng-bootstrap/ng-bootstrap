@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	standalone: true,
 	templateUrl: './modal-role.component.html',
 })
 export class ModalRoleComponent {

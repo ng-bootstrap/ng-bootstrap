@@ -77,7 +77,7 @@ export class NgbPopoverWindow {
 /**
  * A lightweight and extensible directive for fancy popover creation.
  */
-@Directive({ selector: '[ngbPopover]', exportAs: 'ngbPopover', standalone: true })
+@Directive({ selector: '[ngbPopover]', exportAs: 'ngbPopover' })
 export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	static ngAcceptInputType_autoClose: boolean | string;
 

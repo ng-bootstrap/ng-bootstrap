@@ -11,7 +11,6 @@ import { regExpEscape, removeAccents, toString } from '../util/util';
  */
 @Component({
 	selector: 'ngb-highlight',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	template: `

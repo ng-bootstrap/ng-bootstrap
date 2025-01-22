@@ -772,7 +772,6 @@ describe('ngb-offcanvas', () => {
 	if (isBrowserVisible('ngb-offcanvas animations')) {
 		describe('ngb-offcanvas animations', () => {
 			@Component({
-				standalone: true,
 				template: `
 					<ng-template #content let-close="close" let-dismiss="dismiss">
 						<div id="inside-div">Bla bla</div>
@@ -882,7 +881,7 @@ describe('ngb-offcanvas', () => {
 	}
 });
 
-@Component({ selector: 'custom-injector-cmpt', standalone: true, template: 'Some content' })
+@Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
 export class CustomInjectorCmpt implements OnDestroy {
 	constructor(private _spyService: CustomSpyService) {}
 
@@ -891,7 +890,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -902,7 +901,6 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'offcanvas-content-cmpt',
-	standalone: true,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveOffcanvasCmpt {
@@ -915,14 +913,12 @@ export class WithActiveOffcanvasCmpt {
 
 @Component({
 	selector: 'offcanvas-autofocus-cmpt',
-	standalone: true,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-firstfocusable-cmpt',
-	standalone: true,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -932,7 +928,6 @@ export class WithFirstFocusableOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-skip-tabindex-firstfocusable-cmpt',
-	standalone: true,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1019,7 +1014,6 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
-	standalone: true,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>
