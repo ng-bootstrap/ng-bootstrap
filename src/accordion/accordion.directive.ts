@@ -36,7 +36,6 @@ let nextId = 0;
  */
 @Component({
 	selector: '[ngbAccordionBody]',
-	standalone: true,
 	template: `
 		<ng-container #container />
 		<ng-content />
@@ -95,7 +94,6 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
  */
 @Directive({
 	exportAs: 'ngbAccordionCollapse',
-	standalone: true,
 	selector: '[ngbAccordionCollapse]',
 	host: {
 		role: 'region',
@@ -120,7 +118,6 @@ export class NgbAccordionCollapse {
  */
 @Directive({
 	selector: '[ngbAccordionToggle]',
-	standalone: true,
 	host: {
 		'[id]': 'item.toggleId',
 		'[class.collapsed]': 'item.collapsed',
@@ -143,7 +140,6 @@ export class NgbAccordionToggle {
  */
 @Directive({
 	selector: 'button[ngbAccordionButton]',
-	standalone: true,
 	host: {
 		'[disabled]': 'item.disabled',
 		class: 'accordion-button',
@@ -162,7 +158,6 @@ export class NgbAccordionButton {
  */
 @Directive({
 	selector: '[ngbAccordionHeader]',
-	standalone: true,
 	host: {
 		role: 'heading',
 		class: 'accordion-header',
@@ -186,7 +181,6 @@ export class NgbAccordionHeader {
 @Directive({
 	selector: '[ngbAccordionItem]',
 	exportAs: 'ngbAccordionItem',
-	standalone: true,
 	host: {
 		'[id]': 'id',
 		class: 'accordion-item',
@@ -384,7 +378,6 @@ export class NgbAccordionItem implements AfterContentInit {
  */
 @Directive({
 	selector: '[ngbAccordion]',
-	standalone: true,
 	exportAs: 'ngbAccordion',
 	host: {
 		class: 'accordion',

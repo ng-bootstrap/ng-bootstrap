@@ -13,7 +13,6 @@ import { CodeHighlightService } from '../services/code-highlight.service';
 
 @Component({
 	selector: 'ngbd-code',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<pre class="language-{{ snippet().lang }}"><code #code class="language-{{ snippet().lang }}"></code></pre>

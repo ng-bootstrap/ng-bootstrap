@@ -24,7 +24,6 @@ import { ngbAlertFadingTransition } from './alert-transition';
 @Component({
 	selector: 'ngb-alert',
 	exportAs: 'ngbAlert',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {

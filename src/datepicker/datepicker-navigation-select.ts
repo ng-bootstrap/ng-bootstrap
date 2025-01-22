@@ -16,7 +16,6 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 
 @Component({
 	selector: 'ngb-datepicker-navigation-select',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker-navigation-select.scss',

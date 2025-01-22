@@ -20,7 +20,6 @@ import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 
 @Component({
 	selector: 'ngb-offcanvas-backdrop',
-	standalone: true,
 	encapsulation: ViewEncapsulation.None,
 	template: '',
 	host: {

@@ -111,7 +111,7 @@ export interface NgbDatepickerState {
  *
  * @since 5.3.0
  */
-@Directive({ selector: 'ng-template[ngbDatepickerContent]', standalone: true })
+@Directive({ selector: 'ng-template[ngbDatepickerContent]' })
 export class NgbDatepickerContent {
 	templateRef = inject(TemplateRef);
 }

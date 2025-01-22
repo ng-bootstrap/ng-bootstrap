@@ -14,7 +14,6 @@ function getDismissReason(reason: any): string {
 
 @Component({
 	selector: 'modal-component',
-	standalone: true,
 	template: `
 		<ng-template #content let-modal>
 			<div class="modal-header">

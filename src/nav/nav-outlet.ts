@@ -22,7 +22,6 @@ import { NgTemplateOutlet } from '@angular/common';
 
 @Directive({
 	selector: '[ngbNavPane]',
-	standalone: true,
 	host: {
 		'[id]': 'item.panelDomId',
 		class: 'tab-pane',

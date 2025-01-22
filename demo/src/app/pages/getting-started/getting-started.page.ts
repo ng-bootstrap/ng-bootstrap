@@ -109,7 +109,6 @@ export class GettingStartedPage {
 
       @Component({
         selector: 'app-product',
-        standalone: true,
         imports: [NgbAlert],
         templateUrl: './product.component.html'
       })

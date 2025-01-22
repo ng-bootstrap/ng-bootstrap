@@ -1160,7 +1160,6 @@ describe('ngb-modal', () => {
 	if (isBrowserVisible('ngb-modal animations')) {
 		describe('ngb-modal animations', () => {
 			@Component({
-				standalone: true,
 				template: `
 					<ng-template #content let-close="close" let-dismiss="dismiss">
 						<div id="inside-div">Bla bla</div>
@@ -1414,7 +1413,7 @@ describe('ngb-modal', () => {
 	});
 });
 
-@Component({ selector: 'custom-injector-cmpt', standalone: true, template: 'Some content' })
+@Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
 export class CustomInjectorCmpt implements OnDestroy {
 	constructor(private _spyService: CustomSpyService) {}
 
@@ -1423,7 +1422,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -1434,7 +1433,6 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'modal-content-cmpt',
-	standalone: true,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveModalCmpt {
@@ -1447,14 +1445,12 @@ export class WithActiveModalCmpt {
 
 @Component({
 	selector: 'modal-autofocus-cmpt',
-	standalone: true,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusModalCmpt {}
 
 @Component({
 	selector: 'modal-firstfocusable-cmpt',
-	standalone: true,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1464,7 +1460,6 @@ export class WithFirstFocusableModalCmpt {}
 
 @Component({
 	selector: 'modal-skip-tabindex-firstfocusable-cmpt',
-	standalone: true,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1562,7 +1557,6 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
-	standalone: true,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>

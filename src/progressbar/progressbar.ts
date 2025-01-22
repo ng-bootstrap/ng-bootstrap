@@ -132,7 +132,6 @@ export class NgbProgressbar {
  */
 @Component({
 	selector: 'ngb-progressbar-stacked',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {

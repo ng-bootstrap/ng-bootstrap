@@ -35,7 +35,6 @@ let nextId = 0;
 
 @Component({
 	selector: 'ngb-tooltip-window',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -61,7 +60,7 @@ export class NgbTooltipWindow {
 /**
  * A lightweight and extensible directive for fancy tooltip creation.
  */
-@Directive({ selector: '[ngbTooltip]', standalone: true, exportAs: 'ngbTooltip' })
+@Directive({ selector: '[ngbTooltip]', exportAs: 'ngbTooltip' })
 export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	static ngAcceptInputType_autoClose: boolean | string;
 

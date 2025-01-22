@@ -54,7 +54,6 @@ import { ContentTemplateContext } from './datepicker-content-template-context';
 @Directive({
 	selector: 'input[ngbDatepicker]',
 	exportAs: 'ngbDatepicker',
-	standalone: true,
 	host: {
 		'(input)': 'manualDateChange($event.target.value)',
 		'(change)': 'manualDateChange($event.target.value, true)',

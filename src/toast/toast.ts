@@ -31,7 +31,7 @@ import { NgTemplateOutlet } from '@angular/common';
  *
  * @since 5.0.0
  */
-@Directive({ selector: '[ngbToastHeader]', standalone: true })
+@Directive({ selector: '[ngbToastHeader]' })
 export class NgbToastHeader {}
 
 /**

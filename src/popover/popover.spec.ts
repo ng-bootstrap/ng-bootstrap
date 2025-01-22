@@ -1116,7 +1116,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 	});
 }
 
-@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 

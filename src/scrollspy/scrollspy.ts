@@ -36,7 +36,6 @@ export interface NgbScrollSpyRef {
  */
 @Directive({
 	selector: '[ngbScrollSpyItem]',
-	standalone: true,
 	exportAs: 'ngbScrollSpyItem',
 	host: {
 		'[class.active]': 'isActive()',
@@ -141,7 +140,6 @@ export class NgbScrollSpyItem implements OnInit {
  */
 @Directive({
 	selector: '[ngbScrollSpyMenu]',
-	standalone: true,
 })
 export class NgbScrollSpyMenu implements NgbScrollSpyRef, AfterViewInit {
 	private _scrollSpyRef: NgbScrollSpyRef = inject(NgbScrollSpyService);
@@ -200,7 +198,6 @@ export class NgbScrollSpyMenu implements NgbScrollSpyRef, AfterViewInit {
  */
 @Directive({
 	selector: '[ngbScrollSpy]',
-	standalone: true,
 	exportAs: 'ngbScrollSpy',
 	host: {
 		tabindex: '0',
@@ -306,7 +303,6 @@ export class NgbScrollSpy implements NgbScrollSpyRef, AfterViewInit {
  */
 @Directive({
 	selector: '[ngbScrollSpyFragment]',
-	standalone: true,
 	host: {
 		'[id]': 'id',
 	},

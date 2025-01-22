@@ -11,7 +11,6 @@ const BADGES = {
 
 @Component({
 	selector: 'ngbd-api-docs-badge',
-	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<h5>
