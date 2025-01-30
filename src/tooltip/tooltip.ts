@@ -30,6 +30,8 @@ import { isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
 import { addPopperOffset } from '../util/positioning-util';
+import { Subject } from 'rxjs';
+import { ngbCompleteTransition } from '../util/transition/ngbTransition';
 
 let nextId = 0;
 
@@ -42,6 +44,8 @@ let nextId = 0;
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
+		'(mouseenter)': 'onMouseEnter()',
+		'(mouseleave)': 'onMouseLeave()',
 	},
 	styleUrl: './tooltip.scss',
 	template: `
@@ -55,6 +59,8 @@ export class NgbTooltipWindow {
 	@Input() animation: boolean;
 	@Input() id: string;
 	@Input() tooltipClass: string;
+	@Input() onMouseEnter: () => void;
+	@Input() onMouseLeave: () => void;
 }
 
 /**
@@ -185,6 +191,12 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _positioning = ngbPositioning();
 	private _afterRenderRef: AfterRenderRef | undefined;
 
+	private _mouseEnterTooltip = new Subject<void>();
+	private _mouseLeaveTooltip = new Subject<void>();
+
+	private _opening = true;
+	private _transitioning = false;
+
 	/**
 	 * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
 	 *
@@ -209,16 +221,24 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * The `context` is an optional value to be injected into the tooltip template when it is created.
 	 */
 	open(context?: any) {
+		if (!this._opening && this._transitioning) {
+			this._transitioning = false;
+			ngbCompleteTransition(this._windowRef!.location.nativeElement);
+		}
 		if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
 			const { windowRef, transition$ } = this._popupService.open(
 				this._ngbTooltip,
 				context ?? this.tooltipContext,
 				this.animation,
 			);
+			this._opening = true;
+			this._transitioning = true;
 			this._windowRef = windowRef;
 			this._windowRef.setInput('animation', this.animation);
 			this._windowRef.setInput('tooltipClass', this.tooltipClass);
 			this._windowRef.setInput('id', this._ngbTooltipWindowId);
+			this._windowRef.setInput('onMouseEnter', () => this._mouseEnterTooltip.next());
+			this._windowRef.setInput('onMouseLeave', () => this._mouseLeaveTooltip.next());
 
 			this._getPositionTargetElement().setAttribute('aria-describedby', this._ngbTooltipWindowId);
 
@@ -272,7 +292,12 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 				[this._nativeElement],
 			);
 
-			transition$.subscribe(() => this.shown.emit());
+			transition$.subscribe(() => {
+				if (this._transitioning) {
+					this._transitioning = false;
+					this.shown.emit();
+				}
+			});
 		}
 	}
 
@@ -282,13 +307,22 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * This is considered to be a "manual" triggering of the tooltip.
 	 */
 	close(animation = this.animation): void {
+		if (this._opening && this._transitioning) {
+			this._transitioning = false;
+			ngbCompleteTransition(this._windowRef!.location.nativeElement);
+		}
 		if (this._windowRef != null) {
 			this._getPositionTargetElement().removeAttribute('aria-describedby');
+			this._opening = false;
+			this._transitioning = true;
 			this._popupService.close(animation).subscribe(() => {
 				this._windowRef = null;
 				this._positioning.destroy();
 				this._afterRenderRef?.destroy();
-				this.hidden.emit();
+				if (this._transitioning) {
+					this._transitioning = false;
+					this.hidden.emit();
+				}
 				this._changeDetector.markForCheck();
 			});
 		}
@@ -323,6 +357,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this.close.bind(this),
 			+this.openDelay,
 			+this.closeDelay,
+			this._mouseEnterTooltip,
+			this._mouseLeaveTooltip,
 		);
 	}
 
