@@ -160,6 +160,8 @@ export class NgbDatepickerContent {
 							[class.hidden]="day.hidden"
 							[class.ngb-dp-today]="day.context.today"
 							[attr.aria-label]="day.ariaLabel"
+							[attr.aria-disabled]="day.context.disabled"
+							[attr.aria-selected]="day.context.selected"
 						>
 							@if (!day.hidden) {
 								<ng-template [ngTemplateOutlet]="datepicker.dayTemplate" [ngTemplateOutletContext]="day.context" />
