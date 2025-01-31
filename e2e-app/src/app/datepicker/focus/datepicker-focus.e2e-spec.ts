@@ -238,13 +238,7 @@ test.describe('Datepicker', () => {
 
 		const dayElement = SELECTOR_DAY(new Date(2018, 7, 10));
 		await getPage().waitForSelector(dayElement);
-		let message = '';
-		try {
-			await getPage().click(dayElement, { timeout: 500 });
-		} catch (e) {
-			message = e.message;
-		}
-		expect(message).toContain('intercepts pointer events');
+		await expect(getPage().locator(dayElement)).toBeDisabled();
 	});
 
 	test.describe('Keyboard', () => {

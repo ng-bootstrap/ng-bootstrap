@@ -417,8 +417,10 @@ describe('ngb-datepicker', () => {
 
 		// 19 AUG 2016
 		expect(getDay(fixture.nativeElement, 18)).toHaveCssClass('text-muted');
+		expect(getDates(fixture.nativeElement)[18].getAttribute('aria-disabled')).toBe('true');
 		// 20 AUG 2016
 		expect(getDay(fixture.nativeElement, 19)).not.toHaveCssClass('text-muted');
+		expect(getDates(fixture.nativeElement)[19].getAttribute('aria-disabled')).toBe('false');
 		// 25 AUG 2016
 		expect(getDay(fixture.nativeElement, 24)).not.toHaveCssClass('text-muted');
 		// 26 AUG 2016
