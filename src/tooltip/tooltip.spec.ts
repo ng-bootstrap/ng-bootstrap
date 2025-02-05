@@ -12,13 +12,13 @@ import {
 	ViewContainerRef,
 } from '@angular/core';
 
-import { NgbTooltip, NgbTooltipWindow } from './tooltip';
-import { NgbTooltipConfig } from './tooltip-config';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
 import { Options } from '@popperjs/core';
 import createSpy = jasmine.createSpy;
+import { NgbTooltip, NgbTooltipWindow } from './tooltip';
+import { NgbTooltipConfig } from './tooltip-config';
 
 const createTestComponent = (html: string) =>
 	<ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -87,6 +87,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -111,6 +112,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -135,6 +137,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -159,6 +162,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -183,6 +187,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -207,6 +212,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -232,6 +238,7 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
@@ -297,7 +304,7 @@ describe('ngb-tooltip', () => {
 			expect(windowEl).toBeNull();
 		});
 
-		it('should allow re-opening previously closed tooltips', () => {
+		it('should allow re-opening previously closed tooltips', fakeAsync(() => {
 			const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
@@ -307,12 +314,13 @@ describe('ngb-tooltip', () => {
 
 			triggerEvent(directive, 'mouseleave');
 			fixture.detectChanges();
+			tick(200);
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 
 			triggerEvent(directive, 'mouseenter');
 			fixture.detectChanges();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
-		});
+		}));
 
 		it('should not leave dangling tooltips in the DOM', () => {
 			const fixture = createTestComponent(
@@ -363,7 +371,7 @@ describe('ngb-tooltip', () => {
 				  <div ngbTooltip="Great tip!" [animation]="true"></div>
          }`,
 			);
-			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get<NgbTooltip>(NgbTooltip);
 
 			tooltip.open();
 			fixture.detectChanges();
@@ -473,7 +481,7 @@ describe('ngb-tooltip', () => {
 
 			it('should modify the popper options', (done) => {
 				const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="auto"></div>`);
-				const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+				const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get<NgbTooltip>(NgbTooltip);
 
 				const spy = createSpy();
 				tooltip.popperOptions = (options: Partial<Options>) => {
@@ -490,7 +498,7 @@ describe('ngb-tooltip', () => {
 		});
 
 		describe('triggers', () => {
-			it('should support focus triggers', () => {
+			it('should support focus triggers', fakeAsync(() => {
 				const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
 				const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
@@ -500,8 +508,9 @@ describe('ngb-tooltip', () => {
 
 				triggerEvent(directive, 'focusout');
 				fixture.detectChanges();
+				tick(200);
 				expect(getWindow(fixture.nativeElement)).toBeNull();
-			});
+			}));
 
 			it('should support toggle triggers', () => {
 				const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="click"></div>`);
@@ -612,6 +621,56 @@ describe('ngb-tooltip', () => {
 				expect(getWindow(fixture.nativeElement)).toBeNull();
 			});
 		});
+	});
+
+	describe('stays open when hovered or focused', () => {
+		it('stays open when hovered with mouseleave close trigger', fakeAsync(() => {
+			const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="mouseenter:mouseleave"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			triggerEvent(directive, 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'mouseleave');
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseleave');
+			triggerEvent(directive, 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'mouseleave');
+			fixture.detectChanges();
+			tick(200);
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+		}));
+
+		it('stays open when focused with focusout close trigger', fakeAsync(() => {
+			const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="focusin:focusout"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			triggerEvent(directive, 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'focusout');
+			triggerEvent(getWindow(fixture.nativeElement), 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(getWindow(fixture.nativeElement), 'focusout');
+			triggerEvent(directive, 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'focusout');
+			fixture.detectChanges();
+			tick(200);
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+		}));
 	});
 
 	describe('container', () => {
@@ -813,7 +872,7 @@ describe('tooltip positionTarget', () => {
     `);
 
 		const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
-		const popover = popoverElement.injector.get(NgbTooltip);
+		const popover = popoverElement.injector.get<NgbTooltip>(NgbTooltip);
 		expect(popover.positionTarget).toBeUndefined();
 
 		popover.open();
@@ -831,7 +890,7 @@ describe('tooltip positionTarget', () => {
     `);
 
 		const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
-		const popover = popoverElement.injector.get(NgbTooltip);
+		const popover = popoverElement.injector.get<NgbTooltip>(NgbTooltip);
 		expect(popover.positionTarget).toBe(fixture.nativeElement.querySelector('.target'));
 
 		popover.open();
@@ -849,7 +908,7 @@ describe('tooltip positionTarget', () => {
     `);
 
 		const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
-		const popover = popoverElement.injector.get(NgbTooltip);
+		const popover = popoverElement.injector.get<NgbTooltip>(NgbTooltip);
 
 		popover.open();
 		tick();
@@ -865,7 +924,7 @@ describe('tooltip positionTarget', () => {
     `);
 
 		const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
-		const popover = popoverElement.injector.get(NgbTooltip);
+		const popover = popoverElement.injector.get<NgbTooltip>(NgbTooltip);
 
 		popover.open();
 		tick();
@@ -881,7 +940,7 @@ describe('tooltip positionTarget', () => {
     `);
 
 		const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
-		const popover = popoverElement.injector.get(NgbTooltip);
+		const popover = popoverElement.injector.get<NgbTooltip>(NgbTooltip);
 
 		popover.open();
 		tick();

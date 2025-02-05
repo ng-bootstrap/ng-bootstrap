@@ -43,7 +43,9 @@ test.describe('Tooltip Triggers', () => {
 		await sendKey('Tab');
 		await expectTooltipToBeOpen(`Tooltip should have been opened with focus`);
 
-		await sendKey('Tab');
+		// Second Tab would focus the tooltip window
+		//await sendKey('Tab');
+		await getPage().focus('#after');
 		await expectTooltipToBeClosed(`Tooltip should close after focusing outside the element`);
 	});
 
@@ -56,7 +58,9 @@ test.describe('Tooltip Triggers', () => {
 		await clickTriggeringElement();
 		await expectTooltipToBeOpen(`Tooltip should stay visible when clicking on the triggering element`);
 
-		await sendKey('Tab');
+		// Second Tab would focus the tooltip window
+		//await sendKey('Tab');
+		await getPage().focus('#after');
 		await expectTooltipToBeOpen(`Tooltip should not close after focusing outside the element`);
 
 		await hoverOutside();
