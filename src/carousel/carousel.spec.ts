@@ -32,7 +32,6 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 			expect(slideElms[i]).toHaveCssClass('active');
 			expect(indicatorElms[i]).toHaveCssClass('active');
 			expect(indicatorElms[i].getAttribute('aria-selected')).toBe('true');
-			expect(carouselElm!.getAttribute('aria-activedescendant')).toBe(slideElms[i].id);
 		} else {
 			expect(slideElms[i]).not.toHaveCssClass('active');
 			expect(indicatorElms[i]).not.toHaveCssClass('active');

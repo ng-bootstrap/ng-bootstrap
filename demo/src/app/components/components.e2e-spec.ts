@@ -30,7 +30,7 @@ const COMPONENTS = [
 const TEST_TO_FIX = {
 	accordion: ['aria-required-attr', 'color-contrast'],
 	alert: ['color-contrast'],
-	carousel: ['aria-allowed-attr'],
+	carousel: [],
 	collapse: ['aria-valid-attr-value'],
 	datepicker: ['button-name', 'color-contrast', 'label', 'select-name'],
 	dropdown: ['button-name'],
