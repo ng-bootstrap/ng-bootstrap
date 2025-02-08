@@ -1,5 +1,6 @@
 import {
 	afterNextRender,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	inject,
@@ -13,7 +14,10 @@ import {
 import { Observable } from 'rxjs';
 
 import { ngbRunTransition } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import { isDefined, reflow } from '../util/util';
+import { NgbModalUpdatableOptions } from './modal-config';
+
+const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
 
 @Component({
 	selector: 'ngb-modal-backdrop',
@@ -30,6 +34,7 @@ export class NgbModalBackdrop implements OnInit {
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 	private _zone = inject(NgZone);
 	private _injector = inject(Injector);
+	private _cdRef = inject(ChangeDetectorRef);
 
 	@Input() animation: boolean;
 	@Input() backdropClass: string;
@@ -59,5 +64,14 @@ export class NgbModalBackdrop implements OnInit {
 			animation: this.animation,
 			runningTransition: 'stop',
 		});
+	}
+
+	updateOptions(options: NgbModalUpdatableOptions) {
+		BACKDROP_ATTRIBUTES.forEach((optionName: string) => {
+			if (isDefined(options[optionName])) {
+				this[optionName] = options[optionName];
+			}
+		});
+		this._cdRef.markForCheck();
 	}
 }

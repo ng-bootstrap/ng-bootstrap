@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import {
 	afterNextRender,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	EventEmitter,
@@ -21,7 +22,23 @@ import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { getFocusableBoundaryElements } from '../util/focus-trap';
 import { ModalDismissReasons } from './modal-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
-import { isString, reflow } from '../util/util';
+import { isDefined, isString, reflow } from '../util/util';
+import { NgbModalUpdatableOptions } from './modal-config';
+
+const WINDOW_ATTRIBUTES: string[] = [
+	'animation',
+	'ariaLabelledBy',
+	'ariaDescribedBy',
+	'backdrop',
+	'centered',
+	'fullscreen',
+	'keyboard',
+	'role',
+	'scrollable',
+	'size',
+	'windowClass',
+	'modalDialogClass',
+] as const;
 
 @Component({
 	selector: 'ngb-modal-window',
@@ -58,6 +75,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 	private _elRef = inject(ElementRef<HTMLElement>);
 	private _zone = inject(NgZone);
 	private _injector = inject(Injector);
+	private _cdRef = inject(ChangeDetectorRef);
 
 	private _closed$ = new Subject<void>();
 	private _elWithFocus: Element | null = null; // element that is focused prior to modal opening
@@ -125,6 +143,15 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 		this._restoreFocus();
 
 		return transitions$;
+	}
+
+	updateOptions(options: NgbModalUpdatableOptions): void {
+		WINDOW_ATTRIBUTES.forEach((optionName: string) => {
+			if (isDefined(options[optionName])) {
+				this[optionName] = options[optionName];
+			}
+		});
+		this._cdRef.markForCheck();
 	}
 
 	private _show() {
