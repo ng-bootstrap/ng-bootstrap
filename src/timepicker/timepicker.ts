@@ -380,7 +380,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 	}
 
 	toggleMeridian() {
-		if (this.meridian) {
+		if (this.model && isNumber(this.model.hour) && this.meridian) {
 			this.changeHour(12);
 		}
 	}
