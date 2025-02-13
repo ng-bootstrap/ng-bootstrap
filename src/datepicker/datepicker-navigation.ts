@@ -45,7 +45,7 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 		}
 
 		@if (!showSelect) {
-			@for (month of months; track month; let i = $index) {
+			@for (month of months; track idMonth(month); let i = $index) {
 				@if (i > 0) {
 					<div class="ngb-dp-arrow"></div>
 				}
@@ -57,6 +57,12 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 				}
 			}
 		}
+		<div class="visually-hidden" aria-live="polite">
+			@for (month of months; track idMonth(month)) {
+				<span>{{ i18n.getMonthLabel(month.firstDate) }}</span>
+			}
+		</div>
+
 		<div class="ngb-dp-arrow ngb-dp-arrow-next">
 			<button
 				type="button"
@@ -97,5 +103,9 @@ export class NgbDatepickerNavigation {
 	onClickNext(event: MouseEvent) {
 		(event.currentTarget as HTMLElement).focus();
 		this.navigate.emit(this.navigation.NEXT);
+	}
+
+	idMonth(month: MonthViewModel) {
+		return month;
 	}
 }

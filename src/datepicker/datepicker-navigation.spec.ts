@@ -134,6 +134,19 @@ describe('ngb-datepicker-navigation', () => {
 		expect(links[0].getAttribute('title')).toBe('Previous month');
 		expect(links[1].getAttribute('title')).toBe('Next month');
 	});
+
+	it('should have a live-attribute announcing month selection updates', () => {
+		const fixture = createTestComponent(`<ngb-datepicker-navigation [months]="months" />`);
+
+		const monthsAnnouncer = fixture.nativeElement.querySelector(
+			'ngb-datepicker-navigation .visually-hidden[aria-live="polite"]',
+		);
+		expect(monthsAnnouncer).toBeTruthy();
+		expect(monthsAnnouncer.textContent).toBe('August 2016');
+		fixture.componentInstance.months = [{ firstDate: new NgbDate(2016, 9, 1) }];
+		fixture.detectChanges();
+		expect(monthsAnnouncer.textContent).toBe('September 2016');
+	});
 });
 
 @Component({
@@ -147,6 +160,7 @@ class TestComponent {
 	nextDisabled = false;
 	showSelect = true;
 	selectBoxes = { months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], years: [2015, 2016, 2017, 2018, 2019, 2020] };
+	months = [{ firstDate: new NgbDate(2016, 8, 1) }];
 
 	onNavigate = (event) => {};
 	onSelect = (date) => {};
