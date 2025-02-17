@@ -5,7 +5,7 @@
 		"outDir": "../out-tsc/e2e-app",
 		"types": ["@angular/localize"],
 		"paths": {
-			"@ng-bootstrap/ng-bootstrap": ["../src/index"]
+			"@bugsplat/ng-bootstrap": ["../src/index"]
 		}
 	},
 	"files": ["src/main.ts"],

@@ -1,5 +1,5 @@
 {
-  "name": "@ng-bootstrap/ng-bootstrap",
+  "name": "@bugsplat/ng-bootstrap",
   "version": "$NG_BOOTSTRAP_VERSION",
   "description": "Angular powered Bootstrap",
   "keywords": [

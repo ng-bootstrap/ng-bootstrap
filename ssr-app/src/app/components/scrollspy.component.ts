@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbScrollSpyModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	selector: 'scrollspy-component',

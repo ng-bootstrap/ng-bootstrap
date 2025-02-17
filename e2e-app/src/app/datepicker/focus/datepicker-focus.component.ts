@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	imports: [FormsModule, NgbModule, JsonPipe],

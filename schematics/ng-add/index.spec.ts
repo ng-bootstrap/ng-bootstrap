@@ -4,7 +4,7 @@ import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { createTestApp } from '../utils/testing';
 import * as messages from './messages';
 
-describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
+describe(`ng add '@bugsplat/ng-bootstrap'`, () => {
 	let runner: SchematicTestRunner;
 	let appTree: Tree;
 

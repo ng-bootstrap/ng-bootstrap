@@ -1,6 +1,6 @@
 {
-  "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "18.0.0",
+  "name": "@bugsplat/ng-bootstrap",
+  "version": "19.0.0",
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
