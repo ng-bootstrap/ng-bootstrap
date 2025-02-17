@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@bugsplat/ng-bootstrap';
 
 function getDismissReason(reason: any): string {
 	switch (reason) {

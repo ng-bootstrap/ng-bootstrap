@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	templateUrl: './modal-role.component.html',

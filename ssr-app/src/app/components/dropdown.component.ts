@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	selector: 'dropdown-component',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	selector: 'collapse-component',

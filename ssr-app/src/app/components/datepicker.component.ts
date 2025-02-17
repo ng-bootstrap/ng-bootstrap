@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule } from '@bugsplat/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({

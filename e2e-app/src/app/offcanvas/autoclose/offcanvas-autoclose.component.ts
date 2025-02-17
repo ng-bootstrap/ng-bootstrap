@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
-import { NgbModule, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from '@bugsplat/ng-bootstrap';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

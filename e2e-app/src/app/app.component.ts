@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbConfig } from '@bugsplat/ng-bootstrap';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './navigation.component';
 
