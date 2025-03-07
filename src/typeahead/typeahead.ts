@@ -23,7 +23,8 @@ import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject, fromEvent, of, OperatorFunction, Subject, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { Live } from '../util/accessibility/live';
+import { Live, LIVE_CONTAINER } from '../util/accessibility/live';
+import { getShadowRootContainerIfAny } from '../util/accessibility/live.helper';
 import { ngbAutoClose } from '../util/autoclose';
 import { PopupService } from '../util/popup';
 import { ngbPositioning } from '../util/positioning';
@@ -69,7 +70,11 @@ let nextWindowId = 0;
 		'[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
 		'[attr.aria-expanded]': 'isPopupOpen()',
 	},
-	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true }],
+	providers: [
+		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true },
+		{ provide: LIVE_CONTAINER, useFactory: getShadowRootContainerIfAny, deps: [ElementRef] },
+		Live,
+	],
 })
 export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLInputElement;
@@ -404,6 +409,18 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 		this._nativeElement.value = toString(value);
 	}
 
+	private _getAnnounceLocalizedMessage(count: number): string {
+		if (count === 0) {
+			return $localize`:@@ngb.typeahead.no-results:No results available`;
+		}
+
+		if (count === 1) {
+			return $localize`:@@ngb.typeahead.one-result:1 result available`;
+		}
+
+		return $localize`:@@ngb.typeahead.many-results:${count}:count: results available`;
+	}
+
 	private _subscribeToUserInput(): void {
 		const results$ = this._valueChanges$.pipe(
 			tap((value) => {
@@ -450,7 +467,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 
 			// live announcer
 			const count = results ? results.length : 0;
-			this._live.say(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
+			this._live.say(this._getAnnounceLocalizedMessage(count));
 		});
 	}
 

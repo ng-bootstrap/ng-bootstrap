@@ -1,3 +1,5 @@
+/// <reference types="@angular/localize" />
+
 import { NgModule } from '@angular/core';
 
 import { NgbAccordionModule } from './accordion/accordion.module';
