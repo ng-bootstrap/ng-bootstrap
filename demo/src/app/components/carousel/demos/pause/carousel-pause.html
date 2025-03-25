@@ -1,5 +1,5 @@
 <ngb-carousel
-	#carousel
+	#carousel="ngbCarousel"
 	[interval]="1000"
 	[pauseOnHover]="pauseOnHover"
 	[pauseOnFocus]="pauseOnFocus"
@@ -38,5 +38,5 @@
 	<label class="form-check-label" for="pauseOnIndicator">Pause when clicking on navigation indicator</label>
 </div>
 <button type="button" (click)="togglePaused()" class="btn btn-outline-secondary btn-sm">
-	{{ paused ? 'Cycle' : 'Pause' }}
+	{{ carousel.isPaused ? 'Cycle' : 'Pause' }}
 </button>
