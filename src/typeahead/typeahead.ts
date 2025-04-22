@@ -66,7 +66,7 @@ let nextWindowId = 0;
 		role: 'combobox',
 		'[attr.aria-autocomplete]': 'showHint ? "both" : "list"',
 		'[attr.aria-activedescendant]': 'activeDescendant',
-		'[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
+		'[attr.aria-controls]': 'isPopupOpen() ? popupId : null',
 		'[attr.aria-expanded]': 'isPopupOpen()',
 	},
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true }],

@@ -799,7 +799,7 @@ describe('ngb-typeahead', () => {
 			expect(input.getAttribute('role')).toBe('combobox');
 			expect(input.getAttribute('aria-autocomplete')).toBe('list');
 			expect(input.getAttribute('aria-expanded')).toBe('false');
-			expect(input.getAttribute('aria-owns')).toBeNull();
+			expect(input.getAttribute('aria-controls')).toBeNull();
 			expect(input.getAttribute('aria-autocomplete')).toBe('list');
 			expect(input.getAttribute('aria-activedescendant')).toBeNull();
 		});
@@ -823,7 +823,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
 			expect(input.getAttribute('aria-expanded')).toBe('true');
-			expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
+			expect(input.getAttribute('aria-controls')).toMatch(/ngb-typeahead-[0-9]+/);
 			expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
 
 			let event = createKeyDownEvent('ArrowDown');
@@ -835,7 +835,7 @@ describe('ngb-typeahead', () => {
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(input.getAttribute('aria-expanded')).toBe('false');
-			expect(input.getAttribute('aria-owns')).toBeNull();
+			expect(input.getAttribute('aria-controls')).toBeNull();
 			expect(input.getAttribute('aria-activedescendant')).toBeNull();
 		}));
 	});
