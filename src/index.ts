@@ -8,6 +8,7 @@ import { NgbDatepickerModule } from './datepicker/datepicker.module';
 import { NgbDropdownModule } from './dropdown/dropdown.module';
 import { NgbModalModule } from './modal/modal.module';
 import { NgbNavModule } from './nav/nav.module';
+import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
 import { NgbPaginationModule } from './pagination/pagination.module';
 import { NgbPopoverModule } from './popover/popover.module';
 import { NgbProgressbarModule } from './progressbar/progressbar.module';
@@ -17,7 +18,6 @@ import { NgbTimepickerModule } from './timepicker/timepicker.module';
 import { NgbToastModule } from './toast/toast.module';
 import { NgbTooltipModule } from './tooltip/tooltip.module';
 import { NgbTypeaheadModule } from './typeahead/typeahead.module';
-import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
 
 export {
 	NgbAccordionDirective,
@@ -42,6 +42,7 @@ export {
 	NgbSlideEventSource,
 } from './carousel/carousel.module';
 export { NgbCollapse, NgbCollapseConfig, NgbCollapseModule } from './collapse/collapse.module';
+export * from './color-mode';
 export {
 	NgbCalendar,
 	NgbCalendarEthiopian,
