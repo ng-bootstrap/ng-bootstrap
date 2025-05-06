@@ -26,16 +26,16 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
 	TOAST_INLINE_LIFECYCLE = Snippet({
 		lang: 'html',
 		code: `
-      <!-- Using @if to toggle display (showToast = true initially) -->
-      @if (showToast) {
-        <ngb-toast header="I can be closed!" (hidden)="showToast = false">
+      <!-- Using @if to toggle display (showToast is a signal with true as initial value) -->
+      @if (showToast()) {
+        <ngb-toast header="I can be closed!" (hidden)="showToast.set(false)">
           <!-- Content here -->
         </ngb-toast>
       }
 
       <!-- or looping over a collection of toasts with @for -->
-      @for (toast of toasts; track toast; let i = $index) {
-        <ngb-toast [header]="'Toast #'+index+' here!'" (hidden)="toasts.splice(i, 1)">
+      @for (toast of toasts(); track toast) {
+        <ngb-toast [header]="'Toast #' + $index + ' here!'" (hidden)="removeToast(toast)">
           <!-- Content here -->
         </ngb-toast>
       }`,
@@ -52,10 +52,11 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
 
       @Injectable({ providedIn: 'root' })
       export class AppToastService {
-        toasts: ToastInfo[] = [];
+        private readonly _toasts = signal<ToastInfo[]>([]);
+        readonly toasts = this.toasts.asReadonly();
 
         show(header: string, body: string) {
-          this.toasts.push({ header, body });
+          this._toasts.push({ header, body });
         }
       }`,
 	});
@@ -64,14 +65,14 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
 		lang: 'typescript',
 		code: `
       remove(toast: ToastInfo) {
-        this.toasts = this.toasts.filter(t => t != toast);
+        this._toasts.update(toasts => toasts.filter(t => t != toast));
       }`,
 	});
 
 	APP_TOASTS_CONTAINER_TPL = Snippet({
 		lang: 'html',
 		code: `
-      @for (toast of toastService.toasts; track toast) {
+      @for (toast of toastService.toasts(); track toast) {
         <ngb-toast
           [header]="toast.header" [autohide]="true" [delay]="toast.delay || 5000"
           (hidden)="toastService.remove(toast)"
@@ -101,7 +102,7 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
         styles: ' ... '
       })
       export class AppToastsComponent {
-        constructor(public toastService: AppToastService) {}
+        readonly toastService = inject(AppToastService);
       }`,
 	});
 
