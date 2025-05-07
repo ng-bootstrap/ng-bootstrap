@@ -1,5 +1,4 @@
-import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { inject, Injectable, InjectionToken, OnDestroy, DOCUMENT } from '@angular/core';
 
 export const ARIA_LIVE_DELAY = new InjectionToken<number | null>('live announcer delay', {
 	providedIn: 'root',

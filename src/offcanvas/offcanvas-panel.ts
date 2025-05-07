@@ -11,6 +11,7 @@ import {
 	OnInit,
 	Output,
 	ViewEncapsulation,
+	DOCUMENT,
 } from '@angular/core';
 
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -20,7 +21,6 @@ import { getFocusableBoundaryElements } from '../util/focus-trap';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { reflow } from '../util/util';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
 	selector: 'ngb-offcanvas-panel',

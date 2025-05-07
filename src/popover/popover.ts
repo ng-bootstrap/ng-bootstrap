@@ -1,5 +1,5 @@
 import {
-	afterRender,
+	afterEveryRender,
 	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -19,8 +19,9 @@ import {
 	SimpleChanges,
 	TemplateRef,
 	ViewEncapsulation,
+	DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 import { listenToTriggers } from '../util/triggers';
 import { ngbAutoClose } from '../util/autoclose';
@@ -290,7 +291,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 					// This update is required for correct arrow placement
 					this._positioning.update();
 				});
-				this._afterRenderRef = afterRender(
+				this._afterRenderRef = afterEveryRender(
 					{
 						mixedReadWrite: () => {
 							this._positioning.update();

@@ -1,5 +1,5 @@
 import {
-	afterRender,
+	afterEveryRender,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
@@ -17,9 +17,10 @@ import {
 	Output,
 	SimpleChanges,
 	TemplateRef,
+	DOCUMENT,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { DOCUMENT } from '@angular/common';
+
 import { BehaviorSubject, fromEvent, of, OperatorFunction, Subject, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -330,7 +331,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._afterRenderRef = afterRender(
+					this._afterRenderRef = afterEveryRender(
 						{
 							mixedReadWrite: () => {
 								this._positioning.update();

@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import {
 	ApplicationRef,
 	ComponentRef,
@@ -10,6 +9,7 @@ import {
 	NgZone,
 	TemplateRef,
 	Type,
+	DOCUMENT,
 } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';

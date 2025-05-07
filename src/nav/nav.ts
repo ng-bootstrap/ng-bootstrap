@@ -17,8 +17,8 @@ import {
 	QueryList,
 	SimpleChanges,
 	TemplateRef,
+	DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 import { Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
