@@ -1,7 +1,7 @@
 import {
 	AfterContentInit,
 	afterNextRender,
-	afterRender,
+	afterEveryRender,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ContentChild,
@@ -20,8 +20,9 @@ import {
 	Output,
 	QueryList,
 	SimpleChanges,
+	DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+
 import { fromEvent, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -319,7 +320,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 							updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 						});
 						this._applyPlacementClasses();
-						this._afterRenderRef = afterRender(
+						this._afterRenderRef = afterEveryRender(
 							{
 								write: () => {
 									this._positionMenu();

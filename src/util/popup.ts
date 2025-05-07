@@ -9,13 +9,13 @@ import {
 	Type,
 	ViewContainerRef,
 	ViewRef,
+	DOCUMENT,
 } from '@angular/core';
 
 import { Observable, of, Subject } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 
 import { ngbRunTransition } from './transition/ngbTransition';
-import { DOCUMENT } from '@angular/common';
 
 export class ContentRef {
 	constructor(

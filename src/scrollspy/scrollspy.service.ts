@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID, DOCUMENT } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbScrollSpyRef } from './scrollspy';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { NgbScrollSpyConfig } from './scrollspy-config';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { toFragmentElement } from './scrollspy.utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 

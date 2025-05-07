@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import {
 	afterNextRender,
 	ChangeDetectorRef,
@@ -14,6 +13,7 @@ import {
 	Output,
 	ViewChild,
 	ViewEncapsulation,
+	DOCUMENT,
 } from '@angular/core';
 
 import { fromEvent, Observable, Subject, zip } from 'rxjs';

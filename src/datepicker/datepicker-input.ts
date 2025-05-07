@@ -1,5 +1,5 @@
 import {
-	afterRender,
+	afterEveryRender,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
@@ -17,8 +17,9 @@ import {
 	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
+	DOCUMENT,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+
 import {
 	AbstractControl,
 	ControlValueAccessor,
@@ -432,7 +433,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._afterRenderRef = afterRender(
+					this._afterRenderRef = afterEveryRender(
 						{
 							mixedReadWrite: () => {
 								this._positioning.update();
