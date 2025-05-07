@@ -1,5 +1,5 @@
 import {
-	afterRender,
+	afterEveryRender,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
@@ -330,7 +330,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._afterRenderRef = afterRender(
+					this._afterRenderRef = afterEveryRender(
 						{
 							mixedReadWrite: () => {
 								this._positioning.update();
