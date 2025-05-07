@@ -3,7 +3,6 @@ import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbDropdown, NgbDropdownModule } from './dropdown.module';
 import { NgbDropdownConfig } from './dropdown-config';
@@ -548,18 +547,20 @@ describe('ngb-dropdown-toggle', () => {
 			);
 		});
 
-		it(`shouldn't position the menu even if ngIf is applied`, () => {
+		it(`shouldn't position the menu even if inside if block`, () => {
 			const html = `
       <nav class="navbar">
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" *ngIf="true">
-            <li class="nav-item" ngbDropdown placement="bottom-right">
-              <a class="nav-link" ngbDropdownToggle role="button">Open</a>
-              <div ngbDropdownMenu>
-                <div class="dropdown-item">Item</div>
-              </div>
-            </li>
-          </ul>
+        	@if (true) {
+						<ul class="navbar-nav">
+							<li class="nav-item" ngbDropdown placement="bottom-right">
+								<a class="nav-link" ngbDropdownToggle role="button">Open</a>
+								<div ngbDropdownMenu>
+									<div class="dropdown-item">Item</div>
+								</div>
+							</li>
+						</ul>
+					}
         </div>
       </nav>
     `;
@@ -665,7 +666,7 @@ describe('ngb-dropdown-toggle', () => {
 
 @Component({
 	selector: 'test-cmp',
-	imports: [NgbDropdownModule, NgIf],
+	imports: [NgbDropdownModule],
 	template: '',
 })
 class TestComponent {
