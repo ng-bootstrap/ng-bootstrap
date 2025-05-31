@@ -4,11 +4,11 @@
 		"rootDir": "./",
 		"baseUrl": "./",
 		"outDir": "./dist/out-tsc",
+		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictNullChecks": true,
 		"sourceMap": true,
 		"declaration": false,
-		"downlevelIteration": true,
 		"experimentalDecorators": true,
 		"moduleResolution": "bundler",
 		"importHelpers": true,
@@ -22,7 +22,7 @@
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,
 		"strictInjectionParameters": true,
-		"strictTemplates": true,
-		"fullTemplateTypeCheck": true
+		"strictStandalone": true,
+		"strictTemplates": true
 	}
 }
