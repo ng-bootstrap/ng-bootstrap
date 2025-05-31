@@ -1,4 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+	Component,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	QueryList,
+	TemplateRef,
+	ViewChildren,
+	ViewEncapsulation,
+} from '@angular/core';
 
 import { toString } from '../util/util';
 import { NgbHighlight } from './highlight';
@@ -41,6 +52,7 @@ export interface ResultTemplateContext {
 		</ng-template>
 		@for (result of results; track $index) {
 			<button
+				#result
 				type="button"
 				class="dropdown-item"
 				role="option"
@@ -106,6 +118,8 @@ export class NgbTypeaheadWindow implements OnInit {
 
 	@Output('activeChange') activeChangeEvent = new EventEmitter();
 
+	@ViewChildren('result') resultElements: QueryList<ElementRef>;
+
 	hasActive() {
 		return this.activeIdx > -1 && this.activeIdx < this.results.length;
 	}
@@ -126,6 +140,7 @@ export class NgbTypeaheadWindow implements OnInit {
 			this.activeIdx++;
 		}
 		this._activeChanged();
+		this._scrollActiveElementIntoView();
 	}
 
 	prev() {
@@ -137,6 +152,7 @@ export class NgbTypeaheadWindow implements OnInit {
 			this.activeIdx--;
 		}
 		this._activeChanged();
+		this._scrollActiveElementIntoView();
 	}
 
 	resetActive() {
@@ -154,5 +170,14 @@ export class NgbTypeaheadWindow implements OnInit {
 
 	private _activeChanged() {
 		this.activeChangeEvent.emit(this.activeIdx >= 0 ? this.id + '-' + this.activeIdx : undefined);
+	}
+
+	private _scrollActiveElementIntoView() {
+		if (this.hasActive() && this.resultElements) {
+			const activeElement = this.resultElements.get(this.activeIdx);
+			if (activeElement) {
+				activeElement.nativeElement.scrollIntoView({ block: 'nearest' });
+			}
+		}
 	}
 }
