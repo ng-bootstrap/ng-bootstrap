@@ -166,6 +166,21 @@ describe('triggers', () => {
 			expect(states).toEqual([true, true]);
 		}));
 
+		it('should clear delay timer if component is destroyed before openFn is called', () => {
+			const delayMs = 5000;
+			const clearTimeoutSpy = spyOn(window, 'clearTimeout');
+			const fakeSetTimeoutResult = setTimeout(() => {}, 0);
+			const setTimeoutSpy = spyOn(window, 'setTimeout');
+			setTimeoutSpy.and.returnValue(fakeSetTimeoutResult);
+
+			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, delayMs);
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+			cleanupFn();
+
+			expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), delayMs);
+			expect(clearTimeoutSpy).toHaveBeenCalledWith(fakeSetTimeoutResult);
+		});
+
 		afterEach(() => {
 			cleanupFn();
 			openFn.calls.reset();
