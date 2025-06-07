@@ -598,6 +598,48 @@ describe('ngb-rating', () => {
 			expect(event.preventDefault).not.toHaveBeenCalled();
 		});
 
+		it('should handle arrow keys for LTR', () => {
+			const fixture = createTestComponent('<div dir="rtl"><ngb-rating [rate]="3" [max]="5"></ngb-rating></div>');
+
+			const element = fixture.debugElement.query(By.directive(NgbRating));
+
+			// right -> -1
+			let event = createKeyDownEvent('ArrowRight');
+			element.triggerEventHandler('keydown', event);
+			fixture.detectChanges();
+			expect(getState(element.nativeElement)).toEqual([true, true, false, false, false]);
+			expect(event.preventDefault).toHaveBeenCalled();
+
+			// up -> +1
+			event = createKeyDownEvent('ArrowUp');
+			element.triggerEventHandler('keydown', event);
+			fixture.detectChanges();
+			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+			expect(event.preventDefault).toHaveBeenCalled();
+
+			// left -> +1
+			event = createKeyDownEvent('ArrowLeft');
+			element.triggerEventHandler('keydown', event);
+			fixture.detectChanges();
+			expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
+			expect(event.preventDefault).toHaveBeenCalled();
+
+			// down -> -1
+			event = createKeyDownEvent('ArrowDown');
+			element.triggerEventHandler('keydown', event);
+			fixture.detectChanges();
+			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+			expect(event.preventDefault).toHaveBeenCalled();
+
+			// any other -> 0
+			event = createKeyDownEvent(' ');
+			const expectedState = getState(element.nativeElement);
+			element.triggerEventHandler('keydown', event);
+			fixture.detectChanges();
+			expect(getState(element.nativeElement)).toEqual(expectedState);
+			expect(event.preventDefault).not.toHaveBeenCalled();
+		});
+
 		it('should handle home/end keys', () => {
 			const fixture = createTestComponent('<ngb-rating [rate]="3" [max]="5"></ngb-rating>');
 
