@@ -70,7 +70,11 @@ const states = [
 	selector: 'ngbd-typeahead-config',
 	imports: [NgbTypeaheadModule, FormsModule],
 	templateUrl: './typeahead-config.html',
-	styles: `.form-control { width: 300px; }`,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 	providers: [NgbTypeaheadConfig],
 })
 export class NgbdTypeaheadConfig {

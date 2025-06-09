@@ -60,7 +60,7 @@ export class NgbDateISOParserFormatter extends NgbDateParserFormatter {
 		return date
 			? `${date.year}-${isNumber(date.month) ? padNumber(date.month) : ''}-${
 					isNumber(date.day) ? padNumber(date.day) : ''
-			  }`
+				}`
 			: '';
 	}
 }

@@ -62,7 +62,11 @@ const states: { name: string }[] = [
 	selector: 'ngbd-typeahead-select-on-exact',
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-select-on-exact.html',
-	styles: `.form-control { width: 300px; }`,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadSelectOnExact {
 	model: any;
