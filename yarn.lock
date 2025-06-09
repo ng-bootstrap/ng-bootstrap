@@ -3332,32 +3332,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/types@npm:^7.27.1, @babel/types@npm:^7.27.3":
+  version: 7.27.6
+  resolution: "@babel/types@npm:7.27.6"
+  dependencies:
+    "@babel/helper-string-parser": "npm:^7.27.1"
+    "@babel/helper-validator-identifier": "npm:^7.27.1"
+  checksum: 10c0/39d556be114f2a6d874ea25ad39826a9e3a0e98de0233ae6d932f6d09a4b222923a90a7274c635ed61f1ba49bbd345329226678800900ad1c8d11afabd573aaf
+  languageName: node
+  linkType: hard
+
 "@bugsplat/ng-bootstrap@workspace:.":
   version: 0.0.0-use.local
   resolution: "@bugsplat/ng-bootstrap@workspace:."
   dependencies:
-    "@angular-builders/custom-webpack": "npm:19.0.0-beta.0"
-    "@angular-devkit/build-angular": "npm:~19.0.4"
-    "@angular-devkit/core": "npm:~19.0.4"
-    "@angular-devkit/schematics": "npm:~19.0.4"
+    "@angular-builders/custom-webpack": "npm:19.0.1"
+    "@angular-devkit/build-angular": "npm:~20.0.0"
+    "@angular-devkit/core": "npm:~20.0.0"
+    "@angular-devkit/schematics": "npm:~20.0.0"
     "@angular-eslint/builder": "npm:^19.0.1"
     "@angular-eslint/eslint-plugin": "npm:^19.0.1"
     "@angular-eslint/eslint-plugin-template": "npm:^19.0.1"
     "@angular-eslint/schematics": "npm:^19.0.1"
     "@angular-eslint/template-parser": "npm:^19.0.1"
-    "@angular/animations": "npm:~19.0.3"
-    "@angular/cli": "npm:~19.0.4"
-    "@angular/common": "npm:~19.0.3"
-    "@angular/compiler": "npm:~19.0.3"
-    "@angular/compiler-cli": "npm:~19.0.3"
-    "@angular/core": "npm:~19.0.3"
-    "@angular/forms": "npm:~19.0.3"
-    "@angular/localize": "npm:~19.0.3"
-    "@angular/platform-browser": "npm:~19.0.3"
-    "@angular/platform-browser-dynamic": "npm:~19.0.3"
-    "@angular/platform-server": "npm:~19.0.3"
-    "@angular/router": "npm:~19.0.3"
-    "@angular/ssr": "npm:^19.0.4"
+    "@angular/animations": "npm:~20.0.0"
+    "@angular/cli": "npm:~20.0.0"
+    "@angular/common": "npm:~20.0.0"
+    "@angular/compiler": "npm:~20.0.0"
+    "@angular/compiler-cli": "npm:~20.0.0"
+    "@angular/core": "npm:~20.0.0"
+    "@angular/forms": "npm:~20.0.0"
+    "@angular/localize": "npm:~20.0.0"
+    "@angular/platform-browser": "npm:~20.0.0"
+    "@angular/platform-browser-dynamic": "npm:~20.0.0"
+    "@angular/platform-server": "npm:~20.0.0"
+    "@angular/router": "npm:~20.0.0"
+    "@angular/ssr": "npm:~20.0.0"
     "@axe-core/playwright": "npm:^4.8.1"
     "@commitlint/cli": "npm:12.1.4"
     "@commitlint/config-angular": "npm:12.1.4"
@@ -3377,7 +3387,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
     "@typescript-eslint/parser": "npm:^7.2.0"
     "@typescript-eslint/utils": "npm:^7.2.0"
-    bootstrap: "npm:5.3.3"
+    bootstrap: "npm:5.3.6"
     bootstrap-icons: "npm:1.9.1"
     conventional-changelog-cli: "npm:^2.0.12"
     coverage-istanbul-loader: "npm:^3.0.3"
@@ -3406,7 +3416,7 @@ __metadata:
     karma-sauce-launcher: "npm:^4.3.6"
     lint-staged: "npm:^15.1.0"
     marked: "npm:^9.1.2"
-    ng-packagr: "npm:~19.0.1"
+    ng-packagr: "npm:~20.0.0"
     nyc: "npm:14.1.1"
     playwright-core: "npm:^1.39.0"
     prettier: "npm:3.1.0"
@@ -3416,7 +3426,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     ts-node-dev: "npm:^2.0.0"
     tslib: "npm:^2.3.0"
-    typescript: "npm:~5.6.3"
+    typescript: "npm:~5.8.3"
     zone.js: "npm:~0.15.0"
   languageName: unknown
   linkType: soft
