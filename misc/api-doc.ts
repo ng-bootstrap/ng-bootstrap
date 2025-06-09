@@ -39,8 +39,8 @@ import {
 
 import { marked } from 'marked';
 
-function displayPartsToHtml(displayParts: any): string {
-	return marked(displayPartsToString(displayParts), { gfm: true }).trim();
+async function displayPartsToHtml(displayParts: any): Promise<string> {
+	return (await marked(displayPartsToString(displayParts), { gfm: true })).trim();
 }
 
 const NAMED_COMPARE = (a, b) => a['name'].localeCompare(b['name']);
@@ -60,12 +60,12 @@ const ANGULAR_LIFECYCLE_METHODS = [
 	'setDisabledState',
 ];
 
-function hasNoJSDoc(member, typeChecker) {
+async function hasNoJSDoc(member, typeChecker) {
 	if (!member.symbol) {
 		return true;
 	}
 
-	const jsDoc = displayPartsToHtml(member.symbol.getDocumentationComment(typeChecker));
+	const jsDoc = await displayPartsToHtml(member.symbol.getDocumentationComment(typeChecker));
 	return jsDoc.trim().length === 0;
 }
 
