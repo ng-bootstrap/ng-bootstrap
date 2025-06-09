@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	selector: 'progress-component',

@@ -14,7 +14,7 @@ const VERSIONS = {
 };
 
 /**
- * This is executed when `ng add @ng-bootstrap/ng-bootstrap` is run.
+ * This is executed when `ng add @bugsplat/ng-bootstrap` is run.
  * It installs all dependencies in the 'package.json' and runs 'ng-add-setup-project' schematic.
  */
 export default function ngAdd(options: Schema): Rule {

@@ -632,7 +632,7 @@ export class MyDatepickerI18n extends NgbDatepickerI18n {
 
 # [11.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...11.0.0-beta.1) (2021-05-12)
 
-This is the first beta version with Bootstrap 5 support. Please install with `npm install @ng-bootstrap/ng-bootstrap@next`
+This is the first beta version with Bootstrap 5 support. Please install with `npm install @bugsplat/ng-bootstrap@next`
 
 ### Known issues
 * the schematics are broken in this version
@@ -958,13 +958,13 @@ This major release officially adds Angular 10 support.
 
 # [6.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.3...6.1.0) (2020-04-22)
 
-This release brings schematics to the `@ng-bootstrap/ng-bootstrap` package, so the library can be installed now with `ng add @ng-bootstrap/ng-bootstrap`. See [installation docs for more details](https://ng-bootstrap.github.io/#/getting-started#installation).
+This release brings schematics to the `@bugsplat/ng-bootstrap` package, so the library can be installed now with `ng add @bugsplat/ng-bootstrap`. See [installation docs for more details](https://ng-bootstrap.github.io/#/getting-started#installation).
 
 ### Features
 
 * **modal:** add 'aria-describedby' for modal window ([#3695](https://github.com/ng-bootstrap/ng-bootstrap/issues/3695)) ([9a8e70d](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a8e70de6ea2eab953d9a9f7012ff6a9815fd795)), closes [#3678](https://github.com/ng-bootstrap/ng-bootstrap/issues/3678)
 * **nav:** keyboard support for switching between navs ([#3612](https://github.com/ng-bootstrap/ng-bootstrap/issues/3612)) ([8c91ba5](https://github.com/ng-bootstrap/ng-bootstrap/commit/8c91ba5a634dd1356b7126888de0acf2d5589483))
-* **schematics:** add schematics to `@ng-bootstrap/ng-bootstrap` ([#3669](https://github.com/ng-bootstrap/ng-bootstrap/issues/3669)) ([464080b](https://github.com/ng-bootstrap/ng-bootstrap/commit/464080b3d48c2aad4c3f4a59ffd632cf3d6e731c))
+* **schematics:** add schematics to `@bugsplat/ng-bootstrap` ([#3669](https://github.com/ng-bootstrap/ng-bootstrap/issues/3669)) ([464080b](https://github.com/ng-bootstrap/ng-bootstrap/commit/464080b3d48c2aad4c3f4a59ffd632cf3d6e731c))
 
 
 
@@ -1299,7 +1299,7 @@ This release requires Angular version `^8.0.0`, Bootstrap `^4.3.1` and is **not 
   The only supported way is the one documented in the [getting started](https://ng-bootstrap.github.io/#/getting-started#installation) page.
 
 ```typescript
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@bugsplat/ng-bootstrap';
 
 @NgModule({
   ...

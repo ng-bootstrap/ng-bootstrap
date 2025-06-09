@@ -71,7 +71,11 @@ const states = [
 	selector: 'ngbd-typeahead-basic',
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-basic.html',
-	styles: `.form-control { width: 300px; }`,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadBasic {
 	model: any;

@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './datepicker-ethiopian.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: `
-	  ngbd-datepicker-ethiopian .ngb-dp-weekday {
+		ngbd-datepicker-ethiopian .ngb-dp-weekday {
 			font-size: x-small;
 			overflow: hidden;
 		}

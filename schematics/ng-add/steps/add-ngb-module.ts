@@ -10,7 +10,7 @@ import { getMainFilePath } from '@schematics/angular/utility/standalone/util';
 import * as messages from '../messages';
 
 const NG_BOOTSTRAP_MODULE_NAME = 'NgbModule';
-const NG_BOOTSTRAP_PACKAGE_NAME = '@ng-bootstrap/ng-bootstrap';
+const NG_BOOTSTRAP_PACKAGE_NAME = '@bugsplat/ng-bootstrap';
 
 /**
  * Patches main application module by adding 'NgbModule' import.

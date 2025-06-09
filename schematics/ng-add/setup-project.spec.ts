@@ -45,7 +45,7 @@ for (const projectName of ['app', 'second-app']) {
 
 			// NgbModule was imported
 			let appModuleFile = tree.read(`projects/${projectName}/src/app/app.module.ts`)!.toString();
-			expect(appModuleFile).toContain(`import { NgbModule } from '@ng-bootstrap/ng-bootstrap';`);
+			expect(appModuleFile).toContain(`import { NgbModule } from '@bugsplat/ng-bootstrap';`);
 			expect(appModuleFile).toMatch(/imports:\s*\[[^\]]+NgbModule[^\]]+]/m);
 		});
 

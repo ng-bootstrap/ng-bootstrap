@@ -96,5 +96,6 @@ export function listenToTriggers(
 		}
 	}
 
+	cleanupFns.push(() => clearTimeout(timeout));
 	return () => cleanupFns.forEach((cleanupFn) => cleanupFn());
 }

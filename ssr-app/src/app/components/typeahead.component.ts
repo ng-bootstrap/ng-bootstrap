@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadModule } from '@bugsplat/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 const VALUES = ['one', 'two', 'three'];

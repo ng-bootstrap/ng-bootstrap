@@ -35,7 +35,11 @@ export class WikipediaService {
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-http.html',
 	providers: [WikipediaService],
-	styles: `.form-control { width: 300px; }`,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadHttp {
 	private service = inject(WikipediaService);

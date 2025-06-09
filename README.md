@@ -59,14 +59,14 @@ We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up
 Just run the following:
 
 ```shell
-ng add @ng-bootstrap/ng-bootstrap
+ng add @bugsplat/ng-bootstrap
 ```
 
 It will install ng-bootstrap for the default application specified in your `angular.json`.
 If you have multiple projects and you want to target a specific application, you could specify the `--project` option:
 
 ```shell
-ng add @ng-bootstrap/ng-bootstrap --project myProject
+ng add @bugsplat/ng-bootstrap --project myProject
 ```
 
 If you prefer not to use schematics and install everything manually, please refer to the

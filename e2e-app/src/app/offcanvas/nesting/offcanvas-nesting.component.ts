@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbOffcanvas } from '@bugsplat/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';

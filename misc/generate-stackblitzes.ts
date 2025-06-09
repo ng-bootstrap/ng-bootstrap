@@ -61,7 +61,7 @@ const initialData = {
 		'@angular/router': versions.angular,
 		'@angular/forms': versions.angular,
 		'@angular/localize': versions.angular,
-		'@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
+		'@bugsplat/ng-bootstrap': versions.ngBootstrap,
 		'@popperjs/core': versions.popper,
 		rxjs: versions.rxjs,
 		typescript: versions.typescript,

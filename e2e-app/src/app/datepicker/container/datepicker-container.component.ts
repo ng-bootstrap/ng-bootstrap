@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@bugsplat/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({

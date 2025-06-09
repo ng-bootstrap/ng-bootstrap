@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbModule, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTypeahead } from '@bugsplat/ng-bootstrap';
 import { merge, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';

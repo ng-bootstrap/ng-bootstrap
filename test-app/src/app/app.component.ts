@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@bugsplat/ng-bootstrap';
 
 @Component({
 	selector: 'app-root',
