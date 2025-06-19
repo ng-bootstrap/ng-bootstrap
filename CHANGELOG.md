@@ -1,3 +1,23 @@
+## [19.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/18.0.0...19.0.0) (2025-06-19)
+
+This release bumps minimum required versions to Angular `20.0.0`
+
+### Bug Fixes
+
+* **carousel:** remove invalid `aria-activedescendant` ([6ecb129](https://github.com/ng-bootstrap/ng-bootstrap/commit/6ecb129c09ea7db8df05209f65aca844a5171b64))
+* **datepicker:** add missing attributes `aria-disabled` and `aria-selected` ([fab39cb](https://github.com/ng-bootstrap/ng-bootstrap/commit/fab39cb0fbce89ec4a92cc5c3044b7f4e0c81f39))
+* **modal:** fix usage of modal in zoneless, by calling mark for check after update of modal options ([afe98ee](https://github.com/ng-bootstrap/ng-bootstrap/commit/afe98eef8fee83888d666381fa0d9f9a48c56e5b))
+* **pagination:** put `aria-current` on link element instead of li for a11y ([39dc037](https://github.com/ng-bootstrap/ng-bootstrap/commit/39dc037f2ac22203bbc4810a14fd69693893a144))
+* **timepicker:** wrong auto-setting of hour value ([4137c60](https://github.com/ng-bootstrap/ng-bootstrap/commit/4137c6062c497869af7998b2ebfdd429eb6e2a97))
+* **tooltip:** opening just after a close does not keep the tooltip open ([bfee86d](https://github.com/ng-bootstrap/ng-bootstrap/commit/bfee86d6a4d1aed033c0ecd3d571f732e62341c9))
+* **tooltip:** tooltip created after view destroyed ([d9c96aa](https://github.com/ng-bootstrap/ng-bootstrap/commit/d9c96aad19565c74e2754e254871c7a5cf8f2194))
+* **typeahead:** add aria-controls for accessibility ([#4816](https://github.com/ng-bootstrap/ng-bootstrap/issues/4816))
+* **typeahead:** set the value of typeahead's control to `null` instead of `undefined` when using the non-editable mode ([daaa56d](https://github.com/ng-bootstrap/ng-bootstrap/commit/daaa56def53e9b2d4a30f456ea1087523c5ca3d7))
+
+### Features
+
+* **tooltip,popover:** allow to keep tooltip/popover open when hovered if `closeDelay` is a positive number ([8117bfa](https://github.com/ng-bootstrap/ng-bootstrap/commit/8117bfa9292ffb2495306e5f1a7739d9587baa79))
+
 # [18.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/17.0.1...18.0.0) (2024-12-18)
 
 This release bumps minimum required versions to Angular `19.0.0`.
