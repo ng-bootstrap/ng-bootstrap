@@ -3,7 +3,6 @@
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
 [![Build Status](https://github.com/ng-bootstrap/ng-bootstrap/workflows/ci/badge.svg?branch=master)](https://github.com/ng-bootstrap/ng-bootstrap/actions)
 [![codecov](https://codecov.io/gh/ng-bootstrap/ng-bootstrap/branch/master/graph/badge.svg)](https://codecov.io/gh/ng-bootstrap/ng-bootstrap)
-[![devDependency Status](https://david-dm.org/ng-bootstrap/ng-bootstrap/dev-status.svg?branch=master)](https://david-dm.org/ng-bootstrap/ng-bootstrap#info=devDependencies)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/pkozlowski.svg)](https://saucelabs.com/u/pkozlowski)
 
 [Angular](https://angular.io/) widgets built from the ground up using only [Bootstrap 5](https://getbootstrap.com/) CSS with APIs designed for the Angular ecosystem.
@@ -51,6 +50,7 @@ Angular and Popper are explicitly listed as peer dependencies, while Bootstrap i
 | 16.x.x       | ^17.0.0 | 5.3.2         | ^2.11.8 |
 | 17.x.x       | ^18.0.0 | 5.3.2         | ^2.11.8 |
 | 18.x.x       | ^19.0.0 | 5.3.3         | ^2.11.8 |
+| 19.x.x       | ^20.0.0 | 5.3.6         | ^2.11.8 |
 
 ## Installation
 
