@@ -73,6 +73,7 @@ export {
 	NgbDateStruct,
 	NgbInputDatepicker,
 	NgbPeriod,
+	DayTemplateContext,
 } from './datepicker/datepicker.module';
 export {
 	NgbDropdown,

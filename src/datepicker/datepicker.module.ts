@@ -28,6 +28,7 @@ export { NgbDateNativeAdapter } from './adapters/ngb-date-native-adapter';
 export { NgbDateNativeUTCAdapter } from './adapters/ngb-date-native-utc-adapter';
 export { NgbDateParserFormatter } from './ngb-date-parser-formatter';
 export { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
+export { DayTemplateContext } from './datepicker-day-template-context';
 
 const NGB_DATEPICKER_DIRECTIVES = [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth];
 
