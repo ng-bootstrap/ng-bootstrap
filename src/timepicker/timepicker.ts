@@ -45,6 +45,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						</button>
 					}
 					<input
+						#hourInput
 						type="text"
 						class="ngb-tp-input form-control"
 						[class.form-control-sm]="isSmallSize"
@@ -54,7 +55,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						placeholder="HH"
 						i18n-placeholder="@@ngb.timepicker.HH"
 						[value]="formatHour(model?.hour)"
-						(change)="updateHour($any($event).target.value)"
+						(change)="updateHour($any($event).target.value, hourInput)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
 						aria-label="Hours"
@@ -98,6 +99,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						</button>
 					}
 					<input
+						#minuteInput
 						type="text"
 						class="ngb-tp-input form-control"
 						[class.form-control-sm]="isSmallSize"
@@ -107,7 +109,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						placeholder="MM"
 						i18n-placeholder="@@ngb.timepicker.MM"
 						[value]="formatMinSec(model?.minute)"
-						(change)="updateMinute($any($event).target.value)"
+						(change)="updateMinute($any($event).target.value, minuteInput)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
 						aria-label="Minutes"
@@ -152,6 +154,7 @@ const FILTER_REGEX = /[^0-9]/g;
 							</button>
 						}
 						<input
+							#secondInput
 							type="text"
 							class="ngb-tp-input form-control"
 							[class.form-control-sm]="isSmallSize"
@@ -161,7 +164,7 @@ const FILTER_REGEX = /[^0-9]/g;
 							placeholder="SS"
 							i18n-placeholder="@@ngb.timepicker.SS"
 							[value]="formatMinSec(model?.second)"
-							(change)="updateSecond($any($event).target.value)"
+							(change)="updateSecond($any($event).target.value, secondInput)"
 							[readOnly]="readonlyInputs"
 							[disabled]="disabled"
 							aria-label="Seconds"
@@ -352,7 +355,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 	/**
 	 * Update hours with the new value.
 	 */
-	updateHour(newVal: string) {
+	updateHour(newVal: string, input?: HTMLInputElement) {
 		const isPM = this.model ? this.model.hour >= 12 : false;
 		const enteredHour = toInteger(newVal);
 		if (this.meridian && ((isPM && enteredHour < 12) || (!isPM && enteredHour === 12))) {
@@ -361,22 +364,31 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 			this.model?.updateHour(enteredHour);
 		}
 		this.propagateModelChange();
+		if (input) {
+			input.value = this.formatHour(this.model?.hour);
+		}
 	}
 
 	/**
 	 * Update minutes with the new value.
 	 */
-	updateMinute(newVal: string) {
+	updateMinute(newVal: string, input?: HTMLInputElement) {
 		this.model?.updateMinute(toInteger(newVal));
 		this.propagateModelChange();
+		if (input) {
+			input.value = this.formatMinSec(this.model?.minute);
+		}
 	}
 
 	/**
 	 * Update seconds with the new value.
 	 */
-	updateSecond(newVal: string) {
+	updateSecond(newVal: string, input?: HTMLInputElement) {
 		this.model?.updateSecond(toInteger(newVal));
 		this.propagateModelChange();
+		if (input) {
+			input.value = this.formatMinSec(this.model?.second);
+		}
 	}
 
 	toggleMeridian() {
