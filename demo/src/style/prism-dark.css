@@ -130,3 +130,7 @@
 [data-bs-theme='dark'] .token.entity {
 	cursor: help;
 }
+[data-bs-theme='dark'] .btn-clipboard,
+[data-bs-theme='dark'] .btn-clipboard:hover {
+	background: #161b22;
+}
