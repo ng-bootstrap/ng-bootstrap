@@ -1,3 +1,11 @@
+## [19.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/19.0.0...19.0.1) (2025-07-01)
+
+### Bug Fixes
+
+* **toast:** missing export of `NgbToastOptions` interface ([6b26ef3](https://github.com/ng-bootstrap/ng-bootstrap/commit/6b26ef37ba39a931d06eea222306efd6f005cc92))
+* **positioning:** missing export of `PlacementArray` type ([#4847](https://github.com/ng-bootstrap/ng-bootstrap/issues/4847)) ([a4e94a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/a4e94a38ec8cd8fed9eea3e5315d977f990d56fb))
+* **datepicker:** missing export of `DayTemplateContext` interface ([1b90da5](https://github.com/ng-bootstrap/ng-bootstrap/commit/1b90da52656b3f94b4c48cfbd0b60cf40bff8c7d))
+
 ## [19.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/18.0.0...19.0.0) (2025-06-19)
 
 This release bumps minimum required versions to Angular `20.0.0`
