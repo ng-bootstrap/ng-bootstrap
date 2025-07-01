@@ -166,7 +166,7 @@ export {
 	NgbTypeaheadModule,
 	NgbTypeaheadSelectItemEvent,
 } from './typeahead/typeahead.module';
-export { Placement } from './util/positioning';
+export { Placement, PlacementArray } from './util/positioning';
 
 export { NgbConfig } from './ngb-config';
 
