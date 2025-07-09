@@ -19,7 +19,7 @@ export const FOCUSABLE_ELEMENTS_SELECTOR = [
 export function getFocusableBoundaryElements(element: HTMLElement): HTMLElement[] {
 	const list: HTMLElement[] = Array.from(
 		element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR) as NodeListOf<HTMLElement>,
-	).filter((el) => el.tabIndex !== -1);
+	).filter((el) => el.tabIndex !== -1 && el.offsetParent !== null);
 	return [list[0], list[list.length - 1]];
 }
 
