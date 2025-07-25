@@ -15,6 +15,7 @@ import {
 	Injector,
 	Input,
 	NgZone,
+	OnInit,
 	Output,
 	PLATFORM_ID,
 	QueryList,
@@ -128,7 +129,7 @@ export class NgbSlide {
 		}
 	`,
 })
-export class NgbCarousel implements AfterContentChecked, AfterContentInit, AfterViewInit {
+export class NgbCarousel implements OnInit, AfterContentChecked, AfterContentInit, AfterViewInit {
 	@ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
 
 	public NgbSlideEventSource = NgbSlideEventSource;
@@ -282,6 +283,13 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 		this.next(NgbSlideEventSource.ARROW_RIGHT);
 	}
 
+	ngOnInit(): void {
+		// pause the carousel if reduced-motion is enabled
+		if (isPlatformBrowser(this._platformId) && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			this._pause$.next(true);
+		}
+	}
+
 	ngAfterContentInit() {
 		// setInterval() doesn't play well with SSR and protractor,
 		// so we should run it in the browser and outside Angular
@@ -407,6 +415,13 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 */
 	cycle() {
 		this._pause$.next(false);
+	}
+
+	/**
+	 * Is the carousel paused
+	 * */
+	get isPaused() {
+		return this._pause$.value;
 	}
 
 	/**

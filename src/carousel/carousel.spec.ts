@@ -1,10 +1,10 @@
-import { fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 
-import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
+import { NgbCarousel, NgbSingleSlideEvent, NgbSlide, NgbSlideEvent, NgbSlideEventSource } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
@@ -162,6 +162,50 @@ describe('ngb-carousel', () => {
 		select.click();
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, false, true]);
+	}));
+
+	it('should not cycle when prefers-reduced-motion is set to reduce', fakeAsync(() => {
+		spyOn(window, 'matchMedia')
+			.withArgs('(prefers-reduced-motion: reduce)')
+			.and.returnValue({ matches: true } as MediaQueryList);
+		const html = `
+     <ngb-carousel #c [interval]="1000">
+       <ng-template ngbSlide>foo</ng-template>
+       <ng-template ngbSlide>bar</ng-template>
+     </ngb-carousel>
+     <button id="cycle" (click)="c.cycle()">Cycle</button>
+   `;
+		const fixture = createTestComponent(html);
+		const cycle = fixture.nativeElement.querySelector('#cycle');
+		expectActiveSlides(fixture.nativeElement, [true, false]);
+		tick(1000);
+		fixture.detectChanges();
+		expectActiveSlides(fixture.nativeElement, [true, false]);
+		cycle.click();
+		tick(1000);
+		fixture.detectChanges();
+		expectActiveSlides(fixture.nativeElement, [false, true]);
+		discardPeriodicTasks();
+	}));
+
+	it('should have the appropriate isPaused state', fakeAsync(() => {
+		const html = `
+     <ngb-carousel #c [interval]="1000">
+       <ng-template ngbSlide>foo</ng-template>
+       <ng-template ngbSlide>bar</ng-template>
+     </ngb-carousel>
+			<button id="pause" (click)="c.pause()">Pause</button>
+     <button id="cycle" (click)="c.cycle()">Cycle</button>
+   `;
+		const fixture = createTestComponent(html);
+		const cycle = fixture.nativeElement.querySelector('#cycle');
+		const pause = fixture.nativeElement.querySelector('#pause');
+		pause.click();
+		fixture.detectChanges();
+		expect(fixture.componentInstance.isPaused).toBe(true);
+		cycle.click();
+		fixture.detectChanges();
+		expect(fixture.componentInstance.isPaused).toBe(false);
 	}));
 
 	it('should pause/resume slide change on API calls', fakeAsync(() => {
@@ -1145,6 +1189,7 @@ class TestComponentOnPush {}
 	template: '',
 })
 class TestComponent {
+	@ViewChild(NgbCarousel, { static: true }) carousel: NgbCarousel;
 	addNewSlide = false;
 	interval;
 	activeSlideId;
@@ -1155,4 +1200,7 @@ class TestComponent {
 	slides = ['a', 'b'];
 	carouselSlideCallBack = (event: NgbSlideEvent) => {};
 	carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};
+	get isPaused() {
+		return this.carousel.isPaused;
+	}
 }
