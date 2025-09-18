@@ -19,7 +19,7 @@ export class NgbdAccordionOverviewComponent extends NgbdOverviewPage {
 	BASIC_ACCORDION = Snippet({
 		lang: 'html',
 		code: `
-      <div ngbAccordion>
+      <div ngbAccordion [collapsed]="true">
         <div ngbAccordionItem>
           <h2 ngbAccordionHeader>
             <button ngbAccordionButton>First</button>

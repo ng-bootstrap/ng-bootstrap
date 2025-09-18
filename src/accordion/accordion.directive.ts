@@ -191,7 +191,7 @@ export class NgbAccordionItem implements AfterContentInit {
 	private _cd = inject(ChangeDetectorRef);
 	private _destroyRef = inject(DestroyRef);
 
-	private _collapsed = true;
+	private _collapsed = false;
 	private _id = `ngb-accordion-item-${nextId++}`;
 	private _destroyOnHide: boolean | undefined;
 

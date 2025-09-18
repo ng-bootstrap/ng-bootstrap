@@ -7,7 +7,7 @@ import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-boot
 	imports: [NgbAccordionModule, NgbAccordionDirective],
 	template: `
 		<div ngbAccordion [closeOthers]="true">
-			<div ngbAccordionItem>
+			<div ngbAccordionItem [collapsed]="true">
 				<h2 ngbAccordionHeader>
 					<button ngbAccordionButton>First</button>
 				</h2>
@@ -18,7 +18,7 @@ import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-boot
 				</div>
 			</div>
 
-			<div ngbAccordionItem>
+			<div ngbAccordionItem [collapsed]="true">
 				<h2 ngbAccordionHeader>
 					<button ngbAccordionButton>Second</button>
 				</h2>
