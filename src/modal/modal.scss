@@ -5,3 +5,7 @@ ngb-modal-window {
 		overflow: hidden;
 	}
 }
+
+ngb-modal-backdrop {
+	z-index: 1055;
+}
