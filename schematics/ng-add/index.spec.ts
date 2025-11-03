@@ -1,6 +1,8 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 
+import { describe, it, beforeEach } from 'node:test';
+import assert from 'node:assert';
 import { createTestApp } from '../utils/testing';
 import * as messages from './messages';
 
@@ -17,11 +19,12 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
 		const tree = await runner.runSchematic('ng-add', {}, appTree);
 		const { dependencies, devDependencies } = JSON.parse(tree.get('/package.json')!.content.toString());
 
-		expect(dependencies['bootstrap']).withContext('bootstrap should be installed').toBeDefined();
-		expect(dependencies['@angular/localize'] || devDependencies['@angular/localize'])
-			.withContext('@angular/localize should be installed')
-			.toBeDefined();
-		expect(dependencies['@popperjs/core']).withContext('@popperjs/core should be installed').toBeDefined();
+		assert.ok(dependencies['bootstrap'], 'bootstrap should be installed');
+		assert.ok(
+			dependencies['@angular/localize'] || devDependencies['@angular/localize'],
+			'@angular/localize should be installed',
+		);
+		assert.ok(dependencies['@popperjs/core'], '@popperjs/core should be installed');
 	});
 
 	it(`should report when specified 'project' is not found`, async () => {
@@ -31,7 +34,7 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
 		} catch (e) {
 			message = (e as Error).message;
 		} finally {
-			expect(message).toBe(messages.noProject('test'));
+			assert.strictEqual(message, messages.noProject('test'));
 		}
 	});
 });

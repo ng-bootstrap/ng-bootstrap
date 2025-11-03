@@ -3,6 +3,8 @@ import { readWorkspace } from '@schematics/angular/utility';
 import { Schema } from './schema';
 import * as messages from './messages';
 import { createTestApp } from '../utils/testing';
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
 
 for (const projectName of ['app', 'second-app']) {
 	describe(`ng-add-project-setup, app=${projectName}`, () => {
@@ -24,11 +26,14 @@ for (const projectName of ['app', 'second-app']) {
 			let { tree, project } = await createApp({ standalone: true });
 
 			// localize polyfill was executed
-			expect(tree.read(`projects/${projectName}/tsconfig.app.json`)!.toString()).toContain('@angular/localize');
+			assert.ok(tree.read(`projects/${projectName}/tsconfig.app.json`)!.toString().includes('@angular/localize'));
 
 			// default styles were added
-			expect(project.targets.get('build')!.options!.styles).toContain(
-				'node_modules/bootstrap/dist/css/bootstrap.min.css',
+			assert.ok(
+				project.targets
+					.get('build')!
+					.options!.styles!.toString()
+					.includes('node_modules/bootstrap/dist/css/bootstrap.min.css'),
 			);
 		});
 
@@ -36,17 +41,20 @@ for (const projectName of ['app', 'second-app']) {
 			let { tree, project } = await createApp({ standalone: false });
 
 			// localize polyfill was executed
-			expect(tree.read(`projects/${projectName}/tsconfig.app.json`)!.toString()).toContain('@angular/localize');
+			assert.ok(tree.read(`projects/${projectName}/tsconfig.app.json`)!.toString().includes('@angular/localize'));
 
 			// default styles were added
-			expect(project.targets.get('build')!.options!.styles).toContain(
-				'node_modules/bootstrap/dist/css/bootstrap.min.css',
+			assert.ok(
+				project.targets
+					.get('build')!
+					.options!.styles!.toString()
+					.includes('node_modules/bootstrap/dist/css/bootstrap.min.css'),
 			);
 
 			// NgbModule was imported
 			let appModuleFile = tree.read(`projects/${projectName}/src/app/app.module.ts`)!.toString();
-			expect(appModuleFile).toContain(`import { NgbModule } from '@ng-bootstrap/ng-bootstrap';`);
-			expect(appModuleFile).toMatch(/imports:\s*\[[^\]]+NgbModule[^\]]+]/m);
+			assert.ok(appModuleFile.includes(`import { NgbModule } from '@ng-bootstrap/ng-bootstrap';`));
+			assert.match(appModuleFile, /imports:\s*\[[^\]]+NgbModule[^\]]+]/m);
 		});
 
 		describe('with different style options', () => {
@@ -55,24 +63,30 @@ for (const projectName of ['app', 'second-app']) {
 					const { tree } = await createApp({ standalone, style: 'sass' });
 
 					const stylesFile = tree.read(`projects/${projectName}/src/styles.sass`)!.toString();
-					expect(stylesFile).toContain(`@import 'bootstrap/scss/bootstrap'`);
-					expect(stylesFile).not.toContain(`@import 'bootstrap/scss/bootstrap;'`);
+					assert.ok(stylesFile.includes(`@import 'bootstrap/scss/bootstrap'`));
+					assert.ok(!stylesFile.includes(`@import 'bootstrap/scss/bootstrap;'`));
 				});
 
 				it(`should patch 'style.scss' when using SCSS styles`, async () => {
 					const { tree } = await createApp({ standalone, style: 'scss' });
 
-					expect(tree.read(`projects/${projectName}/src/styles.scss`)!.toString()).toContain(
-						`@import 'bootstrap/scss/bootstrap';`,
+					assert.ok(
+						tree
+							.read(`projects/${projectName}/src/styles.scss`)!
+							.toString()
+							.includes(`@import 'bootstrap/scss/bootstrap';`),
 					);
 				});
 
 				it(`should add 'bootstrap.min.css' to 'angular.json' if style system is unsupported`, async () => {
 					const { project, log } = await createApp({ standalone, style: 'less' });
-					expect(project.targets.get('build')!.options!.styles).toContain(
-						'node_modules/bootstrap/dist/css/bootstrap.min.css',
+					assert.ok(
+						project.targets
+							.get('build')!
+							.options!.styles!.toString()
+							.includes('node_modules/bootstrap/dist/css/bootstrap.min.css'),
 					);
-					expect(log).toContain(messages.unsupportedStyles(`projects/${projectName}/src/styles.less`));
+					assert.ok(log.includes(messages.unsupportedStyles(`projects/${projectName}/src/styles.less`)));
 				});
 			}
 		});
