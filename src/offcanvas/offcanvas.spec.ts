@@ -6,6 +6,7 @@ import { isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 const NOOP = () => {};
 
@@ -879,6 +880,45 @@ describe('ngb-offcanvas', () => {
 			});
 		});
 	}
+
+	describe('lazy loading', () => {
+		@Component({
+			template: '<router-outlet />',
+			imports: [RouterOutlet],
+		})
+		class AppComponent {}
+
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				imports: [
+					AppComponent,
+					RouterModule.forRoot([
+						{
+							path: 'lazy',
+							loadComponent: () => import('./offcanvas-lazy-component.spec'),
+						},
+					]),
+				],
+			});
+		});
+
+		it('should use correct injectors', fakeAsync(() => {
+			const router = TestBed.inject(Router);
+
+			const fixture = TestBed.createComponent(AppComponent);
+			fixture.detectChanges();
+
+			// opening by navigating
+			router.navigate(['lazy']);
+			tick();
+			fixture.detectChanges();
+			expect(fixture.nativeElement).toHaveOffcanvas('lazy offcanvas');
+
+			// closing by navigating away
+			router.navigate(['']);
+			tick();
+		}));
+	});
 });
 
 @Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
