@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"target": "es2015",
 		"module": "commonjs",
-		"lib": ["es2017"]
+		"lib": ["es2017"],
+		"esModuleInterop": true
 	},
 	"include": ["./*.ts"]
 }
