@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 const FILTER_PAG_REGEX = /[^0-9]/g;
 

@@ -1,6 +1,6 @@
 import { NgbDate } from './ngb-date';
 import { Injectable } from '@angular/core';
-import { isInteger } from '../util/util';
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export function fromJSDate(jsDate: Date) {
 	return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());

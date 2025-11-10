@@ -24,15 +24,18 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, fromEvent, of, OperatorFunction, Subject, Subscription } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { Live } from '../util/accessibility/live';
-import { ngbAutoClose } from '../util/autoclose';
-import { PopupService } from '../util/popup';
-import { ngbPositioning } from '../util/positioning';
-import { isDefined, toString } from '../util/util';
+import {
+	isDefined,
+	toString,
+	Live,
+	ngbAutoClose,
+	PopupService,
+	ngbPositioning,
+	addPopperOffset,
+} from '@ng-bootstrap/ng-bootstrap/utils';
 
 import { NgbTypeaheadConfig } from './typeahead-config';
 import { NgbTypeaheadWindow, ResultTemplateContext } from './typeahead-window';
-import { addPopperOffset } from '../util/positioning-util';
 
 /**
  * An event emitted right before an item is selected from the result list.

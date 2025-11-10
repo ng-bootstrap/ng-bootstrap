@@ -14,8 +14,7 @@ import {
 
 import { Observable } from 'rxjs';
 
-import { ngbRunTransition } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import { reflow, ngbRunTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 
 @Component({

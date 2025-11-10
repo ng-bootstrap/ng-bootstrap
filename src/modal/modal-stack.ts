@@ -14,10 +14,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { ngbFocusTrap } from '../util/focus-trap';
-import { ContentRef } from '../util/popup';
-import { ScrollBar } from '../util/scrollbar';
-import { isDefined, isString } from '../util/util';
+import { isDefined, isString, ngbFocusTrap, ContentRef, ScrollBar } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbModalBackdrop } from './modal-backdrop';
 import { NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModalRef } from './modal-ref';

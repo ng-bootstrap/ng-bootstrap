@@ -1,7 +1,7 @@
 import { NgbDate } from '../ngb-date';
 import { NgbPeriod, NgbCalendar } from '../ngb-calendar';
 import { Injectable } from '@angular/core';
-import { isNumber } from '../../util/util';
+import { isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 
 @Injectable()
 export abstract class NgbCalendarHijri extends NgbCalendar {

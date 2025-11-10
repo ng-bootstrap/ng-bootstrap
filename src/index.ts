@@ -1,174 +1,45 @@
 import { NgModule } from '@angular/core';
 
-import { NgbAccordionModule } from './accordion/accordion.module';
-import { NgbAlertModule } from './alert/alert.module';
-import { NgbCarouselModule } from './carousel/carousel.module';
-import { NgbCollapseModule } from './collapse/collapse.module';
-import { NgbDatepickerModule } from './datepicker/datepicker.module';
-import { NgbDropdownModule } from './dropdown/dropdown.module';
-import { NgbModalModule } from './modal/modal.module';
-import { NgbNavModule } from './nav/nav.module';
-import { NgbPaginationModule } from './pagination/pagination.module';
-import { NgbPopoverModule } from './popover/popover.module';
-import { NgbProgressbarModule } from './progressbar/progressbar.module';
-import { NgbRatingModule } from './rating/rating.module';
-import { NgbScrollSpyModule } from './scrollspy/scrollspy.module';
-import { NgbTimepickerModule } from './timepicker/timepicker.module';
-import { NgbToastModule } from './toast/toast.module';
-import { NgbTooltipModule } from './tooltip/tooltip.module';
-import { NgbTypeaheadModule } from './typeahead/typeahead.module';
-import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap/accordion';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap/carousel';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap/rating';
+import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap/scrollspy';
+import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap/toast';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
-export {
-	NgbAccordionDirective,
-	NgbAccordionConfig,
-	NgbAccordionModule,
-	NgbAccordionItem,
-	NgbAccordionHeader,
-	NgbAccordionToggle,
-	NgbAccordionCollapse,
-	NgbAccordionBody,
-	NgbAccordionButton,
-} from './accordion/accordion.module';
+export * from '@ng-bootstrap/ng-bootstrap/accordion';
+export * from '@ng-bootstrap/ng-bootstrap/alert';
+export * from '@ng-bootstrap/ng-bootstrap/carousel';
+export * from '@ng-bootstrap/ng-bootstrap/collapse';
+export * from '@ng-bootstrap/ng-bootstrap/datepicker';
+export * from '@ng-bootstrap/ng-bootstrap/dropdown';
+export * from '@ng-bootstrap/ng-bootstrap/modal';
+export * from '@ng-bootstrap/ng-bootstrap/nav';
+export * from '@ng-bootstrap/ng-bootstrap/offcanvas';
+export * from '@ng-bootstrap/ng-bootstrap/pagination';
+export * from '@ng-bootstrap/ng-bootstrap/popover';
+export * from '@ng-bootstrap/ng-bootstrap/progressbar';
+export * from '@ng-bootstrap/ng-bootstrap/rating';
+export * from '@ng-bootstrap/ng-bootstrap/scrollspy';
+export * from '@ng-bootstrap/ng-bootstrap/timepicker';
+export * from '@ng-bootstrap/ng-bootstrap/toast';
+export * from '@ng-bootstrap/ng-bootstrap/tooltip';
+export * from '@ng-bootstrap/ng-bootstrap/typeahead';
+export type { Placement, PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
 
-export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/alert.module';
-export {
-	NgbCarousel,
-	NgbCarouselConfig,
-	NgbCarouselModule,
-	NgbSlide,
-	NgbSlideEvent,
-	NgbSlideEventDirection,
-	NgbSlideEventSource,
-} from './carousel/carousel.module';
-export { NgbCollapse, NgbCollapseConfig, NgbCollapseModule } from './collapse/collapse.module';
-export {
-	NgbCalendar,
-	NgbCalendarEthiopian,
-	NgbCalendarGregorian,
-	NgbCalendarHebrew,
-	NgbCalendarIslamicCivil,
-	NgbCalendarIslamicUmalqura,
-	NgbCalendarPersian,
-	NgbCalendarBuddhist,
-	NgbDate,
-	NgbDateAdapter,
-	NgbDateStructAdapter,
-	NgbDateNativeAdapter,
-	NgbDateNativeUTCAdapter,
-	NgbDateParserFormatter,
-	NgbDatepicker,
-	NgbDatepickerConfig,
-	NgbInputDatepickerConfig,
-	NgbDatepickerContent,
-	NgbDatepickerI18n,
-	NgbDatepickerI18nAmharic,
-	NgbDatepickerI18nDefault,
-	NgbDatepickerI18nHebrew,
-	NgbDatepickerKeyboardService,
-	NgbDatepickerModule,
-	NgbDatepickerMonth,
-	NgbDatepickerNavigateEvent,
-	NgbDatepickerState,
-	NgbDateStruct,
-	NgbInputDatepicker,
-	NgbPeriod,
-	DayTemplateContext,
-} from './datepicker/datepicker.module';
-export {
-	NgbDropdown,
-	NgbDropdownAnchor,
-	NgbDropdownConfig,
-	NgbDropdownItem,
-	NgbDropdownButtonItem,
-	NgbDropdownMenu,
-	NgbDropdownModule,
-	NgbDropdownToggle,
-} from './dropdown/dropdown.module';
-export {
-	ModalDismissReasons,
-	NgbActiveModal,
-	NgbModal,
-	NgbModalConfig,
-	NgbModalModule,
-	NgbModalOptions,
-	NgbModalUpdatableOptions,
-	NgbModalRef,
-} from './modal/modal.module';
-export {
-	NgbNavChangeEvent,
-	NgbNavConfig,
-	NgbNav,
-	NgbNavContent,
-	NgbNavContentContext,
-	NgbNavItem,
-	NgbNavItemRole,
-	NgbNavLink,
-	NgbNavLinkButton,
-	NgbNavLinkBase,
-	NgbNavModule,
-	NgbNavOutlet,
-	NgbNavPane,
-} from './nav/nav.module';
-export {
-	OffcanvasDismissReasons,
-	NgbActiveOffcanvas,
-	NgbOffcanvas,
-	NgbOffcanvasConfig,
-	NgbOffcanvasModule,
-	NgbOffcanvasOptions,
-	NgbOffcanvasRef,
-} from './offcanvas/offcanvas.module';
-export {
-	NgbPagination,
-	NgbPaginationConfig,
-	NgbPaginationEllipsis,
-	NgbPaginationFirst,
-	NgbPaginationLast,
-	NgbPaginationModule,
-	NgbPaginationNext,
-	NgbPaginationNumber,
-	NgbPaginationPrevious,
-	NgbPaginationPages,
-} from './pagination/pagination.module';
-export { NgbPopover, NgbPopoverConfig, NgbPopoverModule } from './popover/popover.module';
-export {
-	NgbProgressbar,
-	NgbProgressbarConfig,
-	NgbProgressbarModule,
-	NgbProgressbarStacked,
-} from './progressbar/progressbar.module';
-export { NgbRating, NgbRatingConfig, NgbRatingModule } from './rating/rating.module';
-export {
-	NgbScrollSpy,
-	NgbScrollSpyConfig,
-	NgbScrollSpyFragment,
-	NgbScrollSpyItem,
-	NgbScrollSpyMenu,
-	NgbScrollSpyModule,
-	NgbScrollSpyProcessChanges,
-	NgbScrollSpyService,
-} from './scrollspy/scrollspy.module';
-export {
-	NgbTimeAdapter,
-	NgbTimepickerI18n,
-	NgbTimepicker,
-	NgbTimepickerConfig,
-	NgbTimepickerModule,
-	NgbTimeStruct,
-} from './timepicker/timepicker.module';
-export { NgbToast, NgbToastConfig, NgbToastOptions, NgbToastHeader, NgbToastModule } from './toast/toast.module';
-export { NgbTooltip, NgbTooltipConfig, NgbTooltipModule } from './tooltip/tooltip.module';
-export {
-	NgbHighlight,
-	NgbTypeahead,
-	NgbTypeaheadConfig,
-	NgbTypeaheadModule,
-	NgbTypeaheadSelectItemEvent,
-} from './typeahead/typeahead.module';
-export { Placement, PlacementArray } from './util/positioning';
-
-export { NgbConfig } from './ngb-config';
+export { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 const NGB_MODULES = [
 	NgbAccordionModule,

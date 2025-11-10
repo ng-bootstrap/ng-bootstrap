@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
-import { toString } from '../util/util';
+import { toString } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbHighlight } from './highlight';
 import { NgTemplateOutlet } from '@angular/common';
 

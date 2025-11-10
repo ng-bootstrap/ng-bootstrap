@@ -14,7 +14,7 @@ import {
 
 import { NgbTooltip, NgbTooltipWindow } from './tooltip';
 import { NgbTooltipConfig } from './tooltip-config';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
 import { Options } from '@popperjs/core';

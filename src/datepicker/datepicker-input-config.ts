@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { NgbDatepickerConfig } from './datepicker-config';
-import { PlacementArray } from '../util/positioning';
+import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
 import { Options } from '@popperjs/core';
 
 /**

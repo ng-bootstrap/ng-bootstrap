@@ -4,7 +4,7 @@ import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { Component } from '@angular/core';
 
 import { NgbCollapse } from './collapse';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { By } from '@angular/platform-browser';
 

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core/testing';
 
 import { NgbModalConfig } from './modal-config';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 describe('NgbModalConfig', () => {
 	it('should have sensible default values', inject(

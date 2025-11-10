@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { isInteger } from '../../util/util';
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbCalendarGregorian, NgbPeriod } from '../ngb-calendar';
 import { NgbDate } from '../ngb-date';
 import { fromGregorian, toGregorian } from './buddhist';

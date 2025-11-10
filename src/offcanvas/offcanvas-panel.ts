@@ -17,10 +17,13 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { getFocusableBoundaryElements } from '../util/focus-trap';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
-import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import {
+	reflow,
+	getFocusableBoundaryElements,
+	ngbRunTransition,
+	NgbTransitionOptions,
+} from '@ng-bootstrap/ng-bootstrap/utils';
 
 @Component({
 	selector: 'ngb-offcanvas-panel',

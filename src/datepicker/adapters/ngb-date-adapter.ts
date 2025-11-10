@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbDateStruct } from '../ngb-date-struct';
-import { isInteger } from '../../util/util';
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
 	return new NgbDateStructAdapter();

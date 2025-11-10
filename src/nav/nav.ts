@@ -23,7 +23,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { isDefined } from '../util/util';
+import { isDefined } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbNavConfig } from './nav-config';
 
 const isValidNavId = (id: any) => isDefined(id) && id !== '';

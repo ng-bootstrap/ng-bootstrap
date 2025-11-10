@@ -21,7 +21,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { NgbToastConfig } from './toast-config';
-import { ngbRunTransition } from '../util/transition/ngbTransition';
+import { ngbRunTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { ngbToastFadeInTransition, ngbToastFadeOutTransition } from './toast-transition';
 import { NgTemplateOutlet } from '@angular/common';
 

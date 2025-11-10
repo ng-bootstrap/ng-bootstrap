@@ -6,7 +6,7 @@ import {
 	NgbDatepickerI18nAmharic,
 	NgbDatepickerModule,
 	NgbDateStruct,
-} from '@ng-bootstrap/ng-bootstrap';
+} from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

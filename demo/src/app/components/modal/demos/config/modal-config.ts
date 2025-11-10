@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-config',

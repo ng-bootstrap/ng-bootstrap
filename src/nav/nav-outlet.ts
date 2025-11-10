@@ -16,7 +16,7 @@ import { distinctUntilChanged, skip, startWith } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ngbNavFadeInTransition, ngbNavFadeOutTransition } from './nav-transition';
-import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
+import { ngbRunTransition, NgbTransitionOptions } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbNav, NgbNavItem } from './nav';
 import { NgTemplateOutlet } from '@angular/common';
 

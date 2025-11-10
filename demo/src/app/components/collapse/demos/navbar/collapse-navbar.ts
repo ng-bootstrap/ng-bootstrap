@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { RouterLink } from '@angular/router';
 
 @Component({

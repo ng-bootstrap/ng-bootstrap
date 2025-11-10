@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLinkBase, NgbNavModule, NgbNavOutlet } from './nav.module';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
-import { isDefined } from '../util/util';
-import { NgbConfig } from '../ngb-config';
+import { isDefined } from '@ng-bootstrap/ng-bootstrap/utils';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
 

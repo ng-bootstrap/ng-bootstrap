@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbCarousel, NgbCarouselModule, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbCarousel,
+	NgbCarouselModule,
+	NgbSlideEvent,
+	NgbSlideEventSource,
+} from '@ng-bootstrap/ng-bootstrap/carousel';
 import { FormsModule } from '@angular/forms';
 
 @Component({

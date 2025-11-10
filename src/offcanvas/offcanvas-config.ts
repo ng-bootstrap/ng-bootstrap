@@ -1,5 +1,5 @@
 import { inject, Injectable, Injector } from '@angular/core';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
  * Options available when opening new offcanvas windows with `NgbOffcanvas.open()` method.

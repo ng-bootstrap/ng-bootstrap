@@ -13,7 +13,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { NgbAlertConfig } from './alert-config';
-import { ngbRunTransition } from '../util/transition/ngbTransition';
+import { ngbRunTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { ngbAlertFadingTransition } from './alert-transition';
 
 /**

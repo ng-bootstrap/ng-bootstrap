@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 import { NgbdDatepickerOverviewDemoComponent } from './demo/datepicker-overview-demo.component';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';

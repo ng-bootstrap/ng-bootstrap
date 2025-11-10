@@ -1,5 +1,4 @@
-import { NgbTransitionStartFn } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import { reflow, NgbTransitionStartFn } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export const ngbToastFadeInTransition: NgbTransitionStartFn = (element: HTMLElement, animation: true) => {
 	const { classList } = element;

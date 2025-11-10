@@ -1,11 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-	NgbCalendar,
-	NgbDate,
-	NgbDateNativeAdapter,
-	NgbTooltipModule,
-	NgbDatepickerModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDateNativeAdapter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 import { DatePipe } from '@angular/common';
 
 @Component({

@@ -1,5 +1,5 @@
 import { NgbPopoverConfig } from './popover-config';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { TestBed } from '@angular/core/testing';
 
 describe('ngb-popover-config', () => {

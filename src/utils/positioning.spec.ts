@@ -4,9 +4,8 @@ import { NgbRTL } from './rtl';
 import { ComponentFixture, fakeAsync, flushMicrotasks, inject, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { Component } from '@angular/core';
-import { NgbTooltip } from '../tooltip/tooltip';
+import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 import { By } from '@angular/platform-browser';
-import { NgbTooltipModule } from '../tooltip/tooltip.module';
 
 describe('positioning', () => {
 	/**

@@ -4,7 +4,7 @@ import { NgbTooltip } from './tooltip';
 
 export { NgbTooltipConfig } from './tooltip-config';
 export { NgbTooltip } from './tooltip';
-export { Placement } from '../util/positioning';
+export { Placement } from '@ng-bootstrap/ng-bootstrap/utils';
 
 @NgModule({
 	imports: [NgbTooltip],

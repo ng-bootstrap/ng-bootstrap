@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
 import { isBrowserVisible } from '../test/common';
-import { NgbConfig } from '..';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
 import { Router, RouterModule, RouterOutlet } from '@angular/router';

@@ -6,7 +6,7 @@ import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-isl
 import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
 import { NgbdDatepickerJalali } from '../demos/jalali/datepicker-jalali';
 import { NgbdDatepickerBuddhist } from '../demos/buddhist/datepicker-buddhist';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
 import { NgComponentOutlet } from '@angular/common';

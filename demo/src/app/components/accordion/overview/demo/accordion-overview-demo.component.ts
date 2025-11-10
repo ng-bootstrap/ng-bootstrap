@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap/accordion';
 
 @Component({
 	selector: 'ngbd-accordion-demo',

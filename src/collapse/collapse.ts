@@ -1,6 +1,5 @@
 import { Directive, ElementRef, EventEmitter, inject, Input, NgZone, OnInit, Output } from '@angular/core';
-import { ngbRunTransition } from '../util/transition/ngbTransition';
-import { ngbCollapsingTransition } from '../util/transition/ngbCollapseTransition';
+import { ngbRunTransition, ngbCollapsingTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbCollapseConfig } from './collapse-config';
 
 /**

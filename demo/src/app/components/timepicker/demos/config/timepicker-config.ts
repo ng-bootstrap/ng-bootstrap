@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NgbTimepickerConfig, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimepickerConfig, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-config',

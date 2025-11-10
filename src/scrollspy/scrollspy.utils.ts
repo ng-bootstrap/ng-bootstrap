@@ -1,5 +1,5 @@
 import { NgbScrollSpyOptions, NgbScrollSpyProcessChanges, NgbScrollSpyService } from './scrollspy.service';
-import { isString } from '../util/util';
+import { isString } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export function toFragmentElement(container: Element | null, id?: string | HTMLElement | null): HTMLElement | null {
 	if (!container || id == null) {

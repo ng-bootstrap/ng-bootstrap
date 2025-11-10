@@ -4,7 +4,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
 import { isBrowserVisible } from '../test/common';
-import { NgbConfig } from '..';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
 

@@ -1,5 +1,4 @@
-import { NgbTransitionStartFn } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import { reflow, NgbTransitionStartFn } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export const ngbNavFadeOutTransition: NgbTransitionStartFn = ({ classList }) => {
 	classList.remove('show');

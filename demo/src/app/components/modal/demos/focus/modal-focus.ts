@@ -1,5 +1,5 @@
 import { Component, inject, Type } from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-confirm',

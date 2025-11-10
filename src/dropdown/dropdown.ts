@@ -26,13 +26,18 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
-import { addPopperOffset } from '../util/positioning-util';
-import { ngbAutoClose, SOURCE } from '../util/autoclose';
+import {
+	ngbPositioning,
+	Placement,
+	PlacementArray,
+	addPopperOffset,
+	ngbAutoClose,
+	SOURCE,
+	FOCUSABLE_ELEMENTS_SELECTOR,
+	getActiveElement,
+} from '@ng-bootstrap/ng-bootstrap/utils';
 
 import { NgbDropdownConfig } from './dropdown-config';
-import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
-import { getActiveElement } from '../util/util';
 
 /**
  * A directive you should put on a dropdown item to enable keyboard navigation.

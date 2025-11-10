@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { NgbToast, NgbToastHeader } from './toast';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
 const createTestComponent = (html: string) =>

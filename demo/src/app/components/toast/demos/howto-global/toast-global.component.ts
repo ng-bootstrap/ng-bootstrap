@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, TemplateRef } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 import { ToastService } from './toast-service';
 import { ToastsContainer } from './toasts-container.component';

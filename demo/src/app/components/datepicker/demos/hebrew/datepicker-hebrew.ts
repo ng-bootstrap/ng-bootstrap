@@ -7,7 +7,7 @@ import {
 	NgbDatepickerI18nHebrew,
 	NgbDatepickerModule,
 	NgbDateStruct,
-} from '@ng-bootstrap/ng-bootstrap';
+} from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 

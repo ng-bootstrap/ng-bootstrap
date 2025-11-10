@@ -13,8 +13,7 @@ import {
 
 import { Observable } from 'rxjs';
 
-import { ngbRunTransition } from '../util/transition/ngbTransition';
-import { isDefined, reflow } from '../util/util';
+import { ngbRunTransition, isDefined, reflow } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbModalUpdatableOptions } from './modal-config';
 
 const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];

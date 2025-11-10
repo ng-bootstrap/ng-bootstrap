@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 

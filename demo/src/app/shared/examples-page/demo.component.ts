@@ -5,7 +5,7 @@ import { Snippet } from '../../services/snippet';
 import { RouterLink } from '@angular/router';
 import { LowerCasePipe } from '@angular/common';
 import { CodeComponent } from '../code.component';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 import { NgbdDemoCodeService } from '../../services/demo-code.service';
 
 const TYPES: { [name: string]: string } = {

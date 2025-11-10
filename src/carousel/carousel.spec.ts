@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { NgbSlideEventDirection } from './carousel-transition';
 
