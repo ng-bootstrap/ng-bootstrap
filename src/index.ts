@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 
-import { NgbAccordionModule } from './accordion/accordion.module';
-import { NgbAlertModule } from './alert/alert.module';
-import { NgbCarouselModule } from './carousel/carousel.module';
-import { NgbCollapseModule } from './collapse/collapse.module';
-import { NgbDatepickerModule } from './datepicker/datepicker.module';
-import { NgbDropdownModule } from './dropdown/dropdown.module';
-import { NgbModalModule } from './modal/modal.module';
-import { NgbNavModule } from './nav/nav.module';
-import { NgbPaginationModule } from './pagination/pagination.module';
-import { NgbPopoverModule } from './popover/popover.module';
-import { NgbProgressbarModule } from './progressbar/progressbar.module';
-import { NgbRatingModule } from './rating/rating.module';
-import { NgbScrollSpyModule } from './scrollspy/scrollspy.module';
-import { NgbTimepickerModule } from './timepicker/timepicker.module';
-import { NgbToastModule } from './toast/toast.module';
-import { NgbTooltipModule } from './tooltip/tooltip.module';
-import { NgbTypeaheadModule } from './typeahead/typeahead.module';
-import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
+import { NgbAccordionModule } from './accordion/src/accordion.module';
+import { NgbAlertModule } from './alert/src/alert.module';
+import { NgbCarouselModule } from './carousel/src/carousel.module';
+import { NgbCollapseModule } from './collapse/src/collapse.module';
+import { NgbDatepickerModule } from './datepicker/src/datepicker.module';
+import { NgbDropdownModule } from './dropdown/src/dropdown.module';
+import { NgbModalModule } from './modal/src/modal.module';
+import { NgbNavModule } from './nav/src/nav.module';
+import { NgbPaginationModule } from './pagination/src/pagination.module';
+import { NgbPopoverModule } from './popover/src/popover.module';
+import { NgbProgressbarModule } from './progressbar/src/progressbar.module';
+import { NgbRatingModule } from './rating/src/rating.module';
+import { NgbScrollSpyModule } from './scrollspy/src/scrollspy.module';
+import { NgbTimepickerModule } from './timepicker/src/timepicker.module';
+import { NgbToastModule } from './toast/src/toast.module';
+import { NgbTooltipModule } from './tooltip/src/tooltip.module';
+import { NgbTypeaheadModule } from './typeahead/src/typeahead.module';
+import { NgbOffcanvasModule } from './offcanvas/src/offcanvas.module';
 
 export {
 	NgbAccordionDirective,
@@ -29,9 +29,9 @@ export {
 	NgbAccordionCollapse,
 	NgbAccordionBody,
 	NgbAccordionButton,
-} from './accordion/accordion.module';
+} from './accordion/src/accordion.module';
 
-export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/alert.module';
+export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/src/alert.module';
 export {
 	NgbCarousel,
 	NgbCarouselConfig,
@@ -40,8 +40,8 @@ export {
 	NgbSlideEvent,
 	NgbSlideEventDirection,
 	NgbSlideEventSource,
-} from './carousel/carousel.module';
-export { NgbCollapse, NgbCollapseConfig, NgbCollapseModule } from './collapse/collapse.module';
+} from './carousel/src/carousel.module';
+export { NgbCollapse, NgbCollapseConfig, NgbCollapseModule } from './collapse/src/collapse.module';
 export {
 	NgbCalendar,
 	NgbCalendarEthiopian,
@@ -74,7 +74,7 @@ export {
 	NgbInputDatepicker,
 	NgbPeriod,
 	DayTemplateContext,
-} from './datepicker/datepicker.module';
+} from './datepicker/src/datepicker.module';
 export {
 	NgbDropdown,
 	NgbDropdownAnchor,
@@ -84,7 +84,7 @@ export {
 	NgbDropdownMenu,
 	NgbDropdownModule,
 	NgbDropdownToggle,
-} from './dropdown/dropdown.module';
+} from './dropdown/src/dropdown.module';
 export {
 	ModalDismissReasons,
 	NgbActiveModal,
@@ -94,7 +94,7 @@ export {
 	NgbModalOptions,
 	NgbModalUpdatableOptions,
 	NgbModalRef,
-} from './modal/modal.module';
+} from './modal/src/modal.module';
 export {
 	NgbNavChangeEvent,
 	NgbNavConfig,
@@ -109,7 +109,7 @@ export {
 	NgbNavModule,
 	NgbNavOutlet,
 	NgbNavPane,
-} from './nav/nav.module';
+} from './nav/src/nav.module';
 export {
 	OffcanvasDismissReasons,
 	NgbActiveOffcanvas,
@@ -118,7 +118,7 @@ export {
 	NgbOffcanvasModule,
 	NgbOffcanvasOptions,
 	NgbOffcanvasRef,
-} from './offcanvas/offcanvas.module';
+} from './offcanvas/src/offcanvas.module';
 export {
 	NgbPagination,
 	NgbPaginationConfig,
@@ -130,15 +130,15 @@ export {
 	NgbPaginationNumber,
 	NgbPaginationPrevious,
 	NgbPaginationPages,
-} from './pagination/pagination.module';
-export { NgbPopover, NgbPopoverConfig, NgbPopoverModule } from './popover/popover.module';
+} from './pagination/src/pagination.module';
+export { NgbPopover, NgbPopoverConfig, NgbPopoverModule } from './popover/src/popover.module';
 export {
 	NgbProgressbar,
 	NgbProgressbarConfig,
 	NgbProgressbarModule,
 	NgbProgressbarStacked,
-} from './progressbar/progressbar.module';
-export { NgbRating, NgbRatingConfig, NgbRatingModule } from './rating/rating.module';
+} from './progressbar/src/progressbar.module';
+export { NgbRating, NgbRatingConfig, NgbRatingModule } from './rating/src/rating.module';
 export {
 	NgbScrollSpy,
 	NgbScrollSpyConfig,
@@ -148,7 +148,7 @@ export {
 	NgbScrollSpyModule,
 	NgbScrollSpyProcessChanges,
 	NgbScrollSpyService,
-} from './scrollspy/scrollspy.module';
+} from './scrollspy/src/scrollspy.module';
 export {
 	NgbTimeAdapter,
 	NgbTimepickerI18n,
@@ -156,19 +156,19 @@ export {
 	NgbTimepickerConfig,
 	NgbTimepickerModule,
 	NgbTimeStruct,
-} from './timepicker/timepicker.module';
-export { NgbToast, NgbToastConfig, NgbToastOptions, NgbToastHeader, NgbToastModule } from './toast/toast.module';
-export { NgbTooltip, NgbTooltipConfig, NgbTooltipModule } from './tooltip/tooltip.module';
+} from './timepicker/src/timepicker.module';
+export { NgbToast, NgbToastConfig, NgbToastOptions, NgbToastHeader, NgbToastModule } from './toast/src/toast.module';
+export { NgbTooltip, NgbTooltipConfig, NgbTooltipModule } from './tooltip/src/tooltip.module';
 export {
 	NgbHighlight,
 	NgbTypeahead,
 	NgbTypeaheadConfig,
 	NgbTypeaheadModule,
 	NgbTypeaheadSelectItemEvent,
-} from './typeahead/typeahead.module';
-export { Placement, PlacementArray } from './util/positioning';
+} from './typeahead/src/typeahead.module';
+export { Placement, PlacementArray } from './util/src/positioning';
 
-export { NgbConfig } from './ngb-config';
+export { NgbConfig } from './config/src/ngb-config';
 
 const NGB_MODULES = [
 	NgbAccordionModule,

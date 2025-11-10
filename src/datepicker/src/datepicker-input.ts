@@ -1,0 +1,622 @@
+import {
+	afterEveryRender,
+	AfterRenderRef,
+	ChangeDetectorRef,
+	ComponentRef,
+	Directive,
+	ElementRef,
+	EventEmitter,
+	forwardRef,
+	inject,
+	Injector,
+	Input,
+	NgZone,
+	OnChanges,
+	OnDestroy,
+	Output,
+	SimpleChanges,
+	TemplateRef,
+	ViewContainerRef,
+	DOCUMENT,
+} from '@angular/core';
+
+import {
+	AbstractControl,
+	ControlValueAccessor,
+	NG_VALIDATORS,
+	NG_VALUE_ACCESSOR,
+	ValidationErrors,
+	Validator,
+} from '@angular/forms';
+
+import { ngbAutoClose, ngbFocusTrap, ngbPositioning, addPopperOffset } from '@ng-bootstrap/ng-bootstrap/util';
+
+import { NgbDateAdapter } from './adapters/ngb-date-adapter';
+import { NgbDatepicker, NgbDatepickerNavigateEvent } from './datepicker';
+import { DayTemplateContext } from './datepicker-day-template-context';
+import { NgbCalendar } from './ngb-calendar';
+import { NgbDate } from './ngb-date';
+import { NgbDateParserFormatter } from './ngb-date-parser-formatter';
+import { NgbDateStruct } from './ngb-date-struct';
+import { NgbInputDatepickerConfig } from './datepicker-input-config';
+import { NgbDatepickerConfig } from './datepicker-config';
+import { isString } from '@ng-bootstrap/ng-bootstrap/util';
+import { Subject } from 'rxjs';
+import { ContentTemplateContext } from './datepicker-content-template-context';
+
+/**
+ * A directive that allows to stick a datepicker popup to an input field.
+ *
+ * Manages interaction with the input field itself, does value formatting and provides forms integration.
+ */
+@Directive({
+	selector: 'input[ngbDatepicker]',
+	exportAs: 'ngbDatepicker',
+	host: {
+		'(input)': 'manualDateChange($event.target.value)',
+		'(change)': 'manualDateChange($event.target.value, true)',
+		'(focus)': 'onFocus()',
+		'(blur)': 'onBlur()',
+		'[disabled]': 'disabled',
+	},
+	providers: [
+		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
+		{ provide: NG_VALIDATORS, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
+		{ provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig },
+	],
+})
+export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAccessor, Validator {
+	static ngAcceptInputType_autoClose: boolean | string;
+	static ngAcceptInputType_disabled: boolean | '';
+	static ngAcceptInputType_navigation: string;
+	static ngAcceptInputType_outsideDays: string;
+	static ngAcceptInputType_weekdays: boolean | string;
+
+	private _parserFormatter = inject(NgbDateParserFormatter);
+	private _elRef = inject(ElementRef<HTMLInputElement>);
+	private _vcRef = inject(ViewContainerRef);
+	private _ngZone = inject(NgZone);
+	private _calendar = inject(NgbCalendar);
+	private _dateAdapter = inject(NgbDateAdapter<any>);
+	private _document = inject(DOCUMENT);
+	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
+	private _config = inject(NgbInputDatepickerConfig);
+
+	private _cRef: ComponentRef<NgbDatepicker> | null = null;
+	private _disabled = false;
+	private _elWithFocus: HTMLElement | null = null;
+	private _model: NgbDate | null = null;
+	private _inputValue: string;
+	private _afterRenderRef: AfterRenderRef | undefined;
+	private _positioning = ngbPositioning();
+	private _destroyCloseHandlers$ = new Subject<void>();
+
+	/**
+	 * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
+	 *
+	 * * `true` - the popup will close on both date selection and outside click.
+	 * * `false` - the popup can only be closed manually via `close()` or `toggle()` methods.
+	 * * `"inside"` - the popup will close on date selection, but not outside clicks.
+	 * * `"outside"` - the popup will close only on the outside click and not on date selection/inside clicks.
+	 *
+	 * @since 3.0.0
+	 */
+	@Input() autoClose = this._config.autoClose;
+
+	/**
+	 * The reference to a custom content template.
+	 *
+	 * Allows to completely override the way datepicker.
+	 *
+	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 *
+	 * @since 14.2.0
+	 */
+	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
+
+	/**
+	 * An optional class applied to the datepicker popup element.
+	 *
+	 * @since 9.1.0
+	 */
+	@Input() datepickerClass: string;
+
+	/**
+	 * The reference to a custom template for the day.
+	 *
+	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
+	 *
+	 * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
+	 */
+	@Input() dayTemplate: TemplateRef<DayTemplateContext>;
+
+	/**
+	 * The callback to pass any arbitrary data to the template cell via the
+	 * [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext)'s `data` parameter.
+	 *
+	 * `current` is the month that is currently displayed by the datepicker.
+	 *
+	 * @since 3.3.0
+	 */
+	@Input() dayTemplateData: (date: NgbDate, current?: { year: number; month: number }) => any;
+
+	/**
+	 * The number of months to display.
+	 */
+	@Input() displayMonths: number;
+
+	/**
+	 * The first day of the week.
+	 *
+	 * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
+	 */
+	@Input() firstDayOfWeek: number;
+
+	/**
+	 * The reference to the custom template for the datepicker footer.
+	 *
+	 * @since 3.3.0
+	 */
+	@Input() footerTemplate: TemplateRef<any>;
+
+	/**
+	 * The callback to mark some dates as disabled.
+	 *
+	 * It is called for each new date when navigating to a different month.
+	 *
+	 * `current` is the month that is currently displayed by the datepicker.
+	 */
+	@Input() markDisabled: (date: NgbDate, current?: { year: number; month: number }) => boolean;
+
+	/**
+	 * The earliest date that can be displayed or selected. Also used for form validation.
+	 *
+	 * If not provided, 'year' select box will display 10 years before the current month.
+	 */
+	@Input() minDate: NgbDateStruct;
+
+	/**
+	 * The latest date that can be displayed or selected. Also used for form validation.
+	 *
+	 * If not provided, 'year' select box will display 10 years after the current month.
+	 */
+	@Input() maxDate: NgbDateStruct;
+
+	/**
+	 * Navigation type.
+	 *
+	 * * `"select"` - select boxes for month and navigation arrows
+	 * * `"arrows"` - only navigation arrows
+	 * * `"none"` - no navigation visible at all
+	 */
+	@Input() navigation: 'select' | 'arrows' | 'none';
+
+	/**
+	 * The way of displaying days that don't belong to the current month.
+	 *
+	 * * `"visible"` - days are visible
+	 * * `"hidden"` - days are hidden, white space preserved
+	 * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
+	 *
+	 * For the 2+ months view, days in between months are never shown.
+	 */
+	@Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
+
+	/**
+	 * The preferred placement of the datepicker popup, among the [possible values](#/guides/positioning#api).
+	 *
+	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
+	 *
+	 * Please see the [positioning overview](#/positioning) for more details.
+	 */
+	@Input() placement = this._config.placement;
+
+	/**
+	 * Allows to change default Popper options when positioning the popup.
+	 * Receives current popper options and returns modified ones.
+	 *
+	 * @since 13.1.0
+	 */
+	@Input() popperOptions = this._config.popperOptions;
+
+	/**
+	 * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+	 *
+	 * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
+	 * we'll fallback to focus document body.
+	 *
+	 * @since 5.2.0
+	 */
+	@Input() restoreFocus: true | string | HTMLElement;
+
+	/**
+	 * If `true`, week numbers will be displayed.
+	 */
+	@Input() showWeekNumbers: boolean;
+
+	/**
+	 * The date to open calendar with.
+	 *
+	 * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+	 * If nothing or invalid date is provided, calendar will open with current month.
+	 *
+	 * You could use `navigateTo(date)` method as an alternative.
+	 */
+	@Input() startDate: { year: number; month: number; day?: number };
+
+	/**
+	 * A selector specifying the element the datepicker popup should be appended to.
+	 *
+	 * Currently only supports `"body"`.
+	 */
+	@Input() container = this._config.container;
+
+	/**
+	 * A css selector or html element specifying the element the datepicker popup should be positioned against.
+	 *
+	 * By default the input is used as a target.
+	 *
+	 * @since 4.2.0
+	 */
+	@Input() positionTarget = this._config.positionTarget;
+
+	/**
+	 * The way weekdays should be displayed.
+	 *
+	 * * `true` - weekdays are displayed using default width
+	 * * `false` - weekdays are not displayed
+	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
+	 *
+	 * @since 9.1.0
+	 */
+	@Input() weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
+
+	/**
+	 * An event emitted when user selects a date using keyboard or mouse.
+	 *
+	 * The payload of the event is currently selected `NgbDate`.
+	 *
+	 * @since 1.1.1
+	 */
+	@Output() dateSelect = new EventEmitter<NgbDate>();
+
+	/**
+	 * Event emitted right after the navigation happens and displayed month changes.
+	 *
+	 * See [`NgbDatepickerNavigateEvent`](#/components/datepicker/api#NgbDatepickerNavigateEvent) for the payload info.
+	 */
+	@Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
+
+	/**
+	 * An event fired after closing datepicker window.
+	 *
+	 * @since 4.2.0
+	 */
+	@Output() closed = new EventEmitter<void>();
+
+	@Input()
+	get disabled() {
+		return this._disabled;
+	}
+	set disabled(value: any) {
+		this._disabled = value === '' || (value && value !== 'false');
+
+		if (this.isOpen()) {
+			this._cRef!.instance.setDisabledState(this._disabled);
+		}
+	}
+
+	private _onChange = (_: any) => {};
+	private _onTouched = () => {};
+	private _validatorChange = () => {};
+
+	registerOnChange(fn: (value: any) => any): void {
+		this._onChange = fn;
+	}
+
+	registerOnTouched(fn: () => any): void {
+		this._onTouched = fn;
+	}
+
+	registerOnValidatorChange(fn: () => void): void {
+		this._validatorChange = fn;
+	}
+
+	setDisabledState(isDisabled: boolean): void {
+		this.disabled = isDisabled;
+	}
+
+	validate(c: AbstractControl): ValidationErrors | null {
+		const { value } = c;
+
+		if (value != null) {
+			const ngbDate = this._fromDateStruct(this._dateAdapter.fromModel(value));
+
+			if (!ngbDate) {
+				return { ngbDate: { invalid: value } };
+			}
+
+			if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
+				return { ngbDate: { minDate: { minDate: this.minDate, actual: value } } };
+			}
+
+			if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
+				return { ngbDate: { maxDate: { maxDate: this.maxDate, actual: value } } };
+			}
+		}
+
+		return null;
+	}
+
+	writeValue(value) {
+		this._model = this._fromDateStruct(this._dateAdapter.fromModel(value));
+		this._writeModelValue(this._model);
+	}
+
+	manualDateChange(value: string, updateView = false) {
+		const inputValueChanged = value !== this._inputValue;
+		if (inputValueChanged) {
+			this._inputValue = value;
+			this._model = this._fromDateStruct(this._parserFormatter.parse(value));
+		}
+		if (inputValueChanged || !updateView) {
+			this._onChange(this._model ? this._dateAdapter.toModel(this._model) : value === '' ? null : value);
+		}
+		if (updateView && this._model) {
+			this._writeModelValue(this._model);
+		}
+	}
+
+	isOpen() {
+		return !!this._cRef;
+	}
+
+	/**
+	 * Opens the datepicker popup.
+	 *
+	 * If the related form control contains a valid date, the corresponding month will be opened.
+	 */
+	open() {
+		if (!this.isOpen()) {
+			this._cRef = this._vcRef.createComponent(NgbDatepicker, { injector: this._injector });
+
+			this._applyPopupStyling(this._cRef.location.nativeElement);
+			this._applyDatepickerInputs(this._cRef);
+			this._subscribeForDatepickerOutputs(this._cRef.instance);
+			this._cRef.instance.ngOnInit();
+			this._cRef.instance.writeValue(this._dateAdapter.toModel(this._model));
+
+			// date selection event handling
+			this._cRef.instance.registerOnChange((selectedDate) => {
+				this.writeValue(selectedDate);
+				this._onChange(selectedDate);
+				this._onTouched();
+			});
+
+			this._cRef.changeDetectorRef.detectChanges();
+
+			this._cRef.instance.setDisabledState(this.disabled);
+
+			if (this.container === 'body') {
+				this._document.querySelector(this.container)?.appendChild(this._cRef.location.nativeElement);
+			}
+
+			// focus handling
+			this._elWithFocus = this._document.activeElement as HTMLElement | null;
+			ngbFocusTrap(this._ngZone, this._cRef.location.nativeElement, this.closed, true);
+			setTimeout(() => this._cRef?.instance.focus());
+
+			let hostElement: HTMLElement | null;
+			if (isString(this.positionTarget)) {
+				hostElement = this._document.querySelector(this.positionTarget);
+			} else if (this.positionTarget instanceof HTMLElement) {
+				hostElement = this.positionTarget;
+			} else {
+				hostElement = this._elRef.nativeElement;
+			}
+
+			if (this.positionTarget && !hostElement) {
+				throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
+			}
+
+			// Setting up popper and scheduling updates when zone is stable
+			this._ngZone.runOutsideAngular(() => {
+				if (this._cRef && hostElement) {
+					this._positioning.createPopper({
+						hostElement,
+						targetElement: this._cRef.location.nativeElement,
+						placement: this.placement,
+						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
+					});
+
+					this._afterRenderRef = afterEveryRender(
+						{
+							mixedReadWrite: () => {
+								this._positioning.update();
+							},
+						},
+						{ injector: this._injector },
+					);
+				}
+			});
+
+			this._setCloseHandlers();
+		}
+	}
+
+	/**
+	 * Closes the datepicker popup.
+	 */
+	close() {
+		if (this.isOpen()) {
+			this._cRef?.destroy();
+			this._cRef = null;
+			this._positioning.destroy();
+			this._afterRenderRef?.destroy();
+			this._destroyCloseHandlers$.next();
+			this.closed.emit();
+			this._changeDetector.markForCheck();
+
+			// restore focus
+			let elementToFocus: HTMLElement | null = this._elWithFocus;
+			if (isString(this.restoreFocus)) {
+				elementToFocus = this._document.querySelector(this.restoreFocus);
+			} else if (this.restoreFocus !== undefined) {
+				elementToFocus = this.restoreFocus as HTMLElement;
+			}
+
+			// in IE document.activeElement can contain an object without 'focus()' sometimes
+			if (elementToFocus && elementToFocus['focus']) {
+				elementToFocus.focus();
+			} else {
+				this._document.body.focus();
+			}
+		}
+	}
+
+	/**
+	 * Toggles the datepicker popup.
+	 */
+	toggle() {
+		if (this.isOpen()) {
+			this.close();
+		} else {
+			this.open();
+		}
+	}
+
+	/**
+	 * Navigates to the provided date.
+	 *
+	 * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+	 * If nothing or invalid date provided calendar will open current month.
+	 *
+	 * Use the `[startDate]` input as an alternative.
+	 */
+	navigateTo(date?: { year: number; month: number; day?: number }) {
+		if (this.isOpen()) {
+			this._cRef!.instance.navigateTo(date);
+		}
+	}
+
+	onBlur() {
+		this._onTouched();
+	}
+
+	onFocus() {
+		this._elWithFocus = this._elRef.nativeElement;
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['minDate'] || changes['maxDate']) {
+			this._validatorChange();
+
+			if (this.isOpen()) {
+				if (changes['minDate']) {
+					this._cRef!.setInput('minDate', this.minDate);
+				}
+				if (changes['maxDate']) {
+					this._cRef!.setInput('maxDate', this.maxDate);
+				}
+			}
+		}
+
+		if (changes['datepickerClass']) {
+			const { currentValue, previousValue } = changes['datepickerClass'];
+			this._applyPopupClass(currentValue, previousValue);
+		}
+
+		if (changes['autoClose'] && this.isOpen()) {
+			this._setCloseHandlers();
+		}
+	}
+
+	ngOnDestroy() {
+		this.close();
+	}
+
+	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbDatepicker>): void {
+		[
+			'contentTemplate',
+			'dayTemplate',
+			'dayTemplateData',
+			'displayMonths',
+			'firstDayOfWeek',
+			'footerTemplate',
+			'markDisabled',
+			'minDate',
+			'maxDate',
+			'navigation',
+			'outsideDays',
+			'showNavigation',
+			'showWeekNumbers',
+			'weekdays',
+		].forEach((inputName: string) => {
+			if (this[inputName] !== undefined) {
+				datepickerComponentRef.setInput(inputName, this[inputName]);
+			}
+		});
+		datepickerComponentRef.setInput('startDate', this.startDate || this._model);
+	}
+
+	private _applyPopupClass(newClass: string, oldClass?: string) {
+		const popupEl = this._cRef?.location.nativeElement as HTMLElement;
+		if (popupEl) {
+			if (newClass) {
+				popupEl.classList.add(newClass);
+			}
+			if (oldClass) {
+				popupEl.classList.remove(oldClass);
+			}
+		}
+	}
+
+	private _applyPopupStyling(nativeElement: HTMLElement) {
+		nativeElement.classList.add('dropdown-menu', 'show');
+
+		if (this.container === 'body') {
+			nativeElement.classList.add('ngb-dp-body');
+		}
+
+		this._applyPopupClass(this.datepickerClass);
+	}
+
+	private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
+		datepickerInstance.navigate.subscribe((navigateEvent) => this.navigate.emit(navigateEvent));
+		datepickerInstance.dateSelect.subscribe((date) => {
+			this.dateSelect.emit(date);
+			if (this.autoClose === true || this.autoClose === 'inside') {
+				this.close();
+			}
+		});
+	}
+
+	private _writeModelValue(model: NgbDate | null) {
+		const value = this._parserFormatter.format(model);
+		this._inputValue = value;
+		this._elRef.nativeElement.value = value;
+		if (this.isOpen()) {
+			this._cRef!.instance.writeValue(this._dateAdapter.toModel(model));
+			this._onTouched();
+		}
+	}
+
+	private _fromDateStruct(date: NgbDateStruct | null): NgbDate | null {
+		const ngbDate = date ? new NgbDate(date.year, date.month, date.day) : null;
+		return this._calendar.isValid(ngbDate) ? ngbDate : null;
+	}
+
+	private _setCloseHandlers() {
+		this._destroyCloseHandlers$.next();
+		ngbAutoClose(
+			this._ngZone,
+			this._document,
+			this.autoClose,
+			() => this.close(),
+			this._destroyCloseHandlers$,
+			[],
+			[this._elRef.nativeElement, this._cRef!.location.nativeElement],
+		);
+	}
+}

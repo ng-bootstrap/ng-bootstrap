@@ -1,0 +1,15 @@
+export {
+	NgbNavChangeEvent,
+	NgbNavConfig,
+	NgbNav,
+	NgbNavContent,
+	NgbNavContentContext,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLink,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavModule,
+	NgbNavOutlet,
+	NgbNavPane,
+} from './nav.module';
