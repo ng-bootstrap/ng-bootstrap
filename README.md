@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/ng-bootstrap/ng-bootstrap/branch/master/graph/badge.svg)](https://codecov.io/gh/ng-bootstrap/ng-bootstrap)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/pkozlowski.svg)](https://saucelabs.com/u/pkozlowski)
 
-[Angular](https://angular.io/) widgets built from the ground up using only [Bootstrap 5](https://getbootstrap.com/) CSS with APIs designed for the Angular ecosystem.
+[Angular](https://angular.dev/) widgets built from the ground up using only [Bootstrap 5](https://getbootstrap.com/) CSS with APIs designed for the Angular ecosystem.
 
 Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are working on. Feel free to make comments there.
@@ -27,7 +27,7 @@ Please check all components we have in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 
-The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://getbootstrap.com) CSS, and [Popper](https://popper.js.org/).
+The only dependencies are [Angular](https://angular.dev/), [Bootstrap 5](https://getbootstrap.com) CSS, and [Popper](https://popper.js.org/).
 
 Angular and Popper are explicitly listed as peer dependencies, while Bootstrap is not, as they don't release their CSS separately. The table below simply lists the exact version of Bootstrap CSS against which the corresponding versions of ng-bootstrap are tested.
 
@@ -54,7 +54,7 @@ Angular and Popper are explicitly listed as peer dependencies, while Bootstrap i
 
 ## Installation
 
-We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular CLI project, you could simply use our schematics to add ng-bootstrap library to it.
+We strongly recommend using [Angular CLI](https://angular.dev/tools/cli) for setting up a new project. If you have an Angular CLI project, you could simply use our schematics to add ng-bootstrap library to it.
 
 Just run the following:
 
@@ -74,13 +74,13 @@ If you prefer not to use schematics and install everything manually, please refe
 
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/5.1/getting-started/browsers-devices/#supported-browsers) for more details.
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.dev/reference/versions#browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/5.3/getting-started/browsers-devices/#supported-browsers) for more details.
 
 Our code is automatically tested on all supported browsers.
 
 ## Getting help
 
-Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](http://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](https://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
 
 StackOverflow is a much better place to ask questions since:
 
