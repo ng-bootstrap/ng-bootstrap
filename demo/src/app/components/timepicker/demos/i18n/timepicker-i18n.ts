@@ -1,5 +1,6 @@
 import { Component, inject, Injectable } from '@angular/core';
-import { NgbAlertModule, NgbTimepickerI18n, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbTimepickerI18n, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 const I18N_VALUES = {

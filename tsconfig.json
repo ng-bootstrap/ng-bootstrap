@@ -20,7 +20,7 @@
 		"useDefineForClassFields": false,
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["./src"],
-			"@ng-bootstrap/ng-bootstrap/*": ["./src/*/src/public-api"]
+			"@ng-bootstrap/ng-bootstrap/*": ["./src/*/public-api"]
 		}
 	},
 	"angularCompilerOptions": {

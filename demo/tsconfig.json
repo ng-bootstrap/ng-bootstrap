@@ -6,7 +6,7 @@
 		"types": ["@angular/localize"],
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["../src/index"],
-			"@ng-bootstrap/ng-bootstrap/*": ["../src/*/src/public-api"]
+			"@ng-bootstrap/ng-bootstrap/*": ["../src/*/public-api"]
 		}
 	},
 	"files": ["src/main.ts"],

@@ -25,8 +25,8 @@
 					"options": {
 						"fileReplacements": [
 							{
-								"replace": "src/environment/src/environment.ts",
-								"with": "src/environment/src/environment.test.ts"
+								"replace": "src/environment/environment.ts",
+								"with": "src/environment/environment.test.ts"
 							}
 						],
 						"main": "src/test.ts",

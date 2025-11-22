@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-keep',

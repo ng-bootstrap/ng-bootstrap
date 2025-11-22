@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 import { RouterLink } from '@angular/router';
 import { NgbdTableOverviewDemo } from './demo/table-overview-demo.component';
 import { PageHeaderComponent } from '../../../shared/page-header.component';

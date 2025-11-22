@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbAlertConfig, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertConfig, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-alert-config',

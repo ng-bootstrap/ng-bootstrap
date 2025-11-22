@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 import { FormsModule } from '@angular/forms';
 
 @Component({

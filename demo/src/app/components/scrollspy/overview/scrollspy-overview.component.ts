@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbAlertModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { PageHeaderComponent } from '../../../shared/page-header.component';

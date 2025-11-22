@@ -3,7 +3,7 @@ import { LIB_VERSIONS } from '../../tokens';
 import { Snippet } from '../../services/snippet';
 import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-home',

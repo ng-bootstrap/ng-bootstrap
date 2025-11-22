@@ -4,7 +4,8 @@ import { LIB_VERSIONS } from '../../tokens';
 import { PageHeaderComponent } from '../../shared/page-header.component';
 import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
-import { NgbAlertModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -92,7 +93,8 @@ export class GettingStartedPage {
 	codeOther = Snippet({
 		lang: 'typescript',
 		code: `
-      import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+      import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+      import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
 
       @NgModule({
         imports: [NgbPaginationModule, NgbAlertModule],
@@ -105,7 +107,7 @@ export class GettingStartedPage {
 	codeStandalone = Snippet({
 		lang: 'typescript',
 		code: `
-      import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+      import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
       @Component({
         selector: 'app-product',
