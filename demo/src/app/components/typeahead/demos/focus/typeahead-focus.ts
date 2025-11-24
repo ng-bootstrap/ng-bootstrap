@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbTypeahead, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, Subject, merge, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -69,7 +69,7 @@ const states = [
 
 @Component({
 	selector: 'ngbd-typeahead-focus',
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-focus.html',
 	styles: `.form-control { width: 300px; }`,
 })

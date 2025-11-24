@@ -1,10 +1,27 @@
 import { Component } from '@angular/core';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-keep',
-	imports: [NgbNavModule, NgbAlertModule],
+	imports: [
+		NgbNavContent,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLinkButton,
+		NgbNavLinkBase,
+		NgbNavOutlet,
+		NgbAlert,
+	],
 	templateUrl: './nav-keep-content.html',
 })
 export class NgbdNavKeep {

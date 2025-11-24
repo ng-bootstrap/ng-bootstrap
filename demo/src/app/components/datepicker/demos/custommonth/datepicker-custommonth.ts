@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NgbDatepicker, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbDatepicker, NgbInputDatepicker, NgbDatepickerMonth } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
 @Component({
 	selector: 'ngbd-datepicker-custommonth',
-	imports: [NgbDatepickerModule],
+	imports: [NgbDatepicker, NgbInputDatepicker, NgbDatepickerMonth],
 	templateUrl: './datepicker-custommonth.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: `

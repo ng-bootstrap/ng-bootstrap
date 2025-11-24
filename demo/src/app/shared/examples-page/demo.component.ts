@@ -5,7 +5,15 @@ import { Snippet } from '../../services/snippet';
 import { RouterLink } from '@angular/router';
 import { LowerCasePipe } from '@angular/common';
 import { CodeComponent } from '../code.component';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLink,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 import { NgbdDemoCodeService } from '../../services/demo-code.service';
 
 const TYPES: { [name: string]: string } = {
@@ -18,7 +26,18 @@ const TYPES: { [name: string]: string } = {
 @Component({
 	selector: 'ngbd-widget-demo',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [RouterLink, CodeComponent, NgbNavModule, LowerCasePipe],
+	imports: [
+		RouterLink,
+		CodeComponent,
+		NgbNavContent,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLink,
+		NgbNavLinkBase,
+		NgbNavOutlet,
+		LowerCasePipe,
+	],
 	templateUrl: './demo.component.html',
 })
 export class NgbdWidgetDemoComponent {

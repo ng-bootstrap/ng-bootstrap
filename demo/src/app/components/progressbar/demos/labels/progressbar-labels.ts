@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar';
+import { NgbProgressbar } from '@ng-bootstrap/ng-bootstrap/progressbar';
 
 @Component({
 	selector: 'ngbd-progressbar-labels',
-	imports: [NgbProgressbarModule],
+	imports: [NgbProgressbar],
 	templateUrl: './progressbar-labels.html',
 })
 export class NgbdProgressbarLabels {}

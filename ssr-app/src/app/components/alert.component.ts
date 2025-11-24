@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'alert-component',
-	imports: [NgbAlertModule],
+	imports: [NgbAlert],
 	template: `
 		<ngb-alert [dismissible]="false">Sample alert here</ngb-alert>
 		<ngb-alert>Sample dismissible alert here</ngb-alert>

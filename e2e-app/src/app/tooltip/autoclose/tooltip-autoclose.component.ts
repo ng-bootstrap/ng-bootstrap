@@ -1,9 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import {
+	NgbDropdown,
+	NgbDropdownMenu,
+	NgbDropdownModule,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbTooltip, NgbDropdown, NgbDropdownMenu, NgbDropdownModule, NgbDropdownToggle],
 	templateUrl: './tooltip-autoclose.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 interface Theme {
 	id: 'auto' | 'light' | 'dark';
@@ -18,7 +24,7 @@ const THEMES: Theme[] = [
 @Component({
 	selector: 'ngbd-theme-picker',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-theme" role="button">

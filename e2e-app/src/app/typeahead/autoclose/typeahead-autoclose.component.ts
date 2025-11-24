@@ -2,12 +2,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import {
+	NgbDropdown,
+	NgbDropdownMenu,
+	NgbDropdownModule,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 const items = ['one', 'two', 'three'];
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbTypeahead, NgbDropdown, NgbDropdownMenu, NgbDropdownModule, NgbDropdownToggle],
 	templateUrl: './typeahead-autoclose.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

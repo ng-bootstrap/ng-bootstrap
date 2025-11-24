@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'ngbd-popover-tplcontent',
-	imports: [NgbPopoverModule],
+	imports: [NgbPopover],
 	templateUrl: './popover-tplcontent.html',
 })
 export class NgbdPopoverTplcontent {

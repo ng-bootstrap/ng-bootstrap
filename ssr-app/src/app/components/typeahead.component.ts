@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { FormsModule } from '@angular/forms';
 
 const VALUES = ['one', 'two', 'three'];
 
 @Component({
 	selector: 'typeahead-component',
-	imports: [FormsModule, NgbTypeaheadModule],
+	imports: [FormsModule, NgbTypeahead],
 	template: `
 		<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
 	`,

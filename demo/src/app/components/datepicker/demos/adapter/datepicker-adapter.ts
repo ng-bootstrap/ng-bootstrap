@@ -3,7 +3,8 @@ import {
 	NgbCalendar,
 	NgbDateAdapter,
 	NgbDateParserFormatter,
-	NgbDatepickerModule,
+	NgbDatepicker,
+	NgbInputDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
@@ -59,7 +60,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 @Component({
 	selector: 'ngbd-datepicker-adapter',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, NgbInputDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-adapter.html',
 	// NOTE: For this example we are only providing current component, but probably
 	// NOTE: you will want to provide your main App Module

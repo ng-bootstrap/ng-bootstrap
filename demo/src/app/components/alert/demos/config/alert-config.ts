@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbAlertConfig, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbAlertConfig, NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-alert-config',
-	imports: [NgbAlertModule],
+	imports: [NgbAlert],
 	templateUrl: './alert-config.html',
 	// add NgbAlertConfig  to the component providers
 	providers: [NgbAlertConfig],

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbDatepicker, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
 @Component({
 	selector: 'ngbd-datepicker-multiple',
-	imports: [NgbDatepickerModule, FormsModule],
+	imports: [NgbDatepicker, NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-multiple.html',
 	styles: `
 		select.form-select {

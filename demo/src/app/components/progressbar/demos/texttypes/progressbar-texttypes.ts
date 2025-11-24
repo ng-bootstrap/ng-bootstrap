@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar';
+import { NgbProgressbar } from '@ng-bootstrap/ng-bootstrap/progressbar';
 
 @Component({
 	selector: 'ngbd-progressbar-texttypes',
-	imports: [NgbProgressbarModule],
+	imports: [NgbProgressbar],
 	templateUrl: './progressbar-texttypes.html',
 })
 export class NgbdProgressbarTextTypes {}

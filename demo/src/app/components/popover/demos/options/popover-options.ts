@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { Options } from '@popperjs/core';
 
 @Component({
 	selector: 'ngbd-popover-options',
-	imports: [NgbPopoverModule],
+	imports: [NgbPopover],
 	templateUrl: './popover-options.html',
 })
 export class NgbdPopoverOptions {

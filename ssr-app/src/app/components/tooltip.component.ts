@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'tooltip-component',
-	imports: [NgbTooltipModule],
+	imports: [NgbTooltip],
 	template: ` <button type="button" class="btn btn-outline-secondary" ngbTooltip="Tooltip">Hover me</button> `,
 })
 export class TooltipComponent {}

@@ -6,7 +6,7 @@ import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-isl
 import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
 import { NgbdDatepickerJalali } from '../demos/jalali/datepicker-jalali';
 import { NgbdDatepickerBuddhist } from '../demos/buddhist/datepicker-buddhist';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
 import { NgComponentOutlet } from '@angular/common';
@@ -61,7 +61,7 @@ const DEMOS: Demo[] = [
 
 @Component({
 	selector: 'ngbd-datepicker-calendars',
-	imports: [NgbAlertModule, CodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet],
+	imports: [NgbAlert, CodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet],
 	template: `
 		<p>
 			Datepicker relies on <code>NgbCalendar</code> abstract class for calendar-related calculations. Default

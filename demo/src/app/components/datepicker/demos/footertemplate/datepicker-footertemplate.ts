@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbCalendar, NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-footertemplate',
-	imports: [NgbDatepickerModule, FormsModule],
+	imports: [NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-footertemplate.html',
 })
 export class NgbdDatepickerFootertemplate {

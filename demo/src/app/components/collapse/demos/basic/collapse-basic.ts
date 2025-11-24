@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 
 @Component({
 	selector: 'ngbd-collapse-basic',
-	imports: [NgbCollapseModule],
+	imports: [NgbCollapse],
 	templateUrl: './collapse-basic.html',
 })
 export class NgbdCollapseBasic {

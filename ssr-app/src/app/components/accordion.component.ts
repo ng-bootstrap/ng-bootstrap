@@ -1,9 +1,25 @@
 import { Component } from '@angular/core';
-import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbAccordionDirective,
+	NgbAccordionItem,
+	NgbAccordionHeader,
+	NgbAccordionToggle,
+	NgbAccordionCollapse,
+	NgbAccordionBody,
+	NgbAccordionButton,
+} from '@ng-bootstrap/ng-bootstrap/accordion';
 
 @Component({
 	selector: 'accordion-component',
-	imports: [NgbAccordionModule],
+	imports: [
+		NgbAccordionDirective,
+		NgbAccordionItem,
+		NgbAccordionHeader,
+		NgbAccordionToggle,
+		NgbAccordionCollapse,
+		NgbAccordionBody,
+		NgbAccordionButton,
+	],
 	template: `
 		<style>
 			.custom-header::after {

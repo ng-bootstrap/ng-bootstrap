@@ -16,4 +16,4 @@ import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 		</ngb-alert>
 	`,
 })
-export class NgbdAcccordionDeprecationComponent {}
+export class NgbdAccordionDeprecationComponent {}

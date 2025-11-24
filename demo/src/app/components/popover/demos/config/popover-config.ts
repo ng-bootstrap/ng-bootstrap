@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbPopoverConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'ngbd-popover-config',
-	imports: [NgbPopoverModule],
+	imports: [NgbPopover],
 	templateUrl: './popover-config.html',
 	providers: [NgbPopoverConfig],
 })

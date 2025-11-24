@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 interface Country {
 	id?: number;
@@ -95,7 +94,7 @@ const COUNTRIES: Country[] = [
 
 @Component({
 	selector: 'ngbd-table-pagination',
-	imports: [DecimalPipe, FormsModule, NgbTypeaheadModule, NgbPaginationModule],
+	imports: [DecimalPipe, FormsModule, NgbPagination],
 	templateUrl: './table-pagination.html',
 })
 export class NgbdTablePagination {

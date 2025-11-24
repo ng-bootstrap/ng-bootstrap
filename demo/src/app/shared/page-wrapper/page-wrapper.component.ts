@@ -9,16 +9,24 @@ import {
 	signal,
 } from '@angular/core';
 import { PageHeaderComponent } from '../page-header.component';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
-import { NgbScrollSpyModule, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbScrollSpyItem, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 import { RouterLink } from '@angular/router';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 
 @Component({
 	selector: 'ngbd-page-wrapper',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbCollapseModule, NgbDropdownModule, NgbScrollSpyModule, RouterLink, SideNavComponent],
+	imports: [
+		NgbCollapse,
+		NgbDropdown,
+		NgbDropdownToggle,
+		NgbDropdownMenu,
+		NgbScrollSpyItem,
+		RouterLink,
+		SideNavComponent,
+	],
 	templateUrl: './page-wrapper.component.html',
 })
 export class NgbdPageWrapper {

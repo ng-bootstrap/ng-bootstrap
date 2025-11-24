@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +60,7 @@ const states: { name: string }[] = [
 
 @Component({
 	selector: 'ngbd-typeahead-select-on-exact',
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-select-on-exact.html',
 	styles: `.form-control { width: 300px; }`,
 })

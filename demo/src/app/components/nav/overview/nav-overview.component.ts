@@ -1,8 +1,16 @@
 import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
@@ -11,7 +19,20 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 
 @Component({
 	selector: 'ngbd-nav-overview',
-	imports: [NgbNavModule, NgbAlertModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
+	imports: [
+		NgbNavContent,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLinkButton,
+		NgbNavLinkBase,
+		NgbNavOutlet,
+		NgbAlert,
+		CodeComponent,
+		RouterLink,
+		NgbdApiDocsBadge,
+		PageHeaderComponent,
+	],
 	templateUrl: './nav-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })

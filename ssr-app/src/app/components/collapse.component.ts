@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 
 @Component({
 	selector: 'collapse-component',
-	imports: [NgbCollapseModule],
+	imports: [NgbCollapse],
 	template: `
 		<div [ngbCollapse]="isCollapsed">
 			<div class="card">

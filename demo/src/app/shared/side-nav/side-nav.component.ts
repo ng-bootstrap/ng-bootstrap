@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { COMPONENTS, DEPRECATED_COMPONENTS } from '../../components';
 
 @Component({
 	selector: 'ngbd-side-nav',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [RouterLink, NgbCollapseModule],
+	imports: [RouterLink, NgbCollapse],
 	templateUrl: './side-nav.component.html',
 })
 export class SideNavComponent {

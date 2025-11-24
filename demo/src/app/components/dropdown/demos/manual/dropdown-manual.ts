@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbDropdown,
+	NgbDropdownAnchor,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
 	selector: 'ngbd-dropdown-manual',
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdown, NgbDropdownAnchor, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	templateUrl: './dropdown-manual.html',
 })
 export class NgbdDropdownManual {}

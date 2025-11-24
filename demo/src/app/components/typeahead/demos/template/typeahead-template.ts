@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbHighlight, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -63,7 +63,7 @@ const statesWithFlags: { name: string; flag: string }[] = [
 
 @Component({
 	selector: 'ngbd-typeahead-template',
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+	imports: [NgbHighlight, NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-template.html',
 	styles: `.form-control { width: 300px; }`,
 })

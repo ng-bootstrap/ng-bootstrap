@@ -4,12 +4,12 @@ import { LIB_VERSIONS } from '../../tokens';
 import { PageHeaderComponent } from '../../shared/page-header.component';
 import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [PageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgbdPageWrapper],
+	imports: [PageHeaderComponent, CodeComponent, NgbCollapse, NgbAlert, NgbdPageWrapper],
 	templateUrl: './getting-started.page.html',
 })
 export class GettingStartedPage {
@@ -93,11 +93,25 @@ export class GettingStartedPage {
 	codeOther = Snippet({
 		lang: 'typescript',
 		code: `
-      import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
-      import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
+      import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
+      import { NgbPagination,
+	NgbPaginationEllipsis,
+	NgbPaginationFirst,
+	NgbPaginationLast,
+	NgbPaginationNext,
+	NgbPaginationNumber,
+	NgbPaginationPrevious,
+	NgbPaginationPages, } from '@ng-bootstrap/ng-bootstrap/pagination';
 
       @NgModule({
-        imports: [NgbPaginationModule, NgbAlertModule],
+        imports: [NgbPagination,
+	NgbPaginationEllipsis,
+	NgbPaginationFirst,
+	NgbPaginationLast,
+	NgbPaginationNext,
+	NgbPaginationNumber,
+	NgbPaginationPrevious,
+	NgbPaginationPages,, NgbAlert],
       })
       export class YourAppModule {
       }

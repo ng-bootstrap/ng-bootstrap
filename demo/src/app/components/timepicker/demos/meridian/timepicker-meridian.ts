@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { JsonPipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-timepicker-meridian',
-	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+	imports: [NgbTimepicker, FormsModule, JsonPipe],
 	templateUrl: './timepicker-meridian.html',
 })
 export class NgbdTimepickerMeridian {

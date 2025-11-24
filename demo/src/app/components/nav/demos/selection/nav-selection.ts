@@ -1,9 +1,18 @@
 import { Component } from '@angular/core';
-import { NgbNavChangeEvent, NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import {
+	NgbNavChangeEvent,
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-selection',
-	imports: [NgbNavModule],
+	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
 	templateUrl: './nav-selection.html',
 })
 export class NgbdNavSelection {

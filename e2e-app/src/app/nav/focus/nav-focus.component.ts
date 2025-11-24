@@ -1,9 +1,41 @@
 import { Component } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDropdown,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+	NgbDropdownMenu,
+	NgbDropdownModule,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbNav,
+	NgbNavContent,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavModule,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'nav-focus-component',
-	imports: [NgbModule],
+	imports: [
+		NgbDropdown,
+		NgbDropdownItem,
+		NgbDropdownButtonItem,
+		NgbDropdownMenu,
+		NgbDropdownModule,
+		NgbDropdownToggle,
+		NgbNav,
+		NgbNavContent,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLinkButton,
+		NgbNavLinkBase,
+		NgbNavModule,
+		NgbNavOutlet,
+	],
 	templateUrl: './nav-focus.component.html',
 })
 export class NavFocusComponent {

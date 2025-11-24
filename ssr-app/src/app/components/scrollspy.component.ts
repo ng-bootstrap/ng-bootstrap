@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbScrollSpy,
+	NgbScrollSpyItem,
+	NgbScrollSpyFragment,
+	NgbScrollSpyMenu,
+} from '@ng-bootstrap/ng-bootstrap/scrollspy';
 
 @Component({
 	selector: 'scrollspy-component',
-	imports: [NgbScrollSpyModule],
+	imports: [NgbScrollSpy, NgbScrollSpyItem, NgbScrollSpyFragment, NgbScrollSpyMenu],
 	template: `
 		<div class="row">
 			<div class="col-4">

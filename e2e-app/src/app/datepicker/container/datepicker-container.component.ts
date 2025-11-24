@@ -1,13 +1,14 @@
-import { Component, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject, TemplateRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	templateUrl: './datepicker-container.component.html',
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbInputDatepicker],
 })
 export class DatepickerContainerComponent {
-	constructor(private modalService: NgbModal) {}
+	private readonly modalService = inject(NgbModal);
 
 	openModal(content: TemplateRef<any>) {
 		this.modalService.open(content);

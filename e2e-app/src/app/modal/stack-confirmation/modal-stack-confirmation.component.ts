@@ -1,8 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
-	imports: [NgbModule],
 	templateUrl: './modal-stack-confirmation.component.html',
 })
 export class ModalStackConfirmationComponent {

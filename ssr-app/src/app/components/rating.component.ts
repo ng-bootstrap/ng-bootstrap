@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
 	selector: 'rating-component',
-	imports: [NgbRatingModule],
+	imports: [NgbRating],
 	styles: `
 		.star {
 			position: relative;

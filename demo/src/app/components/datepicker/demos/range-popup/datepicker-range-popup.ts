@@ -3,14 +3,14 @@ import {
 	NgbCalendar,
 	NgbDate,
 	NgbDateParserFormatter,
-	NgbDatepickerModule,
+	NgbInputDatepicker,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-datepicker-range-popup',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbInputDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-range-popup.html',
 	styles: `
 		.dp-hidden {

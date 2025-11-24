@@ -1,10 +1,31 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
-import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap/scrollspy';
+import {
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbScrollSpy,
+	NgbScrollSpyItem,
+	NgbScrollSpyFragment,
+	NgbScrollSpyMenu,
+} from '@ng-bootstrap/ng-bootstrap/scrollspy';
 
 @Component({
 	selector: 'ngbd-scrollspy-navbar',
-	imports: [NgbScrollSpyModule, NgbDropdownModule],
+	imports: [
+		NgbScrollSpy,
+		NgbScrollSpyItem,
+		NgbScrollSpyFragment,
+		NgbScrollSpyMenu,
+		NgbDropdown,
+		NgbDropdownToggle,
+		NgbDropdownMenu,
+		NgbDropdownItem,
+		NgbDropdownButtonItem,
+	],
 	templateUrl: './scrollspy-navbar.html',
 })
 export class NgbdScrollSpyNavbar {}

@@ -3,14 +3,34 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Snippet } from '../../../services/snippet';
 import { RouterLink } from '@angular/router';
 import { CodeComponent } from '../../../shared/code.component';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLink,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-toast-overview',
-	imports: [NgbAlertModule, NgbNavModule, RouterLink, CodeComponent, PageHeaderComponent],
+	imports: [
+		NgbAlert,
+		NgbNavContent,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLink,
+		NgbNavLinkBase,
+		NgbNavOutlet,
+		RouterLink,
+		CodeComponent,
+		PageHeaderComponent,
+	],
 	templateUrl: './toast-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },

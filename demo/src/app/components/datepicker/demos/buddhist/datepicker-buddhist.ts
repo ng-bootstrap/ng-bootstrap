@@ -3,7 +3,7 @@ import {
 	NgbCalendar,
 	NgbCalendarBuddhist,
 	NgbDatepickerI18n,
-	NgbDatepickerModule,
+	NgbDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import localeThai from '@angular/common/locales/th';
@@ -59,7 +59,7 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 
 @Component({
 	selector: 'ngbd-datepicker-buddhist',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-buddhist.html',
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarBuddhist },

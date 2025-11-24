@@ -1,11 +1,35 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import {
+	NgbDropdown,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+	NgbDropdownMenu,
+	NgbDropdownModule,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [
+		FormsModule,
+		NgbInputDatepicker,
+		NgbDropdown,
+		NgbDropdownItem,
+		NgbDropdownButtonItem,
+		NgbDropdownMenu,
+		NgbDropdownModule,
+		NgbDropdownToggle,
+		NgbTypeahead,
+		NgbTooltip,
+		NgbPopover,
+	],
 	templateUrl: './modal-nesting.component.html',
 })
 export class ModalNestingComponent {
