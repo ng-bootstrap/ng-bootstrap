@@ -4,7 +4,7 @@ import {
 	NgbCalendarEthiopian,
 	NgbDatepickerI18n,
 	NgbDatepickerI18nAmharic,
-	NgbDatepickerModule,
+	NgbDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { JsonPipe } from '@angular/common';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-ethiopian',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-ethiopian.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: `

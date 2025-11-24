@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbCalendar, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-disabled',
-	imports: [NgbDatepickerModule, FormsModule],
+	imports: [NgbDatepicker, FormsModule],
 	templateUrl: './datepicker-disabled.html',
 })
 export class NgbdDatepickerDisabled {

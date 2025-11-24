@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbCalendar, NgbDate, NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-customday',
-	imports: [NgbDatepickerModule, FormsModule],
+	imports: [NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-customday.html',
 	styles: `
 		.custom-day {

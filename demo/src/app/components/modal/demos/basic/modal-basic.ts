@@ -1,11 +1,11 @@
 import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
 
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
 @Component({
 	selector: 'ngbd-modal-basic',
-	imports: [NgbDatepickerModule],
+	imports: [NgbInputDatepicker],
 	templateUrl: './modal-basic.html',
 })
 export class NgbdModalBasic {

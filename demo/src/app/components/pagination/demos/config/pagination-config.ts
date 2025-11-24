@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPaginationConfig, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
+import { NgbPaginationConfig, NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
 	selector: 'ngbd-pagination-config',
-	imports: [NgbPaginationModule],
+	imports: [NgbPagination],
 	templateUrl: './pagination-config.html',
 	providers: [NgbPaginationConfig],
 })

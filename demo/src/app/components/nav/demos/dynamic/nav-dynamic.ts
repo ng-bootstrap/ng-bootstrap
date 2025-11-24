@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-dynamic',
-	imports: [NgbNavModule],
+	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
 	templateUrl: './nav-dynamic.html',
 	styles: `
 		.close {

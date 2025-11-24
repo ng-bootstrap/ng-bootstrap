@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-target',
-	imports: [NgbTooltipModule],
+	imports: [NgbTooltip],
 	templateUrl: './tooltip-target.html',
 })
 export class NgbdTooltipTarget {}

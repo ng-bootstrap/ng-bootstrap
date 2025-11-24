@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-basic',
-	imports: [NgbTooltipModule],
+	imports: [NgbTooltip],
 	templateUrl: './tooltip-basic.html',
 	host: { class: 'd-block' },
 })

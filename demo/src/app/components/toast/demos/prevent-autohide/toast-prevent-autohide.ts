@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap/toast';
+import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
 	selector: 'ngbd-toast-prevent-autohide',
-	imports: [NgbToastModule],
+	imports: [NgbToast],
 	templateUrl: './toast-prevent-autohide.html',
 })
 export class NgbdToastPreventAutohide {

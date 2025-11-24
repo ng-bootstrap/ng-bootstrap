@@ -1,9 +1,9 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule],
 	templateUrl: './offcanvas-focus.component.html',
 })
 export class OffcanvasFocusComponent {

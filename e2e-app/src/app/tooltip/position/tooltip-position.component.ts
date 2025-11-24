@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
-	imports: [FormsModule, NgbModule, NgStyle],
+	imports: [FormsModule, NgbTooltip, NgStyle],
 	templateUrl: './tooltip-position.component.html',
 })
 export class TooltipPositionComponent {

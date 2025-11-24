@@ -1,8 +1,8 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal, NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
-	imports: [NgbModule],
 	templateUrl: './offcanvas-stack-confirmation.component.html',
 })
 export class OffcanvasStackConfirmationComponent {

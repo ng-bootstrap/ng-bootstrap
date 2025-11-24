@@ -1,11 +1,31 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import {
+	NgbDropdown,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+	NgbDropdownMenu,
+	NgbDropdownModule,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [
+		FormsModule,
+		NgbInputDatepicker,
+		NgbDropdown,
+		NgbDropdownItem,
+		NgbDropdownButtonItem,
+		NgbDropdownMenu,
+		NgbDropdownModule,
+		NgbDropdownToggle,
+		NgbTypeahead,
+	],
 	templateUrl: './offcanvas-nesting.component.html',
 })
 export class OffcanvasNestingComponent {

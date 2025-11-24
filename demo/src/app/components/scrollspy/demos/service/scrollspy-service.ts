@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { NgbScrollSpyModule, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
+import { NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 
 @Component({
 	selector: 'ngbd-scrollspy-service',
-	imports: [NgbScrollSpyModule],
 	templateUrl: './scrollspy-service.html',
 	providers: [NgbScrollSpyService],
 })

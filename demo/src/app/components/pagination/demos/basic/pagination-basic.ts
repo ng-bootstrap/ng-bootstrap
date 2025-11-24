@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
 	selector: 'ngbd-pagination-basic',
-	imports: [NgbPaginationModule],
+	imports: [NgbPagination],
 	templateUrl: './pagination-basic.html',
 })
 export class NgbdPaginationBasic {

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-alert-custom',
-	imports: [NgbAlertModule],
+	imports: [NgbAlert],
 	templateUrl: './alert-custom.html',
 	styles: `
 			.alert-custom {

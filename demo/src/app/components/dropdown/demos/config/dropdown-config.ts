@@ -1,9 +1,16 @@
 import { Component } from '@angular/core';
-import { NgbDropdownConfig, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbDropdownConfig,
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
 	selector: 'ngbd-dropdown-config',
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	templateUrl: './dropdown-config.html',
 	providers: [NgbDropdownConfig],
 })

@@ -1,10 +1,37 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import {
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
+import {
+	NgbNavContent,
+	NgbNav,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLinkButton,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-custom-style',
-	imports: [NgbNavModule, NgbDropdownModule],
+	imports: [
+		NgbNavContent,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLinkButton,
+		NgbNavLinkBase,
+		NgbNavOutlet,
+		NgbDropdown,
+		NgbDropdownToggle,
+		NgbDropdownMenu,
+		NgbDropdownItem,
+		NgbDropdownButtonItem,
+	],
 	templateUrl: './nav-custom-style.html',
 })
 export class NgbdNavCustomStyle {}

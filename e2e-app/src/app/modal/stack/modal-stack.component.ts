@@ -1,8 +1,7 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
-	imports: [NgbModule],
 	templateUrl: './modal-stack.component.html',
 })
 export class ModalStackComponent {

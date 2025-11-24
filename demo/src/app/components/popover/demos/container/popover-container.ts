@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'ngbd-popover-container',
-	imports: [NgbPopoverModule],
+	imports: [NgbPopover],
 	templateUrl: './popover-container.html',
 	styles: `
 			.card {

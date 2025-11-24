@@ -5,7 +5,7 @@ import {
 	NgbDate,
 	NgbDatepickerI18n,
 	NgbDatepickerI18nHebrew,
-	NgbDatepickerModule,
+	NgbDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-datepicker-hebrew',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-hebrew.html',
 	styles: `
 		.hebrew-day {

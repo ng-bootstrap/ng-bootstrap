@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'popover-component',
-	imports: [NgbPopoverModule],
+	imports: [NgbPopover],
 	template: `
 		<button type="button" class="btn btn-outline-secondary" ngbPopover="Hello" popoverTitle="Popover">Click me</button>
 	`,

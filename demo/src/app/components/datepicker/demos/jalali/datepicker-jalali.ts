@@ -3,7 +3,7 @@ import {
 	NgbCalendar,
 	NgbCalendarPersian,
 	NgbDatepickerI18n,
-	NgbDatepickerModule,
+	NgbDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +30,7 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
 
 @Component({
 	selector: 'ngbd-datepicker-jalali',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-jalali.html',
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarPersian },

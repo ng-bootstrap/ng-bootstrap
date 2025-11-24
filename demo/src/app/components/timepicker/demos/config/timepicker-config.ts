@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NgbTimepickerConfig, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbTimepickerConfig, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-timepicker-config',
-	imports: [NgbTimepickerModule, FormsModule],
+	imports: [NgbTimepicker, FormsModule],
 	templateUrl: './timepicker-config.html',
 	providers: [NgbTimepickerConfig],
 })

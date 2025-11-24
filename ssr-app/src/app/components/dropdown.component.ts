@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDropdown,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+	NgbDropdownMenu,
+	NgbDropdownToggle,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
 	selector: 'dropdown-component',
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdown, NgbDropdownItem, NgbDropdownButtonItem, NgbDropdownMenu, NgbDropdownToggle],
 	template: `
 		<div ngbDropdown class="d-inline-block">
 			<button class="btn btn-outline-primary" id="dropdown1" ngbDropdownToggle>Toggle dropdown</button>

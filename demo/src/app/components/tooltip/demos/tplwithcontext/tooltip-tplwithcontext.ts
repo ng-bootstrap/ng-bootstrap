@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-tplwithcontext',
-	imports: [NgbTooltipModule],
+	imports: [NgbTooltip],
 	templateUrl: './tooltip-tplwithcontext.html',
 })
 export class NgbdTooltipTplwithcontext {

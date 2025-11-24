@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-positiontarget',
-	imports: [NgbDatepickerModule, FormsModule],
+	imports: [NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-positiontarget.html',
 })
 export class NgbdDatepickerPositiontarget {

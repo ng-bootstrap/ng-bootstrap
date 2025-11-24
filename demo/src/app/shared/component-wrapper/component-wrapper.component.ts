@@ -3,9 +3,9 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from 
 import { COMPONENT_DATA, LIB_VERSIONS, MenuItem } from '../../tokens';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { NgComponentOutlet, TitleCasePipe } from '@angular/common';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase } from '@ng-bootstrap/ng-bootstrap/nav';
 import { NgbScrollSpyItem, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs/operators';
@@ -16,9 +16,15 @@ import { NgbdComponentPage } from './component-page.class';
 	imports: [
 		SideNavComponent,
 		TitleCasePipe,
-		NgbNavModule,
-		NgbCollapseModule,
-		NgbDropdownModule,
+		NgbNav,
+		NgbNavItem,
+		NgbNavItemRole,
+		NgbNavLink,
+		NgbNavLinkBase,
+		NgbCollapse,
+		NgbDropdown,
+		NgbDropdownToggle,
+		NgbDropdownMenu,
 		RouterLink,
 		NgComponentOutlet,
 		RouterOutlet,

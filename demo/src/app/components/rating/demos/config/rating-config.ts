@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbRatingConfig, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap/rating';
+import { NgbRatingConfig, NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
 	selector: 'ngbd-rating-config',
-	imports: [NgbRatingModule],
+	imports: [NgbRating],
 	templateUrl: './rating-config.html',
 	providers: [NgbRatingConfig],
 })

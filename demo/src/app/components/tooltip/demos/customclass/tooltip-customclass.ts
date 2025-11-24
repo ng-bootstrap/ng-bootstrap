@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-customclass',
-	imports: [NgbTooltipModule],
+	imports: [NgbTooltip],
 	templateUrl: './tooltip-customclass.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: `

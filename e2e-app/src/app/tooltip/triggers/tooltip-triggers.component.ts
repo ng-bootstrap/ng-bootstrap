@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbTooltip],
 	templateUrl: './tooltip-triggers.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

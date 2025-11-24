@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbCalendar, NgbDate, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-datepicker-range',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-range.html',
 	styles: `
 		.custom-day {

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-popover-visibility',
-	imports: [NgbPopoverModule, DatePipe],
+	imports: [NgbPopover, DatePipe],
 	templateUrl: './popover-visibility.html',
 })
 export class NgbdPopoverVisibility {

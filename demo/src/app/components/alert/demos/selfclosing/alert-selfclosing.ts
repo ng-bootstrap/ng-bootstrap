@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
-import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngbd-alert-selfclosing',
-	imports: [NgbAlertModule],
+	imports: [NgbAlert],
 	templateUrl: './alert-selfclosing.html',
 })
 export class NgbdAlertSelfclosing {

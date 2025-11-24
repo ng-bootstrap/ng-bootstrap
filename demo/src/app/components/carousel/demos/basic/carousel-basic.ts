@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap/carousel';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap/carousel';
 
 @Component({
 	selector: 'ngbd-carousel-basic',
-	imports: [NgbCarouselModule],
+	imports: [NgbCarousel],
 	templateUrl: './carousel-basic.html',
 })
 export class NgbdCarouselBasic {

@@ -1,9 +1,25 @@
 import { Component } from '@angular/core';
-import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap/accordion';
+import {
+	NgbAccordionButton,
+	NgbAccordionDirective,
+	NgbAccordionItem,
+	NgbAccordionHeader,
+	NgbAccordionToggle,
+	NgbAccordionBody,
+	NgbAccordionCollapse,
+} from '@ng-bootstrap/ng-bootstrap/accordion';
 
 @Component({
 	selector: 'ngbd-accordion-basic',
-	imports: [NgbAccordionModule],
+	imports: [
+		NgbAccordionButton,
+		NgbAccordionDirective,
+		NgbAccordionItem,
+		NgbAccordionHeader,
+		NgbAccordionToggle,
+		NgbAccordionBody,
+		NgbAccordionCollapse,
+	],
 	templateUrl: './accordion-basic.html',
 })
 export class NgbdAccordionBasic {}

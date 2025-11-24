@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbModule, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { merge, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
@@ -67,7 +67,7 @@ const states = [
 ];
 
 @Component({
-	imports: [FormsModule, NgbModule, ReactiveFormsModule],
+	imports: [FormsModule, NgbTypeahead, ReactiveFormsModule],
 	templateUrl: './typeahead-validation.component.html',
 })
 export class TypeaheadValidationComponent {

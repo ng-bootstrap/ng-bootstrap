@@ -1,11 +1,11 @@
 import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
 
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap/datepicker';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-basic',
-	imports: [NgbDatepickerModule],
+	imports: [NgbInputDatepicker],
 	templateUrl: './offcanvas-basic.html',
 })
 export class NgbdOffcanvasBasic {

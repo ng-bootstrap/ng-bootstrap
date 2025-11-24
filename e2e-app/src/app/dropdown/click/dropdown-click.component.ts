@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	template: `
 		<h3>Dropdown click tests</h3>
 		<form>

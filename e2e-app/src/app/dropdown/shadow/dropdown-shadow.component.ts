@@ -1,9 +1,15 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDropdown,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	templateUrl: './dropdown-shadow.component.html',
 	encapsulation: ViewEncapsulation.ShadowDom,
 })

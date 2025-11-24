@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbNav,
+	NgbNavContent,
+	NgbNavItem,
+	NgbNavItemRole,
+	NgbNavLink,
+	NgbNavLinkBase,
+	NgbNavOutlet,
+} from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'nav-component',
-	imports: [NgbNavModule],
+	imports: [NgbNav, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet],
 	template: `
 		<ul ngbNav #nav="ngbNav" class="nav-tabs">
 			<li ngbNavItem>

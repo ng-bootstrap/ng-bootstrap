@@ -9,13 +9,13 @@ import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
 import { NgbdAccordionKeepContent } from './demos/keep-content/accordion-keep-content';
 import { Routes } from '@angular/router';
 import { NgbdAccordionOverviewComponent } from './overview/accordion-overview.component';
-import { NgbdAcccordionDeprecationComponent } from './accordion-deprecation.component';
+import { NgbdAccordionDeprecationComponent } from './accordion-deprecation.component';
 import { COMPONENT_DATA, ComponentData } from '../../tokens';
 
 const DATA: ComponentData = {
 	name: 'Accordion',
 	bootstrapUrl: 'https://getbootstrap.com/docs/%version%/components/accordion/',
-	header: NgbdAcccordionDeprecationComponent,
+	header: NgbdAccordionDeprecationComponent,
 	overview: {
 		'basic-usage': 'Basic Usage',
 		features: 'Features',

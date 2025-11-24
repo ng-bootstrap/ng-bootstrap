@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgbTypeaheadConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
+import { NgbTypeaheadConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
@@ -68,7 +68,7 @@ const states = [
 
 @Component({
 	selector: 'ngbd-typeahead-config',
-	imports: [NgbTypeaheadModule, FormsModule],
+	imports: [NgbTypeahead, FormsModule],
 	templateUrl: './typeahead-config.html',
 	styles: `.form-control { width: 300px; }`,
 	providers: [NgbTypeaheadConfig],

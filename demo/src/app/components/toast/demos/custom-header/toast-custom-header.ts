@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap/toast';
+import { NgbToast, NgbToastHeader } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
 	selector: 'ngbd-toast-customheader',
-	imports: [NgbToastModule],
+	imports: [NgbToast, NgbToastHeader],
 	templateUrl: './toast-custom-header.html',
 })
 export class NgbdToastCustomHeader {

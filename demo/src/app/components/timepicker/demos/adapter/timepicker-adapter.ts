@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbTimeStruct, NgbTimeAdapter, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbTimeStruct, NgbTimeAdapter, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 const pad = (i: number): string => (i < 10 ? `0${i}` : `${i}`);
@@ -28,7 +28,7 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 
 @Component({
 	selector: 'ngbd-timepicker-adapter',
-	imports: [NgbTimepickerModule, FormsModule],
+	imports: [NgbTimepicker, FormsModule],
 	templateUrl: './timepicker-adapter.html',
 	// NOTE: For this example we are only providing current component, but probably
 	// NOTE: you will want to provide your main App Module

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
 @Component({
-	imports: [FormsModule, NgbModule],
+	imports: [FormsModule, NgbDropdownMenu, NgbDropdown, NgbDropdownToggle, NgbInputDatepicker],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './datepicker-autoclose.component.html',
 })

@@ -1,10 +1,27 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap/accordion';
+import {
+	NgbAccordionDirective,
+	NgbAccordionButton,
+	NgbAccordionItem,
+	NgbAccordionHeader,
+	NgbAccordionToggle,
+	NgbAccordionBody,
+	NgbAccordionCollapse,
+} from '@ng-bootstrap/ng-bootstrap/accordion';
 
 @Component({
 	selector: 'ngbd-accordion-demo',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbAccordionModule, NgbAccordionDirective],
+	imports: [
+		NgbAccordionButton,
+		NgbAccordionDirective,
+		NgbAccordionItem,
+		NgbAccordionHeader,
+		NgbAccordionToggle,
+		NgbAccordionBody,
+		NgbAccordionCollapse,
+		NgbAccordionDirective,
+	],
 	template: `
 		<div ngbAccordion [closeOthers]="true">
 			<div ngbAccordionItem>

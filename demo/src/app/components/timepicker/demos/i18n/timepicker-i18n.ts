@@ -1,6 +1,6 @@
 import { Component, inject, Injectable } from '@angular/core';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
-import { NgbTimepickerI18n, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbTimepickerI18n, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 const I18N_VALUES = {
@@ -31,7 +31,7 @@ export class CustomTimepickerI18n extends NgbTimepickerI18n {
 
 @Component({
 	selector: 'ngbd-timepicker-i18n',
-	imports: [NgbTimepickerModule, NgbAlertModule, FormsModule],
+	imports: [NgbTimepicker, NgbAlert, FormsModule],
 	templateUrl: './timepicker-i18n.html',
 	providers: [
 		I18n,

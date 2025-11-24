@@ -3,7 +3,7 @@ import {
 	NgbCalendar,
 	NgbCalendarIslamicCivil,
 	NgbDatepickerI18n,
-	NgbDatepickerModule,
+	NgbDatepicker,
 	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
@@ -46,7 +46,7 @@ export class IslamicI18n extends NgbDatepickerI18n {
 
 @Component({
 	selector: 'ngbd-datepicker-islamiccivil',
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-islamiccivil.html',
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarIslamicCivil },

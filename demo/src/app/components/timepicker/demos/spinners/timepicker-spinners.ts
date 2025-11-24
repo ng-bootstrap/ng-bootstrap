@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
+import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 
 @Component({
 	selector: 'ngbd-timepicker-spinners',
-	imports: [NgbTimepickerModule, FormsModule],
+	imports: [NgbTimepicker, FormsModule],
 	templateUrl: './timepicker-spinners.html',
 })
 export class NgbdTimepickerSpinners {
