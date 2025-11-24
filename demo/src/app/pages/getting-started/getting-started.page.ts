@@ -34,7 +34,7 @@ export class GettingStartedPage {
       /*
       or import only the bootstrap scss files that your application actually needs,
       as described in the Bootstrap customization guide:
-      https://getbootstrap.com/docs/5.2/customize/sass/#importing
+      https://getbootstrap.com/docs/5.3/customize/sass/#importing
       */
 		`,
 	});

@@ -19,7 +19,7 @@ const spacesRegExp = /  +/gi;
  * The first index of each array is used for the left to right direction,
  * the second one is used for the right to left, defaulting to the first index (when LTR and RTL lead to the same class)
  *
- * See [Bootstrap alignments](https://getbootstrap.com/docs/5.1/components/dropdowns/#alignment-options)
+ * See [Bootstrap alignments](https://getbootstrap.com/docs/5.3/components/dropdowns/#alignment-options)
  * and [Popper placements](https://popper.js.org/docs/v2/constructors/#options)
  */
 const bootstrapPopperMatches = {
