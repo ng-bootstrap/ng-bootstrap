@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 

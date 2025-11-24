@@ -19,10 +19,15 @@ import {
 import { fromEvent, Observable, Subject, zip } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
-import { getFocusableBoundaryElements } from '../util/focus-trap';
 import { ModalDismissReasons } from './modal-dismiss-reasons';
-import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
-import { isDefined, isString, reflow } from '../util/util';
+import {
+	isDefined,
+	isString,
+	getFocusableBoundaryElements,
+	ngbRunTransition,
+	NgbTransitionOptions,
+	reflow,
+} from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbModalUpdatableOptions } from './modal-config';
 
 const WINDOW_ATTRIBUTES: string[] = [

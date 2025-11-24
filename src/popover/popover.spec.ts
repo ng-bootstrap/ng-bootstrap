@@ -17,8 +17,8 @@ import {
 
 import { NgbPopover, NgbPopoverWindow } from './popover';
 import { NgbPopoverConfig } from './popover-config';
-import { NgbTooltip } from '../tooltip/tooltip';
-import { NgbConfig } from '../ngb-config';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { Options } from '@popperjs/core';
 

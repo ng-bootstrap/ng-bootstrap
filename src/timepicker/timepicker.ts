@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isInteger, isNumber, padNumber, toInteger } from '../util/util';
+import { isInteger, isNumber, padNumber, toInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbTime } from './ngb-time';
 import { NgbTimepickerConfig } from './timepicker-config';
 import { NgbTimeAdapter } from './ngb-time-adapter';

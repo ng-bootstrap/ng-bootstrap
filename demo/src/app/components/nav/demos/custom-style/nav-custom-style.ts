@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-custom-style',

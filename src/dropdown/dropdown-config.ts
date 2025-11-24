@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Options } from '@popperjs/core';
-import { PlacementArray } from '../util/positioning';
+import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * A configuration service for the [`NgbDropdown`](#/components/dropdown/api#NgbDropdown) component.

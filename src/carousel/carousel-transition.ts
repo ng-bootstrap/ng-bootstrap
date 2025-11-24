@@ -1,5 +1,4 @@
-import { NgbTransitionStartFn } from '../util/transition/ngbTransition';
-import { reflow } from '../util/util';
+import { NgbTransitionStartFn, reflow } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * Defines the carousel slide transition direction.

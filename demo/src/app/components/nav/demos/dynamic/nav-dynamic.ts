@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-dynamic',

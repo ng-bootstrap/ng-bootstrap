@@ -1,5 +1,5 @@
 import { NgbDateStruct } from './ngb-date-struct';
-import { isInteger } from '../util/util';
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * A simple class that represents a date that datepicker also uses internally.

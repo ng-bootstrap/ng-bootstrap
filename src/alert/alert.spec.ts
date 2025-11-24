@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
 
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
 const createTestComponent = (html: string) =>

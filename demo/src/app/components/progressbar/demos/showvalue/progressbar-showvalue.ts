@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap/progressbar';
 
 @Component({
 	selector: 'ngbd-progressbar-showvalue',

@@ -22,16 +22,18 @@ import {
 	DOCUMENT,
 } from '@angular/core';
 
-import { listenToTriggers } from '../util/triggers';
-import { ngbAutoClose } from '../util/autoclose';
-import { ngbPositioning } from '../util/positioning';
-import { PopupService } from '../util/popup';
-import { isString } from '../util/util';
+import {
+	isString,
+	listenToTriggers,
+	ngbAutoClose,
+	ngbPositioning,
+	PopupService,
+	addPopperOffset,
+	ngbCompleteTransition,
+} from '@ng-bootstrap/ng-bootstrap/utils';
 
 import { NgbTooltipConfig } from './tooltip-config';
-import { addPopperOffset } from '../util/positioning-util';
 import { Subject } from 'rxjs';
-import { ngbCompleteTransition } from '../util/transition/ngbTransition';
 
 let nextId = 0;
 

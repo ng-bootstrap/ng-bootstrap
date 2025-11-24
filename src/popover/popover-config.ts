@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { PlacementArray } from '../util/positioning';
-import { NgbConfig } from '../ngb-config';
+import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { Options } from '@popperjs/core';
 
 /**

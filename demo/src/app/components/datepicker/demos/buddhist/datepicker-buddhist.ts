@@ -5,7 +5,7 @@ import {
 	NgbDatepickerI18n,
 	NgbDatepickerModule,
 	NgbDateStruct,
-} from '@ng-bootstrap/ng-bootstrap';
+} from '@ng-bootstrap/ng-bootstrap/datepicker';
 import localeThai from '@angular/common/locales/th';
 import { formatDate, JsonPipe, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';

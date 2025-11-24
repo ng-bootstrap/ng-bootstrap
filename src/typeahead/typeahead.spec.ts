@@ -8,7 +8,7 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 
 import { createGenericTestComponent, triggerEvent } from '../test/common';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
-import { ARIA_LIVE_DELAY } from '../util/accessibility/live';
+import { ARIA_LIVE_DELAY } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbTypeahead } from './typeahead';
 import { NgbTypeaheadConfig } from './typeahead-config';
 import { NgbHighlight } from './highlight';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-tplwithcontext',

@@ -1,5 +1,5 @@
 import { NgbDatepickerI18n } from '../datepicker-i18n';
-import { NgbDateStruct } from '../../index';
+import { NgbDateStruct } from '../ngb-date-struct';
 import { hebrewNumerals, isHebrewLeapYear } from './hebrew';
 import { Injectable } from '@angular/core';
 

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbTypeahead, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeahead, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, Subject, merge, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';

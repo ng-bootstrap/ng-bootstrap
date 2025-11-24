@@ -1,6 +1,6 @@
 import { NgbNavConfig } from './nav-config';
 import { TestBed } from '@angular/core/testing';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 describe('ngb-nav-config', () => {
 	it('should have sensible default values', () => {

@@ -3,8 +3,7 @@ import { ComponentRef } from '@angular/core';
 import { Observable, of, Subject, zip } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { ContentRef } from '../util/popup';
-import { isPromise } from '../util/util';
+import { isPromise, ContentRef } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbOffcanvasBackdrop } from './offcanvas-backdrop';
 import { NgbOffcanvasPanel } from './offcanvas-panel';
 

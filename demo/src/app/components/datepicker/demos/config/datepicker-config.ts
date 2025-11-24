@@ -5,7 +5,7 @@ import {
 	NgbDatepickerModule,
 	NgbDateStruct,
 	NgbInputDatepickerConfig,
-} from '@ng-bootstrap/ng-bootstrap';
+} from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({

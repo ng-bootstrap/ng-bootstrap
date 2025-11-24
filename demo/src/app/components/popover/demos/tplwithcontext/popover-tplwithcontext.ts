@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'ngbd-popover-tplwithcontext',

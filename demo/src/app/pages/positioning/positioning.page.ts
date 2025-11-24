@@ -5,7 +5,7 @@ import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.componen
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../shared/api-docs';
 import { PageHeaderComponent } from '../../shared/page-header.component';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,

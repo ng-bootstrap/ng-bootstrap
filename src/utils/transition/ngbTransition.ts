@@ -2,7 +2,7 @@ import { NgZone } from '@angular/core';
 import { EMPTY, fromEvent, Observable, of, race, Subject, timer } from 'rxjs';
 import { endWith, filter, takeUntil } from 'rxjs/operators';
 import { getTransitionDurationMs } from './util';
-import { environment } from '../../environment';
+import { environment } from './transition.environment';
 import { runInZone } from '../util';
 
 export type NgbTransitionStartFn<T = any> = (

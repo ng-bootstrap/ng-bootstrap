@@ -27,7 +27,7 @@ import { NgbCarouselConfig } from './carousel-config';
 
 import { BehaviorSubject, combineLatest, NEVER, Observable, timer, zip } from 'rxjs';
 import { distinctUntilChanged, map, startWith, switchMap, take } from 'rxjs/operators';
-import { ngbCompleteTransition, ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
+import { ngbCompleteTransition, ngbRunTransition, NgbTransitionOptions } from '@ng-bootstrap/ng-bootstrap/utils';
 import {
 	NgbCarouselCtx,
 	ngbCarouselTransitionIn,

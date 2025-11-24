@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { regExpEscape, removeAccents, toString } from '../util/util';
+import { regExpEscape, removeAccents, toString } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * A component that helps with text highlighting.

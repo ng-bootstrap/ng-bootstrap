@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input, ViewEncapsulation } from '@angular/core';
-import { getValueInRange, isNumber } from '../util/util';
+import { getValueInRange, isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbProgressbarConfig } from './progressbar-config';
 import { PercentPipe } from '@angular/common';
 

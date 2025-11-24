@@ -11,7 +11,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import { NgbDate } from './ngb-date';
-import { toInteger } from '../util/util';
+import { toInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbDatepickerI18n } from './datepicker-i18n';
 
 @Component({

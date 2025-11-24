@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 import { RouterLink } from '@angular/router';
 import { NgbdAccordionDemoComponent } from './demo/accordion-overview-demo.component';
 import { PageHeaderComponent } from '../../../shared/page-header.component';

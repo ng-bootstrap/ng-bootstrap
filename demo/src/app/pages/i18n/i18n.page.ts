@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,

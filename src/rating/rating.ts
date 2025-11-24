@@ -15,7 +15,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import { NgbRatingConfig } from './rating-config';
-import { getValueInRange } from '../util/util';
+import { getValueInRange } from '@ng-bootstrap/ng-bootstrap/utils';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
 

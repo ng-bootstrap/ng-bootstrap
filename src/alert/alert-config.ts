@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
  * A configuration service for the [NgbAlert](#/components/alert/api#NgbAlert) component.

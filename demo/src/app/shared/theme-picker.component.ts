@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 interface Theme {
 	id: 'auto' | 'light' | 'dark';

@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { NgbScrollSpyProcessChanges, NgbScrollSpyService, NgbScrollToOptions } from './scrollspy.service';
 import { Observable } from 'rxjs';
-import { isString } from '../util/util';
+import { isString } from '@ng-bootstrap/ng-bootstrap/utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**

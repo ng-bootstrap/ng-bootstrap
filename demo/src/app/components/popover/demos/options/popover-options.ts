@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover';
 import { Options } from '@popperjs/core';
 
 @Component({

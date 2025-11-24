@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap/typeahead';
 
 interface Country {
 	id?: number;

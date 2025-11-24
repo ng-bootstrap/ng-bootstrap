@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NgbAccordionModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap/accordion';
 
 @Component({
 	selector: 'ngbd-accordion-keep-content',

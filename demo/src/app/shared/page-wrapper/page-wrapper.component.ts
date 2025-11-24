@@ -9,12 +9,9 @@ import {
 	signal,
 } from '@angular/core';
 import { PageHeaderComponent } from '../page-header.component';
-import {
-	NgbCollapseModule,
-	NgbDropdownModule,
-	NgbScrollSpyModule,
-	NgbScrollSpyService,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap/collapse';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown';
+import { NgbScrollSpyModule, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 import { RouterLink } from '@angular/router';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 

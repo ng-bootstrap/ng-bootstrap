@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbTimeStruct, NgbTimeAdapter, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimeStruct, NgbTimeAdapter, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
 const pad = (i: number): string => (i < 10 ? `0${i}` : `${i}`);

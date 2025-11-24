@@ -29,9 +29,7 @@ import {
 	Validator,
 } from '@angular/forms';
 
-import { ngbAutoClose } from '../util/autoclose';
-import { ngbFocusTrap } from '../util/focus-trap';
-import { ngbPositioning } from '../util/positioning';
+import { ngbAutoClose, ngbFocusTrap, ngbPositioning, addPopperOffset } from '@ng-bootstrap/ng-bootstrap/utils';
 
 import { NgbDateAdapter } from './adapters/ngb-date-adapter';
 import { NgbDatepicker, NgbDatepickerNavigateEvent } from './datepicker';
@@ -42,9 +40,8 @@ import { NgbDateParserFormatter } from './ngb-date-parser-formatter';
 import { NgbDateStruct } from './ngb-date-struct';
 import { NgbInputDatepickerConfig } from './datepicker-input-config';
 import { NgbDatepickerConfig } from './datepicker-config';
-import { isString } from '../util/util';
+import { isString } from '@ng-bootstrap/ng-bootstrap/utils';
 import { Subject } from 'rxjs';
-import { addPopperOffset } from '../util/positioning-util';
 import { ContentTemplateContext } from './datepicker-content-template-context';
 
 /**

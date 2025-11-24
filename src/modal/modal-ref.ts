@@ -7,8 +7,7 @@ import { NgbModalBackdrop } from './modal-backdrop';
 import { NgbModalWindow } from './modal-window';
 import { NgbModalUpdatableOptions } from './modal-config';
 
-import { ContentRef } from '../util/popup';
-import { isPromise } from '../util/util';
+import { isPromise, ContentRef } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * A reference to the currently opened (active) modal.

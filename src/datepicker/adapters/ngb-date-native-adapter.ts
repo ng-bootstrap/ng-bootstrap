@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter } from './ngb-date-adapter';
 import { NgbDateStruct } from '../ngb-date-struct';
-import { isInteger } from '../../util/util';
+import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
  * [`NgbDateAdapter`](#/components/datepicker/api#NgbDateAdapter) implementation that uses

@@ -1,4 +1,4 @@
-import { isNumber, toInteger } from '../util/util';
+import { isNumber, toInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export class NgbTime {
 	hour: number;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbNavChangeEvent, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavChangeEvent, NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 
 @Component({
 	selector: 'ngbd-nav-selection',

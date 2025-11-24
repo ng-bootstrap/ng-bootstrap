@@ -1,6 +1,6 @@
 import { NgbDatepickerI18n } from '../datepicker-i18n';
 import { Injectable } from '@angular/core';
-import { NgbDateStruct } from '../../index';
+import { NgbDateStruct } from '../ngb-date-struct';
 
 const WEEKDAYS = ['እሑድ', 'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሓሙስ', 'ዓርብ', 'ቅዳሜ'];
 const MONTHS = ['መስከረም', 'ጥቅምት', 'ኅዳር', 'ታህሣሥ', 'ጥር', 'የካቲት', 'መጋቢት', 'ሚያዝያ', 'ግንቦት', 'ሰኔ', 'ሐምሌ', 'ነሐሴ', 'ጳጉሜ'];

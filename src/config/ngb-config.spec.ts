@@ -10,7 +10,7 @@ import {
 	NgbPopoverConfig,
 	NgbToastConfig,
 	NgbTooltipConfig,
-} from './index';
+} from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 

@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap';
+import { NgbHighlight } from '@ng-bootstrap/ng-bootstrap/typeahead';
 
 interface Country {
 	name: string;

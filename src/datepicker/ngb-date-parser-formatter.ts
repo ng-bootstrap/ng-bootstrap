@@ -1,4 +1,4 @@
-import { padNumber, toInteger, isNumber } from '../util/util';
+import { padNumber, toInteger, isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbDateStruct } from './ngb-date-struct';
 import { Injectable } from '@angular/core';
 

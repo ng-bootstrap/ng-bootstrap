@@ -16,7 +16,7 @@ export class AnimationsPage {
 	config = Snippet({
 		lang: 'typescript',
 		code: `
-    import {NgbConfig} from '@ng-bootstrap/ng-bootstrap';
+    import {NgbConfig} from '@ng-bootstrap/ng-bootstrap/config';
 
     export class AppComponent {
       constructor(ngbConfig: NgbConfig) {
@@ -29,7 +29,7 @@ export class AnimationsPage {
 	widgetConfig = Snippet({
 		lang: 'typescript',
 		code: `
-    import {NgbAlertConfig} from '@ng-bootstrap/ng-bootstrap';
+    import {NgbAlertConfig} from '@ng-bootstrap/ng-bootstrap/alert';
 
     export class AppComponent {
       constructor(ngbAlertConfig: NgbAlertConfig) {

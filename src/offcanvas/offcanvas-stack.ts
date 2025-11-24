@@ -14,10 +14,7 @@ import {
 import { finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { ngbFocusTrap } from '../util/focus-trap';
-import { ContentRef } from '../util/popup';
-import { ScrollBar } from '../util/scrollbar';
-import { isDefined, isString } from '../util/util';
+import { isDefined, isString, ngbFocusTrap, ContentRef, ScrollBar } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbActiveOffcanvas, NgbOffcanvasRef } from './offcanvas-ref';
 import { NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbOffcanvasBackdrop } from './offcanvas-backdrop';

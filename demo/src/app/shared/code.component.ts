@@ -11,7 +11,7 @@ import {
 
 import { ISnippet } from '../services/snippet';
 import { CodeHighlightService } from '../services/code-highlight.service';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-code',

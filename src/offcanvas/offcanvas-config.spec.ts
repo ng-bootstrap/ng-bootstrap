@@ -1,6 +1,6 @@
 import { inject } from '@angular/core/testing';
 
-import { NgbConfig } from '../ngb-config';
+import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbOffcanvasConfig } from './offcanvas-config';
 
 describe('NgbOffcanvasConfig', () => {

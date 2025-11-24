@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Snippet } from '../../../services/snippet';
 import { RouterLink } from '@angular/router';
 import { CodeComponent } from '../../../shared/code.component';
-import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap/alert';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap/nav';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
