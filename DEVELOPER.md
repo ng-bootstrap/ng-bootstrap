@@ -61,7 +61,7 @@ yarn
 
 ## Project Structure
 
-We use [`@angular/cli`](https://cli.angular.io) to build both ng-bootstrap library and demo site. There are several Angular CLI projects inside the checked out code:
+We use [`@angular/cli`](https://angular.dev/tools/cli) to build both ng-bootstrap library and demo site. There are several Angular CLI projects inside the checked out code:
 
 - `/src` - the `ng-bootstrap` library itself
 - `/demo` - the demo site application deployed at [https://ng-bootstrap.github.io](https://ng-bootstrap.github.io)
