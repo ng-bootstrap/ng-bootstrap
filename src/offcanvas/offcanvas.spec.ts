@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -86,7 +86,7 @@ describe('ngb-offcanvas', () => {
 
 	describe('default configuration', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ providers: [SpyService] });
+			TestBed.configureTestingModule({ providers: [SpyService, provideZoneChangeDetection()] });
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
@@ -739,7 +739,7 @@ describe('ngb-offcanvas', () => {
 	describe('custom global configuration', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbOffcanvasConfig, useValue: { position: 'end' } }],
+				providers: [{ provide: NgbOffcanvasConfig, useValue: { position: 'end' } }, provideZoneChangeDetection()],
 			});
 			fixture = TestBed.createComponent(TestComponent);
 		});
@@ -792,7 +792,7 @@ describe('ngb-offcanvas', () => {
 
 			beforeEach(() => {
 				TestBed.configureTestingModule({
-					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 				});
 			});
 

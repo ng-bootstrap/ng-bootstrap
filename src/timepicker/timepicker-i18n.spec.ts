@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from '@angular/core';
 import { NgbTimepickerI18nDefault } from './timepicker-i18n';
 import { TestBed } from '@angular/core/testing';
 
@@ -5,7 +6,7 @@ describe('ngb-timepicker-i18n-default', () => {
 	let i18n: NgbTimepickerI18nDefault;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [NgbTimepickerI18nDefault] });
+		TestBed.configureTestingModule({ providers: [NgbTimepickerI18nDefault, provideZoneChangeDetection()] });
 		i18n = TestBed.inject(NgbTimepickerI18nDefault);
 	});
 

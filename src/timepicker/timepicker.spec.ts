@@ -1,7 +1,13 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, DebugElement, Injectable } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DebugElement,
+	Injectable,
+	provideZoneChangeDetection,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -491,7 +497,9 @@ describe('ngb-timepicker', () => {
 
 	describe('meridian', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ providers: [{ provide: NgbTimepickerI18n, useClass: TestI18n }] });
+			TestBed.configureTestingModule({
+				providers: [{ provide: NgbTimepickerI18n, useClass: TestI18n }, provideZoneChangeDetection()],
+			});
 		});
 
 		it('should render meridian button with proper value', fakeAsync(() => {
@@ -1254,7 +1262,7 @@ describe('ngb-timepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbTimepickerConfig, useValue: config }],
+				providers: [{ provide: NgbTimepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -1310,7 +1318,7 @@ describe('ngb-timepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbTimepickerConfig, useValue: config }],
+				providers: [{ provide: NgbTimepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -1533,7 +1541,7 @@ describe('ngb-timepicker', () => {
 	describe('Custom adapter', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbTimeAdapter, useClass: StringTimeAdapter }],
+				providers: [{ provide: NgbTimeAdapter, useClass: StringTimeAdapter }, provideZoneChangeDetection()],
 			});
 		});
 

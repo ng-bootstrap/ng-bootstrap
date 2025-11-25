@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import { NgbDateAdapter, NgbDatepickerModule } from './datepicker.module';
@@ -90,7 +90,7 @@ describe('NgbInputDatepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }],
+				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -110,7 +110,7 @@ describe('NgbInputDatepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }],
+				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -1167,7 +1167,7 @@ describe('NgbInputDatepicker', () => {
 	describe('Native adapter', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
+				providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }, provideZoneChangeDetection()],
 			});
 		});
 

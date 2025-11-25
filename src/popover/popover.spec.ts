@@ -13,6 +13,7 @@ import {
 	ViewContainerRef,
 	AfterViewInit,
 	NgZone,
+	provideZoneChangeDetection,
 } from '@angular/core';
 
 import { NgbPopover, NgbPopoverWindow } from './popover';
@@ -76,7 +77,7 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [SpyService],
+			providers: [SpyService, provideZoneChangeDetection()],
 		});
 	});
 
@@ -1043,7 +1044,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 			});
 		});
 

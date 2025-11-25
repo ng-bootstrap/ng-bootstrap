@@ -16,10 +16,10 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'yarn'
       - run: yarn --frozen-lockfile --immutable
       - run: yarn playwright install-deps
@@ -29,10 +29,6 @@ jobs:
         with:
           file: coverage/lcov.info
           flags: unit
-      - uses: codecov/codecov-action@v4
-        with:
-          file: coverage-e2e/lcov.info
-          flags: e2e
       - uses: actions/upload-artifact@v4
         with:
           name: test-reports

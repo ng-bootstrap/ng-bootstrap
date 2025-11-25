@@ -7,6 +7,7 @@ import {
 	Component,
 	ElementRef,
 	Inject,
+	provideZoneChangeDetection,
 	QueryList,
 	ViewChild,
 	ViewChildren,
@@ -1070,7 +1071,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 		}
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 			});
 		});
 

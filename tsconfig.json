@@ -14,8 +14,6 @@
 		"importHelpers": true,
 		"target": "ES2022",
 		"module": "ES2022",
-		"typeRoots": ["node_modules/@types"],
-		"types": ["node", "@angular/localize"],
 		"lib": ["ES2022", "dom"],
 		"useDefineForClassFields": false,
 		"paths": {

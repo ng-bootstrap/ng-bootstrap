@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import {
 	FormControl,
 	FormsModule,
@@ -820,7 +820,7 @@ describe('ngb-rating', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbRatingConfig, useValue: config }],
+				providers: [{ provide: NgbRatingConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
