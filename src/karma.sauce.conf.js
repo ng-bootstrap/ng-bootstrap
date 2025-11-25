@@ -17,12 +17,6 @@ const BROWSERS = {
 		browserVersion: 'latest',
 		platformName: 'Windows 11',
 	},
-	SAFARI16: {
-		base: 'SauceLabs',
-		browserName: 'safari',
-		browserVersion: '16',
-		platformName: 'macOS 13',
-	},
 	SAFARI17: {
 		base: 'SauceLabs',
 		browserName: 'safari',

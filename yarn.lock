@@ -3644,8 +3644,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
     "@typescript-eslint/parser": "npm:^7.2.0"
     "@typescript-eslint/utils": "npm:^7.2.0"
-    bootstrap: "npm:5.3.6"
-    bootstrap-icons: "npm:1.9.1"
+    bootstrap: "npm:5.3.8"
+    bootstrap-icons: "npm:1.13.1"
     conventional-changelog-cli: "npm:^2.0.12"
     coverage-istanbul-loader: "npm:^3.0.3"
     ejs: "npm:3.1.5"
@@ -6204,19 +6204,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bootstrap-icons@npm:1.9.1":
-  version: 1.9.1
-  resolution: "bootstrap-icons@npm:1.9.1"
-  checksum: 10c0/e8f7f65d4983bf8a3b50852655aec1e391a86b4ea7fff49d81a86d1d054226438863e2452fd50befcf2556f1e7f762d0f61dc0b828f6160cc552f351a5141606
+"bootstrap-icons@npm:1.13.1":
+  version: 1.13.1
+  resolution: "bootstrap-icons@npm:1.13.1"
+  checksum: 10c0/2c1adeb1796502e67b476ce049c86bc3a7ff7984c61777e056820389a8db5ec6535c12a33f76f3ed52674bca4c01472065a7fbcde6cc384ebb86c2eae51390bd
   languageName: node
   linkType: hard
 
-"bootstrap@npm:5.3.6":
-  version: 5.3.6
-  resolution: "bootstrap@npm:5.3.6"
+"bootstrap@npm:5.3.8":
+  version: 5.3.8
+  resolution: "bootstrap@npm:5.3.8"
   peerDependencies:
     "@popperjs/core": ^2.11.8
-  checksum: 10c0/1b3f8f4f265463b3cd6aece84135b521ff55f3225a5c16c6981fdd8fb2bfb53b35b0815bff63382e5c83f6d537c017ae8392afe34366d5d547e4fd507d086e1c
+  checksum: 10c0/0039a9df2c3e7bfa04f1abca199c299ff3b75869d578c0cb1721c6f1f203c91531788a5631ecbee01513481979314d0e4ba0d90c2011e6ce18fc2e0bc93e18d9
   languageName: node
   linkType: hard
 
