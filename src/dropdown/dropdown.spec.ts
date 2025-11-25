@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbDropdown, NgbDropdownModule } from './dropdown.module';
 import { NgbDropdownConfig } from './dropdown-config';
@@ -643,7 +643,7 @@ describe('ngb-dropdown-toggle', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDropdownConfig, useValue: config }],
+				providers: [{ provide: NgbDropdownConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 

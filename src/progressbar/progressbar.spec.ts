@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
@@ -347,7 +347,7 @@ describe('ngb-progressbar', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbProgressbarConfig, useValue: config }],
+				providers: [{ provide: NgbProgressbarConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 

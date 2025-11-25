@@ -14,6 +14,7 @@ import { NgbCalendarGregorian } from './ngb-calendar';
 import { DatepickerViewModel, MonthViewModel, NgbMarkDisabled } from './datepicker-view-model';
 import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
 import { TestBed } from '@angular/core/testing';
+import { provideZoneChangeDetection } from '@angular/core';
 
 describe(`datepicker-tools`, () => {
 	const calendar = new NgbCalendarGregorian();
@@ -21,7 +22,7 @@ describe(`datepicker-tools`, () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault }],
+			providers: [{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault }, provideZoneChangeDetection()],
 		});
 		i18n = TestBed.inject(NgbDatepickerI18n);
 	});

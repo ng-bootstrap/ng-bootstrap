@@ -3,6 +3,7 @@ import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
 import { TestBed } from '@angular/core/testing';
 import { NgbDate } from './ngb-date';
+import { provideZoneChangeDetection } from '@angular/core';
 
 const event = (key: string, shift = false) =>
 	<any>{ key, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {} };
@@ -18,7 +19,11 @@ describe('ngb-datepicker-keyboard-service', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbCalendar, useClass: NgbCalendarGregorian }, NgbDatepickerKeyboardService],
+			providers: [
+				{ provide: NgbCalendar, useClass: NgbCalendarGregorian },
+				NgbDatepickerKeyboardService,
+				provideZoneChangeDetection(),
+			],
 		});
 
 		calendar = TestBed.inject(NgbCalendar);

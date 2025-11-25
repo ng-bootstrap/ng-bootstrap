@@ -5,6 +5,7 @@ import { NgbDate } from './ngb-date';
 import { Subscription } from 'rxjs';
 import { DatepickerViewModel } from './datepicker-view-model';
 import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
+import { provideZoneChangeDetection } from '@angular/core';
 
 describe('ngb-datepicker-service', () => {
 	let service: NgbDatepickerService;
@@ -27,6 +28,7 @@ describe('ngb-datepicker-service', () => {
 				NgbDatepickerService,
 				{ provide: NgbCalendar, useClass: NgbCalendarGregorian },
 				{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault },
+				provideZoneChangeDetection(),
 			],
 		});
 

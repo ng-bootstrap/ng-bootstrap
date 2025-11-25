@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Live, ARIA_LIVE_DELAY } from './live';
 
@@ -18,7 +18,7 @@ describe('LiveAnnouncer', () => {
 	describe('live announcer', () => {
 		beforeEach(() =>
 			TestBed.configureTestingModule({
-				providers: [Live, { provide: ARIA_LIVE_DELAY, useValue: null }],
+				providers: [Live, { provide: ARIA_LIVE_DELAY, useValue: null }, provideZoneChangeDetection()],
 				imports: [TestComponent],
 			}),
 		);

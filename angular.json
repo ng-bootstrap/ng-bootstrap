@@ -9,7 +9,7 @@
 			"projectType": "library",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"builder": "@angular/build:ng-packagr",
 					"options": {
 						"tsConfig": "src/tsconfig.json",
 						"project": "src/ng-package.json"
@@ -34,6 +34,7 @@
 							}
 						],
 						"main": "src/test.ts",
+						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "src/tsconfig.spec.json",
 						"karmaConfig": "src/karma.conf.js",
 						"codeCoverageExclude": ["src/test.ts", "src/test/**"]
@@ -73,7 +74,7 @@
 			"schematics": {},
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular/build:application",
 					"options": {
 						"allowedCommonJsDependencies": ["prismjs"],
 						"outputPath": "demo/dist",
@@ -127,7 +128,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"development": {
 							"buildTarget": "demo:build:development"
@@ -147,7 +148,7 @@
 					}
 				},
 				"extract-i18n": {
-					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"builder": "@angular/build:extract-i18n",
 					"options": {
 						"buildTarget": "demo:build"
 					}
@@ -162,33 +163,24 @@
 			"schematics": {},
 			"architect": {
 				"build": {
-					"builder": "@angular-builders/custom-webpack:browser",
+					"builder": "@angular/build:application",
 					"options": {
-						"customWebpackConfig": {
-							"path": "e2e-app/coverage.webpack.js"
+						"outputPath": {
+							"base": "e2e-app/dist"
 						},
-						"outputPath": "e2e-app/dist",
 						"index": "e2e-app/src/index.html",
-						"main": "e2e-app/src/main.ts",
-						"polyfills": ["zone.js"],
 						"tsConfig": "e2e-app/tsconfig.json",
 						"assets": ["e2e-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "e2e-app/src/style/app.scss"],
-						"scripts": []
+						"browser": "e2e-app/src/main.ts",
+						"polyfills": ["zone.js", "@angular/localize/init"]
 					},
 					"configurations": {
 						"production": {
-							"fileReplacements": [
-								{
-									"replace": "e2e-app/src/environments/environment.ts",
-									"with": "e2e-app/src/environments/environment.prod.ts"
-								}
-							]
+							"outputHashing": "all"
 						},
 						"development": {
-							"buildOptimizer": false,
 							"optimization": false,
-							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
 							"namedChunks": true
@@ -197,7 +189,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"development": {
 							"buildTarget": "e2e-app:build:development"
@@ -205,7 +197,8 @@
 						"playwright": {
 							"buildTarget": "e2e-app:build:production",
 							"liveReload": false,
-							"watch": false
+							"watch": false,
+							"prebundle": false
 						}
 					},
 					"defaultConfiguration": "development"
@@ -226,12 +219,12 @@
 			"schematics": {},
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "ssr-app/dist",
 						"index": "ssr-app/src/index.html",
 						"browser": "ssr-app/src/main.ts",
-						"polyfills": ["zone.js", "@angular/localize/init"],
+						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "ssr-app/tsconfig.json",
 						"assets": [
 							"ssr-app/src/favicon.ico",
@@ -261,7 +254,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
 							"buildTarget": "ssr-app:build:production"
@@ -288,12 +281,11 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:application",
+					"builder": "@angular/build:application",
 					"options": {
 						"outputPath": "test-app/dist",
 						"index": "test-app/src/index.html",
 						"browser": "test-app/src/main.ts",
-						"polyfills": ["zone.js"],
 						"tsConfig": "test-app/tsconfig.json",
 						"assets": ["test-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "test-app/src/styles.css"],
@@ -312,7 +304,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
-					"builder": "@angular-devkit/build-angular:dev-server",
+					"builder": "@angular/build:dev-server",
 					"configurations": {
 						"production": {
 							"buildTarget": "test-app:build:production"

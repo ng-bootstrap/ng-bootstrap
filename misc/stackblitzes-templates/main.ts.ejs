@@ -1,10 +1,12 @@
 import './polyfills';
 import {provideHttpClient, withNoXsrfProtection} from '@angular/common/http';
 import {bootstrapApplication} from '@angular/platform-browser';
+import {provideBrowserGlobalErrorListeners} from '@angular/core';
 import {<%=className%>} from '<%=tsImportName%>';
 
 bootstrapApplication(<%=className%>, {
   providers: [
+    provideBrowserGlobalErrorListeners(),
     provideHttpClient(withNoXsrfProtection()),
   ],
 })

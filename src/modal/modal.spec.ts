@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
@@ -102,7 +102,7 @@ describe('ngb-modal', () => {
 
 	describe('default configuration', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ providers: [SpyService] });
+			TestBed.configureTestingModule({ providers: [SpyService, provideZoneChangeDetection()] });
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
@@ -1128,7 +1128,7 @@ describe('ngb-modal', () => {
 	describe('custom global configuration', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbModalConfig, useValue: { size: 'sm' } }],
+				providers: [{ provide: NgbModalConfig, useValue: { size: 'sm' } }, provideZoneChangeDetection()],
 			});
 			fixture = TestBed.createComponent(TestComponent);
 		});
@@ -1179,7 +1179,7 @@ describe('ngb-modal', () => {
 
 			beforeEach(() => {
 				TestBed.configureTestingModule({
-					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 				});
 			});
 

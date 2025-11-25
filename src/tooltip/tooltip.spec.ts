@@ -7,6 +7,7 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	NgZone,
+	provideZoneChangeDetection,
 	TemplateRef,
 	ViewChild,
 	ViewContainerRef,
@@ -934,7 +935,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 			});
 		});
 

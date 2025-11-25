@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { NgbDate } from '../ngb-date';
 import { NgbDatepickerI18nHebrew } from './datepicker-i18n-hebrew';
+import { provideZoneChangeDetection } from '@angular/core';
 
 describe('datepicker-i18n-hebrew', () => {
 	let i18n: NgbDatepickerI18nHebrew;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [NgbDatepickerI18nHebrew] });
+		TestBed.configureTestingModule({ providers: [NgbDatepickerI18nHebrew, provideZoneChangeDetection()] });
 		i18n = TestBed.inject(NgbDatepickerI18nHebrew);
 	});
 

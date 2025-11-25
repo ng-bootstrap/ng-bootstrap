@@ -2,7 +2,7 @@ import { fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, injec
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
@@ -958,7 +958,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
 			});
 		});
 

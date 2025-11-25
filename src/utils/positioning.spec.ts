@@ -3,7 +3,7 @@ import { Placement as PopperPlacement } from '@popperjs/core';
 import { NgbRTL } from './rtl';
 import { ComponentFixture, fakeAsync, flushMicrotasks, inject, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
 import { By } from '@angular/platform-browser';
 
@@ -106,6 +106,7 @@ describe('positioning', () => {
 				providers: [
 					{ provide: NgbRTL, useValue: { isRTL: () => false } },
 					{ provide: 'ngbPositioning', useFactory: () => ngbPositioning() },
+					provideZoneChangeDetection(),
 				],
 			});
 		});
@@ -175,7 +176,7 @@ describe('positioning', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
 				imports: [NgbTooltipModule, TestComponent],
-				providers: [{ provide: NgbRTL, useValue: rtlMock }],
+				providers: [{ provide: NgbRTL, useValue: rtlMock }, provideZoneChangeDetection()],
 			});
 		});
 

@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/cor
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
-import { Component, TemplateRef, DebugElement } from '@angular/core';
+import { Component, TemplateRef, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
@@ -1216,7 +1216,7 @@ describe('ngb-datepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDatepickerConfig, useValue: config }],
+				providers: [{ provide: NgbDatepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -1234,7 +1234,7 @@ describe('ngb-datepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDatepickerConfig, useValue: config }],
+				providers: [{ provide: NgbDatepickerConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 
@@ -1260,7 +1260,10 @@ describe('ngb-datepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDatepickerKeyboardService, useValue: mockKeyboardService }],
+				providers: [
+					{ provide: NgbDatepickerKeyboardService, useValue: mockKeyboardService },
+					provideZoneChangeDetection(),
+				],
 			});
 			const fixture = createTestComponent(
 				`<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>`,

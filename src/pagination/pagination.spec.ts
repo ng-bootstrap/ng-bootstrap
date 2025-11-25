@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbPaginationModule } from './pagination.module';
 import { NgbPagination } from './pagination';
@@ -821,7 +821,7 @@ describe('ngb-pagination', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbPaginationConfig, useValue: config }],
+				providers: [{ provide: NgbPaginationConfig, useValue: config }, provideZoneChangeDetection()],
 			});
 		});
 

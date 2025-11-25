@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -65,7 +65,7 @@ function expectWindowResults(element, expectedResults: string[]) {
 describe('ngb-typeahead', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }],
+			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }, provideZoneChangeDetection()],
 		});
 	});
 
@@ -995,7 +995,9 @@ describe('ngb-typeahead', () => {
 		beforeEach(() => {
 			const config = new NgbTypeaheadConfig();
 			config.showHint = true;
-			TestBed.configureTestingModule({ providers: [{ provide: NgbTypeaheadConfig, useValue: config }] });
+			TestBed.configureTestingModule({
+				providers: [{ provide: NgbTypeaheadConfig, useValue: config }, provideZoneChangeDetection()],
+			});
 
 			TestBed.overrideComponent(TestComponent, {
 				set: { template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>' },

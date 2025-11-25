@@ -12,12 +12,7 @@ import {
 } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
-import {
-	inject,
-	provideAppInitializer,
-	provideBrowserGlobalErrorListeners,
-	provideZonelessChangeDetection,
-} from '@angular/core';
+import { inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { AnalyticsService } from './app/services/analytics.service';
 
 bootstrapApplication(AppComponent, {
@@ -34,7 +29,6 @@ bootstrapApplication(AppComponent, {
 		),
 		provideHttpClient(withNoXsrfProtection()),
 		provideBrowserGlobalErrorListeners(),
-		provideZonelessChangeDetection(),
 		provideAppInitializer(() => inject(AnalyticsService).start()),
 	],
 }).catch((err) => console.error(err));

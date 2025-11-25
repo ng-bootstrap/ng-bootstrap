@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbDatepickerModule } from './datepicker.module';
 import { NgbDatepicker } from './datepicker';
@@ -232,7 +232,7 @@ describe('ngb-datepicker-month', () => {
 			},
 		});
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }],
+			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }, provideZoneChangeDetection()],
 		});
 	});
 
