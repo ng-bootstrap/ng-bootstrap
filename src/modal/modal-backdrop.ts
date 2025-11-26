@@ -22,11 +22,11 @@ const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
 	selector: 'ngb-modal-backdrop',
 	encapsulation: ViewEncapsulation.None,
 	template: '',
+	styleUrls: ['./modal.scss'],
 	host: {
 		'[class]': '"modal-backdrop" + (backdropClass ? " " + backdropClass : "")',
 		'[class.show]': '!animation',
 		'[class.fade]': 'animation',
-		style: 'z-index: 1055',
 	},
 })
 export class NgbModalBackdrop implements OnInit {
