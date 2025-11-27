@@ -1,8 +1,10 @@
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ContentChild,
+	ElementRef,
 	EventEmitter,
 	forwardRef,
 	inject,
@@ -74,12 +76,14 @@ export interface StarTemplateContext {
 	`,
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRating), multi: true }],
 })
-export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
+export class NgbRating implements ControlValueAccessor, OnInit, OnChanges, AfterViewInit {
 	contexts: StarTemplateContext[] = [];
 	nextRate: number;
 
 	private _config = inject(NgbRatingConfig);
 	private _changeDetectorRef = inject(ChangeDetectorRef);
+	private _elRef = inject(ElementRef);
+	private direction: 'ltr' | 'rtl';
 
 	/**
 	 * If `true`, the rating can't be changed or focused.
@@ -154,6 +158,10 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
+	ngAfterViewInit() {
+		const nativeElement = this._elRef.nativeElement as HTMLElement;
+		this.direction = getComputedStyle(nativeElement).direction === 'ltr' ? 'ltr' : 'rtl';
+	}
 
 	isInteractive(): boolean {
 		return !this.readonly && !this.disabled;
@@ -179,12 +187,16 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	handleKeyDown(event: KeyboardEvent) {
 		switch (event.key) {
 			case 'ArrowDown':
-			case 'ArrowLeft':
 				this.update(this.rate - 1);
 				break;
+			case 'ArrowLeft':
+				this.update(this.rate + (this.direction === 'ltr' ? -1 : 1));
+				break;
 			case 'ArrowUp':
-			case 'ArrowRight':
 				this.update(this.rate + 1);
+				break;
+			case 'ArrowRight':
+				this.update(this.rate + (this.direction === 'ltr' ? 1 : -1));
 				break;
 			case 'Home':
 				this.update(0);
