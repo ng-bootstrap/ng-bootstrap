@@ -15,7 +15,7 @@ import { isPromise, ContentRef } from '@ng-bootstrap/ng-bootstrap/utils';
  * Instances of this class can be injected into your component passed as modal content.
  * So you can `.update()`, `.close()` or `.dismiss()` the modal window from your component.
  */
-export class NgbActiveModal {
+export class NgbActiveModal<Result = any> {
 	/**
 	 * Updates options of an opened modal.
 	 *
@@ -27,7 +27,7 @@ export class NgbActiveModal {
 	 *
 	 * The `NgbModalRef.result` promise will be resolved with the provided value.
 	 */
-	close(result?: any): void {}
+	close(result?: Result): void {}
 
 	/**
 	 * Dismisses the modal with an optional `reason` value.
@@ -40,11 +40,11 @@ export class NgbActiveModal {
 /**
  * A reference to the newly opened modal returned by the `NgbModal.open()` method.
  */
-export class NgbModalRef {
-	private _closed = new Subject<any>();
+export class NgbModalRef<Component = any, Result = any> {
+	private _closed = new Subject<Result>();
 	private _dismissed = new Subject<any>();
 	private _hidden = new Subject<void>();
-	private _resolve: (result?: any) => void;
+	private _resolve: (result?: Result) => void;
 	private _reject: (reason?: any) => void;
 
 	/**
@@ -64,7 +64,7 @@ export class NgbModalRef {
 	 *
 	 * When a `TemplateRef` is used as the content or when the modal is closed, will return `undefined`.
 	 */
-	get componentInstance(): any {
+	get componentInstance(): Component | undefined {
 		if (this._contentRef && this._contentRef.componentRef) {
 			return this._contentRef.componentRef.instance;
 		}
@@ -73,7 +73,7 @@ export class NgbModalRef {
 	/**
 	 * The promise that is resolved when the modal is closed and rejected when the modal is dismissed.
 	 */
-	result: Promise<any>;
+	result: Promise<Result>;
 
 	/**
 	 * The observable that emits when the modal is closed via the `.close()` method.
@@ -82,7 +82,7 @@ export class NgbModalRef {
 	 *
 	 * @since 8.0.0
 	 */
-	get closed(): Observable<any> {
+	get closed(): Observable<Result> {
 		return this._closed.asObservable().pipe(takeUntil(this._hidden));
 	}
 
@@ -134,7 +134,7 @@ export class NgbModalRef {
 		});
 
 		this.result = new Promise((resolve, reject) => {
-			this._resolve = resolve;
+			this._resolve = resolve as any;
 			this._reject = reject;
 		});
 		this.result.then(null, () => {});
@@ -145,16 +145,16 @@ export class NgbModalRef {
 	 *
 	 * The `NgbMobalRef.result` promise will be resolved with the provided value.
 	 */
-	close(result?: any): void {
+	close(result?: Result): void {
 		if (this._windowCmptRef) {
-			this._closed.next(result);
+			this._closed.next(result!);
 			this._resolve(result);
 			this._removeModalElements();
 		}
 	}
 
 	private _dismiss(reason?: any) {
-		this._dismissed.next(reason);
+		this._dismissed.next(reason!);
 		this._reject(reason);
 		this._removeModalElements();
 	}
