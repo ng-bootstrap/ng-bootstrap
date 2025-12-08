@@ -1,4 +1,5 @@
 import { NgbPaginationConfig } from './pagination-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-pagination-config', () => {
 	it('should have sensible default values', () => {

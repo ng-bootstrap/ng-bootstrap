@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 import { NgbModalBackdrop } from './modal-backdrop';
 

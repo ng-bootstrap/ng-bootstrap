@@ -5,15 +5,19 @@ import { NgbDate } from './ngb-date';
 import { Subscription } from 'rxjs';
 import { DatepickerViewModel } from './datepicker-view-model';
 import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
-import { provideZoneChangeDetection } from '@angular/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ngb-datepicker-service', () => {
 	let service: NgbDatepickerService;
 	let calendar: NgbCalendar;
 	let model: DatepickerViewModel;
-	let mock: { onNext };
+	let mock: {
+		onNext;
+	};
 	let selectDate: NgbDate;
-	let mockSelect: { onNext };
+	let mockSelect: {
+		onNext;
+	};
 	let focusMove: (NgbDate, NgbPeriod?, number?) => void;
 
 	let subscriptions: Subscription[];
@@ -28,7 +32,6 @@ describe('ngb-datepicker-service', () => {
 				NgbDatepickerService,
 				{ provide: NgbCalendar, useClass: NgbCalendarGregorian },
 				{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault },
-				provideZoneChangeDetection(),
 			],
 		});
 
@@ -41,10 +44,10 @@ describe('ngb-datepicker-service', () => {
 			service.focus(calendar.getNext(focusDate, period, number));
 
 		mock = { onNext: () => {} };
-		spyOn(mock, 'onNext');
+		vi.spyOn(mock, 'onNext');
 
 		mockSelect = { onNext: () => {} };
-		spyOn(mockSelect, 'onNext');
+		vi.spyOn(mockSelect, 'onNext');
 
 		// subscribing
 		subscriptions.push(
@@ -276,19 +279,19 @@ describe('ngb-datepicker-service', () => {
 			// default values
 			service.focus(new NgbDate(2017, 5, 1));
 			expect(model.weekdayWidth).toBe('narrow');
-			expect(model.weekdaysVisible).toBeTrue();
+			expect(model.weekdaysVisible).toBe(true);
 			expect(model.months[0].weekdays).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 
 			// Specific width
 			service.set({ weekdays: 'short' });
 			expect(model.weekdayWidth).toBe('short');
-			expect(model.weekdaysVisible).toBeTrue();
+			expect(model.weekdaysVisible).toBe(true);
 			expect(model.months[0].weekdays).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 
 			// false
 			service.set({ weekdays: false });
 			expect(model.weekdayWidth).toBe('narrow');
-			expect(model.weekdaysVisible).toBeFalse();
+			expect(model.weekdaysVisible).toBe(false);
 			expect(model.months[0].weekdays).toEqual([]);
 		});
 	});

@@ -1,4 +1,5 @@
 import { getTransitionDurationMs } from './util';
+import { afterEach, describe, expect, it } from 'vitest';
 
 function fromString(html: string): HTMLElement {
 	const div = document.createElement('div');

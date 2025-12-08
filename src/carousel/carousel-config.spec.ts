@@ -1,5 +1,6 @@
 import { NgbCarouselConfig } from './carousel-config';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-carousel-config', () => {
 	it('should have sensible default values', () => {

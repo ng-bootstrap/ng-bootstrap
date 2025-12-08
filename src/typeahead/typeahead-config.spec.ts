@@ -1,4 +1,5 @@
 import { NgbTypeaheadConfig } from './typeahead-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-typeahead-config', () => {
 	it('should have sensible default values', () => {

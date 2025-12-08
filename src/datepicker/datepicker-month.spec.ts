@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
-import { NgbDatepickerModule } from './datepicker.module';
-import { NgbDatepicker } from './datepicker';
+import { NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth } from './datepicker.module';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbDatepickerService } from './datepicker-service';
 import { NgbDate } from './ngb-date';
 import { NgbDateStruct } from './ngb-date-struct';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = () =>
 	createGenericTestComponent(
@@ -232,7 +232,7 @@ describe('ngb-datepicker-month', () => {
 			},
 		});
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }, provideZoneChangeDetection()],
+			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }],
 		});
 	});
 
@@ -262,7 +262,7 @@ describe('ngb-datepicker-month', () => {
 	it('should send date selection events', () => {
 		const fixture = createTestComponent();
 
-		spyOn(fixture.componentInstance, 'onClick');
+		vi.spyOn(fixture.componentInstance, 'onClick');
 
 		const dates = getDates(fixture.nativeElement);
 		dates[1].click();
@@ -273,7 +273,7 @@ describe('ngb-datepicker-month', () => {
 	it('should not send date selection events for hidden and disabled dates', () => {
 		const fixture = createTestComponent();
 
-		spyOn(fixture.componentInstance, 'onClick');
+		vi.spyOn(fixture.componentInstance, 'onClick');
 
 		const dates = getDates(fixture.nativeElement);
 		dates[0].click(); // hidden
@@ -401,7 +401,7 @@ describe('ngb-datepicker-month', () => {
 
 @Component({
 	selector: 'test-cmp',
-	imports: [NgbDatepickerModule],
+	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
 	template: '',
 })
 class TestComponent {

@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
 		url: baseURL,
 		reuseExistingServer: !process.env.CI,
 	},
-	use: { baseURL, viewport: { width: 1280, height: 720 }, trace: 'retain-on-failure' },
+	use: { baseURL, viewport: { width: 1280, height: 720 }, trace: process.env.CI ? 'off' : 'retain-on-failure' },
 };
 
 export default config;

@@ -1,4 +1,5 @@
 import { NgbTimepickerConfig } from './timepicker-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-timepicker-config', () => {
 	it('should have sensible default values', () => {

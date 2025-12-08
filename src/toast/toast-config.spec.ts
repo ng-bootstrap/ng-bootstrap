@@ -1,5 +1,6 @@
 import { NgbToastConfig } from './toast-config';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 describe('NgbToastConfig', () => {
 	it('should have sensible default values', () => {

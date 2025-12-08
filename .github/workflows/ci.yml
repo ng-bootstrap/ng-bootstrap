@@ -27,7 +27,7 @@ jobs:
       - run: yarn ci && yarn scripts:test
       - uses: codecov/codecov-action@v4
         with:
-          file: coverage/lcov.info
+          file: coverage/ng-bootstrap/lcov.info
           flags: unit
       - uses: actions/upload-artifact@v4
         with:

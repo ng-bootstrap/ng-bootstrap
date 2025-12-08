@@ -1,8 +1,10 @@
 import { NgbScrollSpyService } from './scrollspy.service';
-import { inject } from '@angular/core/testing';
 import { NgbScrollSpyConfig } from './scrollspy-config';
 import { firstValueFrom } from 'rxjs';
 import { isBrowserVisible } from '../test/common';
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { ChangeDetectorRef } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
 const appendFragmentToDOM = (id = 'test') => {
 	const el = document.createElement('div');
@@ -14,27 +16,50 @@ const appendFragmentToDOM = (id = 'test') => {
 const removeFragmentFromDOM = (id = 'test') => document.getElementById(id)?.remove();
 
 describe('ScrollSpy service (mocked)', () => {
-	let mockObserver;
-	let callSpy: jasmine.Spy;
+	let observe: Mock<any>;
+	let unobserve: Mock<any>;
+	let disconnect: Mock<any>;
+	let callSpy: Mock<{
+		new (callback: IntersectionObserverCallback, options?: IntersectionObserverInit): IntersectionObserver;
+		prototype: IntersectionObserver;
+	}>;
 	let scrollSpy: NgbScrollSpyService;
 	let fragment: HTMLElement;
+	let config: NgbScrollSpyConfig;
 
-	beforeEach(inject([NgbScrollSpyService], (s: NgbScrollSpyService) => {
-		mockObserver = jasmine.createSpyObj('observer', ['observe', 'unobserve', 'disconnect']) as any;
-		callSpy = spyOn(window, 'IntersectionObserver').and.returnValue(mockObserver);
-		scrollSpy = s;
+	beforeEach(() => {
+		observe = vi.fn();
+		unobserve = vi.fn();
+		disconnect = vi.fn();
+		callSpy = vi.spyOn(window, 'IntersectionObserver').mockImplementation(
+			class MockIntersectionObserver {
+				constructor(
+					private callback: IntersectionObserverCallback,
+					options?: IntersectionObserverInit,
+				) {}
+				observe = observe;
+				unobserve = unobserve;
+				disconnect = disconnect;
+			} as any,
+		);
+		TestBed.configureTestingModule({
+			providers: [NgbScrollSpyConfig],
+		});
+		config = TestBed.inject(NgbScrollSpyConfig);
+		scrollSpy = TestBed.inject(NgbScrollSpyService);
 		fragment = appendFragmentToDOM();
-	}));
+	});
 
 	afterEach(() => {
 		scrollSpy.stop();
 		removeFragmentFromDOM();
+		vi.restoreAllMocks();
 	});
 
 	it('should start the scrollspy', () => {
 		scrollSpy.start();
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(callSpy.calls.mostRecent().args[1]).toEqual({ root: document });
+		expect(vi.mocked(callSpy).mock.lastCall![1]).toEqual({ root: document });
 	});
 
 	it('should update not active when starting the scrollspy, if no fragments visible', () => {
@@ -51,13 +76,13 @@ describe('ScrollSpy service (mocked)', () => {
 	it('should pass arguments to the intersection observer', () => {
 		scrollSpy.start({ root: fragment, rootMargin: '1px', threshold: [0.5] });
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(callSpy.calls.mostRecent().args[1]).toEqual({ root: fragment, rootMargin: '1px', threshold: [0.5] });
+		expect(vi.mocked(callSpy).mock.lastCall![1]).toEqual({ root: fragment, rootMargin: '1px', threshold: [0.5] });
 	});
 
 	it('should disconnect from the intersection observer', () => {
 		scrollSpy.start();
 		scrollSpy.stop();
-		expect(mockObserver.disconnect).toHaveBeenCalledTimes(1);
+		expect(disconnect).toHaveBeenCalledTimes(1);
 	});
 
 	it('should observe fragments registered before starting', () => {
@@ -68,10 +93,10 @@ describe('ScrollSpy service (mocked)', () => {
 		scrollSpy.observe(fragment);
 		scrollSpy.start();
 
-		expect(mockObserver.observe).toHaveBeenCalledTimes(3);
-		expect(mockObserver.observe).toHaveBeenCalledWith(one);
-		expect(mockObserver.observe).toHaveBeenCalledWith(two);
-		expect(mockObserver.observe).toHaveBeenCalledWith(fragment);
+		expect(observe).toHaveBeenCalledTimes(3);
+		expect(observe).toHaveBeenCalledWith(one);
+		expect(observe).toHaveBeenCalledWith(two);
+		expect(observe).toHaveBeenCalledWith(fragment);
 
 		removeFragmentFromDOM('one');
 		removeFragmentFromDOM('two');
@@ -84,10 +109,10 @@ describe('ScrollSpy service (mocked)', () => {
 		scrollSpy.start({
 			fragments: [one, 'two'],
 		});
-		expect(mockObserver.observe).toHaveBeenCalledTimes(3);
-		expect(mockObserver.observe).toHaveBeenCalledWith(one);
-		expect(mockObserver.observe).toHaveBeenCalledWith(two);
-		expect(mockObserver.observe).toHaveBeenCalledWith(fragment);
+		expect(observe).toHaveBeenCalledTimes(3);
+		expect(observe).toHaveBeenCalledWith(one);
+		expect(observe).toHaveBeenCalledWith(two);
+		expect(observe).toHaveBeenCalledWith(fragment);
 
 		removeFragmentFromDOM('one');
 		removeFragmentFromDOM('two');
@@ -96,66 +121,66 @@ describe('ScrollSpy service (mocked)', () => {
 	it('should register new fragments', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
-		expect(mockObserver.observe).toHaveBeenCalledWith(fragment);
+		expect(observe).toHaveBeenCalledWith(fragment);
 	});
 
 	it('should register new fragments by id', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment.id);
-		expect(mockObserver.observe).toHaveBeenCalledWith(fragment);
+		expect(observe).toHaveBeenCalledWith(fragment);
 	});
 
 	it('should not register same fragments twice', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
 		scrollSpy.observe(fragment);
-		expect(mockObserver.observe).toHaveBeenCalledTimes(1);
-		expect(mockObserver.observe).toHaveBeenCalledWith(fragment);
+		expect(observe).toHaveBeenCalledTimes(1);
+		expect(observe).toHaveBeenCalledWith(fragment);
 	});
 
 	it('should not register non-existing fragments', () => {
 		scrollSpy.start();
 		scrollSpy.observe('blah');
-		expect(mockObserver.observe).not.toHaveBeenCalled();
+		expect(observe).not.toHaveBeenCalled();
 	});
 
 	it('should unregister existing fragments', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
 		scrollSpy.unobserve(fragment);
-		expect(mockObserver.disconnect).toHaveBeenCalled();
+		expect(disconnect).toHaveBeenCalled();
 	});
 
 	it('should unregister existing fragments by id', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
 		scrollSpy.unobserve(fragment.id);
-		expect(mockObserver.disconnect).toHaveBeenCalled();
+		expect(disconnect).toHaveBeenCalled();
 	});
 
 	it('should not unregister non-existing fragments', () => {
 		scrollSpy.start();
 		scrollSpy.unobserve('blah');
-		expect(mockObserver.disconnect).not.toHaveBeenCalled();
+		expect(disconnect).not.toHaveBeenCalled();
 	});
 
 	it('should re-register remaining fragments when unregistering one', () => {
 		const one = appendFragmentToDOM('one');
 		const two = appendFragmentToDOM('two');
 		scrollSpy.start({ fragments: [one, two] });
-		expect(mockObserver.observe).toHaveBeenCalledTimes(2);
+		expect(observe).toHaveBeenCalledTimes(2);
 
 		scrollSpy.unobserve(two);
-		expect(mockObserver.disconnect).toHaveBeenCalled();
-		expect(mockObserver.observe).toHaveBeenCalledTimes(3);
-		expect(mockObserver.observe.calls.mostRecent().args[0]).toBe(one);
+		expect(disconnect).toHaveBeenCalled();
+		expect(observe).toHaveBeenCalledTimes(3);
+		expect(vi.mocked(observe).mock.lastCall![0]).toBe(one);
 
 		removeFragmentFromDOM('one');
 		removeFragmentFromDOM('two');
 	});
 
 	it('should scroll to a fragment by id', () => {
-		const spy = spyOn(document.documentElement, 'scrollTo') as any;
+		const spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
 		scrollSpy.start();
 		scrollSpy.scrollTo(fragment.id);
@@ -163,7 +188,7 @@ describe('ScrollSpy service (mocked)', () => {
 	});
 
 	it('should scroll only to an exising fragment', () => {
-		const spy = spyOn(document.documentElement, 'scrollTo') as any;
+		const spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
 		scrollSpy.start();
 		scrollSpy.scrollTo('blah');
@@ -171,7 +196,7 @@ describe('ScrollSpy service (mocked)', () => {
 	});
 
 	it('should allow to scroll to a fragment with options provided at creation time', () => {
-		const spy = spyOn(document.documentElement, 'scrollTo') as any;
+		const spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
 		scrollSpy.start({ scrollBehavior: 'auto' });
 		scrollSpy.scrollTo(fragment.id);
@@ -179,164 +204,153 @@ describe('ScrollSpy service (mocked)', () => {
 	});
 
 	it('should allow to scroll to a fragment with options', () => {
-		const spy = spyOn(document.documentElement, 'scrollTo') as any;
+		const spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
 		scrollSpy.start();
 		scrollSpy.scrollTo(fragment.id, { behavior: 'auto' });
 		expect(spy).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
 	});
 
-	it('should allow changing scrolling options from the configuration', inject(
-		[NgbScrollSpyConfig],
-		(config: NgbScrollSpyConfig) => {
-			const spy = spyOn(document.documentElement, 'scrollTo') as any;
+	it('should allow changing scrolling options from the configuration', () => {
+		const spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
-			expect(config.scrollBehavior).toBe('smooth');
-			config.scrollBehavior = 'auto';
+		expect(config.scrollBehavior).toBe('smooth');
+		config.scrollBehavior = 'auto';
 
-			scrollSpy.start();
-			scrollSpy.scrollTo(fragment.id);
-			expect(spy).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
-		},
-	));
+		scrollSpy.start();
+		scrollSpy.scrollTo(fragment.id);
+		expect(spy).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
+	});
 });
 
 if (isBrowserVisible('scrollspy-service')) {
 	describe('ScrollSpy service', () => {
-		it('should allow overriding scrollspy logic via configuration', inject(
-			[NgbScrollSpyService, NgbScrollSpyConfig],
-			async (scrollSpy: NgbScrollSpyService, config: NgbScrollSpyConfig) => {
-				appendFragmentToDOM('one');
+		it('should allow overriding scrollspy logic via configuration', async () => {
+			TestBed.configureTestingModule({
+				providers: [NgbScrollSpyConfig],
+			});
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			const config = TestBed.inject(NgbScrollSpyConfig);
+			appendFragmentToDOM('one');
 
-				config.processChanges = (_, changeActive) => changeActive('two');
+			config.processChanges = (_, changeActive) => changeActive('two');
 
+			scrollSpy.start({
+				fragments: ['one'],
+			});
+
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+
+			removeFragmentFromDOM('one');
+		});
+
+		it('should allow overriding scrollspy logic', async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			const one = appendFragmentToDOM('one');
+
+			scrollSpy.observe(one);
+
+			const entry = new Promise<IntersectionObserverEntry>((resolve) => {
 				scrollSpy.start({
-					fragments: ['one'],
+					processChanges: (state: { entries: IntersectionObserverEntry[] }) => resolve(state.entries[0]),
 				});
+			});
 
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+			expect(await entry).toBeTruthy();
+			expect((await entry).target).toBe(one);
 
-				removeFragmentFromDOM('one');
-			},
-		));
+			removeFragmentFromDOM('one');
+		});
 
-		it('should allow overriding scrollspy logic', inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				const one = appendFragmentToDOM('one');
+		it('should reset active fragment after stopping service explicitly', async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			appendFragmentToDOM('one');
 
-				scrollSpy.observe(one);
+			scrollSpy.start({ fragments: ['one'] });
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 
-				const entry = new Promise<IntersectionObserverEntry>((resolve) => {
-					scrollSpy.start({
-						processChanges: (state: { entries: IntersectionObserverEntry[] }) => resolve(state.entries[0]),
-					});
-				});
+			scrollSpy.stop();
+			expect(scrollSpy.active).toBe('');
 
-				expect(await entry).toBeTruthy();
-				expect((await entry).target).toBe(one);
+			removeFragmentFromDOM('one');
+		});
 
-				removeFragmentFromDOM('one');
-			},
-		));
+		it(`should not reset active fragment when destroying via 'ngOnDestroy' `, async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			appendFragmentToDOM('one');
 
-		it('should reset active fragment after stopping service explicitly', inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				appendFragmentToDOM('one');
+			scrollSpy.start({ fragments: ['one'] });
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 
-				scrollSpy.start({ fragments: ['one'] });
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+			scrollSpy.ngOnDestroy();
+			expect(scrollSpy.active).toBe('one');
 
-				scrollSpy.stop();
-				expect(scrollSpy.active).toBe('');
+			removeFragmentFromDOM('one');
+		});
 
-				removeFragmentFromDOM('one');
-			},
-		));
+		it('should recompute active fragment after removing currently active one', async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			appendFragmentToDOM('one');
+			appendFragmentToDOM('two');
 
-		it(`should not reset active fragment when destroying via 'ngOnDestroy' `, inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				appendFragmentToDOM('one');
+			scrollSpy.start({ fragments: ['one', 'two'] });
+			expect(scrollSpy.active).toBe('');
 
-				scrollSpy.start({ fragments: ['one'] });
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 
-				scrollSpy.ngOnDestroy();
-				expect(scrollSpy.active).toBe('one');
+			scrollSpy.unobserve('one');
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
 
-				removeFragmentFromDOM('one');
-			},
-		));
+			scrollSpy.stop();
+			removeFragmentFromDOM('one');
+			removeFragmentFromDOM('two');
+		});
 
-		it('should recompute active fragment after removing currently active one', inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				appendFragmentToDOM('one');
-				appendFragmentToDOM('two');
+		it('should update currently active fragment', async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			const fragment1 = appendFragmentToDOM('one');
+			const fragment2 = appendFragmentToDOM('two');
 
-				scrollSpy.start({ fragments: ['one', 'two'] });
-				expect(scrollSpy.active).toBe('');
+			scrollSpy.start();
+			expect(scrollSpy.active).toBe('');
 
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+			scrollSpy.observe(fragment1);
+			scrollSpy.observe(fragment2);
 
-				scrollSpy.unobserve('one');
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 
-				scrollSpy.stop();
-				removeFragmentFromDOM('one');
-				removeFragmentFromDOM('two');
-			},
-		));
+			scrollSpy.scrollTo('two');
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
 
-		it('should update currently active fragment', inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				const fragment1 = appendFragmentToDOM('one');
-				const fragment2 = appendFragmentToDOM('two');
+			scrollSpy.stop();
+			removeFragmentFromDOM('one');
+			removeFragmentFromDOM('two');
+		});
 
-				scrollSpy.start();
-				expect(scrollSpy.active).toBe('');
+		it('should use provided change detector and initial fragment options', async () => {
+			const scrollSpy = TestBed.inject(NgbScrollSpyService);
+			const fragment1 = appendFragmentToDOM('one');
+			const fragment2 = appendFragmentToDOM('two');
 
-				scrollSpy.observe(fragment1);
-				scrollSpy.observe(fragment2);
+			const cdSpy = {
+				markForCheck: vi.fn(),
+			};
 
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+			scrollSpy.start({ changeDetectorRef: cdSpy as unknown as ChangeDetectorRef, initialFragment: 'two' });
 
-				scrollSpy.scrollTo('two');
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+			scrollSpy.observe(fragment1);
+			scrollSpy.observe(fragment2);
 
-				scrollSpy.stop();
-				removeFragmentFromDOM('one');
-				removeFragmentFromDOM('two');
-			},
-		));
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+			expect(cdSpy.markForCheck).toHaveBeenCalledTimes(1);
 
-		it('should use provided change detector and initial fragment options', inject(
-			[NgbScrollSpyService],
-			async (scrollSpy: NgbScrollSpyService) => {
-				const fragment1 = appendFragmentToDOM('one');
-				const fragment2 = appendFragmentToDOM('two');
+			scrollSpy.scrollTo('one');
+			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+			expect(cdSpy.markForCheck).toHaveBeenCalledTimes(2);
 
-				const cdSpy = jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']);
-
-				scrollSpy.start({ changeDetectorRef: cdSpy, initialFragment: 'two' });
-
-				scrollSpy.observe(fragment1);
-				scrollSpy.observe(fragment2);
-
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
-				expect(cdSpy.markForCheck).toHaveBeenCalledTimes(1);
-
-				scrollSpy.scrollTo('one');
-				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
-				expect(cdSpy.markForCheck).toHaveBeenCalledTimes(2);
-
-				scrollSpy.stop();
-				removeFragmentFromDOM('one');
-				removeFragmentFromDOM('two');
-			},
-		));
+			scrollSpy.stop();
+			removeFragmentFromDOM('one');
+			removeFragmentFromDOM('two');
+		});
 	});
 }

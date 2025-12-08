@@ -1,5 +1,6 @@
 import { NgbDate } from '../ngb-date';
 import { NgbCalendarEthiopian } from './ngb-calendar-ethiopian';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-calendar-ethiopian', () => {
 	let calendar: NgbCalendarEthiopian = new NgbCalendarEthiopian();

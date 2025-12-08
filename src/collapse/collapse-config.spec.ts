@@ -1,5 +1,6 @@
 import { NgbCollapseConfig } from './collapse-config';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-collapse-config', () => {
 	it('should have sensible default values', () => {

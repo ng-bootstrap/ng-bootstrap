@@ -2,7 +2,6 @@ import { NgZone } from '@angular/core';
 import { EMPTY, fromEvent, Observable, of, race, Subject, timer } from 'rxjs';
 import { endWith, filter, takeUntil } from 'rxjs/operators';
 import { getTransitionDurationMs } from './util';
-import { environment } from './transition.environment';
 import { runInZone } from '../util';
 
 export type NgbTransitionStartFn<T = any> = (
@@ -26,7 +25,10 @@ export interface NgbTransitionCtx<T> {
 
 const noopFn: NgbTransitionEndFn = () => {};
 
-const { transitionTimerDelayMs } = environment;
+export const environment = {
+	getTransitionTimerDelayMs: () => 5,
+};
+
 const runningTransitions = new Map<HTMLElement, NgbTransitionCtx<any>>();
 
 export const ngbRunTransition = <T>(
@@ -94,7 +96,7 @@ export const ngbRunTransition = <T>(
 			takeUntil(stop$),
 			filter(({ target }) => target === element),
 		);
-		const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
+		const timer$ = timer(transitionDurationMs + environment.getTransitionTimerDelayMs()).pipe(takeUntil(stop$));
 
 		race(timer$, transitionEnd$, finishTransition$)
 			.pipe(takeUntil(stop$))

@@ -1,4 +1,5 @@
 import { NgbRatingConfig } from './rating-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-rating-config', () => {
 	it('should have sensible default values', () => {

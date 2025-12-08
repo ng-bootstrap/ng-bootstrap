@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { Component } from '@angular/core';
 import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
+import { describe, expect, it } from 'vitest';
 
 function getElement(element: HTMLElement): HTMLElement {
 	return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');

@@ -1,11 +1,12 @@
 import { getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement } from './positioning';
 import { Placement as PopperPlacement } from '@popperjs/core';
 import { NgbRTL } from './rtl';
-import { ComponentFixture, fakeAsync, flushMicrotasks, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
-import { Component, provideZoneChangeDetection } from '@angular/core';
-import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap/tooltip';
+import { Component } from '@angular/core';
+import { NgbTooltip } from '../tooltip/tooltip';
 import { By } from '@angular/platform-browser';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('positioning', () => {
 	/**
@@ -81,16 +82,13 @@ describe('positioning', () => {
 
 	it('should convert bootstrap classes to popper classes', () => {
 		for (const [bsClass, popperClass] of Object.entries(matchingBootstrapPopperPlacements)) {
-			expect(getPopperClassPlacement(bsClass as Placement, false)).toBe(
-				popperClass,
-				`failed conversion for ${bsClass}`,
-			);
+			expect(getPopperClassPlacement(bsClass as Placement, false)).toBe(popperClass);
 		}
 	});
 
 	it('should convert bootstrap classes to popper classes (RTL)', () => {
 		for (const [bsClass, popperClass] of Object.entries(matchingBootstrapPopperPlacementsRTL)) {
-			expect(getPopperClassPlacement(bsClass as Placement, true)).toBe(popperClass, `failed conversion for ${bsClass}`);
+			expect(getPopperClassPlacement(bsClass as Placement, true), `failed conversion for ${bsClass}`).toBe(popperClass);
 		}
 	});
 
@@ -101,72 +99,58 @@ describe('positioning', () => {
 	});
 
 	describe('ngbPositioning', () => {
+		let positioning: ReturnType<typeof ngbPositioning>;
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [
-					{ provide: NgbRTL, useValue: { isRTL: () => false } },
-					{ provide: 'ngbPositioning', useFactory: () => ngbPositioning() },
-					provideZoneChangeDetection(),
-				],
+				providers: [{ provide: NgbRTL, useValue: { isRTL: () => false } }],
+			});
+			TestBed.runInInjectionContext(() => {
+				positioning = ngbPositioning();
 			});
 		});
 
-		it('should update classes correctly on DOM elements', (done) => {
-			inject(['ngbPositioning'], (positioning) => {
-				const testCases = [
-					['top', 'bs-base-top'],
-					['bottom', 'bs-base-bottom'],
-					['start', 'bs-base-start'],
-					['left', 'bs-base-start'],
-					['end', 'bs-base-end'],
-					['right', 'bs-base-end'],
-					['top-start', 'bs-base-top bs-base-top-start'],
-					['top-left', 'bs-base-top bs-base-top-start'],
-					['top-end', 'bs-base-top bs-base-top-end'],
-					['top-right', 'bs-base-top bs-base-top-end'],
-					['bottom-start', 'bs-base-bottom bs-base-bottom-start'],
-					['bottom-left', 'bs-base-bottom bs-base-bottom-start'],
-					['bottom-end', 'bs-base-bottom bs-base-bottom-end'],
-					['bottom-right', 'bs-base-bottom bs-base-bottom-end'],
-					['start-top', 'bs-base-start bs-base-start-top'],
-					['left-top', 'bs-base-start bs-base-start-top'],
-					['start-bottom', 'bs-base-start bs-base-start-bottom'],
-					['left-bottom', 'bs-base-start bs-base-start-bottom'],
-					['end-top', 'bs-base-end bs-base-end-top'],
-					['right-top', 'bs-base-end bs-base-end-top'],
-					['top', 'bs-base-top'],
-				];
+		it('should update classes correctly on DOM elements', async () => {
+			const testCases = [
+				['top', 'bs-base-top'],
+				['bottom', 'bs-base-bottom'],
+				['start', 'bs-base-start'],
+				['left', 'bs-base-start'],
+				['end', 'bs-base-end'],
+				['right', 'bs-base-end'],
+				['top-start', 'bs-base-top bs-base-top-start'],
+				['top-left', 'bs-base-top bs-base-top-start'],
+				['top-end', 'bs-base-top bs-base-top-end'],
+				['top-right', 'bs-base-top bs-base-top-end'],
+				['bottom-start', 'bs-base-bottom bs-base-bottom-start'],
+				['bottom-left', 'bs-base-bottom bs-base-bottom-start'],
+				['bottom-end', 'bs-base-bottom bs-base-bottom-end'],
+				['bottom-right', 'bs-base-bottom bs-base-bottom-end'],
+				['start-top', 'bs-base-start bs-base-start-top'],
+				['left-top', 'bs-base-start bs-base-start-top'],
+				['start-bottom', 'bs-base-start bs-base-start-bottom'],
+				['left-bottom', 'bs-base-start bs-base-start-bottom'],
+				['end-top', 'bs-base-end bs-base-end-top'],
+				['right-top', 'bs-base-end bs-base-end-top'],
+				['top', 'bs-base-top'],
+			];
 
-				const options = {
-					targetElement: document.createElement('div'),
-					hostElement: document.createElement('div'),
-					placement: 'top',
-					baseClass: 'bs-base',
-				};
-				positioning.createPopper(options);
+			const options = {
+				targetElement: document.createElement('div'),
+				hostElement: document.createElement('div'),
+				placement: 'top',
+				baseClass: 'bs-base',
+			};
+			positioning.createPopper(options);
 
-				function nextTest() {
-					if (testCases.length === 0) {
-						done();
-						return;
-					}
-
-					const [placement, expectedClassName] = testCases.shift()!;
-					positioning.setOptions({ ...options, placement });
-
-					// checking DOM after popper does 'forceUpdate'
-					queueMicrotask(() => {
-						expect(options.targetElement.className).toBe(
-							expectedClassName,
-							`Testing '${placement}' mapping to '${expectedClassName}'`,
-						);
-					});
-
-					setTimeout(nextTest);
-				}
-
-				nextTest();
-			})();
+			for (const [placement, expectedClassName] of testCases) {
+				positioning.setOptions({ ...options, placement });
+				await Promise.resolve();
+				queueMicrotask(() => {
+					expect(options.targetElement.className, `Testing '${placement}' mapping to '${expectedClassName}'`).toBe(
+						expectedClassName,
+					);
+				});
+			}
 		});
 	});
 
@@ -175,22 +159,21 @@ describe('positioning', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbTooltipModule, TestComponent],
-				providers: [{ provide: NgbRTL, useValue: rtlMock }, provideZoneChangeDetection()],
+				providers: [{ provide: NgbRTL, useValue: rtlMock }],
 			});
 		});
 
 		const createTestComponent = (html: string) =>
 			<ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
 
-		it('should apply correct classes for rtl', fakeAsync(() => {
+		it('should apply correct classes for rtl', async () => {
 			const fixture = createTestComponent(
 				`<div ngbTooltip="Great tip!" placement="end" style="margin-top: 100px;"></div>`,
 			);
 			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
 
 			tooltip.open();
-			flushMicrotasks();
+			await Promise.resolve();
 
 			let windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-end');
@@ -199,18 +182,18 @@ describe('positioning', () => {
 			rtlMock.isRTL = () => true;
 
 			tooltip.open();
-			flushMicrotasks();
+			await Promise.resolve();
 
 			windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-start');
 
 			tooltip.close();
-		}));
+		});
 	});
 });
 
 @Component({
-	selector: 'test-cmpt',
+	selector: 'positioning-test-cmpt',
 	template: ``,
 	imports: [NgbTooltip],
 })

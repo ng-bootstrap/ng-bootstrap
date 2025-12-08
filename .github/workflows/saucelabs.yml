@@ -25,14 +25,15 @@ jobs:
           node-version: '24'
           cache: 'yarn'
       - run: yarn --frozen-lockfile --immutable
-      - uses: saucelabs/sauce-connect-action@v2
+      - uses: saucelabs/sauce-connect-action@v3
         with:
           username: ${{ env.SAUCE_USERNAME }}
           accessKey: ${{ env.SAUCE_ACCESS_KEY }}
-          tunnelIdentifier: ${{ github.run_id }}
+          region: eu
+          tunnelName: github-action-tunnel
       - run: yarn saucelabs
       - uses: actions/upload-artifact@v4
-        if: ${{ always() }}
+        if: ${{ failure() }}
         with:
           name: sauce-connect-log
-          path: /tmp/sauce-connect-action**/sauce-connect.log
+          path: ${{ env.SAUCE_CONNECT_DIR_IN_HOST }}/sauce-connect.log

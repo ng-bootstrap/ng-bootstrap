@@ -1,13 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Injectable, Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NgbDatepickerModule, NgbDateStruct } from './datepicker.module';
+import {
+	NgbDatepicker,
+	NgbDatepickerContent,
+	NgbInputDatepicker,
+	NgbDatepickerMonth,
+	NgbDateStruct,
+} from './datepicker.module';
 import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
 import { NgbDate } from './ngb-date';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
-import { NgbDatepicker, NgbDatepickerMonth } from './datepicker';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ngb-datepicker integration', () => {
 	it('should allow overriding datepicker calendar', () => {
@@ -209,14 +215,14 @@ describe('ngb-datepicker integration', () => {
 			calendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker).calendar;
 			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
 
-			spyOn(calendar, 'getPrev');
+			vi.spyOn(calendar, 'getPrev');
 		});
 
 		it('should allow customize keyboard navigation', () => {
 			mv.onKeyDown(<any>{ key: 'PageUp', altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
 			expect(calendar.getPrev).toHaveBeenCalledWith(startDate, 'y', 1);
 			mv.onKeyDown(<any>{ key: 'PageUp', shiftKey: true, preventDefault: () => {}, stopPropagation: () => {} });
-			expect(calendar.getPrev).toHaveBeenCalledWith(startDate, 'm', 1);
+			expect(calendar.getPrev).toHaveBeenCalledWith(new NgbDate(2017, 1, 1), 'm', 1);
 		});
 
 		it('should allow access to default keyboard navigation', () => {
@@ -248,7 +254,7 @@ describe('ngb-datepicker integration', () => {
 			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
 			ngbCalendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbCalendar as Type<NgbCalendar>);
 
-			spyOn(ngbCalendar, 'getPrev');
+			vi.spyOn(ngbCalendar, 'getPrev');
 		});
 
 		it('should preserve the functionality of keyboard service', () => {
@@ -260,7 +266,7 @@ describe('ngb-datepicker integration', () => {
 
 @Component({
 	selector: 'test-cmp',
-	imports: [NgbDatepickerModule],
+	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
 	template: '',
 })
 class TestComponent {}

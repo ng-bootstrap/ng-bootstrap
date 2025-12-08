@@ -4,7 +4,7 @@
 		"outDir": "../out-tsc/ssr-app-e2e",
 		"module": "commonjs",
 		"target": "es5",
-		"types": ["jasmine", "node"]
+		"types": ["node"]
 	},
 	"include": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"]
 }

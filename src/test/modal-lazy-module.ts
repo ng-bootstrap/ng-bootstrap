@@ -1,6 +1,6 @@
 import { Component, inject, Injectable, NgModule, OnDestroy } from '@angular/core';
-import { NgbModal } from './modal';
-import { NgbModalModule } from './modal.module';
+import { NgbModal } from '../modal/modal';
+import { NgbModalModule } from '../modal/modal.module';
 import { RouterModule } from '@angular/router';
 
 @Injectable()

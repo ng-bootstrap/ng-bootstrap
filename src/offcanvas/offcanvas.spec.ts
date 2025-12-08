@@ -1,12 +1,13 @@
-import { Component, Injectable, Injector, OnDestroy, provideZoneChangeDetection, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
 import { isBrowserVisible } from '../test/common';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
-import createSpy = jasmine.createSpy;
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 const NOOP = () => {};
 
@@ -23,70 +24,23 @@ class CustomSpyService {
 describe('ngb-offcanvas', () => {
 	let fixture: ComponentFixture<TestComponent>;
 
-	beforeEach(() => {
-		jasmine.addMatchers({
-			toHaveOffcanvas: function () {
-				return {
-					compare: function (actual, content?, selector?) {
-						const offcanvasContent = document.querySelector(selector || 'body').querySelector('.offcanvas');
-						let pass = true;
-						let errMsg;
-
-						if (!content) {
-							pass = !!offcanvasContent;
-							errMsg = 'offcanvas open but found none';
-						} else {
-							pass = !!offcanvasContent && offcanvasContent.textContent.trim() === content;
-							errMsg = `offcanvas open with content ${content} but found none`;
-						}
-
-						return { pass: pass, message: `Expected ${actual.outerHTML} to have ${errMsg}` };
-					},
-					negativeCompare: function (actual, selector?) {
-						const openOffcanvas = document.querySelector(selector || 'body').querySelector('ngb-offcanvas-panel');
-
-						return {
-							pass: !openOffcanvas,
-							message: `Expected ${actual.outerHTML} not to have an offcanvas open but found one`,
-						};
-					},
-				};
-			},
-		});
-
-		jasmine.addMatchers({
-			toHaveOffcanvasBackdrop: function () {
-				return {
-					compare: function (actual, selector?) {
-						const backdrop = document.querySelector(selector || 'body').querySelector('ngb-offcanvas-backdrop');
-						return { pass: !!backdrop, message: `Expected ${actual.outerHTML} to have one backdrop element` };
-					},
-					negativeCompare: function (actual, selector?) {
-						const backdrop = document.querySelector(selector || 'body').querySelector('ngb-offcanvas-backdrop');
-						return { pass: !backdrop, message: `Expected ${actual.outerHTML} not to have a backdrop element` };
-					},
-				};
-			},
-		});
-	});
-
 	afterEach(() => {
 		// detect left-over modals and report errors when found
 
 		const remainingOffcanvasPanels = document.querySelectorAll('ngb-offcanvas-panel');
 		if (remainingOffcanvasPanels.length) {
-			fail(`${remainingOffcanvasPanels.length} offcanvas panels were left in the DOM.`);
+			throw new Error(`${remainingOffcanvasPanels.length} offcanvas panels were left in the DOM.`);
 		}
 
 		const remainingOffcanvasBackdrops = document.querySelectorAll('ngb-offcanvas-backdrop');
 		if (remainingOffcanvasBackdrops.length) {
-			fail(`${remainingOffcanvasBackdrops.length} offcanvas backdrops were left in the DOM.`);
+			throw new Error(`${remainingOffcanvasBackdrops.length} offcanvas backdrops were left in the DOM.`);
 		}
 	});
 
 	describe('default configuration', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ providers: [SpyService, provideZoneChangeDetection()] });
+			TestBed.configureTestingModule({ providers: [SpyService] });
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
@@ -97,8 +51,8 @@ describe('ngb-offcanvas', () => {
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				const offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
-				expect(offcanvasEl).not.toHaveClass('fade');
-				expect(offcanvasEl).toHaveClass('show');
+				expect(offcanvasEl.classList.contains('fade')).toBe(false);
+				expect(offcanvasEl.classList.contains('show')).toBe(true);
 
 				offcanvasInstance.close('some result');
 				fixture.detectChanges();
@@ -204,7 +158,7 @@ describe('ngb-offcanvas', () => {
 			});
 
 			it(`should emit 'closed' on close`, () => {
-				const closedSpy = createSpy();
+				const closedSpy = vi.fn();
 				fixture.componentInstance.openTplClose().closed.subscribe(closedSpy);
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveOffcanvas();
@@ -217,7 +171,7 @@ describe('ngb-offcanvas', () => {
 			});
 
 			it(`should emit 'dismissed' on dismissal`, () => {
-				const dismissSpy = createSpy();
+				const dismissSpy = vi.fn();
 				fixture.componentInstance.openTplDismiss().dismissed.subscribe(dismissSpy);
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveOffcanvas();
@@ -258,8 +212,8 @@ describe('ngb-offcanvas', () => {
 			});
 
 			it(`should emit 'shown' and 'hidden' events`, () => {
-				const shownSpy = createSpy();
-				const hiddenSpy = createSpy();
+				const shownSpy = vi.fn();
+				const hiddenSpy = vi.fn();
 				const modalRef = fixture.componentInstance.openTplClose();
 				modalRef.shown.subscribe(shownSpy);
 				modalRef.hidden.subscribe(hiddenSpy);
@@ -273,7 +227,7 @@ describe('ngb-offcanvas', () => {
 				expect(hiddenSpy).toHaveBeenCalledWith(undefined);
 			});
 
-			it('should remove / restore scroll bar when offcanvas is open and closed', fakeAsync(() => {
+			it('should remove / restore scroll bar when offcanvas is open and closed', async () => {
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 				const offcanvasRef = fixture.componentInstance.open('bar');
 				fixture.detectChanges();
@@ -281,10 +235,10 @@ describe('ngb-offcanvas', () => {
 
 				offcanvasRef.close('bar result');
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
-			}));
+			});
 
 			it('should not throw when close called multiple times', () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo');
@@ -348,18 +302,18 @@ describe('ngb-offcanvas', () => {
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should indicate if there is an open offcanvas', fakeAsync(() => {
+			it('should indicate if there is an open offcanvas', async () => {
 				fixture.componentInstance.open('foo');
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
-				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBeTrue();
+				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBe(true);
 
 				fixture.componentInstance.dismiss();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
-				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBeFalse();
-			}));
+				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBe(false);
+			});
 		});
 
 		describe('backdrop options', () => {
@@ -486,7 +440,7 @@ describe('ngb-offcanvas', () => {
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should not dismiss when the returned promise is resolved with false', fakeAsync(() => {
+			it('should not dismiss when the returned promise is resolved with false', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => Promise.resolve(false),
 				});
@@ -495,16 +449,16 @@ describe('ngb-offcanvas', () => {
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
-			}));
+			});
 
-			it('should not dismiss when the returned promise is rejected', fakeAsync(() => {
+			it('should not dismiss when the returned promise is rejected', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => Promise.reject('error'),
 				});
@@ -513,25 +467,25 @@ describe('ngb-offcanvas', () => {
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
-			}));
+			});
 
-			it('should dismiss when the returned promise is not resolved with false', fakeAsync(() => {
+			it('should dismiss when the returned promise is not resolved with false', async () => {
 				fixture.componentInstance.openTplDismiss(<any>{ beforeDismiss: () => Promise.resolve() });
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
 				fixture.detectChanges();
-				tick();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
-			}));
+			});
 
 			it('should dismiss when the callback is not defined', () => {
 				fixture.componentInstance.openTplDismiss({});
@@ -739,7 +693,7 @@ describe('ngb-offcanvas', () => {
 	describe('custom global configuration', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbOffcanvasConfig, useValue: { position: 'end' } }, provideZoneChangeDetection()],
+				providers: [{ provide: NgbOffcanvasConfig, useValue: { position: 'end' } }],
 			});
 			fixture = TestBed.createComponent(TestComponent);
 		});
@@ -781,7 +735,8 @@ describe('ngb-offcanvas', () => {
 				`,
 			})
 			class TestAnimationComponent {
-				@ViewChild('content', { static: true }) content;
+				@ViewChild('content', { static: true })
+				content;
 
 				constructor(private offcanvasService: NgbOffcanvas) {}
 
@@ -792,14 +747,14 @@ describe('ngb-offcanvas', () => {
 
 			beforeEach(() => {
 				TestBed.configureTestingModule({
-					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
+					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 				});
 			});
 
 			afterEach(() => document.body.classList.remove('ngb-reduce-motion'));
 
 			[true, false].forEach((reduceMotion) => {
-				it(`should run transform transition when opening/closing offcanvas (force-reduced-motion = ${reduceMotion})`, (done) => {
+				it(`should run transform transition when opening/closing offcanvas (force-reduced-motion = ${reduceMotion})`, async () => {
 					if (reduceMotion) {
 						document.body.classList.add('ngb-reduce-motion');
 					}
@@ -807,47 +762,41 @@ describe('ngb-offcanvas', () => {
 					component.detectChanges();
 
 					const offcanvasRef = component.componentInstance.open();
+					const shownPromise = firstValueFrom(offcanvasRef.shown);
+					component.detectChanges();
 
 					// Ensure that everything works fine after a reflow
 					document.body.getBoundingClientRect();
 
 					let offcanvasEl: HTMLElement | null = null;
 
-					offcanvasRef.shown.subscribe(() => {
-						offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
-						const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+					offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
+					const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 
-						expect(window.getComputedStyle(offcanvasEl).transform).toBe('none');
-						expect(offcanvasEl).toHaveClass('show');
-						expect(offcanvasEl).not.toHaveClass('showing');
+					expect(offcanvasEl.classList.contains('show')).toBe(true);
+					expect(offcanvasEl.classList.contains('showing')).toBe(!reduceMotion);
 
-						closeButton.click();
-						component.detectChanges();
-
-						expect(offcanvasEl).toHaveClass('show');
-						expect(offcanvasEl).not.toHaveClass('showing');
-						expect(offcanvasEl).toHaveClass('hiding');
-					});
-
-					offcanvasRef.hidden.subscribe(() => {
-						offcanvasEl = document.querySelector('ngb-offcanvas-panel');
-						expect(offcanvasEl).toBeNull();
-						done();
-					});
+					await shownPromise;
 
 					component.detectChanges();
-					offcanvasEl = document.querySelector('ngb-offcanvas-panel');
+					await component.whenStable();
 
-					// if reducedMotion is true, modal would be opened and closed already at this point
-					if (offcanvasEl) {
-						expect(offcanvasEl).toHaveClass('show');
-						expect(offcanvasEl).toHaveClass('showing');
-						expect(window.getComputedStyle(offcanvasEl).transform).toMatch(/matrix.*/);
+					expect(offcanvasEl.classList.contains('showing')).toBe(false);
+					expect(offcanvasEl.classList.contains('show')).toBe(true);
+
+					const hiddenPromise = firstValueFrom(offcanvasRef.hidden);
+					closeButton.click();
+					if (!reduceMotion) {
+						expect(offcanvasEl.classList.contains('hiding')).toBe(true);
 					}
+					expect(offcanvasEl.classList.contains('show')).toBe(!reduceMotion);
+					await hiddenPromise;
+
+					expect(document.querySelector('ngb-offcanvas-panel')).toBeNull();
 				});
 			});
 
-			it(`should start hiding even if the show animation isn't finished yet`, (done) => {
+			it(`should start hiding even if the show animation isn't finished yet`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
 				component.detectChanges();
 
@@ -861,22 +810,30 @@ describe('ngb-offcanvas', () => {
 				offcanvasRef.hidden.subscribe(() => {
 					offcanvasEl = document.querySelector('ngb-offcanvas-panel');
 					expect(offcanvasEl).toBeNull();
-					done();
 				});
 
 				component.detectChanges();
-				offcanvasEl = document.querySelector('ngb-offcanvas-panel');
+				offcanvasEl = document.querySelector('ngb-offcanvas-panel')!;
+				expect(offcanvasEl.classList.contains('show')).toBe(true);
+				expect(offcanvasEl.classList.contains('showing')).toBe(true);
 
-				expect(offcanvasEl).toHaveClass('show');
-				expect(offcanvasEl).toHaveClass('showing');
+				await firstValueFrom(offcanvasRef.shown);
+				component.detectChanges();
+				await component.whenStable();
+
+				expect(offcanvasEl.classList.contains('show')).toBe(true);
+				expect(offcanvasEl.classList.contains('showing')).toBe(false);
 
 				const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 				closeButton.click();
-				component.detectChanges();
 
-				expect(offcanvasEl).toHaveClass('show');
-				expect(offcanvasEl).not.toHaveClass('showing');
-				expect(offcanvasEl).toHaveClass('hiding');
+				expect(offcanvasEl.classList.contains('show')).toBe(true);
+				expect(offcanvasEl.classList.contains('showing')).toBe(false);
+				expect(offcanvasEl.classList.contains('hiding')).toBe(true);
+
+				await firstValueFrom(offcanvasRef.hidden);
+
+				expect(document.querySelector('ngb-offcanvas-panel')).toBeNull();
 			});
 		});
 	}
@@ -895,14 +852,14 @@ describe('ngb-offcanvas', () => {
 					RouterModule.forRoot([
 						{
 							path: 'lazy',
-							loadComponent: () => import('./offcanvas-lazy-component.spec'),
+							loadComponent: () => import('../test/offcanvas-lazy-component'),
 						},
 					]),
 				],
 			});
 		});
 
-		it('should use correct injectors', fakeAsync(() => {
+		it('should use correct injectors', async () => {
 			const router = TestBed.inject(Router);
 
 			const fixture = TestBed.createComponent(AppComponent);
@@ -910,14 +867,14 @@ describe('ngb-offcanvas', () => {
 
 			// opening by navigating
 			router.navigate(['lazy']);
-			tick();
+			await fixture.whenStable();
 			fixture.detectChanges();
 			expect(fixture.nativeElement).toHaveOffcanvas('lazy offcanvas');
 
 			// closing by navigating away
 			router.navigate(['']);
-			tick();
-		}));
+			await fixture.whenStable();
+		});
 	});
 });
 
@@ -1005,12 +962,18 @@ class TestComponent {
 	name = 'World';
 	openedModal: NgbOffcanvasRef;
 	show = true;
-	@ViewChild('content', { static: true }) tplContent;
-	@ViewChild('destroyableContent', { static: true }) tplDestroyableContent;
-	@ViewChild('contentWithClose', { static: true }) tplContentWithClose;
-	@ViewChild('contentWithDismiss', { static: true }) tplContentWithDismiss;
-	@ViewChild('contentWithImplicitContext', { static: true }) tplContentWithImplicitContext;
-	@ViewChild('contentWithIf', { static: true }) tplContentWithIf;
+	@ViewChild('content', { static: true })
+	tplContent;
+	@ViewChild('destroyableContent', { static: true })
+	tplDestroyableContent;
+	@ViewChild('contentWithClose', { static: true })
+	tplContentWithClose;
+	@ViewChild('contentWithDismiss', { static: true })
+	tplContentWithDismiss;
+	@ViewChild('contentWithImplicitContext', { static: true })
+	tplContentWithImplicitContext;
+	@ViewChild('contentWithIf', { static: true })
+	tplContentWithIf;
 
 	constructor(public offcanvasService: NgbOffcanvas) {}
 

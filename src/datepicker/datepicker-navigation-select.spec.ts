@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDate } from './ngb-date';
+import { describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -62,7 +63,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
 		const yearSelect = getYearSelect(fixture.nativeElement);
-		spyOn(fixture.componentInstance, 'onSelect');
+		vi.spyOn(fixture.componentInstance, 'onSelect');
 
 		changeSelect(monthSelect, '2');
 		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2016, 2, 1));

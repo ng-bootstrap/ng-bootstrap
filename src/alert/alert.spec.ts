@@ -1,9 +1,9 @@
-import createSpy = jasmine.createSpy;
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { By } from '@angular/platform-browser';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
@@ -123,7 +123,7 @@ describe('ngb-alert', () => {
 		const alertEl = getAlertElement(fixture.nativeElement);
 		const alert = fixture.debugElement.query(By.directive(NgbAlert)).injector.get(NgbAlert);
 
-		const closedSpy = createSpy();
+		const closedSpy = vi.fn();
 		expect(fixture.componentInstance.closed).toBe(false);
 		alert.close().subscribe(closedSpy);
 		fixture.detectChanges();
@@ -152,11 +152,11 @@ describe('ngb-alert', () => {
 	describe('Custom config', () => {
 		let config: NgbAlertConfig;
 
-		beforeEach(inject([NgbAlertConfig], (c: NgbAlertConfig) => {
-			config = c;
+		beforeEach(() => {
+			config = TestBed.inject(NgbAlertConfig);
 			config.dismissible = false;
 			config.type = 'success';
-		}));
+		});
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbAlert);
@@ -193,7 +193,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
 
@@ -206,7 +206,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 				const alertEl = getAlertElement(fixture.nativeElement);
 				const buttonEl = fixture.nativeElement.querySelector('button');
 
-				spyOn(fixture.componentInstance, 'onClose').and.callFake(() => {
+				vi.spyOn(fixture.componentInstance, 'onClose').mockImplementation(() => {
 					expect(window.getComputedStyle(alertEl).opacity).toBe('0');
 					expect(alertEl).not.toHaveCssClass('show');
 					expect(alertEl).toHaveCssClass('fade');

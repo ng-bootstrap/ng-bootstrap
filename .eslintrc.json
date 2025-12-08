@@ -8,10 +8,7 @@
 				"project": ["tsconfig.json"],
 				"createDefaultProgram": true
 			},
-			"plugins": ["deprecation", "unused-imports", "jasmine", "playwright"],
-			"env": {
-				"jasmine": true
-			},
+			"plugins": ["deprecation", "unused-imports", "playwright"],
 			"extends": [
 				"eslint:recommended",
 				"plugin:@typescript-eslint/recommended",
@@ -23,7 +20,6 @@
 				"semi": "off",
 				"prefer-const": "off",
 				"deprecation/deprecation": "error",
-				"jasmine/no-focused-tests": "error",
 				"playwright/no-focused-test": "error",
 				"@angular-eslint/component-class-suffix": "off",
 				"@angular-eslint/directive-class-suffix": "off",

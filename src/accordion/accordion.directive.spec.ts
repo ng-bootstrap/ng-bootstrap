@@ -1,4 +1,4 @@
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
@@ -7,15 +7,24 @@ import {
 	Component,
 	ElementRef,
 	Inject,
-	provideZoneChangeDetection,
 	QueryList,
 	ViewChild,
 	ViewChildren,
 } from '@angular/core';
 
-import { NgbAccordionConfig, NgbAccordionDirective, NgbAccordionItem, NgbAccordionModule } from './accordion.module';
+import {
+	NgbAccordionButton,
+	NgbAccordionConfig,
+	NgbAccordionDirective,
+	NgbAccordionItem,
+	NgbAccordionHeader,
+	NgbAccordionCollapse,
+	NgbAccordionBody,
+	NgbAccordionToggle,
+} from './accordion.module';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
+import { assert, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -61,13 +70,13 @@ function getItemsIds(element: HTMLElement): string[] {
 function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 	const noOfOpenPanelsExpected = openPanelsDef.reduce((soFar, def) => (def ? soFar + 1 : soFar), 0);
 	const collapseElements = getCollapses(nativeEl);
-	expect(collapseElements.length).toBe(openPanelsDef.length);
+	expect(collapseElements.length, 'number of collapse elements').toBe(openPanelsDef.length);
 
 	const panelsButton = getPanelsButtons(nativeEl);
 	const result = panelsButton.map((titleEl) => {
 		const isAriaExpanded = titleEl.getAttribute('aria-expanded') === 'true';
 		const isCSSCollapsed = titleEl.classList.contains('collapsed');
-		return isAriaExpanded === !isCSSCollapsed ? isAriaExpanded : fail('inconsistent state');
+		return isAriaExpanded === !isCSSCollapsed ? isAriaExpanded : assert.fail('inconsistent state');
 	});
 	const noOfOpenPanels = collapseElements
 		.map((collapse) => {
@@ -75,7 +84,7 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 		})
 		.reduce((soFar, def) => (def ? soFar + 1 : soFar), 0);
 
-	expect(noOfOpenPanels).toBe(noOfOpenPanelsExpected);
+	expect(noOfOpenPanels, 'number of open panels').toBe(noOfOpenPanelsExpected);
 	expect(result).toEqual(openPanelsDef);
 }
 
@@ -217,14 +226,12 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should not crash for panels without content', () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				<div ngbAccordionItem>
 					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
 					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
-			</div>`,
-		);
+			</div>`);
 		const panelsContent = getCollapseContent(fixture.nativeElement);
 
 		expect(panelsContent.length).toBe(1);
@@ -253,8 +260,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should not remove body content if destroyOnHide is false on the accordion and unset for the items', () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion [destroyOnHide]="false">
+		const fixture = createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
 				@for (item of items; track item) {
 					<div ngbAccordionItem>
 						<h2 ngbAccordionHeader>
@@ -265,8 +271,7 @@ describe('ngb-accordion directive', () => {
 						</div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 		fixture.detectChanges();
 
 		getCollapses(fixture.nativeElement).forEach((collapse, idx) => {
@@ -275,8 +280,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should respect destroyOnHide on the accordion-item if is set in accordion and accordion-item', () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion [destroyOnHide]="false">
+		const fixture = createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
 				@for (item of items; track item) {
 					<div ngbAccordionItem [destroyOnHide]="item.destroyOnHide">
 						<h2 ngbAccordionHeader>
@@ -287,8 +291,7 @@ describe('ngb-accordion directive', () => {
 						</div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 		fixture.componentInstance.items[0].destroyOnHide = true;
 		fixture.detectChanges();
 
@@ -298,8 +301,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow customizing headers with 'NgbAccordionToggle'`, () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item; let index = $index) {
 					<div [ngbAccordionItem]="'custom-' + index">
 						<div ngbAccordionHeader class='accordion-button'>
@@ -310,8 +312,7 @@ describe('ngb-accordion directive', () => {
 						</div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 
 		fixture.detectChanges();
 
@@ -330,8 +331,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should no allow clicking on disabled headers with 'NgbAccordionToggle'`, () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				<div ngbAccordionItem [disabled]="true">
 					<div ngbAccordionHeader class="accordion-button">
 						<button type='button' ngbAccordionToggle>Toggle</button>
@@ -340,8 +340,7 @@ describe('ngb-accordion directive', () => {
 						<div ngbAccordionBody><ng-template>Body</ng-template></div>
 					</div>
 				</div>
-			</div>`,
-		);
+			</div>`);
 
 		fixture.detectChanges();
 
@@ -368,8 +367,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should have a custom panel id', () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item; let index = $index) {
 					<div [ngbAccordionItem]="'custom-' + index">
 						<h2 ngbAccordionHeader>
@@ -380,14 +378,12 @@ describe('ngb-accordion directive', () => {
 						</div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 		expect(getItemsIds(fixture.nativeElement)).toEqual(['custom-0', 'custom-1', 'custom-2']);
 	});
 
 	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-item', () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item) {
 					<div ngbAccordionItem>
 						<h2 ngbAccordionHeader>
@@ -398,8 +394,7 @@ describe('ngb-accordion directive', () => {
 						</div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 
 		getCollapses(fixture.nativeElement).forEach((collapse) => {
 			expect(getCollapseBodyContent(collapse)).toBe('');
@@ -458,8 +453,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow using 'ngbAccordionItem' from the template`, () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 					<div ngbAccordionItem='item' #item='ngbAccordionItem' [collapsed]='false'>
 						<h2 ngbAccordionHeader>
 							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
@@ -469,8 +463,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 				<button id="btn-toggle" (click)='item.toggle()'></button>
 				<button id="btn-expand" (click)='item.collapsed = false'></button>
-				<button id="btn-disable" (click)='item.disabled = true'></button>`,
-		);
+				<button id="btn-disable" (click)='item.disabled = true'></button>`);
 
 		const el = fixture.nativeElement;
 
@@ -494,8 +487,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow using 'ngbAccordionItem' from the template in a loop`, () => {
-		const fixture = createTestComponent(
-			`<div ngbAccordion>
+		const fixture = createTestComponent(`<div ngbAccordion>
 				@for (i of items; track i) {
 					<div ngbAccordionItem #item='ngbAccordionItem'[collapsed]='i.collapsed' [disabled]='i.disabled'>
 						<h2 ngbAccordionHeader>
@@ -504,8 +496,7 @@ describe('ngb-accordion directive', () => {
 						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 				}
-			</div>`,
-		);
+			</div>`);
 
 		const el = fixture.nativeElement;
 
@@ -524,14 +515,14 @@ describe('ngb-accordion directive', () => {
 		const ci = fixture.componentInstance;
 		fixture.detectChanges();
 
-		spyOn(ci, 'showCallback');
-		spyOn(ci, 'shownCallback');
-		spyOn(ci, 'hideCallback');
-		spyOn(ci, 'hiddenCallback');
-		spyOn(ci, 'itemShowCallback');
-		spyOn(ci, 'itemShownCallback');
-		spyOn(ci, 'itemHideCallback');
-		spyOn(ci, 'itemHiddenCallback');
+		vi.spyOn(ci, 'showCallback');
+		vi.spyOn(ci, 'shownCallback');
+		vi.spyOn(ci, 'hideCallback');
+		vi.spyOn(ci, 'hiddenCallback');
+		vi.spyOn(ci, 'itemShowCallback');
+		vi.spyOn(ci, 'itemShownCallback');
+		vi.spyOn(ci, 'itemHideCallback');
+		vi.spyOn(ci, 'itemHiddenCallback');
 
 		getButton(el, 0).click();
 		fixture.detectChanges();
@@ -586,7 +577,14 @@ describe('ngb-accordion directive', () => {
 
 	describe('closeOthers', () => {
 		@Component({
-			imports: [NgbAccordionModule],
+			imports: [
+				NgbAccordionDirective,
+				NgbAccordionItem,
+				NgbAccordionHeader,
+				NgbAccordionButton,
+				NgbAccordionCollapse,
+				NgbAccordionBody,
+			],
 			template: `
 				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
 					@for (_ of state; track $index) {
@@ -605,10 +603,15 @@ describe('ngb-accordion directive', () => {
 		class CloseOthersComponent {
 			keys = ['one', 'two', 'three', 'four'];
 
-			@ViewChild(NgbAccordionDirective) accordion: NgbAccordionDirective;
-			@ViewChildren(NgbAccordionItem) items: QueryList<NgbAccordionItem>;
+			@ViewChild(NgbAccordionDirective)
+			accordion: NgbAccordionDirective;
+			@ViewChildren(NgbAccordionItem)
+			items: QueryList<NgbAccordionItem>;
 
-			constructor(@Inject('state') public state: boolean[]) {}
+			constructor(
+				@Inject('state')
+				public state: boolean[],
+			) {}
 		}
 
 		it(`should allow expanding one panel initially`, () => {
@@ -794,8 +797,8 @@ describe('ngb-accordion directive', () => {
 			const ids = getItemsIds(nativeElement);
 			expectOpenPanels(nativeElement, [true, false]);
 
-			spyOn(fixture.componentInstance, 'hiddenCallback');
-			spyOn(fixture.componentInstance, 'shownCallback');
+			vi.spyOn(fixture.componentInstance, 'hiddenCallback');
+			vi.spyOn(fixture.componentInstance, 'shownCallback');
 
 			accordionDirective.expand(ids[0]);
 			fixture.detectChanges();
@@ -841,7 +844,7 @@ describe('ngb-accordion directive', () => {
 
 			expectOpenPanels(nativeElement, [false]);
 
-			spyOn(fixture.componentInstance, 'shownCallback');
+			vi.spyOn(fixture.componentInstance, 'shownCallback');
 
 			accordionDirective.expand(ids[0]);
 			fixture.detectChanges();
@@ -958,7 +961,14 @@ describe('on push change detection strategy', () => {
 				</div>
 			</div>
 		`,
-		imports: [NgbAccordionModule],
+		imports: [
+			NgbAccordionDirective,
+			NgbAccordionItem,
+			NgbAccordionHeader,
+			NgbAccordionButton,
+			NgbAccordionCollapse,
+			NgbAccordionBody,
+		],
 		changeDetection: ChangeDetectionStrategy.OnPush,
 	})
 	class TestOnPushComponent {}
@@ -984,7 +994,15 @@ describe('on push change detection strategy', () => {
 
 it(`should allow querying from the body template`, () => {
 	@Component({
-		imports: [NgbAccordionModule],
+		selector: 'query-test-cmp',
+		imports: [
+			NgbAccordionDirective,
+			NgbAccordionItem,
+			NgbAccordionHeader,
+			NgbAccordionButton,
+			NgbAccordionCollapse,
+			NgbAccordionBody,
+		],
 		template: `
 			<div ngbAccordion>
 				<div ngbAccordionItem [collapsed]="false">
@@ -1003,7 +1021,8 @@ it(`should allow querying from the body template`, () => {
 		`,
 	})
 	class QueryTestComponent {
-		@ViewChild('bar') bar: ElementRef;
+		@ViewChild('bar')
+		bar: ElementRef;
 	}
 
 	let cmp = TestBed.createComponent(QueryTestComponent);
@@ -1015,10 +1034,10 @@ it(`should allow querying from the body template`, () => {
 describe('Custom config', () => {
 	let config: NgbAccordionConfig;
 
-	beforeEach(inject([NgbAccordionConfig], (c: NgbAccordionConfig) => {
-		config = c;
+	beforeEach(() => {
+		config = TestBed.inject(NgbAccordionConfig);
 		config.closeOthers = true;
-	}));
+	});
 
 	it('should initialize inputs with provided config', () => {
 		const fixture = TestBed.createComponent(TestComponent);
@@ -1047,7 +1066,15 @@ it('should initialize inputs with provided config', () => {
 if (isBrowserVisible('ngb-accordion-directive animations')) {
 	describe('ngb-accordion-directive animations', () => {
 		@Component({
-			imports: [NgbAccordionModule],
+			imports: [
+				NgbAccordionDirective,
+				NgbAccordionItem,
+				NgbAccordionHeader,
+				NgbAccordionButton,
+				NgbAccordionCollapse,
+				NgbAccordionBody,
+				NgbAccordionToggle,
+			],
 			template: `
 				<div ngbAccordion (shown)="onShown($event)" (hidden)="onHidden($event)">
 					<div ngbAccordionItem [collapsed]="false" (shown)="onCollapseShown()" (hidden)="onCollapseHidden()">
@@ -1071,11 +1098,11 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 		}
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
 
-		it(`should run collapsing transition (force-reduced-motion = false)`, (done) => {
+		it(`should run collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
 			fixture.componentInstance.reduceMotion = false;
 			fixture.detectChanges();
@@ -1084,45 +1111,55 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 			const buttonEl = getPanelsButtons(el)[0];
 			const collapseEl = getCollapses(el)[0];
-			const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
-			const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
-			const onCollapseShownSpy = spyOn(fixture.componentInstance, 'onCollapseShown');
-			const onCollapseHiddenSpy = spyOn(fixture.componentInstance, 'onCollapseHidden');
+			const onShownSpy = vi.spyOn(fixture.componentInstance, 'onShown');
+			const onHiddenSpy = vi.spyOn(fixture.componentInstance, 'onHidden');
+			const onCollapseShownSpy = vi.spyOn(fixture.componentInstance, 'onCollapseShown');
+			const onCollapseHiddenSpy = vi.spyOn(fixture.componentInstance, 'onCollapseHidden');
 
-			onHiddenSpy.and.callFake((collapseId) => {
-				expect(onCollapseHiddenSpy).toHaveBeenCalled();
-				expect(collapseId).toBe(id);
+			const collapsePromise = new Promise<void>((resolve) =>
+				onHiddenSpy.mockImplementation((collapseId) => {
+					expect(onCollapseHiddenSpy).toHaveBeenCalled();
+					expect(collapseId).toBe(id);
 
-				expect(collapseEl).toHaveClass('collapse');
-				expect(collapseEl).not.toHaveClass('collapsing');
-				expect(collapseEl).not.toHaveClass('show');
+					expect(collapseEl.classList.contains('collapse')).toBe(true);
+					expect(collapseEl.classList.contains('collapsing')).toBe(false);
+					expect(collapseEl.classList.contains('show')).toBe(false);
 
-				// Expanding
-				buttonEl.click();
-				fixture.detectChanges();
-			});
-
-			onShownSpy.and.callFake((collapseId) => {
-				expect(onCollapseShownSpy).toHaveBeenCalled();
-				expect(collapseId).toBe(id);
-
-				expect(collapseEl).toHaveClass('collapse');
-				expect(collapseEl).not.toHaveClass('collapsing');
-				expect(collapseEl).toHaveClass('show');
-				done();
-			});
-
-			expect(collapseEl).toHaveClass('collapse');
-			expect(collapseEl).toHaveClass('show');
-			expect(collapseEl).not.toHaveClass('collapsing');
+					resolve();
+				}),
+			);
 
 			// Collapsing
 			buttonEl.click();
 			fixture.detectChanges();
 
-			expect(collapseEl).not.toHaveClass('collapse');
-			expect(collapseEl).not.toHaveClass('show');
-			expect(collapseEl).toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(false);
+			expect(collapseEl.classList.contains('show')).toBe(false);
+			expect(collapseEl.classList.contains('collapsing')).toBe(true);
+
+			await collapsePromise;
+
+			const expandPromise = new Promise<void>((resolve) =>
+				onShownSpy.mockImplementation((collapseId) => {
+					expect(onCollapseShownSpy).toHaveBeenCalled();
+					expect(collapseId).toBe(id);
+
+					expect(collapseEl.classList.contains('collapse')).toBe(true);
+					expect(collapseEl.classList.contains('collapsing')).toBe(false);
+					expect(collapseEl.classList.contains('show')).toBe(true);
+					resolve();
+				}),
+			);
+
+			// Expanding
+			buttonEl.click();
+			fixture.detectChanges();
+
+			expect(collapseEl.classList.contains('collapse')).toBe(false);
+			expect(collapseEl.classList.contains('show')).toBe(false);
+			expect(collapseEl.classList.contains('collapsing')).toBe(true);
+
+			await expandPromise;
 		});
 
 		it(`should run collapsing transition (force-reduced-motion = true)`, () => {
@@ -1134,14 +1171,14 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 			const buttonEl = getPanelsButtons(el)[0];
 			const collapseEl = getCollapses(el)[0];
-			const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
-			const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
-			const onCollapseShownSpy = spyOn(fixture.componentInstance, 'onCollapseShown');
-			const onCollapseHiddenSpy = spyOn(fixture.componentInstance, 'onCollapseHidden');
+			const onShownSpy = vi.spyOn(fixture.componentInstance, 'onShown');
+			const onHiddenSpy = vi.spyOn(fixture.componentInstance, 'onHidden');
+			const onCollapseShownSpy = vi.spyOn(fixture.componentInstance, 'onCollapseShown');
+			const onCollapseHiddenSpy = vi.spyOn(fixture.componentInstance, 'onCollapseHidden');
 
-			expect(collapseEl).toHaveClass('collapse');
-			expect(collapseEl).toHaveClass('show');
-			expect(collapseEl).not.toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(true);
+			expect(collapseEl.classList.contains('show')).toBe(true);
+			expect(collapseEl.classList.contains('collapsing')).toBe(false);
 
 			// Collapsing
 			buttonEl.click();
@@ -1149,9 +1186,9 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 			expect(onHiddenSpy).toHaveBeenCalledWith(id);
 			expect(onCollapseHiddenSpy).toHaveBeenCalled();
-			expect(collapseEl).toHaveClass('collapse');
-			expect(collapseEl).not.toHaveClass('show');
-			expect(collapseEl).not.toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(true);
+			expect(collapseEl.classList.contains('show')).toBe(false);
+			expect(collapseEl.classList.contains('collapsing')).toBe(false);
 
 			// Expanding
 			buttonEl.click();
@@ -1160,12 +1197,12 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 			expect(onShownSpy).toHaveBeenCalledWith(id);
 			expect(onCollapseShownSpy).toHaveBeenCalled();
 
-			expect(collapseEl).toHaveClass('collapse');
-			expect(collapseEl).toHaveClass('show');
-			expect(collapseEl).not.toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(true);
+			expect(collapseEl.classList.contains('show')).toBe(true);
+			expect(collapseEl.classList.contains('collapsing')).toBe(false);
 		});
 
-		it(`should run revert collapsing transition (force-reduced-motion = false)`, (done) => {
+		it(`should run revert collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
 			fixture.componentInstance.reduceMotion = false;
 			fixture.detectChanges();
@@ -1176,42 +1213,46 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 			const buttonEl = getPanelsButtons(el)[0];
 			const collapseEl = getCollapses(el)[0];
 
-			const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
-			const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
-			const onCollapseShownSpy = spyOn(fixture.componentInstance, 'onCollapseShown');
-			const onCollapseHiddenSpy = spyOn(fixture.componentInstance, 'onCollapseHidden');
+			const onHiddenSpy = vi.spyOn(fixture.componentInstance, 'onHidden');
+			const onShownSpy = vi.spyOn(fixture.componentInstance, 'onShown');
+			const onCollapseShownSpy = vi.spyOn(fixture.componentInstance, 'onCollapseShown');
+			const onCollapseHiddenSpy = vi.spyOn(fixture.componentInstance, 'onCollapseHidden');
 
-			onShownSpy.and.callFake((panelId) => {
-				expect(onHiddenSpy).not.toHaveBeenCalled();
-				expect(onCollapseHiddenSpy).not.toHaveBeenCalled();
-				expect(onCollapseShownSpy).toHaveBeenCalled();
-				expect(panelId).toBe(id);
-
-				expect(collapseEl).toHaveClass('collapse');
-				expect(collapseEl).toHaveClass('show');
-				expect(collapseEl).not.toHaveClass('collapsing');
-				done();
-			});
-
-			expect(collapseEl).toHaveClass('collapse');
-			expect(collapseEl).toHaveClass('show');
-			expect(collapseEl).not.toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(true);
+			expect(collapseEl.classList.contains('show')).toBe(true);
+			expect(collapseEl.classList.contains('collapsing')).toBe(false);
 
 			// Collapsing
 			buttonEl.click();
 			fixture.detectChanges();
 
-			expect(collapseEl).not.toHaveClass('collapse');
-			expect(collapseEl).not.toHaveClass('show');
-			expect(collapseEl).toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(false);
+			expect(collapseEl.classList.contains('show')).toBe(false);
+			expect(collapseEl.classList.contains('collapsing')).toBe(true);
+
+			const expandPromise = new Promise<void>((resolve) =>
+				onShownSpy.mockImplementation((panelId) => {
+					expect(onHiddenSpy).not.toHaveBeenCalled();
+					expect(onCollapseHiddenSpy).not.toHaveBeenCalled();
+					expect(onCollapseShownSpy).toHaveBeenCalled();
+					expect(panelId).toBe(id);
+
+					expect(collapseEl.classList.contains('collapse')).toBe(true);
+					expect(collapseEl.classList.contains('show')).toBe(true);
+					expect(collapseEl.classList.contains('collapsing')).toBe(false);
+					resolve();
+				}),
+			);
 
 			// Expanding
 			buttonEl.click();
 			fixture.detectChanges();
 
-			expect(collapseEl).not.toHaveClass('collapse');
-			expect(collapseEl).not.toHaveClass('show');
-			expect(collapseEl).toHaveClass('collapsing');
+			expect(collapseEl.classList.contains('collapse')).toBe(false);
+			expect(collapseEl.classList.contains('show')).toBe(false);
+			expect(collapseEl.classList.contains('collapsing')).toBe(true);
+
+			await expandPromise;
 		});
 	});
 }
@@ -1219,7 +1260,15 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 @Component({
 	selector: 'test-cmp',
 	template: '<div ngbAccordion></div>',
-	imports: [NgbAccordionModule],
+	imports: [
+		NgbAccordionDirective,
+		NgbAccordionItem,
+		NgbAccordionHeader,
+		NgbAccordionButton,
+		NgbAccordionCollapse,
+		NgbAccordionBody,
+		NgbAccordionToggle,
+	],
 })
 class TestComponent {
 	destroyOnHide = true;

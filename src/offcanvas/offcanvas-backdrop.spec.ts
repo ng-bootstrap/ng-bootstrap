@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-
+import { describe, expect, it } from 'vitest';
 import { NgbOffcanvasBackdrop } from './offcanvas-backdrop';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 

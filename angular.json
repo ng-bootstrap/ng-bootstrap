@@ -11,52 +11,37 @@
 				"build": {
 					"builder": "@angular/build:ng-packagr",
 					"options": {
-						"tsConfig": "src/tsconfig.json",
 						"project": "src/ng-package.json"
 					},
 					"configurations": {
 						"production": {
 							"tsConfig": "src/tsconfig.prod.json"
+						},
+						"development": {
+							"tsConfig": "src/tsconfig.json"
 						}
-					}
+					},
+					"defaultConfiguration": "production"
 				},
 				"test": {
-					"builder": "@angular-devkit/build-angular:karma",
+					"builder": "@angular/build:unit-test",
 					"options": {
-						"fileReplacements": [
-							{
-								"replace": "src/config/config.environment.ts",
-								"with": "src/config/config.environment.test.ts"
-							},
-							{
-								"replace": "src/utils/transition/transition.environment.ts",
-								"with": "src/utils/transition/transition.environment.test.ts"
-							}
-						],
-						"main": "src/test.ts",
-						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "src/tsconfig.spec.json",
-						"karmaConfig": "src/karma.conf.js",
-						"codeCoverageExclude": ["src/test.ts", "src/test/**"]
+						"providersFile": "src/test-providers.ts",
+						"setupFiles": ["src/setup-test.ts"]
 					},
 					"configurations": {
-						"tdd": {
-							"sourceMap": false
-						},
-						"coverage": {
-							"codeCoverage": true,
-							"sourceMap": true,
-							"progress": false,
-							"watch": false
+						"default": {
+							"coverageExclude": ["src/test/**"],
+							"coverageReporters": ["lcov"],
+							"browsers": ["ChromiumHeadless"],
+							"runnerConfig": "src/vitest.config.ts"
 						},
 						"saucelabs": {
-							"sourceMap": false,
-							"progress": false,
-							"watch": false,
-							"karmaConfig": "src/karma.sauce.conf.js"
+							"runnerConfig": "src/vitest-sauce.config.ts"
 						}
 					},
-					"defaultConfiguration": "tdd"
+					"defaultConfiguration": "default"
 				},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",

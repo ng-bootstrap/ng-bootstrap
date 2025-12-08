@@ -1,4 +1,5 @@
 import { NgbDateNativeUTCAdapter } from './ngb-date-native-utc-adapter';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('ngb-date-native-utc model adapter', () => {
 	let adapter: NgbDateNativeUTCAdapter;

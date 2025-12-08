@@ -1,10 +1,11 @@
-import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -315,14 +316,14 @@ describe('ngb-progressbar', () => {
 	describe('Custom config', () => {
 		let config: NgbProgressbarConfig;
 
-		beforeEach(inject([NgbProgressbarConfig], (c: NgbProgressbarConfig) => {
-			config = c;
+		beforeEach(() => {
+			config = TestBed.inject(NgbProgressbarConfig);
 			config.max = 1000;
 			config.striped = true;
 			config.animated = true;
 			config.textType = 'white';
 			config.type = 'success';
-		}));
+		});
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbProgressbar);
@@ -338,17 +339,15 @@ describe('ngb-progressbar', () => {
 	});
 
 	describe('Custom config as provider', () => {
-		let config = new NgbProgressbarConfig();
-		config.max = 1000;
-		config.striped = true;
-		config.animated = true;
-		config.textType = 'light';
-		config.type = 'success';
+		let config: NgbProgressbarConfig;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbProgressbarConfig, useValue: config }, provideZoneChangeDetection()],
-			});
+			config = TestBed.inject(NgbProgressbarConfig);
+			config.max = 1000;
+			config.striped = true;
+			config.animated = true;
+			config.textType = 'light';
+			config.type = 'success';
 		});
 
 		it('should initialize inputs with provided config as provider', () => {

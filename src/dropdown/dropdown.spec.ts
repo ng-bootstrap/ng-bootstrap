@@ -1,10 +1,17 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
-import createSpy = jasmine.createSpy;
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { NgbDropdown, NgbDropdownModule } from './dropdown.module';
+import {
+	NgbDropdown,
+	NgbDropdownAnchor,
+	NgbDropdownToggle,
+	NgbDropdownMenu,
+	NgbDropdownItem,
+	NgbDropdownButtonItem,
+} from './dropdown.module';
 import { NgbDropdownConfig } from './dropdown-config';
 import { By } from '@angular/platform-browser';
 import { Options } from '@popperjs/core';
@@ -24,46 +31,41 @@ function getToggleEl(tc: HTMLElement): HTMLButtonElement {
 	return (tc.querySelector(`[ngbDropdownToggle]`) ?? tc.querySelector(`[ngbDropdownAnchor]`))!;
 }
 
-const jasmineMatchers: jasmine.CustomMatcherFactories = {
-	toBeShown: function () {
-		return {
-			compare: function (actual: HTMLElement) {
-				const dropdownEl = getDropdownEl(actual);
-				const toggleEl = getToggleEl(actual);
-				const menuEl = getMenuEl(actual);
-				const isOpen =
-					dropdownEl.classList.contains('show') &&
-					toggleEl.classList.contains('show') &&
-					menuEl.classList.contains('show');
+expect.extend({
+	toBeShown(actual: HTMLElement) {
+		const { isNot } = this;
+		if (isNot) {
+			const dropdownEl = getDropdownEl(actual);
+			const toggleEl = getToggleEl(actual);
+			const menuEl = getMenuEl(actual);
+			const isClosed =
+				!dropdownEl.classList.contains('show') &&
+				!toggleEl.classList.contains('show') &&
+				!menuEl.classList.contains('show');
 
-				return {
-					pass: isOpen,
-					message: `Expected ${actual.outerHTML} to have the "show class on container, toggle and menu elements"`,
-				};
-			},
-			negativeCompare: function (actual: HTMLElement) {
-				const dropdownEl = getDropdownEl(actual);
-				const toggleEl = getToggleEl(actual);
-				const menuEl = getMenuEl(actual);
-				const isClosed =
-					!dropdownEl.classList.contains('show') &&
-					!toggleEl.classList.contains('show') &&
-					!menuEl.classList.contains('show');
+			return {
+				pass: !isClosed,
+				message: () =>
+					`Expected ${actual.outerHTML} not to have the "show class on container, toggle and menu elements"`,
+			};
+		} else {
+			const dropdownEl = getDropdownEl(actual);
+			const toggleEl = getToggleEl(actual);
+			const menuEl = getMenuEl(actual);
+			const isOpen =
+				dropdownEl.classList.contains('show') &&
+				toggleEl.classList.contains('show') &&
+				menuEl.classList.contains('show');
 
-				return {
-					pass: isClosed,
-					message: `Expected ${actual.outerHTML} not to have the "show class on container, toggle and menu elements"`,
-				};
-			},
-		};
+			return {
+				pass: isOpen,
+				message: () => `Expected ${actual.outerHTML} to have the "show class on container, toggle and menu elements"`,
+			};
+		}
 	},
-};
+});
 
 describe('ngb-dropdown', () => {
-	beforeEach(() => {
-		jasmine.addMatchers(jasmineMatchers);
-	});
-
 	it('should be closed and down by default', () => {
 		const html = `
       <div ngbDropdown>
@@ -320,14 +322,14 @@ describe('ngb-dropdown', () => {
 		const itemEl = fixture.nativeElement.querySelector('button');
 
 		expect(itemEl).not.toHaveCssClass('disabled');
-		expect(itemEl.disabled).toBeFalse();
+		expect(itemEl.disabled).toBe(false);
 		expect(itemEl.tabIndex).toBe(0);
 
 		fixture.componentInstance.disabled = true;
 		fixture.detectChanges();
 
 		expect(itemEl).toHaveCssClass('disabled');
-		expect(itemEl.disabled).toBeTrue();
+		expect(itemEl.disabled).toBe(true);
 		expect(itemEl.tabIndex).toBe(-1);
 	});
 
@@ -381,7 +383,7 @@ describe('ngb-dropdown', () => {
 		fixture.detectChanges();
 		expect(menuEl).toHaveCssClass('show');
 
-		const opencloseSpy = createSpy();
+		const opencloseSpy = vi.fn();
 		dropdown.openChange.subscribe(opencloseSpy);
 
 		fixture.componentInstance.show = false;
@@ -392,10 +394,6 @@ describe('ngb-dropdown', () => {
 });
 
 describe('ngb-dropdown-toggle', () => {
-	beforeEach(() => {
-		jasmine.addMatchers(jasmineMatchers);
-	});
-
 	it('should toggle dropdown on click', () => {
 		const html = `
       <div ngbDropdown>
@@ -463,10 +461,10 @@ describe('ngb-dropdown-toggle', () => {
 		const dropdownElement = document.querySelector('div[ngbDropdownMenu]')!;
 		const parentContainer = dropdownElement.parentNode!;
 		expect(parentContainer).toHaveCssClass('dropdown');
-		expect(parentContainer.parentNode).toBe(document.body, 'The dropdown should be attached to the body');
+		expect(parentContainer.parentNode, 'The dropdown should be attached to the body').toBe(document.body);
 	});
 
-	it(`should second placement if the first one doesn't fit`, fakeAsync(() => {
+	it(`should second placement if the first one doesn't fit`, async () => {
 		const html = `
       <div ngbDropdown placement="start-top end-top">
           <button ngbDropdownToggle>
@@ -483,15 +481,16 @@ describe('ngb-dropdown-toggle', () => {
 		const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
 		dropdown.open();
 		fixture.detectChanges();
-		tick();
+		await fixture.whenStable();
 		const dropdownEl = compiled.querySelector('[ngbdropdownmenu]');
 		const targetElement = compiled.querySelector('button');
 		expect(
 			Math.abs(dropdownEl.getBoundingClientRect().left - targetElement.getBoundingClientRect().right),
-		).toBeLessThan(3, 'Wrong dropdown placement');
-	}));
+			'Wrong dropdown placement',
+		).toBeLessThan(3);
+	});
 
-	it('should modify the popper options', (done) => {
+	it('should modify the popper options', async () => {
 		const fixture = createTestComponent(`
     <div ngbDropdown placement="start-top end-top">
         <button ngbDropdownToggle>
@@ -504,16 +503,18 @@ describe('ngb-dropdown-toggle', () => {
     </div>`);
 		const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
 
-		const spy = createSpy();
+		const spy = vi.fn();
 		dropdown.popperOptions = (options: Partial<Options>) => {
 			options.modifiers!.push({ name: 'test', enabled: true, phase: 'main', fn: spy });
 			return options;
 		};
 		dropdown.open();
 
-		queueMicrotask(() => {
-			expect(spy).toHaveBeenCalledTimes(1);
-			done();
+		await new Promise<void>((resolve) => {
+			queueMicrotask(() => {
+				expect(spy).toHaveBeenCalledTimes(1);
+				resolve();
+			});
 		});
 	});
 
@@ -541,10 +542,11 @@ describe('ngb-dropdown-toggle', () => {
 			fixture.detectChanges();
 			const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
-			expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
-			expect(dropdownEl.getAttribute('data-popper-placement')).toBeNull(
+			expect(dropdownEl.getAttribute('style'), `The dropdown element shouldn't have calculated styles`).toBeNull();
+			expect(
+				dropdownEl.getAttribute('data-popper-placement'),
 				`The dropdown element shouldn't have data-popper-placement set`,
-			);
+			).toBeNull();
 		});
 
 		it(`shouldn't position the menu even if inside if block`, () => {
@@ -572,10 +574,11 @@ describe('ngb-dropdown-toggle', () => {
 			fixture.detectChanges();
 			const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
-			expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
-			expect(dropdownEl.getAttribute('data-popper-placement')).toBeNull(
+			expect(dropdownEl.getAttribute('style'), `The dropdown element shouldn't have calculated styles`).toBeNull();
+			expect(
+				dropdownEl.getAttribute('data-popper-placement'),
 				`The dropdown element shouldn't have data-popper-placement set`,
-			);
+			).toBeNull();
 		});
 
 		it(`can override the defaut display value`, () => {
@@ -601,7 +604,7 @@ describe('ngb-dropdown-toggle', () => {
 			fixture.detectChanges();
 			const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
-			expect(dropdownEl.getAttribute('style')).not.toBeNull(`The dropdown element should have calculated styles`);
+			expect(dropdownEl.getAttribute('style'), `The dropdown element should have calculated styles`).not.toBeNull();
 		});
 	});
 
@@ -609,6 +612,9 @@ describe('ngb-dropdown-toggle', () => {
 		let config: NgbDropdownConfig;
 
 		beforeEach(() => {
+			TestBed.configureTestingModule({
+				providers: [NgbDropdownConfig],
+			});
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -620,12 +626,9 @@ describe('ngb-dropdown-toggle', () => {
       </div>`,
 				},
 			});
-		});
-
-		beforeEach(inject([NgbDropdownConfig], (c: NgbDropdownConfig) => {
-			config = c;
+			config = TestBed.inject(NgbDropdownConfig);
 			config.placement = 'top-right';
-		}));
+		});
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(TestComponent);
@@ -638,23 +641,21 @@ describe('ngb-dropdown-toggle', () => {
 	});
 
 	describe('Custom config as provider', () => {
-		let config = new NgbDropdownConfig();
-		config.placement = 'top-right';
-
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbDropdownConfig, useValue: config }, provideZoneChangeDetection()],
-			});
-		});
-
 		it('should initialize inputs with provided config as provider', () => {
-			const fixture = createTestComponent(`
-      <div ngbDropdown>
-          <div ngbDropdownMenu>
-            <a ngbDropdownItem>dropup item</a>
-            <a ngbDropdownItem>dropup item</a>
-          </div>
-      </div>`);
+			TestBed.overrideComponent(TestComponent, {
+				set: {
+					template: `
+						<div ngbDropdown>
+							<div ngbDropdownMenu>
+								<a ngbDropdownItem>dropup item</a>
+								<a ngbDropdownItem>dropup item</a>
+							</div>
+						</div>`,
+				},
+			});
+			const config = TestBed.inject(NgbDropdownConfig);
+			config.placement = 'top-right';
+			const fixture = TestBed.createComponent(TestComponent);
 			fixture.detectChanges();
 
 			const compiled = fixture.nativeElement;
@@ -666,7 +667,7 @@ describe('ngb-dropdown-toggle', () => {
 
 @Component({
 	selector: 'test-cmp',
-	imports: [NgbDropdownModule],
+	imports: [NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	template: '',
 })
 class TestComponent {

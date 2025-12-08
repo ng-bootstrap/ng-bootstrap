@@ -1,5 +1,6 @@
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { expect } from 'vitest';
 
 function normalizeText(txt: string | null): string {
 	return txt != null ? txt.trim().replace(/\s+/g, ' ') : '';

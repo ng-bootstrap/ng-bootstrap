@@ -1,5 +1,5 @@
 import { Component, inject, Injectable, Injector, OnDestroy } from '@angular/core';
-import { NgbOffcanvas } from './offcanvas';
+import { NgbOffcanvas } from '../offcanvas/offcanvas';
 
 @Injectable()
 class LazyService {

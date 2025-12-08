@@ -9,6 +9,7 @@ import { NavigationEvent } from './datepicker-view-model';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
+import { describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -38,7 +39,7 @@ describe('ngb-datepicker-navigation', () => {
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
 		const yearSelect = getYearSelect(fixture.nativeElement);
-		spyOn(fixture.componentInstance, 'onSelect');
+		vi.spyOn(fixture.componentInstance, 'onSelect');
 
 		changeSelect(monthSelect, '2');
 		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2016, 2, 1));
@@ -88,7 +89,7 @@ describe('ngb-datepicker-navigation', () => {
 		const [previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
 		const previousButtonSpan = previousButton.querySelector<HTMLElement>('span')!;
 		const nextButtonSpan = nextButton.querySelector<HTMLElement>('span')!;
-		spyOn(fixture.componentInstance, 'onNavigate');
+		vi.spyOn(fixture.componentInstance, 'onNavigate');
 
 		// prev
 		previousButton.click();

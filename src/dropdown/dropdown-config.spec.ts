@@ -1,4 +1,5 @@
 import { NgbDropdownConfig } from './dropdown-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-dropdown-config', () => {
 	it('should have sensible default values', () => {

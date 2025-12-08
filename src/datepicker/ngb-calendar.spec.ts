@@ -1,5 +1,6 @@
 import { NgbCalendarGregorian } from './ngb-calendar';
 import { NgbDate } from './ngb-date';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-calendar-gregorian', () => {
 	const calendar = new NgbCalendarGregorian();

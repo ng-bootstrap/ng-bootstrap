@@ -1,4 +1,5 @@
 import { NgbDate } from './ngb-date';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-date', () => {
 	describe('from', () => {

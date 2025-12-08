@@ -1,8 +1,10 @@
+import { TestBed } from '@angular/core/testing';
 import { NgbInputDatepickerConfig } from './datepicker-input-config';
+import { describe, expect, it } from 'vitest';
 
 describe('NgbInputDatepickerConfig', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbInputDatepickerConfig();
+		const config = TestBed.inject(NgbInputDatepickerConfig);
 
 		expect(config.autoClose).toBe(true);
 		expect(config.container).toBeUndefined();
