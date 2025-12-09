@@ -1,5 +1,6 @@
 import { NgbCalendarIslamicUmalqura } from './ngb-calendar-islamic-umalqura';
 import { NgbDate } from '../ngb-date';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-calendar-islamic-umalqura', () => {
 	const DATE_TABLE = [
@@ -4596,10 +4597,10 @@ describe('ngb-calendar-islamic-umalqura', () => {
 			DATE_TABLE.forEach((element) => {
 				const iDate = new NgbDate(element[3], element[4], element[5]);
 				const gDate = new Date(element[0], element[1], element[2]);
-				expect(calendar.toGregorian(iDate).getTime()).toEqual(
-					gDate.getTime(),
+				expect(
+					calendar.toGregorian(iDate).getTime(),
 					`Hijri ${iDate.year}-${iDate.month}-${iDate.day} should be Gregorian ${gDate}`,
-				);
+				).toEqual(gDate.getTime());
 			});
 		});
 	});
@@ -4610,9 +4611,10 @@ describe('ngb-calendar-islamic-umalqura', () => {
 				const iDate = new NgbDate(element[3], element[4], element[5]);
 				const gDate = new Date(element[0], element[1], element[2]);
 				const iDate2 = calendar.fromGregorian(gDate);
-				expect(iDate2.equals(iDate)).toBeTruthy(
+				expect(
+					iDate2.equals(iDate),
 					`Gregorian ${gDate} should be Hijri ${iDate.year}-${iDate.month}-${iDate.day}`,
-				);
+				).toBeTruthy();
 			});
 		});
 
@@ -4621,9 +4623,10 @@ describe('ngb-calendar-islamic-umalqura', () => {
 				const iDate = new NgbDate(element[3], element[4], element[5]);
 				const gDate = new Date(element[0], element[1], element[2], 23, 59, 59, 999);
 				const iDate2 = calendar.fromGregorian(gDate);
-				expect(iDate2.equals(iDate)).toBeTruthy(
+				expect(
+					iDate2.equals(iDate),
 					`Gregorian ${gDate} should be Hijri ${iDate.year}-${iDate.month}-${iDate.day}`,
-				);
+				).toBeTruthy();
 			});
 		});
 	});
@@ -4643,10 +4646,10 @@ describe('ngb-calendar-islamic-umalqura', () => {
 	describe('getDaysInIslamicMonth', () => {
 		it('should return the correct number of days in islamic month', () => {
 			MONTH_LENGTH.forEach((element) => {
-				expect(calendar.getDaysPerMonth(element[1], element[0])).toEqual(
-					element[2],
+				expect(
+					calendar.getDaysPerMonth(element[1], element[0]),
 					`Hijri month ${element[1]}-${element[0]} should contain ${element[2]} days`,
-				);
+				).toEqual(element[2]);
 			});
 		});
 	});

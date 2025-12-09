@@ -1,4 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';

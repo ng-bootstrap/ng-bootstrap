@@ -1,7 +1,7 @@
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import {
 	FormControl,
 	FormsModule,
@@ -14,13 +14,14 @@ import {
 import { NgbRating } from './rating';
 import { NgbRatingConfig } from './rating-config';
 import { By } from '@angular/platform-browser';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function createKeyDownEvent(key: string) {
 	const event = { key, preventDefault: () => {} };
-	spyOn(event, 'preventDefault');
+	vi.spyOn(event, 'preventDefault');
 	return event;
 }
 
@@ -103,13 +104,13 @@ describe('ngb-rating', () => {
 		expect(getState(compiled)).toEqual([true, true, true, true, true]);
 	});
 
-	it('should now fire change event initially', fakeAsync(() => {
+	it('should now fire change event initially', async () => {
 		const fixture = createTestComponent('<ngb-rating [rate]="3" (rateChange)="changed = true"></ngb-rating>');
-		tick();
+		await Promise.resolve();
 		expect(fixture.componentInstance.changed).toBeFalsy();
-	}));
+	});
 
-	it('handles correctly the click event', fakeAsync(() => {
+	it('handles correctly the click event', async () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
 		const el = fixture.debugElement;
 		const rating = el.query(By.directive(NgbRating)).children[0];
@@ -126,7 +127,7 @@ describe('ngb-rating', () => {
 		// click 2 -> 2/5, rate = 2
 		getStar(el.nativeElement, 2).click();
 		fixture.detectChanges();
-		tick();
+		await fixture.whenStable();
 		expect(getState(el)).toEqual([true, true, false, false, false]);
 		expect(fixture.componentInstance.rate).toBe(2);
 
@@ -135,7 +136,7 @@ describe('ngb-rating', () => {
 		fixture.detectChanges();
 		expect(getState(el)).toEqual([true, true, false, false, false]);
 		expect(fixture.componentInstance.rate).toBe(2);
-	}));
+	});
 
 	it('ignores the click event on a readonly rating', () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5" [readonly]="true"></ngb-rating>');
@@ -164,7 +165,7 @@ describe('ngb-rating', () => {
 		expect(fixture.componentInstance.rate).toBe(3);
 	});
 
-	it('should not reset rating to 0 by default', fakeAsync(() => {
+	it('should not reset rating to 0 by default', async () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
 		const el = fixture.debugElement;
 
@@ -177,9 +178,9 @@ describe('ngb-rating', () => {
 		fixture.detectChanges();
 		expect(getState(el)).toEqual([true, true, true, false, false]);
 		expect(fixture.componentInstance.rate).toBe(3);
-	}));
+	});
 
-	it('should set `resettable` rating to 0', fakeAsync(() => {
+	it('should set `resettable` rating to 0', async () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5" [resettable]="true"></ngb-rating>');
 		const el = fixture.debugElement;
 
@@ -189,18 +190,19 @@ describe('ngb-rating', () => {
 
 		// click 3 -> 0/5
 		getStar(el.nativeElement, 3).click();
-		tick();
 		fixture.detectChanges();
+		await fixture.whenStable();
 		expect(getState(el)).toEqual([false, false, false, false, false]);
 		expect(fixture.componentInstance.rate).toBe(0);
 
 		// click 2 -> 2/5
 		getStar(el.nativeElement, 2).click();
-		tick();
+		fixture.detectChanges();
+		await fixture.whenStable();
 		fixture.detectChanges();
 		expect(getState(el)).toEqual([true, true, false, false, false]);
 		expect(fixture.componentInstance.rate).toBe(2);
-	}));
+	});
 
 	it('handles correctly the mouse enter/leave', () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
@@ -544,16 +546,16 @@ describe('ngb-rating', () => {
 		expect(getState(fixture.nativeElement).length).toBe(5);
 	});
 
-	it('should reduce the rating when [max] is changed to a value lower than the current rating', fakeAsync(() => {
+	it('should reduce the rating when [max] is changed to a value lower than the current rating', async () => {
 		const fixture = createTestComponent('<ngb-rating [(rate)]="rate" [max]="max"></ngb-rating>');
 
 		fixture.componentInstance.max = 2;
 		fixture.detectChanges();
-		tick();
+		await fixture.whenStable();
 
 		expect(getState(fixture.nativeElement)).toEqual([true, true]);
 		expect(fixture.componentInstance.rate).toBe(2);
-	}));
+	});
 
 	describe('keyboard support', () => {
 		it('should handle arrow keys', () => {
@@ -620,7 +622,7 @@ describe('ngb-rating', () => {
 	});
 
 	describe('forms', () => {
-		it('should work with template-driven form validation', fakeAsync(() => {
+		it('should work with template-driven form validation', async () => {
 			const html = `
         <form>
           <ngb-rating [(ngModel)]="model" name="control" max="5" required></ngb-rating>
@@ -630,7 +632,7 @@ describe('ngb-rating', () => {
 			const element = fixture.debugElement.query(By.directive(NgbRating));
 
 			fixture.detectChanges();
-			tick();
+			await Promise.resolve();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
 			expect(element.nativeElement).toHaveCssClass('ng-invalid');
@@ -638,7 +640,7 @@ describe('ngb-rating', () => {
 
 			fixture.componentInstance.model = 1;
 			fixture.detectChanges();
-			tick();
+			await Promise.resolve();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, false, false, false, false]);
 			expect(element.nativeElement).toHaveCssClass('ng-valid');
@@ -646,12 +648,12 @@ describe('ngb-rating', () => {
 
 			fixture.componentInstance.model = 0;
 			fixture.detectChanges();
-			tick();
+			await Promise.resolve();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
 			expect(element.nativeElement).toHaveCssClass('ng-valid');
 			expect(element.nativeElement).toHaveCssClass('ng-untouched');
-		}));
+		});
 
 		it('should work with reactive form validation', () => {
 			const html = `
@@ -679,7 +681,7 @@ describe('ngb-rating', () => {
 			expect(element.nativeElement).toHaveCssClass('ng-untouched');
 		});
 
-		it('should not update template driven form by clicking disabled control', fakeAsync(() => {
+		it('should not update template driven form by clicking disabled control', async () => {
 			const html = `
           <ngb-rating [(ngModel)]="model" class="control" max="5"></ngb-rating>
           <ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled></ngb-rating>`;
@@ -689,7 +691,7 @@ describe('ngb-rating', () => {
 			const disabledElement = fixture.debugElement.query(By.css('.control-disabled'));
 
 			fixture.detectChanges();
-			tick();
+			await Promise.resolve();
 			getStar(element.nativeElement, 3).click();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
@@ -700,12 +702,12 @@ describe('ngb-rating', () => {
 
 			getStar(disabledElement.nativeElement, 4).click();
 			fixture.detectChanges();
-			tick();
+			await Promise.resolve();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
 			expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
 			expect(fixture.componentInstance.model).toEqual(3);
-		}));
+		});
 
 		it('should handle clicks and update form control', () => {
 			const html = `
@@ -727,7 +729,7 @@ describe('ngb-rating', () => {
 			expect(element.nativeElement).toHaveCssClass('ng-touched');
 		});
 
-		it('should work with both rate input and form control', fakeAsync(() => {
+		it('should work with both rate input and form control', async () => {
 			const html = `
         <form [formGroup]="form">
           <ngb-rating [(rate)]="rate" formControlName="rating" max="5"></ngb-rating>
@@ -741,20 +743,20 @@ describe('ngb-rating', () => {
 
 			getStar(element.nativeElement, 2).click();
 			fixture.detectChanges();
-			tick();
+			await fixture.whenStable();
 			expect(getState(element.nativeElement)).toEqual([true, true, false, false, false]);
 			expect(fixture.componentInstance.rate).toBe(2);
 			expect(element.nativeElement).toHaveCssClass('ng-valid');
 
 			fixture.componentInstance.rate = 4;
 			fixture.detectChanges();
-			tick();
+			await fixture.whenStable();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
 			expect(fixture.componentInstance.form.get('rating')!.value).toBe(4);
 			expect(element.nativeElement).toHaveCssClass('ng-valid');
-		}));
+		});
 
-		it('should disable widget when a control is disabled', fakeAsync(() => {
+		it('should disable widget when a control is disabled', async () => {
 			const html = `
         <form [formGroup]="form">
           <ngb-rating formControlName="rating" max="5"></ngb-rating>
@@ -773,9 +775,9 @@ describe('ngb-rating', () => {
 			getStar(element.nativeElement, 3).click();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
-		}));
+		});
 
-		it('should mark control as touched on blur', fakeAsync(() => {
+		it('should mark control as touched on blur', async () => {
 			const html = `
         <form [formGroup]="form">
           <ngb-rating formControlName="rating" max="5"></ngb-rating>
@@ -791,17 +793,19 @@ describe('ngb-rating', () => {
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
 			expect(element.nativeElement).toHaveCssClass('ng-touched');
-		}));
+		});
 	});
 
 	describe('Custom config', () => {
-		let config: NgbRatingConfig;
+		const config = new NgbRatingConfig();
+		config.max = 5;
+		config.readonly = true;
 
-		beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
-			config = c;
-			config.max = 5;
-			config.readonly = true;
-		}));
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				providers: [{ provide: NgbRatingConfig, useValue: config }],
+			});
+		});
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbRating);
@@ -814,14 +818,15 @@ describe('ngb-rating', () => {
 	});
 
 	describe('Custom config as provider', () => {
-		let config = new NgbRatingConfig();
-		config.max = 5;
-		config.readonly = true;
+		let config: NgbRatingConfig;
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbRatingConfig, useValue: config }, provideZoneChangeDetection()],
+				providers: [NgbRatingConfig],
 			});
+			config = TestBed.inject(NgbRatingConfig);
+			config.max = 5;
+			config.readonly = true;
 		});
 
 		it('should initialize inputs with provided config as provider', () => {

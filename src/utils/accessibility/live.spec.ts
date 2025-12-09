@@ -1,7 +1,8 @@
-import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { Component, inject } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Live, ARIA_LIVE_DELAY } from './live';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 function getLiveElement(): HTMLElement {
 	return document.body.querySelector('#ngb-live')! as HTMLElement;
@@ -16,17 +17,13 @@ describe('LiveAnnouncer', () => {
 	};
 
 	describe('live announcer', () => {
-		beforeEach(() =>
+		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [Live, { provide: ARIA_LIVE_DELAY, useValue: null }, provideZoneChangeDetection()],
-				imports: [TestComponent],
-			}),
-		);
-
-		beforeEach(inject([Live], (_live: Live) => {
-			live = _live;
+				providers: [Live, { provide: ARIA_LIVE_DELAY, useValue: null }],
+			});
 			fixture = TestBed.createComponent(TestComponent);
-		}));
+			live = TestBed.inject(Live);
+		});
 
 		it('should correctly update the text message', () => {
 			say();
@@ -45,10 +42,11 @@ describe('LiveAnnouncer', () => {
 });
 
 @Component({
+	selector: 'live-test-cmp',
 	template: `<button (click)="say()">say</button>`,
 })
 class TestComponent {
-	constructor(public live: Live) {}
+	readonly live = inject(Live);
 	say() {
 		this.live.say('test');
 	}

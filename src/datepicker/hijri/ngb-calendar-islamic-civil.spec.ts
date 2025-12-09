@@ -1,5 +1,6 @@
 import { NgbCalendarIslamicCivil } from './ngb-calendar-islamic-civil';
 import { NgbDate } from '../ngb-date';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-calendar-islamic-civil', () => {
 	const DATE_TABLE = [
@@ -879,10 +880,10 @@ describe('ngb-calendar-islamic-civil', () => {
 			DATE_TABLE.forEach((element) => {
 				let iDate = new NgbDate(element[0], element[1], element[2]);
 				let gDate = new Date(element[3], element[4], element[5]);
-				expect(calendar.toGregorian(iDate).getTime()).toEqual(
-					gDate.getTime(),
+				expect(
+					calendar.toGregorian(iDate).getTime(),
 					`Hijri ${iDate.year}-${iDate.month}-${iDate.day} should be Gregorian ${gDate}`,
-				);
+				).toEqual(gDate.getTime());
 			});
 		});
 	});
@@ -893,9 +894,10 @@ describe('ngb-calendar-islamic-civil', () => {
 				let iDate = new NgbDate(element[0], element[1], element[2]);
 				const gDate = new Date(element[3], element[4], element[5]);
 				let iDate2 = calendar.fromGregorian(gDate);
-				expect(iDate2.equals(iDate)).toBeTruthy(
+				expect(
+					iDate2.equals(iDate),
 					`Gregorian ${gDate} should be Hijri ${iDate.year}-${iDate.month}-${iDate.day}`,
-				);
+				).toBeTruthy();
 			});
 		});
 	});

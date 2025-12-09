@@ -1,4 +1,5 @@
 import { NgbTimeStructAdapter } from './ngb-time-adapter';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('ngb-time model adapter', () => {
 	let adapter: NgbTimeStructAdapter;

@@ -11,7 +11,6 @@ const config: PlaywrightTestConfig = {
 		['html', { open: 'never', outputFolder: join(reportsDir, 'report') }],
 	],
 	outputDir: join(reportsDir, 'traces'),
-	globalSetup: require.resolve('./setup.e2e-spec'),
 	fullyParallel: true,
 	testDir: 'src',
 	testMatch: /\.e2e-spec\.ts$/,
@@ -24,7 +23,7 @@ const config: PlaywrightTestConfig = {
 		url: baseURL,
 		reuseExistingServer: !process.env.CI,
 	},
-	use: { baseURL, viewport: { width: 1280, height: 720 }, trace: 'retain-on-failure' },
+	use: { baseURL, viewport: { width: 1280, height: 720 }, trace: process.env.CI ? 'off' : 'retain-on-failure' },
 	projects: [
 		{
 			name: 'chromium',

@@ -3,7 +3,7 @@ import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
 import { TestBed } from '@angular/core/testing';
 import { NgbDate } from './ngb-date';
-import { provideZoneChangeDetection } from '@angular/core';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const event = (key: string, shift = false) =>
 	<any>{ key, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {} };
@@ -19,21 +19,17 @@ describe('ngb-datepicker-keyboard-service', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [
-				{ provide: NgbCalendar, useClass: NgbCalendarGregorian },
-				NgbDatepickerKeyboardService,
-				provideZoneChangeDetection(),
-			],
+			providers: [{ provide: NgbCalendar, useClass: NgbCalendarGregorian }],
 		});
 
 		calendar = TestBed.inject(NgbCalendar);
 		service = TestBed.inject(NgbDatepickerKeyboardService);
 		mock = { state, focusDate: () => {}, focusSelect: () => {}, calendar };
 
-		spyOn(mock, <any>'focusDate');
-		spyOn(mock, <any>'focusSelect');
-		spyOn(calendar, 'getNext');
-		spyOn(calendar, 'getPrev');
+		vi.spyOn(mock, <any>'focusDate');
+		vi.spyOn(mock, <any>'focusSelect');
+		vi.spyOn(calendar, 'getNext').mockReturnValue(new NgbDate(2017, 1, 1));
+		vi.spyOn(calendar, 'getPrev').mockReturnValue(new NgbDate(2017, 1, 1));
 	});
 
 	it('should be instantiated', () => {
@@ -120,8 +116,8 @@ describe('ngb-datepicker-keyboard-service', () => {
 
 	it('should prevent default and stop propagation of the known key', () => {
 		let e = event('ArrowUp');
-		spyOn(e, 'preventDefault');
-		spyOn(e, 'stopPropagation');
+		vi.spyOn(e, 'preventDefault');
+		vi.spyOn(e, 'stopPropagation');
 
 		processKey(e);
 		expect(e.preventDefault).toHaveBeenCalled();
@@ -129,8 +125,8 @@ describe('ngb-datepicker-keyboard-service', () => {
 
 		// unknown key
 		e = event('blah');
-		spyOn(e, 'preventDefault');
-		spyOn(e, 'stopPropagation');
+		vi.spyOn(e, 'preventDefault');
+		vi.spyOn(e, 'stopPropagation');
 
 		processKey(e);
 		expect(e.preventDefault).not.toHaveBeenCalled();

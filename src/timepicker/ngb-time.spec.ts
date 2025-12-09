@@ -1,4 +1,5 @@
 import { NgbTime } from './ngb-time';
+import { describe, expect, it } from 'vitest';
 
 describe('NgbTime', () => {
 	it('should allow constructing new objects', () => {

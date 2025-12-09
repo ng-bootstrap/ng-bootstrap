@@ -1,4 +1,5 @@
 import { NgbDateNativeAdapter } from './ngb-date-native-adapter';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('ngb-date-native model adapter', () => {
 	let adapter: NgbDateNativeAdapter;

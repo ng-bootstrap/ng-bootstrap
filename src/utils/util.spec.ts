@@ -9,6 +9,7 @@ import {
 	isPromise,
 	getActiveElement,
 } from './util';
+import { describe, expect, it } from 'vitest';
 
 describe('util', () => {
 	describe('closest', () => {

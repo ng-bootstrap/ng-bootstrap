@@ -1,8 +1,10 @@
+import { TestBed } from '@angular/core/testing';
 import { NgbDatepickerConfig } from './datepicker-config';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-datepicker-config', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbDatepickerConfig();
+		const config = TestBed.inject(NgbDatepickerConfig);
 
 		expect(config.dayTemplate).toBeUndefined();
 		expect(config.displayMonths).toBe(1);

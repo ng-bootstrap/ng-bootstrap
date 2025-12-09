@@ -5,6 +5,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { NgbTypeaheadWindow } from './typeahead-window';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
+import { describe, expect, it } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

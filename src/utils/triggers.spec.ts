@@ -1,5 +1,5 @@
 import { listenToTriggers, parseTriggers } from './triggers';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('triggers', () => {
 	describe('parseTriggers', () => {
@@ -58,16 +58,17 @@ describe('triggers', () => {
 		const div = document.createElement('div');
 		let states: boolean[] = [];
 		let isOpenedFn = () => (states.length === 0 ? false : states[states.length - 1]);
-		let openFn = jasmine.createSpy('openFn').and.callFake(() => states.push(true));
-		let closeFn = jasmine.createSpy('closeFn').and.callFake(() => states.push(false));
+		let openFn = vi.fn(() => states.push(true));
+		let closeFn = vi.fn().mockImplementation(() => states.push(false));
 		let cleanupFn: () => void;
 
 		beforeEach(() => {
 			states = [];
 			cleanupFn = () => {};
+			vi.useFakeTimers();
 		});
 
-		it(`should listen to 'click'`, fakeAsync(() => {
+		it(`should listen to 'click'`, () => {
 			cleanupFn = listenToTriggers(div, 'click', isOpenedFn, openFn, closeFn);
 
 			div.click();
@@ -79,9 +80,9 @@ describe('triggers', () => {
 			div.click();
 			expect(states).toEqual([true, false, true]);
 			expect(openFn).toHaveBeenCalledTimes(2);
-		}));
+		});
 
-		it(`should listen to 'focus'`, fakeAsync(() => {
+		it(`should listen to 'focus'`, () => {
 			cleanupFn = listenToTriggers(div, 'focus', isOpenedFn, openFn, closeFn);
 
 			div.dispatchEvent(new FocusEvent('focusin'));
@@ -91,9 +92,9 @@ describe('triggers', () => {
 
 			expect(openFn).toHaveBeenCalledTimes(1);
 			expect(closeFn).toHaveBeenCalledTimes(1);
-		}));
+		});
 
-		it(`should listen to 'hover focus'`, fakeAsync(() => {
+		it(`should listen to 'hover focus'`, () => {
 			cleanupFn = listenToTriggers(div, 'hover focus', isOpenedFn, openFn, closeFn);
 
 			div.dispatchEvent(new FocusEvent('focusin'));
@@ -107,15 +108,15 @@ describe('triggers', () => {
 
 			expect(openFn).toHaveBeenCalledTimes(2);
 			expect(closeFn).toHaveBeenCalledTimes(1);
-		}));
+		});
 
-		it(`should listen to 'hover' with delays on open`, fakeAsync(() => {
+		it(`should listen to 'hover' with delays on open`, () => {
 			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 100);
 
 			// with delay
 			div.dispatchEvent(new MouseEvent('mouseenter'));
 			expect(states).toEqual([]);
-			tick(100);
+			vi.advanceTimersByTime(100);
 			expect(states).toEqual([true]);
 
 			div.dispatchEvent(new FocusEvent('mouseleave'));
@@ -128,15 +129,15 @@ describe('triggers', () => {
 
 			// cancellation
 			div.dispatchEvent(new MouseEvent('mouseenter')); // this should be ignored
-			tick(50);
+			vi.advanceTimersByTime(50);
 			expect(states).toEqual([]);
 			div.dispatchEvent(new MouseEvent('mouseleave'));
 
-			tick(100);
+			vi.advanceTimersByTime(100);
 			expect(states).toEqual([false]);
-		}));
+		});
 
-		it(`should listen to 'hover' with delays on close`, fakeAsync(() => {
+		it(`should listen to 'hover' with delays on close`, () => {
 			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 0, 100);
 
 			// with delay
@@ -145,7 +146,7 @@ describe('triggers', () => {
 
 			div.dispatchEvent(new FocusEvent('mouseleave'));
 			expect(states).toEqual([true]);
-			tick(100);
+			vi.advanceTimersByTime(100);
 			expect(states).toEqual([true, false]);
 
 			expect(openFn).toHaveBeenCalledTimes(1);
@@ -158,33 +159,34 @@ describe('triggers', () => {
 			expect(states).toEqual([true]);
 
 			div.dispatchEvent(new MouseEvent('mouseleave')); // this should be ignored
-			tick(50);
+			vi.advanceTimersByTime(50);
 			expect(states).toEqual([true]);
 			div.dispatchEvent(new MouseEvent('mouseenter'));
 
-			tick(100);
+			vi.advanceTimersByTime(100);
 			expect(states).toEqual([true, true]);
-		}));
+		});
 
 		it('should clear delay timer if component is destroyed before openFn is called', () => {
 			const delayMs = 5000;
-			const clearTimeoutSpy = spyOn(window, 'clearTimeout');
+			const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout');
 			const fakeSetTimeoutResult = setTimeout(() => {}, 0);
-			const setTimeoutSpy = spyOn(window, 'setTimeout');
-			setTimeoutSpy.and.returnValue(fakeSetTimeoutResult);
+			const setTimeoutSpy = vi.spyOn(window, 'setTimeout');
+			setTimeoutSpy.mockReturnValue(fakeSetTimeoutResult);
 
 			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, delayMs);
 			div.dispatchEvent(new MouseEvent('mouseenter'));
 			cleanupFn();
 
-			expect(setTimeoutSpy).toHaveBeenCalledWith(jasmine.any(Function), delayMs);
+			expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), delayMs);
 			expect(clearTimeoutSpy).toHaveBeenCalledWith(fakeSetTimeoutResult);
 		});
 
 		afterEach(() => {
+			vi.restoreAllMocks();
 			cleanupFn();
-			openFn.calls.reset();
-			closeFn.calls.reset();
+			openFn.mockClear();
+			closeFn.mockClear();
 		});
 	});
 });

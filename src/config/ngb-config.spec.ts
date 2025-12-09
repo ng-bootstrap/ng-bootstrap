@@ -5,88 +5,44 @@ import {
 	NgbCollapseConfig,
 	NgbConfig,
 	NgbModalConfig,
-	NgbModule,
 	NgbNavConfig,
 	NgbPopoverConfig,
 	NgbToastConfig,
 	NgbTooltipConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { NgModule } from '@angular/core';
-import { inject, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-config', () => {
 	it('should have animation disabled', () => {
-		const config = new NgbConfig();
+		const config = TestBed.inject(NgbConfig);
 
 		expect(config.animation).toBe(false);
 	});
 });
 
 describe('ngb-config animation override', () => {
-	@NgModule({ imports: [NgbModule] })
-	class SharedModule {
-		// These will be injected first and will use 'NgbConfig' with 'animation' set to 'false'
-		constructor(
-			_0: NgbAccordionConfig,
-			_1: NgbAlertConfig,
-			_2: NgbCarouselConfig,
-			_3: NgbCollapseConfig,
-			_4: NgbModalConfig,
-			_5: NgbNavConfig,
-			_6: NgbPopoverConfig,
-			_7: NgbToastConfig,
-			_8: NgbTooltipConfig,
-		) {}
-	}
+	it(`should use delegation to 'ngbConfig' regardless of injection order`, () => {
+		const ngbConfig = TestBed.inject(NgbConfig);
+		ngbConfig.animation = true;
 
-	@NgModule({ imports: [NgbModule] })
-	class MainModule {
-		constructor(config: NgbConfig) {
-			// this will be set AFTER the 'NgbXXXConfig's were instantiated
-			// default value for 'animation' during unit tests is 'false'
-			config.animation = true;
-		}
-	}
-
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			// Note that 'Shared' is before 'Main'
-			imports: [SharedModule, MainModule],
-		});
+		const accordionConfig = TestBed.inject(NgbAccordionConfig);
+		const alertConfig = TestBed.inject(NgbAlertConfig);
+		const carouselConfig = TestBed.inject(NgbCarouselConfig);
+		const collapseConfig = TestBed.inject(NgbCollapseConfig);
+		const modalConfig = TestBed.inject(NgbModalConfig);
+		const navConfig = TestBed.inject(NgbNavConfig);
+		const popoverConfig = TestBed.inject(NgbPopoverConfig);
+		const toastConfig = TestBed.inject(NgbToastConfig);
+		const tooltipConfig = TestBed.inject(NgbTooltipConfig);
+		expect(accordionConfig.animation, 'accordion').toBe(true);
+		expect(alertConfig.animation, 'alert').toBe(true);
+		expect(carouselConfig.animation, 'carousel').toBe(true);
+		expect(collapseConfig.animation, 'collapse').toBe(true);
+		expect(modalConfig.animation, 'modal').toBe(true);
+		expect(navConfig.animation, 'nav').toBe(true);
+		expect(popoverConfig.animation, 'popover').toBe(true);
+		expect(toastConfig.animation, 'toast').toBe(true);
+		expect(tooltipConfig.animation, 'tooltip').toBe(true);
 	});
-
-	it(`should use delegation to 'ngbConfig' regardless of injection order`, inject(
-		[
-			NgbAccordionConfig,
-			NgbAlertConfig,
-			NgbCarouselConfig,
-			NgbCollapseConfig,
-			NgbModalConfig,
-			NgbNavConfig,
-			NgbPopoverConfig,
-			NgbToastConfig,
-			NgbTooltipConfig,
-		],
-		(
-			accordionConfig: NgbAccordionConfig,
-			alertConfig: NgbAlertConfig,
-			carouselConfig: NgbCarouselConfig,
-			collapseConfig: NgbCollapseConfig,
-			modalConfig: NgbModalConfig,
-			navConfig: NgbNavConfig,
-			popoverConfig: NgbPopoverConfig,
-			toastConfig: NgbToastConfig,
-			tooltipConfig: NgbTooltipConfig,
-		) => {
-			expect(accordionConfig.animation).toBe(true, 'accordion');
-			expect(alertConfig.animation).toBe(true, 'alert');
-			expect(carouselConfig.animation).toBe(true, 'carousel');
-			expect(collapseConfig.animation).toBe(true, 'collapse');
-			expect(modalConfig.animation).toBe(true, 'modal');
-			expect(navConfig.animation).toBe(true, 'nav');
-			expect(popoverConfig.animation).toBe(true, 'popover');
-			expect(toastConfig.animation).toBe(true, 'toast');
-			expect(tooltipConfig.animation).toBe(true, 'tooltip');
-		},
-	));
 });

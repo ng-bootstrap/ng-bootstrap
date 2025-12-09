@@ -1,14 +1,15 @@
-import { fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { NgbSlideEventDirection } from './carousel-transition';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string, detectChanges = true) =>
 	createGenericTestComponent(html, TestComponent, detectChanges) as ComponentFixture<TestComponent>;
@@ -41,6 +42,14 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 }
 
 describe('ngb-carousel', () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = TestBed.inject(NgbCarouselConfig);
 		const carousel = TestBed.createComponent(NgbCarousel).componentInstance;
@@ -54,7 +63,7 @@ describe('ngb-carousel', () => {
 		expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
 	});
 
-	it('should render slides and navigation indicators', fakeAsync(() => {
+	it('should render slides and navigation indicators', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -70,11 +79,9 @@ describe('ngb-carousel', () => {
 
 		expect(getIndicatorElements(fixture.nativeElement).length).toBe(2);
 		expect(getArrowElements(fixture.nativeElement).length).toBe(2);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should mark the first slide as active by default', fakeAsync(() => {
+	it('should mark the first slide as active by default', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -84,23 +91,19 @@ describe('ngb-carousel', () => {
 
 		const fixture = createTestComponent(html);
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should work without any slides', fakeAsync(() => {
+	it('should work without any slides', () => {
 		const fixture = createTestComponent(`<ngb-carousel [interval]="1000"></ngb-carousel>`);
 
-		tick(1001);
+		vi.advanceTimersByTime(1001);
 		fixture.detectChanges();
 
 		expect(fixture.nativeElement.querySelector('ngb-carousel')).toBeTruthy();
 		expect(getSlideElements(fixture.nativeElement).length).toBe(0);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should mark the requested slide as active', fakeAsync(() => {
+	it('should mark the requested slide as active', () => {
 		const html = `
        <ngb-carousel [activeId]="activeSlideId">
          <ng-template ngbSlide id="1">foo</ng-template>
@@ -114,11 +117,9 @@ describe('ngb-carousel', () => {
 		fixture.componentInstance.activeSlideId = '2';
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should auto-correct when slide index is undefined', fakeAsync(() => {
+	it('should auto-correct when slide index is undefined', () => {
 		const html = `
             <ngb-carousel [activeId]="doesntExist">
               <ng-template ngbSlide>foo</ng-template>
@@ -128,11 +129,9 @@ describe('ngb-carousel', () => {
 
 		const fixture = createTestComponent(html);
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide on prev/next API calls', fakeAsync(() => {
+	it('should change slide on prev/next API calls', () => {
 		const html = `
       <ngb-carousel #c [interval]="0">
         <ng-template ngbSlide>foo</ng-template>
@@ -162,9 +161,9 @@ describe('ngb-carousel', () => {
 		select.click();
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, false, true]);
-	}));
+	});
 
-	it('should pause/resume slide change on API calls', fakeAsync(() => {
+	it('should pause/resume slide change on API calls', () => {
 		const html = `
      <ngb-carousel #c [interval]="1000">
        <ng-template ngbSlide>foo</ng-template>
@@ -180,24 +179,22 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 
 		pause.click();
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 
 		cycle.click();
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should not resume without call to cycle()', fakeAsync(() => {
+	it('should not resume without call to cycle()', () => {
 		const html = `
     <ngb-carousel #c [interval]="1000" [pauseOnFocus]="false" (slide)="carouselSlideCallBack($event)">
       <ng-template ngbSlide>foo</ng-template>
@@ -210,7 +207,7 @@ describe('ngb-carousel', () => {
   `;
 
 		const fixture = createTestComponent(html);
-		const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+		const spyCallBack = vi.spyOn(fixture.componentInstance, 'carouselSlideCallBack');
 		const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
 		const indicatorElms = getIndicatorElements(fixture.nativeElement);
 		const [prevControlElm, nextControlElm] = getArrowElements(fixture.nativeElement);
@@ -220,16 +217,16 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
 
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({ paused: false, source: NgbSlideEventSource.TIMER }),
+			expect.objectContaining({ paused: false, source: NgbSlideEventSource.TIMER }),
 		);
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
 		pause.click();
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
@@ -237,11 +234,11 @@ describe('ngb-carousel', () => {
 		indicatorElms[0].click();
 		fixture.detectChanges();
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({ paused: true, source: NgbSlideEventSource.INDICATOR }),
+			expect.objectContaining({ paused: true, source: NgbSlideEventSource.INDICATOR }),
 		);
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
@@ -249,11 +246,11 @@ describe('ngb-carousel', () => {
 		nextControlElm.click();
 		fixture.detectChanges();
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({ paused: true, source: NgbSlideEventSource.ARROW_RIGHT }),
+			expect.objectContaining({ paused: true, source: NgbSlideEventSource.ARROW_RIGHT }),
 		);
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
@@ -261,21 +258,21 @@ describe('ngb-carousel', () => {
 		prevControlElm.click();
 		fixture.detectChanges();
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({ paused: true, source: NgbSlideEventSource.ARROW_LEFT }),
+			expect.objectContaining({ paused: true, source: NgbSlideEventSource.ARROW_LEFT }),
 		);
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
 
 		next.click();
 		fixture.detectChanges();
-		expect(spyCallBack).toHaveBeenCalledWith(jasmine.objectContaining({ paused: true }));
-		spyCallBack.calls.reset();
+		expect(spyCallBack).toHaveBeenCalledWith(expect.objectContaining({ paused: true }));
+		spyCallBack.mockClear();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
@@ -284,21 +281,19 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		carouselDebugEl.triggerEventHandler('mouseleave', {});
 		fixture.detectChanges();
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).not.toHaveBeenCalled();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
 		cycle.click();
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({ paused: false, source: NgbSlideEventSource.TIMER }),
+			expect.objectContaining({ paused: false, source: NgbSlideEventSource.TIMER }),
 		);
 		expectActiveSlides(fixture.nativeElement, [false, false, true]);
-
-		discardPeriodicTasks();
-	}));
+	});
 
 	it('should mark component for check for API calls', () => {
 		const html = `
@@ -346,7 +341,7 @@ describe('ngb-carousel', () => {
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 	});
 
-	it('should change slide on indicator click', fakeAsync(() => {
+	it('should change slide on indicator click', () => {
 		const html = `
      <ngb-carousel>
        <ng-template ngbSlide>foo</ng-template>
@@ -362,11 +357,9 @@ describe('ngb-carousel', () => {
 		indicatorElms[1].click();
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should fire a slide event with correct direction and source on indicator click', fakeAsync(() => {
+	it('should fire a slide event with correct direction and source on indicator click', () => {
 		const html = `
       <ngb-carousel (slide)="carouselSlideCallBack($event)">
         <ng-template ngbSlide>foo</ng-template>
@@ -377,41 +370,39 @@ describe('ngb-carousel', () => {
 
 		const fixture = createTestComponent(html);
 		const indicatorElms = getIndicatorElements(fixture.nativeElement);
-		const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+		const spyCallBack = vi.spyOn(fixture.componentInstance, 'carouselSlideCallBack');
 
 		indicatorElms[1].click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.START,
 				source: NgbSlideEventSource.INDICATOR,
 			}),
 		);
 
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		indicatorElms[0].click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.END,
 				source: NgbSlideEventSource.INDICATOR,
 			}),
 		);
 
-		spyCallBack.calls.reset();
+		spyCallBack.mockClear();
 		indicatorElms[2].click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.START,
 				source: NgbSlideEventSource.INDICATOR,
 			}),
 		);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide on carousel control click', fakeAsync(() => {
+	it('should change slide on carousel control click', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -431,11 +422,9 @@ describe('ngb-carousel', () => {
 		prevControlElm.click(); // prev
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should fire a slide event with correct direction and source on carousel control click', fakeAsync(() => {
+	it('should fire a slide event with correct direction and source on carousel control click', () => {
 		const html = `
       <ngb-carousel (slide)="carouselSlideCallBack($event)">
         <ng-template ngbSlide (slid)="carouselSingleSlideCallBack($event, 'foo')">foo</ng-template>
@@ -445,56 +434,54 @@ describe('ngb-carousel', () => {
 
 		const fixture = createTestComponent(html);
 		const [prevControlElm, nextControlElm] = getArrowElements(fixture.nativeElement);
-		const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
-		const spySingleCallBack = spyOn(fixture.componentInstance, 'carouselSingleSlideCallBack');
+		const spyCallBack = vi.spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+		const spySingleCallBack = vi.spyOn(fixture.componentInstance, 'carouselSingleSlideCallBack');
 
 		prevControlElm.click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.END,
 				source: NgbSlideEventSource.ARROW_LEFT,
 			}),
 		);
-		expect(spySingleCallBack.calls.allArgs()).toEqual([
+		expect(vi.mocked(spySingleCallBack).mock.calls).toEqual([
 			[{ isShown: false, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT }, 'foo'],
 			[{ isShown: true, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT }, 'bar'],
 		]);
 
-		spyCallBack.calls.reset();
-		spySingleCallBack.calls.reset();
+		spyCallBack.mockClear();
+		spySingleCallBack.mockClear();
 		nextControlElm.click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.START,
 				source: NgbSlideEventSource.ARROW_RIGHT,
 			}),
 		);
-		expect(spySingleCallBack.calls.allArgs()).toEqual([
+		expect(vi.mocked(spySingleCallBack).mock.calls).toEqual([
 			[{ isShown: false, direction: NgbSlideEventDirection.START, source: NgbSlideEventSource.ARROW_RIGHT }, 'bar'],
 			[{ isShown: true, direction: NgbSlideEventDirection.START, source: NgbSlideEventSource.ARROW_RIGHT }, 'foo'],
 		]);
 
-		spyCallBack.calls.reset();
-		spySingleCallBack.calls.reset();
+		spyCallBack.mockClear();
+		spySingleCallBack.mockClear();
 		prevControlElm.click();
 		fixture.detectChanges();
 		expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.END,
 				source: NgbSlideEventSource.ARROW_LEFT,
 			}),
 		);
-		expect(spySingleCallBack.calls.allArgs()).toEqual([
+		expect(vi.mocked(spySingleCallBack).mock.calls).toEqual([
 			[{ isShown: false, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT }, 'foo'],
 			[{ isShown: true, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT }, 'bar'],
 		]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide on time passage (default interval value)', fakeAsync(() => {
+	it('should change slide on time passage (default interval value)', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -506,14 +493,12 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should fire a slide event with correct direction and source on time passage', fakeAsync(() => {
+	it('should fire a slide event with correct direction and source on time passage', () => {
 		const html = `
      <ngb-carousel [interval]="2000" (slide)="carouselSlideCallBack($event)">
        <ng-template ngbSlide>foo</ng-template>
@@ -522,39 +507,35 @@ describe('ngb-carousel', () => {
    `;
 
 		const fixture = createTestComponent(html);
-		const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+		const spyCallBack = vi.spyOn(fixture.componentInstance, 'carouselSlideCallBack');
 
-		tick(1999);
+		vi.advanceTimersByTime(1999);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 		expect(spyCallBack).not.toHaveBeenCalled();
 
-		tick(1);
+		vi.advanceTimersByTime(1);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 		expect(spyCallBack).toHaveBeenCalledWith(
-			jasmine.objectContaining({
+			expect.objectContaining({
 				direction: NgbSlideEventDirection.START,
 				source: NgbSlideEventSource.TIMER,
 			}),
 		);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide on time passage in OnPush component (default interval value)', fakeAsync(() => {
+	it('should change slide on time passage in OnPush component (default interval value)', () => {
 		const fixture = createTestComponent('<test-cmp-on-push></test-cmp-on-push>');
 
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide on time passage (custom interval value)', fakeAsync(() => {
+	it('should change slide on time passage (custom interval value)', () => {
 		const html = `
       <ngb-carousel [interval]="2000">
         <ng-template ngbSlide>foo</ng-template>
@@ -566,18 +547,16 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(1200);
+		vi.advanceTimersByTime(1200);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should not change slide on time passage (custom interval value is zero)', fakeAsync(() => {
+	it('should not change slide on time passage (custom interval value is zero)', () => {
 		const html = `
       <ngb-carousel [interval]="0">
         <ng-template ngbSlide>foo</ng-template>
@@ -589,18 +568,16 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(1000);
+		vi.advanceTimersByTime(1000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(1200);
+		vi.advanceTimersByTime(1200);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change slide with different rate when interval value changed', fakeAsync(() => {
+	it('should change slide with different rate when interval value changed', () => {
 		const html = `
       <ngb-carousel [interval]="interval">
         <ng-template ngbSlide>foo</ng-template>
@@ -615,21 +592,19 @@ describe('ngb-carousel', () => {
 
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
 
-		tick(5001);
+		vi.advanceTimersByTime(5001);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
 		fixture.componentInstance.interval = 1000;
 		fixture.detectChanges();
 
-		tick(1001);
+		vi.advanceTimersByTime(1001);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should listen to mouse events based on pauseOnHover attribute', fakeAsync(() => {
+	it('should listen to mouse events based on pauseOnHover attribute', () => {
 		const html = `
     <ngb-carousel [pauseOnHover]="pauseOnHover">
       <ng-template ngbSlide>foo</ng-template>
@@ -647,7 +622,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -655,7 +630,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -666,13 +641,12 @@ describe('ngb-carousel', () => {
 		carouselDebugEl.triggerEventHandler('mouseenter', {});
 		fixture.detectChanges();
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
-		discardPeriodicTasks();
-	}));
+	});
 
-	it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
+	it('should pause / resume slide change with time passage on mouse enter / leave', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -690,7 +664,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -698,14 +672,12 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should pause / resume slide change with time passage on focusin / focusout', fakeAsync(() => {
+	it('should pause / resume slide change with time passage on focusin / focusout', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -723,7 +695,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -731,14 +703,12 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		tick(6000);
+		vi.advanceTimersByTime(6000);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should wrap slide changes by default', fakeAsync(() => {
+	it('should wrap slide changes by default', () => {
 		const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
@@ -762,11 +732,9 @@ describe('ngb-carousel', () => {
 		prevControlElm.click(); // prev
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should not wrap slide changes by when requested', fakeAsync(() => {
+	it('should not wrap slide changes by when requested', () => {
 		const html = `
       <ngb-carousel [wrap]="false">
         <ng-template ngbSlide>foo</ng-template>
@@ -790,11 +758,9 @@ describe('ngb-carousel', () => {
 		nextControlElm.click(); // next
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should change on key arrowRight and arrowstart', fakeAsync(() => {
+	it('should change on key arrowRight and arrowstart', () => {
 		const html = `
             <ngb-carousel [keyboard]="keyboard" [wrap]="false">
               <ng-template ngbSlide>foo</ng-template>
@@ -818,11 +784,9 @@ describe('ngb-carousel', () => {
 		fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {}); // prev()
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should listen to keyevents based on keyboard attribute', fakeAsync(() => {
+	it('should listen to keyevents based on keyboard attribute', () => {
 		const html = `
                <ngb-carousel [keyboard]="keyboard" >
                  <ng-template ngbSlide>foo</ng-template>
@@ -844,11 +808,9 @@ describe('ngb-carousel', () => {
 		fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {}); // next()
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should render navigation indicators according to the flags', fakeAsync(() => {
+	it('should render navigation indicators according to the flags', () => {
 		const html = `
     <ngb-carousel [showNavigationIndicators]="showNavigationIndicators">
       <ng-template ngbSlide>foo</ng-template>
@@ -866,11 +828,9 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelectorAll('.carousel-indicators.visually-hidden > button').length).toBe(1);
 		expect(getIndicatorElements(fixture.nativeElement).length).toBe(1);
+	});
 
-		discardPeriodicTasks();
-	}));
-
-	it('should render navigation buttons according to the flags', fakeAsync(() => {
+	it('should render navigation buttons according to the flags', () => {
 		const html = `
     <ngb-carousel [showNavigationArrows]="showNavigationArrows">
       <ng-template ngbSlide>foo</ng-template>
@@ -884,15 +844,13 @@ describe('ngb-carousel', () => {
 		fixture.componentInstance.showNavigationArrows = false;
 		fixture.detectChanges();
 		expect(getArrowElements(fixture.nativeElement).length).toBe(0);
-
-		discardPeriodicTasks();
-	}));
+	});
 
 	describe('Custom config', () => {
 		let config: NgbCarouselConfig;
 
-		beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
-			config = c;
+		beforeEach(() => {
+			config = TestBed.inject(NgbCarouselConfig);
 			config.interval = 1000;
 			config.wrap = false;
 			config.keyboard = false;
@@ -900,7 +858,7 @@ describe('ngb-carousel', () => {
 			config.pauseOnFocus = false;
 			config.showNavigationIndicators = true;
 			config.showNavigationArrows = true;
-		}));
+		});
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbCarousel);
@@ -958,36 +916,38 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }, provideZoneChangeDetection()],
+				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
 
-		it(`should run slide transition (force-reduced-motion = false)`, (done) => {
+		it(`should run slide transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
 			fixture.componentInstance.reduceMotion = false;
 			fixture.detectChanges();
 
 			const nativeEl = fixture.nativeElement;
 
-			const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+			const onSlidSpy = vi.spyOn(fixture.componentInstance, 'onSlid');
 
 			const [slideOne, slideTwo] = getSlideElements(nativeEl);
 			const indicators = getIndicatorElements(nativeEl);
 
-			onSlidSpy.and.callFake((payload) => {
-				expect(slideOne.className).toBe('carousel-item');
-				expect(slideTwo.className).toBe('carousel-item active');
+			const slidPromise = new Promise<void>((resolve) =>
+				onSlidSpy.mockImplementation((payload) => {
+					expect(slideOne.className).toBe('carousel-item');
+					expect(slideTwo.className).toBe('carousel-item active');
 
-				expect(payload).toEqual({
-					prev: 'one',
-					current: 'two',
-					direction: 'start',
-					paused: false,
-					source: 'indicator',
-				});
-				expect(onSlidSpy).toHaveBeenCalledTimes(1);
-				done();
-			});
+					expect(payload).toEqual({
+						prev: 'one',
+						current: 'two',
+						direction: 'start',
+						paused: false,
+						source: 'indicator',
+					});
+					expect(onSlidSpy).toHaveBeenCalledTimes(1);
+					resolve();
+				}),
+			);
 
 			expect(slideOne.className).toBe('carousel-item active');
 			expect(slideTwo.className).toBe('carousel-item');
@@ -997,6 +957,8 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 			expect(slideOne.className).toBe('carousel-item active carousel-item-start');
 			expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-start');
+
+			await slidPromise;
 		});
 
 		it(`should run slide transition (force-reduced-motion = true)`, () => {
@@ -1006,7 +968,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 			const nativeEl = fixture.nativeElement;
 
-			const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+			const onSlidSpy = vi.spyOn(fixture.componentInstance, 'onSlid');
 
 			const [slideOne, slideTwo] = getSlideElements(nativeEl);
 			const indicators = getIndicatorElements(nativeEl);
@@ -1030,7 +992,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 			expect(onSlidSpy).toHaveBeenCalledTimes(1);
 		});
 
-		it(`should revert slide transition (force-reduced-motion = false)`, (done) => {
+		it(`should revert slide transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
 			fixture.componentInstance.reduceMotion = false;
 			fixture.detectChanges();
@@ -1039,17 +1001,24 @@ if (isBrowserVisible('ngb-carousel animations')) {
 			const [slideOne, slideTwo, slideThree] = getSlideElements(nativeEl);
 			const indicators = getIndicatorElements(nativeEl);
 
-			const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
-			onSlidSpy.and.callFake((payload) => {
-				expect(slideOne.className).toBe('carousel-item active');
-				expect(slideTwo.className).toBe('carousel-item');
-				expect(slideThree.className).toBe('carousel-item');
+			const onSlidSpy = vi.spyOn(fixture.componentInstance, 'onSlid');
+			const slidPromise = new Promise<void>((resolve) =>
+				onSlidSpy.mockImplementation((payload) => {
+					expect(slideOne.className).toBe('carousel-item active');
+					expect(slideTwo.className).toBe('carousel-item');
+					expect(slideThree.className).toBe('carousel-item');
 
-				expect(payload).toEqual({ prev: 'two', current: 'one', direction: 'end', paused: false, source: 'indicator' });
-				expect(onSlidSpy).toHaveBeenCalledTimes(1);
-
-				done();
-			});
+					expect(payload).toEqual({
+						prev: 'two',
+						current: 'one',
+						direction: 'end',
+						paused: false,
+						source: 'indicator',
+					});
+					expect(onSlidSpy).toHaveBeenCalledTimes(1);
+					resolve();
+				}),
+			);
 
 			expect(slideOne.className).toBe('carousel-item active');
 			expect(slideTwo.className).toBe('carousel-item');
@@ -1076,6 +1045,8 @@ if (isBrowserVisible('ngb-carousel animations')) {
 			expect(slideOne.className).toBe('carousel-item active');
 			expect(slideTwo.className).toBe('carousel-item carousel-item-next');
 			expect(slideThree.className).toBe('carousel-item');
+
+			await slidPromise;
 		});
 
 		it(`should revert slide transition (force-reduced-motion = true)`, () => {
@@ -1085,7 +1056,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 			const nativeEl = fixture.nativeElement;
 
-			const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+			const onSlidSpy = vi.spyOn(fixture.componentInstance, 'onSlid');
 
 			const [slideOne, slideTwo, slideThree] = getSlideElements(nativeEl);
 			const indicators = getIndicatorElements(nativeEl);
@@ -1115,7 +1086,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 			expect(slideTwo.className).toBe('carousel-item');
 			expect(slideThree.className).toBe('carousel-item');
 
-			expect(onSlidSpy.calls.allArgs()).toEqual([
+			expect(vi.mocked(onSlidSpy).mock.calls).toEqual([
 				[{ prev: 'one', current: 'two', direction: 'start', paused: false, source: 'indicator' }],
 				[{ prev: 'two', current: 'three', direction: 'start', paused: false, source: 'indicator' }],
 				[{ prev: 'three', current: 'one', direction: 'end', paused: false, source: 'indicator' }],

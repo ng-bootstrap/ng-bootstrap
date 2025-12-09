@@ -1,28 +1,56 @@
 import { Component, inject } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
-import { NgbScrollSpy, NgbScrollSpyItem, NgbScrollSpyModule, NgbScrollSpyService } from './scrollspy.module';
+import {
+	NgbScrollSpy,
+	NgbScrollSpyItem,
+	NgbScrollSpyFragment,
+	NgbScrollSpyMenu,
+	NgbScrollSpyService,
+} from './scrollspy.module';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { firstValueFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 describe('ScrollSpy Directives (mocked service integration)', () => {
-	let mockObserver;
-	let callSpy: jasmine.Spy;
+	let observe: Mock<any>;
+	let unobserve: Mock<any>;
+	let disconnect: Mock<any>;
+	let callSpy: Mock<{
+		new (callback: IntersectionObserverCallback, options?: IntersectionObserverInit): IntersectionObserver;
+		prototype: IntersectionObserver;
+	}>;
 
 	beforeEach(() => {
-		mockObserver = jasmine.createSpyObj('observer', ['observe', 'unobserve', 'disconnect']) as any;
-		callSpy = spyOn(window, 'IntersectionObserver').and.returnValue(mockObserver);
+		observe = vi.fn();
+		unobserve = vi.fn();
+		disconnect = vi.fn();
+		callSpy = vi.spyOn(window, 'IntersectionObserver').mockImplementation(
+			class MockIntersectionObserver {
+				constructor(
+					private callback: IntersectionObserverCallback,
+					options?: IntersectionObserverInit,
+				) {}
+				observe = observe;
+				unobserve = unobserve;
+				disconnect = disconnect;
+			} as any,
+		);
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
 	});
 
 	it('should start scrollspy with no fragments', () => {
 		createTestComponent(`<div class="container" ngbScrollSpy></div>`);
 
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(mockObserver.observe).not.toHaveBeenCalled();
+		expect(observe).not.toHaveBeenCalled();
 	});
 
 	it('should start simple scrollspy', () => {
@@ -42,7 +70,7 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 
 		// creating service and adding 2 fragments
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(mockObserver.observe).toHaveBeenCalledTimes(2);
+		expect(observe).toHaveBeenCalledTimes(2);
 	});
 
 	it('should allow using items with global service', () => {
@@ -58,11 +86,11 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		let item = fixture.nativeElement.querySelector('button');
 		let fragment = fixture.nativeElement.querySelector('#one');
 
-		let spy = spyOn(document.documentElement, 'scrollTo') as any;
+		let spy = vi.spyOn(document.documentElement, 'scrollTo') as any;
 
 		// creating service and adding a fragment
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(mockObserver.observe).toHaveBeenCalledTimes(1);
+		expect(observe).toHaveBeenCalledTimes(1);
 
 		item.click();
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop, behavior: 'smooth' });
@@ -81,7 +109,7 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		let fragment = fixture.nativeElement.querySelector('.fragment');
 		let container = fixture.nativeElement.querySelector('.container');
 
-		let spy = spyOn(container, 'scrollTo') as any;
+		let spy = vi.spyOn(container, 'scrollTo') as any;
 
 		item.click();
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop - container.offsetTop, behavior: 'smooth' });
@@ -102,7 +130,7 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		let scrollSpy = debugElement.query(By.directive(NgbScrollSpy)).injector.get(NgbScrollSpy);
 		let scrollSpyItem = debugElement.query(By.directive(NgbScrollSpyItem)).injector.get(NgbScrollSpyItem);
 
-		let spy = spyOn(container, 'scrollTo') as any;
+		let spy = vi.spyOn(container, 'scrollTo') as any;
 
 		scrollSpyItem.scrollTo({ behavior: 'auto' });
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop - container.offsetTop, behavior: 'auto' });
@@ -127,7 +155,7 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		let fragment = nativeElement.querySelector('.fragment');
 		let container = nativeElement.querySelector('.container');
 
-		let spy = spyOn(container, 'scrollTo') as any;
+		let spy = vi.spyOn(container, 'scrollTo') as any;
 
 		item.click();
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop - container.offsetTop, behavior: 'smooth' });
@@ -145,12 +173,12 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		let fragmentOne = nativeElement.querySelector('.fragment.one');
 		let container = nativeElement.querySelector('.container');
 
-		let spy = spyOn(container, 'scrollTo') as any;
+		let spy = vi.spyOn(container, 'scrollTo') as any;
 
 		// rootMargin and scrollBehavior are passed to the service
 		expect(callSpy).toHaveBeenCalledTimes(1);
-		expect(callSpy.calls.mostRecent().args[1].rootMargin).toBe('16px');
-		expect(callSpy.calls.mostRecent().args[1].threshold).toEqual([2]);
+		expect(vi.mocked(callSpy).mock.lastCall![1]!.rootMargin).toBe('16px');
+		expect(vi.mocked(callSpy).mock.lastCall![1]!.threshold).toEqual([2]);
 
 		scrollSpy.scrollTo('one');
 
@@ -267,13 +295,13 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			let threeIsActive = nativeElement.querySelector('.three-is-active');
 			let scrollSpyActive = nativeElement.querySelector('.scrollspy-active');
 
-			expect(itemOne).not.toHaveClass('active');
+			expect(itemOne.classList.contains('active')).toBe(false);
 
 			// one is active by default
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 			expect(scrollSpy.active).toBe('one');
 			fixture.detectChanges();
-			expect(itemOne).toHaveClass('active');
+			expect(itemOne.classList.contains('active')).toBe(true);
 
 			// scroll to two
 			scrollToTwo.click();
@@ -380,20 +408,20 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			expect(scrollSpy.active).toBe('one');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
 			fixture.detectChanges();
-			expect(two).toHaveClass('active');
+			expect(two.classList.contains('active')).toBe(true);
 
 			three.click();
 			expect(scrollSpy.active).toBe('two');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('three');
 			fixture.detectChanges();
-			expect(three).toHaveClass('active');
+			expect(three.classList.contains('active')).toBe(true);
 
 			// back to one
 			one.click();
 			expect(scrollSpy.active).toBe('three');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 			fixture.detectChanges();
-			expect(one).toHaveClass('active');
+			expect(one.classList.contains('active')).toBe(true);
 		});
 
 		it('should change active value hierarchically', async () => {
@@ -422,48 +450,48 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			let scrollSpy = debugElement.query(By.directive(NgbScrollSpy)).injector.get(NgbScrollSpy);
 			let [one, two, three, four, five] = nativeElement.querySelectorAll('span') as HTMLElement[];
 
-			expect(one).not.toHaveClass('active');
+			expect(one.classList.contains('active')).toBe(false);
 
 			// one is active by default
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 			fixture.detectChanges();
-			expect(one).toHaveClass('active');
+			expect(one.classList.contains('active')).toBe(true);
 
 			// scroll to two
 			scrollSpy.scrollTo('two');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
 			fixture.detectChanges();
-			expect(two).toHaveClass('active');
-			expect(three).not.toHaveClass('active');
-			expect(four).not.toHaveClass('active');
-			expect(five).not.toHaveClass('active');
+			expect(two.classList.contains('active')).toBe(true);
+			expect(three.classList.contains('active')).toBe(false);
+			expect(four.classList.contains('active')).toBe(false);
+			expect(five.classList.contains('active')).toBe(false);
 
 			// scroll to three
 			scrollSpy.scrollTo('three');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('three');
 			fixture.detectChanges();
-			expect(two).toHaveClass('active');
-			expect(three).toHaveClass('active');
-			expect(four).not.toHaveClass('active');
-			expect(five).not.toHaveClass('active');
+			expect(two.classList.contains('active')).toBe(true);
+			expect(three.classList.contains('active')).toBe(true);
+			expect(four.classList.contains('active')).toBe(false);
+			expect(five.classList.contains('active')).toBe(false);
 
 			// scroll to four
 			scrollSpy.scrollTo('four');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('four');
 			fixture.detectChanges();
-			expect(two).toHaveClass('active');
-			expect(three).not.toHaveClass('active');
-			expect(four).toHaveClass('active');
-			expect(five).not.toHaveClass('active');
+			expect(two.classList.contains('active')).toBe(true);
+			expect(three.classList.contains('active')).toBe(false);
+			expect(four.classList.contains('active')).toBe(true);
+			expect(five.classList.contains('active')).toBe(false);
 
 			// scroll to five
 			scrollSpy.scrollTo('five');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('five');
 			fixture.detectChanges();
-			expect(two).toHaveClass('active');
-			expect(three).not.toHaveClass('active');
-			expect(four).not.toHaveClass('active');
-			expect(five).toHaveClass('active');
+			expect(two.classList.contains('active')).toBe(true);
+			expect(three.classList.contains('active')).toBe(false);
+			expect(four.classList.contains('active')).toBe(false);
+			expect(five.classList.contains('active')).toBe(true);
 		});
 
 		it('should allow overriding scrollspy logic', async () => {
@@ -481,7 +509,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 }
 
 @Component({
-	imports: [NgbScrollSpyModule, AsyncPipe],
+	imports: [NgbScrollSpy, NgbScrollSpyItem, NgbScrollSpyFragment, NgbScrollSpyMenu, AsyncPipe],
 	template: ``,
 })
 class TestComponent {

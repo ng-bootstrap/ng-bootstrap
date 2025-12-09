@@ -1,6 +1,7 @@
 import { NgbPeriod } from '../ngb-calendar';
 import { NgbDate } from '../ngb-date';
 import { NgbCalendarBuddhist } from './ngb-calendar-buddhist';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('ngb-calendar-buddhist', () => {
 	let calendar: NgbCalendarBuddhist;

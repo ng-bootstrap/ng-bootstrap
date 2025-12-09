@@ -1,9 +1,15 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"outDir": "../out-tsc/spec",
-		"types": ["jasmine"]
+		"outDir": "../out-tsc/spec"
 	},
-	"files": ["test.ts"],
-	"include": ["**/*spec.ts", "**/*po.ts", "**/*.d.ts"]
+	"files": ["setup-test.ts", "test-providers.ts"],
+	"include": ["**/*spec.ts", "**/*po.ts", "**/*.d.ts"],
+	"angularCompilerOptions": {
+		"extendedDiagnostics": {
+			"checks": {
+				"unusedStandaloneImports": "suppress"
+			}
+		}
+	}
 }

@@ -1,6 +1,7 @@
 import { NgbPopoverConfig } from './popover-config';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { TestBed } from '@angular/core/testing';
+import { describe, expect, it } from 'vitest';
 
 describe('ngb-popover-config', () => {
 	it('should have sensible default values', () => {
