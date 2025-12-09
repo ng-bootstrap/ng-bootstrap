@@ -13,7 +13,7 @@ export default defineConfig({
 					provider: webdriverio({
 						user: process.env.SAUCE_USERNAME,
 						key: process.env.SAUCE_ACCESS_KEY,
-						region: 'eu',
+						region: 'us',
 						capabilities: {
 							'sauce:options': {
 								tunnelName: 'github-action-tunnel',
