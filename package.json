@@ -20,7 +20,6 @@
     "changelog:patch": "git add CHANGELOG.md && git commit --amend --no-edit && git tag -f $npm_package_version",
     "check-format": "prettier -c .",
     "format": "prettier -w .",
-    "saucelabs": "ng test ng-bootstrap -c saucelabs",
     "scripts:tdd": "node --import tsx --test --watch misc/*.spec.ts",
     "scripts:test": "node --import tsx --test misc/*.spec.ts",
     "e2e-app:serve": "ng serve e2e-app",

@@ -28,20 +28,12 @@
 					"options": {
 						"tsConfig": "src/tsconfig.spec.json",
 						"providersFile": "src/test-providers.ts",
-						"setupFiles": ["src/setup-test.ts"]
-					},
-					"configurations": {
-						"default": {
-							"coverageExclude": ["src/test/**"],
-							"coverageReporters": ["lcov"],
-							"browsers": ["ChromiumHeadless"],
-							"runnerConfig": "src/vitest.config.ts"
-						},
-						"saucelabs": {
-							"runnerConfig": "src/vitest-sauce.config.ts"
-						}
-					},
-					"defaultConfiguration": "default"
+						"setupFiles": ["src/setup-test.ts"],
+						"coverageExclude": ["src/test/**"],
+						"coverageReporters": ["lcov"],
+						"browsers": ["ChromiumHeadless", "FirefoxHeadless", "WebkitHeadless"],
+						"runnerConfig": "src/vitest.config.ts"
+					}
 				},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
