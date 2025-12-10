@@ -1,0 +1,10 @@
+<button
+	type="button"
+	class="btn btn-outline-secondary me-2"
+	placement="top"
+	ngbTooltip="Tooltip on top"
+	(click)="state = !state"
+	[disableTooltip]="state"
+>
+	{{state ? 'Disabled' : 'Enabled'}} tooltip
+</button>
