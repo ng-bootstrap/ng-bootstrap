@@ -31,8 +31,13 @@
 						"setupFiles": ["src/setup-test.ts"],
 						"coverageExclude": ["src/test/**"],
 						"coverageReporters": ["lcov"],
-						"browsers": ["ChromiumHeadless", "FirefoxHeadless", "WebkitHeadless"],
+						"browsers": ["ChromiumHeadless"],
 						"runnerConfig": "src/vitest.config.ts"
+					},
+					"configurations": {
+						"other-browsers": {
+							"browsers": ["FirefoxHeadless", "WebkitHeadless"]
+						}
 					}
 				},
 				"lint": {
