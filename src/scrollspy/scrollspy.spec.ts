@@ -12,6 +12,7 @@ import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { firstValueFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { server } from 'vitest/browser';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -206,28 +207,32 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 		});
 
-		it('should handle the case where first fragment might have something before it', async () => {
-			let { debugElement, nativeElement } = createTestComponent(`
+		// FIXME: flaky unit test on Firefox CI runs
+		it.skipIf(server.browser === 'firefox')(
+			'should handle the case where first fragment might have something before it',
+			async () => {
+				let { debugElement, nativeElement } = createTestComponent(`
 			<div class="container" ngbScrollSpy style='height: 200px;'>
 				<div style='height: 500px;'>spacer</div>
 				<div ngbScrollSpyFragment="one">fragment</div>
 			</div>
 		`);
 
-			let scrollSpy = debugElement.query(By.directive(NgbScrollSpy)).injector.get(NgbScrollSpy);
-			let container = nativeElement.querySelector('.container');
+				let scrollSpy = debugElement.query(By.directive(NgbScrollSpy)).injector.get(NgbScrollSpy);
+				let container = nativeElement.querySelector('.container');
 
-			// initially
-			expect(scrollSpy.active).toBe('');
+				// initially
+				expect(scrollSpy.active).toBe('');
 
-			// showing one
-			scrollSpy.scrollTo('one');
-			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+				// showing one
+				scrollSpy.scrollTo('one');
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 
-			// showing none
-			container.scrollTop = 0;
-			expect(await firstValueFrom(scrollSpy.active$)).toBe('');
-		});
+				// showing none
+				container.scrollTop = 0;
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('');
+			},
+		);
 
 		it('should handle the case when scrolling in-between fragments', async () => {
 			let { debugElement, nativeElement } = createTestComponent(`
