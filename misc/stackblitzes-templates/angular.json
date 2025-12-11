@@ -1,36 +1,36 @@
 {
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "demo": {
-      "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "prefix": "app",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@angular/build:application",
-          "options": {
-            "outputPath": "dist/demo",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": ["@angular/localize/init"],
-            "tsConfig": "tsconfig.json",
-            "extractLicenses": false,
-            "namedChunks": true,
-            "optimization": false,
-            "sourceMap": true
-          }
-        },
-        "serve": {
-          "builder": "@angular/build:dev-server",
-          "options": {
-            "buildTarget": "demo:build",
-            "prebundle": false
-          }
-        }
-      }
-    }
-  }
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"demo": {
+			"root": "",
+			"sourceRoot": "src",
+			"projectType": "application",
+			"prefix": "app",
+			"schematics": {},
+			"architect": {
+				"build": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/demo",
+						"index": "src/index.html",
+						"browser": "src/main.ts",
+						"polyfills": ["@angular/localize/init"],
+						"tsConfig": "tsconfig.json",
+						"extractLicenses": false,
+						"namedChunks": true,
+						"optimization": false,
+						"sourceMap": true
+					}
+				},
+				"serve": {
+					"builder": "@angular/build:dev-server",
+					"options": {
+						"buildTarget": "demo:build",
+						"prebundle": false
+					}
+				}
+			}
+		}
+	}
 }
