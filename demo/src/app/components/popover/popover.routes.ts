@@ -57,7 +57,7 @@ const DATA: ComponentData = {
 			markup: 'popover/demos/tplwithcontext/popover-tplwithcontext.html',
 		},
 		{
-			fragment: 'target',
+			fragment: 'custom-target',
 			title: 'Custom target',
 			type: NgbdPopoverTarget,
 			code: 'popover/demos/custom-target/popover-target.ts',

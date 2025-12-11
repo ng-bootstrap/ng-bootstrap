@@ -55,7 +55,7 @@ const DATA: ComponentData = {
 			markup: 'tooltip/demos/tplwithcontext/tooltip-tplwithcontext.html',
 		},
 		{
-			fragment: 'target',
+			fragment: 'custom-target',
 			title: 'Custom target',
 			type: NgbdTooltipTarget,
 			code: 'tooltip/demos/custom-target/tooltip-target.ts',

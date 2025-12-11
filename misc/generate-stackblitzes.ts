@@ -49,28 +49,13 @@ const root = path.join('demo', 'src', 'app', 'components');
 const initialData = {
 	stackblitzUrl,
 	versions,
-	dependencies: JSON.stringify({
-		'@angular/animations': versions.angular,
-		'@angular/core': versions.angular,
-		'@angular/common': versions.angular,
-		'@angular/compiler': versions.angular,
-		'@angular/compiler-cli': versions.angular,
-		'@angular/platform-browser': versions.angular,
-		'@angular/platform-browser-dynamic': versions.angular,
-		'@angular/router': versions.angular,
-		'@angular/forms': versions.angular,
-		'@angular/localize': versions.angular,
-		'@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
-		'@popperjs/core': versions.popper,
-		rxjs: versions.rxjs,
-		typescript: versions.typescript,
-	}),
 	tags: ['angular', 'bootstrap', 'ng-bootstrap'],
 	styles: fileContent('demo', 'src', 'style', 'demos.css'),
 	files: [
-		{ name: 'src/polyfills.ts', source: fileContent('misc', 'stackblitzes-templates', 'polyfills.ts') },
 		{ name: 'tsconfig.json', source: fileContent('misc', 'stackblitzes-templates', 'tsconfig.json') },
 		{ name: 'angular.json', source: fileContent('misc', 'stackblitzes-templates', 'angular.json') },
+		{ name: 'package.json', source: fileContent('misc', 'stackblitzes-templates', 'package.json') },
+		{ name: 'package-lock.json', source: fileContent('misc', 'stackblitzes-templates', 'package-lock.json') },
 	],
 };
 
