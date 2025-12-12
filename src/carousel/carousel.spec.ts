@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
@@ -23,7 +23,6 @@ const getArrowElements = (el: HTMLElement) =>
 function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 	const slideElms = getSlideElements(nativeEl);
 	const indicatorElms = getIndicatorElements(nativeEl);
-	const carouselElm = nativeEl.querySelector('ngb-carousel');
 
 	expect(slideElms.length).toBe(active.length);
 	expect(indicatorElms.length).toBe(active.length);
@@ -43,6 +42,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
 	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
 		vi.useFakeTimers();
 	});
 

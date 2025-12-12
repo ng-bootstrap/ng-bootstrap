@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import {
@@ -45,6 +45,10 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
 }
 
 describe('NgbInputDatepicker', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should initialize inputs with provided datepicker config', () => {
 		const fixture = createTestCmpt(`<input ngbDatepicker>`);
 		const defaultConfig = TestBed.inject(NgbInputDatepickerConfig);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -93,6 +93,10 @@ function expectContents(fixture: ComponentFixture<any>, expected: string[], acti
 }
 
 describe('nav', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should initialize inputs with default values', () => {
 		let nav = getNavDirective(createTestComponent('<ul ngbNav></ul>'));
 		let config = TestBed.inject(NgbNavConfig);

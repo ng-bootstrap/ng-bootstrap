@@ -1,12 +1,12 @@
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDate } from './ngb-date';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -20,6 +20,10 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 }
 
 describe('ngb-datepicker-navigation-select', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should generate month options correctly', () => {
 		const fixture = createTestComponent(
 			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,

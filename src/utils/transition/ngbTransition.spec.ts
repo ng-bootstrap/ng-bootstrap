@@ -1,5 +1,5 @@
 import { environment, ngbCompleteTransition, ngbRunTransition, NgbTransitionStartFn } from './ngbTransition';
-import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { isBrowserVisible } from '../../test/common';
 import { reflow } from '../util';
@@ -18,7 +18,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 
 		beforeEach(() => {
 			getTransitionTimerDelayMsMock = vi.spyOn(environment, 'getTransitionTimerDelayMs').mockReturnValue(500);
-			TestBed.configureTestingModule({ imports: [TestComponent] });
+			TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
 
 			component = TestBed.createComponent(TestComponent);
 			component.detectChanges();

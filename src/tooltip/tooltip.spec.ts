@@ -9,6 +9,7 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	NgZone,
+	provideZoneChangeDetection,
 	TemplateRef,
 	ViewChild,
 	ViewContainerRef,
@@ -32,6 +33,12 @@ function getWindow(element) {
 }
 
 describe('ngb-tooltip-window', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [provideZoneChangeDetection()],
+		});
+	});
+
 	afterEach(() => {
 		// Cleaning elements, because of a TestBed issue with the id attribute
 		Array.from(document.body.children).map((element: HTMLElement) => {
@@ -66,6 +73,12 @@ describe('ngb-tooltip-window', () => {
 });
 
 describe('ngb-tooltip', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [provideZoneChangeDetection()],
+		});
+	});
+
 	describe('basic functionality', () => {
 		it('should open and close a tooltip - default settings and content as string', async () => {
 			const fixture = createTestComponent(`<div ngbTooltip="Great tip!" style="margin-top: 100px;"></div>`);

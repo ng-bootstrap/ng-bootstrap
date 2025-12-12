@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
@@ -21,6 +21,7 @@ const getToastBodyElement = (element: HTMLElement): Element => getElementWithSel
 
 describe('ngb-toast', () => {
 	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
 		vi.useFakeTimers();
 	});
 

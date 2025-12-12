@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbCollapse } from './collapse';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
@@ -17,6 +17,10 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 }
 
 describe('ngb-collapse', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should have content open', () => {
 		const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
 

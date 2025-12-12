@@ -3,7 +3,7 @@ import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
@@ -23,6 +23,10 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 }
 
 describe('ngb-alert', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = TestBed.inject(NgbAlertConfig);
 		const alertCmp = TestBed.createComponent(NgbAlert).componentInstance;

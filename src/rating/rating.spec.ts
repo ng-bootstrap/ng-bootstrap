@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import {
 	FormControl,
 	FormsModule,
@@ -53,6 +53,10 @@ function getStateText(compiled) {
 }
 
 describe('ngb-rating', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = TestBed.inject(NgbRatingConfig);
 		const rating = TestBed.createComponent(NgbRating).componentInstance;
