@@ -25,6 +25,7 @@ export class NgbCollapse implements OnInit {
 	 * or via the `.toggle()` function
 	 *
 	 * @since 8.0.0
+	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
@@ -55,6 +56,7 @@ export class NgbCollapse implements OnInit {
 	 * If `true`, will collapse horizontally.
 	 *
 	 * @since 13.1.0
+	 * @defaultValue `false`
 	 */
 	@Input() horizontal = this._config.horizontal;
 

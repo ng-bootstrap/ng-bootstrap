@@ -101,6 +101,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * * `"outside"` - the popup will close only on the outside click and not on date selection/inside clicks.
 	 *
 	 * @since 3.0.0
+	 * @defaultValue `true`
 	 */
 	@Input() autoClose = this._config.autoClose;
 
@@ -209,6 +210,8 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
+	 *
+	 * @defaultValue `['bottom-start', 'bottom-end', 'top-start', 'top-end']`
 	 */
 	@Input() placement = this._config.placement;
 
@@ -217,6 +220,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * Receives current popper options and returns modified ones.
 	 *
 	 * @since 13.1.0
+	 * @defaultValue `(options) => options`
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
@@ -249,6 +253,8 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * A selector specifying the element the datepicker popup should be appended to.
 	 *
 	 * Currently only supports `"body"`.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() container = this._config.container;
 
@@ -258,6 +264,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * By default the input is used as a target.
 	 *
 	 * @since 4.2.0
+	 * @defaultValue `undefined`
 	 */
 	@Input() positionTarget = this._config.positionTarget;
 

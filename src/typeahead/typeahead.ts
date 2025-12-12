@@ -111,16 +111,22 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * A selector specifying the element the typeahead popup will be appended to.
 	 *
 	 * Currently only supports `"body"`.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() container = this._config.container;
 
 	/**
 	 * If `true`, model values will not be restricted only to items selected from the popup.
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() editable = this._config.editable;
 
 	/**
 	 * If `true`, the first item in the result list will always stay focused while typing.
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() focusFirst = this._config.focusFirst;
 
@@ -167,11 +173,14 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * If `true`, automatically selects the item when it is the only one that exactly matches the user input
 	 *
 	 * @since 14.2.0
+	 * @defaultValue `false`
 	 */
 	@Input() selectOnExact = this._config.selectOnExact;
 
 	/**
 	 * If `true`, will show the hint in the `<input>` when an item in the result list matches.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() showHint = this._config.showHint;
 
@@ -181,6 +190,8 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
+	 *
+	 * @defaultValue `['bottom-start', 'bottom-end', 'top-start', 'top-end']`
 	 */
 	@Input() placement = this._config.placement;
 
@@ -189,6 +200,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * Receives current popper options and returns modified ones.
 	 *
 	 * @since 13.1.0
+	 * @defaultValue `(options) => options`
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
