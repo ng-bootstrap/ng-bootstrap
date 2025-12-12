@@ -1,3 +1,37 @@
+# [20.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/19.0.1...20.0.0) (2025-12-12)
+
+This release bumps minimum required versions to Angular `21.0.0`
+
+## Features
+
+This release includes **component entry points**. This allows applications importing ng-bootstrap to speed up their build and have a slightly smaller bundle.
+
+For example, you can use the ng-bootstrap pagination component like this:
+```typescript
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
+
+@Component({
+  template: `<ngb-pagination [collectionSize]="50" />`,
+  imports: [NgbPagination]
+})
+export class MyComponent {}
+```
+
+Please note that this is not a breaking change, you will still be able to import everything from the main entrypoint.
+
+## Regarding Zoneless support
+
+ng-bootstrap demo has been using [Zoneless Change Detection](https://angular.dev/guide/zoneless) since version 17.0.1  
+If you have any issue using ng-bootstrap in a zoneless app, please open a bug and we will patch ng-bootstrap 20
+
+## Miscellaneous
+
+* Updated all links of the demo website from angular.io to their corresponding one on angular.dev
+* Updated all demo codes to use the standalone components instead of modules
+* Moved unit tests to vitest
+* Stackblitzes now run on zoneless
+* Fixed stackblitz links for popover / tooltip custom target examples
+
 ## [19.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/19.0.0...19.0.1) (2025-07-01)
 
 ### Bug Fixes
