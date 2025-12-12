@@ -278,4 +278,22 @@ describe('APIDocVisitor', () => {
 		assert.deepStrictEqual(docs.NgbDirective.properties[0].since, { version: '2.0.0', description: '' });
 		assert.deepStrictEqual(docs.NgbDirective.methods[0].since, { version: '2.0.0', description: '' });
 	});
+
+	it('should extract @defaultValue from JSDoc for setter inputs', () => {
+		const inputDocs = apiDoc(['misc/api-doc-test-cases/directives-with-setter-default-values.ts']).Foo.inputs;
+
+		assert.strictEqual(inputDocs.length, 4);
+
+		assert.strictEqual(inputDocs[0].name, 'propertyWithBoth');
+		assert.strictEqual(inputDocs[0].defaultValue, `'from-initializer'`);
+
+		assert.strictEqual(inputDocs[1].name, 'propertyWithInitializer');
+		assert.strictEqual(inputDocs[1].defaultValue, 'false');
+
+		assert.strictEqual(inputDocs[2].name, 'withDefaultValue');
+		assert.strictEqual(inputDocs[2].defaultValue, 'true');
+
+		assert.strictEqual(inputDocs[3].name, 'withoutDefaultValue');
+		assert.strictEqual(inputDocs[3].defaultValue, undefined);
+	});
 });

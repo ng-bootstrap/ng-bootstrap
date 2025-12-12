@@ -329,6 +329,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
 	 *
 	 * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() dayTemplate = this._config.dayTemplate;
 
@@ -339,11 +341,14 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * `current` is the month that is currently displayed by the datepicker.
 	 *
 	 * @since 3.3.0
+	 * @defaultValue `undefined`
 	 */
 	@Input() dayTemplateData = this._config.dayTemplateData;
 
 	/**
 	 * The number of months to display.
+	 *
+	 * @defaultValue `1`
 	 */
 	@Input() displayMonths = this._config.displayMonths;
 
@@ -351,6 +356,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * The first day of the week.
 	 *
 	 * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
+	 *
+	 * @defaultValue `1`
 	 */
 	@Input() firstDayOfWeek = this._config.firstDayOfWeek;
 
@@ -358,6 +365,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * The reference to the custom template for the datepicker footer.
 	 *
 	 * @since 3.3.0
+	 * @defaultValue `undefined`
 	 */
 	@Input() footerTemplate = this._config.footerTemplate;
 
@@ -367,6 +375,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * It is called for each new date when navigating to a different month.
 	 *
 	 * `current` is the month that is currently displayed by the datepicker.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() markDisabled = this._config.markDisabled;
 
@@ -374,6 +384,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * The latest date that can be displayed or selected.
 	 *
 	 * If not provided, 'year' select box will display 10 years after the current month.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() maxDate = this._config.maxDate;
 
@@ -381,6 +393,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * The earliest date that can be displayed or selected.
 	 *
 	 * If not provided, 'year' select box will display 10 years before the current month.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() minDate = this._config.minDate;
 
@@ -390,6 +404,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * * `"select"` - select boxes for month and navigation arrows
 	 * * `"arrows"` - only navigation arrows
 	 * * `"none"` - no navigation visible at all
+	 *
+	 * @defaultValue `'select'`
 	 */
 	@Input() navigation = this._config.navigation;
 
@@ -401,11 +417,15 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
 	 *
 	 * For the 2+ months view, days in between months are never shown.
+	 *
+	 * @defaultValue `'visible'`
 	 */
 	@Input() outsideDays = this._config.outsideDays;
 
 	/**
 	 * If `true`, week numbers will be displayed.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() showWeekNumbers = this._config.showWeekNumbers;
 
@@ -416,6 +436,8 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * If nothing or invalid date is provided, calendar will open with current month.
 	 *
 	 * You could use `navigateTo(date)` method as an alternative.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() startDate = this._config.startDate;
 
@@ -427,6 +449,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
 	 *
 	 * @since 9.1.0
+	 * @defaultValue `'narrow'`
 	 */
 	@Input() weekdays = this._config.weekdays;
 

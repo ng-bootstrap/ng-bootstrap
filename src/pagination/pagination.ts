@@ -292,21 +292,29 @@ export class NgbPagination implements OnChanges {
 
 	/**
 	 * If `true`, pagination links will be disabled.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() disabled = this._config.disabled;
 
 	/**
 	 * If `true`, the "First" and "Last" page links are shown.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() boundaryLinks = this._config.boundaryLinks;
 
 	/**
 	 * If `true`, the "Next" and "Previous" page links are shown.
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() directionLinks = this._config.directionLinks;
 
 	/**
 	 * If `true`, the ellipsis symbols and first/last page numbers will be shown when `maxSize` > number of pages.
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() ellipses = this._config.ellipses;
 
@@ -314,6 +322,8 @@ export class NgbPagination implements OnChanges {
 	 * Whether to rotate pages when `maxSize` > number of pages.
 	 *
 	 * The current page always stays in the middle if `true`.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() rotate = this._config.rotate;
 
@@ -328,6 +338,8 @@ export class NgbPagination implements OnChanges {
 
 	/**
 	 *  The maximum number of pages to display.
+	 *
+	 * @defaultValue `0`
 	 */
 	@Input() maxSize = this._config.maxSize;
 
@@ -335,11 +347,15 @@ export class NgbPagination implements OnChanges {
 	 *  The current page.
 	 *
 	 *  Page numbers start with `1`.
+	 *
+	 * @defaultValue `1`
 	 */
 	@Input() page = 1;
 
 	/**
 	 *  The number of items per page.
+	 *
+	 * @defaultValue `10`
 	 */
 	@Input() pageSize = this._config.pageSize;
 
@@ -358,6 +374,8 @@ export class NgbPagination implements OnChanges {
 	 * Bootstrap currently supports small and large sizes.
 	 *
 	 * If the passed value is a string (ex. 'custom'), it will just add the `pagination-custom` css class
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() size = this._config.size;
 

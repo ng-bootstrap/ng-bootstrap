@@ -96,6 +96,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * If `true`, popover opening and closing will be animated.
 	 *
 	 * @since 8.0.0
+	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
@@ -109,6 +110,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * as well as `Escape` presses
 	 *
 	 * @since 3.0.0
+	 * @defaultValue `true`
 	 */
 	@Input() autoClose = this._config.autoClose;
 
@@ -132,6 +134,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * The default order of preference is `"auto"`.
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
+	 *
+	 * @defaultValue `'auto'`
 	 */
 	@Input() placement = this._config.placement;
 
@@ -140,6 +144,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * Receives current popper options and returns modified ones.
 	 *
 	 * @since 13.1.0
+	 * @defaultValue `(options) => options`
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
@@ -148,6 +153,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 *
 	 * Supports a space separated list of event names.
 	 * For more details see the [triggers demo](#/components/popover/examples#triggers).
+	 *
+	 * @defaultValue `'click'`
 	 */
 	@Input() triggers = this._config.triggers;
 
@@ -163,6 +170,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * A selector specifying the element the popover should be appended to.
 	 *
 	 * Currently only supports `body`.
+	 *
+	 * @defaultValue `undefined`
 	 */
 	@Input() container = this._config.container;
 
@@ -170,6 +179,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * If `true`, popover is disabled and won't be displayed.
 	 *
 	 * @since 1.1.0
+	 * @defaultValue `false`
 	 */
 	@Input() disablePopover = this._config.disablePopover;
 
@@ -177,6 +187,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * An optional class applied to the popover window element.
 	 *
 	 * @since 2.2.0
+	 * @defaultValue `undefined`
 	 */
 	@Input() popoverClass = this._config.popoverClass;
 
@@ -191,6 +202,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
+	 * @defaultValue `0`
 	 */
 	@Input() openDelay = this._config.openDelay;
 
@@ -198,6 +210,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 * The closing delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
+	 * @defaultValue `0`
 	 */
 	@Input() closeDelay = this._config.closeDelay;
 

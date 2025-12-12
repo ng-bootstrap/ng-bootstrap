@@ -214,6 +214,8 @@ export class NgbAccordionItem implements AfterContentInit {
 	 * If `true`, the content of the accordion item's body will be removed from the DOM. It will be just hidden otherwise.
 	 *
 	 * This property can also be set up on the parent [`NgbAccordion` directive](#/components/accordion/api#NgbAccordionDirective).
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() set destroyOnHide(destroyOnHide: boolean) {
 		this._destroyOnHide = destroyOnHide;
@@ -226,6 +228,8 @@ export class NgbAccordionItem implements AfterContentInit {
 	/**
 	 * If `true`, the accordion item will be disabled.
 	 * It won't react to user's clicks, but still will be toggelable programmatically.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() disabled = false;
 
@@ -233,6 +237,8 @@ export class NgbAccordionItem implements AfterContentInit {
 	 *	If `true`, the accordion item will be collapsed. Otherwise, it will be expanded.
 	 *
 	 * @param collapsed New state of the accordion item.
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() set collapsed(collapsed: boolean) {
 		if (collapsed) {
@@ -390,17 +396,23 @@ export class NgbAccordionDirective {
 	@ContentChildren(NgbAccordionItem, { descendants: false }) private _items?: QueryList<NgbAccordionItem>;
 	/**
 	 * If `true`, accordion will be animated.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() animation = this._config.animation;
 
 	/**
 	 * If `true`, only one item at the time can stay open.
+	 *
+	 * @defaultValue `false`
 	 */
 	@Input() closeOthers = this._config.closeOthers;
 	/**
 	 * If `true`, the content of the accordion items body will be removed from the DOM. It will be just hidden otherwise.
 	 *
 	 * This property can be overwritten at the [`NgbAccordionItem`](#/components/accordion/api#NgbAccordionItem) level
+	 *
+	 * @defaultValue `true`
 	 */
 	@Input() destroyOnHide = this._config.destroyOnHide;
 

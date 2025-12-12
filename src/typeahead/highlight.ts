@@ -29,6 +29,8 @@ export class NgbHighlight implements OnChanges {
 
 	/**
 	 * The CSS class for `<span>` elements wrapping the `term` inside the `result`.
+	 *
+	 * @defaultValue `'ngb-highlight'`
 	 */
 	@Input() highlightClass = 'ngb-highlight';
 
@@ -55,6 +57,7 @@ export class NgbHighlight implements OnChanges {
 	 * you will have to include a polyfill in your application (`unorm` for example).
 	 *
 	 * @since 9.1.0
+	 * @defaultValue `true`
 	 */
 	@Input() accentSensitive = true;
 
