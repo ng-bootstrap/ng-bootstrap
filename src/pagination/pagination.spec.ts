@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import {
 	NgbPagination,
@@ -86,6 +86,10 @@ function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig
 }
 
 describe('ngb-pagination', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	describe('business logic', () => {
 		let pagination: NgbPagination;
 

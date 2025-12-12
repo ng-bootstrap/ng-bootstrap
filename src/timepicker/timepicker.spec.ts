@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, DebugElement, Injectable } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DebugElement,
+	Injectable,
+	provideZoneChangeDetection,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -80,6 +86,10 @@ function customizeConfig(config: NgbTimepickerConfig) {
 }
 
 describe('ngb-timepicker', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	describe('initialization', () => {
 		it('should initialize inputs with provided config', () => {
 			const defaultConfig = new NgbTimepickerConfig();

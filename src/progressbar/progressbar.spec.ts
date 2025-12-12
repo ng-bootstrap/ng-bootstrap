@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
@@ -35,6 +35,10 @@ function getProgressbar(nativeEl: Element): HTMLElement {
 }
 
 describe('ngb-progressbar', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	describe('business logic', () => {
 		let progressCmp: NgbProgressbar;
 

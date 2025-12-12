@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { NgbOffcanvasPanel } from './offcanvas-panel';
+import { provideZoneChangeDetection } from '@angular/core';
 
 describe('ngb-offcanvas-panel', () => {
 	let fixture: ComponentFixture<NgbOffcanvasPanel>;
 
 	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
 		fixture = TestBed.createComponent(NgbOffcanvasPanel);
 	});
 

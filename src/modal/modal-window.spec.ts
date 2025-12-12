@@ -2,11 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { NgbModalWindow } from './modal-window';
+import { provideZoneChangeDetection } from '@angular/core';
 
 describe('ngb-modal-dialog', () => {
 	let fixture: ComponentFixture<NgbModalWindow>;
 
 	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
 		fixture = TestBed.createComponent(NgbModalWindow);
 	});
 

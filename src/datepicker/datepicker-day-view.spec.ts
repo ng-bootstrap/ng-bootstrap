@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 function getElement(element: HTMLElement): HTMLElement {
 	return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
 }
 
 describe('ngbDatepickerDayView', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should display date', () => {
 		const fixture = TestBed.createComponent(TestComponent);
 		fixture.detectChanges();

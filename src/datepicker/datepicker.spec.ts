@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
-import { Component, TemplateRef, DebugElement } from '@angular/core';
+import { Component, TemplateRef, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
@@ -158,6 +158,10 @@ function customizeConfig(config: NgbDatepickerConfig) {
 }
 
 describe('ngb-datepicker', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should initialize inputs with provided config', () => {
 		const defaultConfig = new NgbDatepickerConfig();
 		const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;

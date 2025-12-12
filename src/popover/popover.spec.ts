@@ -14,6 +14,7 @@ import {
 	ViewContainerRef,
 	AfterViewInit,
 	NgZone,
+	provideZoneChangeDetection,
 } from '@angular/core';
 
 import { NgbPopover, NgbPopoverWindow } from './popover';
@@ -39,6 +40,10 @@ function getWindow(element) {
 }
 
 describe('ngb-popover-window', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	afterEach(() => {
 		// Cleaning elements, because of a TestBed issue with the id attribute
 		Array.from(document.body.children).map((element: HTMLElement) => {
@@ -77,7 +82,7 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [SpyService],
+			providers: [SpyService, provideZoneChangeDetection()],
 		});
 	});
 

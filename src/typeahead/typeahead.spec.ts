@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -66,7 +66,7 @@ describe('ngb-typeahead', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
 		TestBed.configureTestingModule({
-			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }],
+			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }, provideZoneChangeDetection()],
 		});
 	});
 

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import {
 	NgbDropdown,
@@ -66,6 +66,10 @@ expect.extend({
 });
 
 describe('ngb-dropdown', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should be closed and down by default', () => {
 		const html = `
       <div ngbDropdown>
@@ -394,6 +398,10 @@ describe('ngb-dropdown', () => {
 });
 
 describe('ngb-dropdown-toggle', () => {
+	beforeEach(() => {
+		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+	});
+
 	it('should toggle dropdown on click', () => {
 		const html = `
       <div ngbDropdown>
