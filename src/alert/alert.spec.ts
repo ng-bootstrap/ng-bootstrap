@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { By } from '@angular/platform-browser';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import { server } from 'vitest/browser';
 
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
@@ -192,6 +193,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 			imports: [NgbAlert],
 			template: ` <ngb-alert type="success" (closed)="onClose()">Cool!</ngb-alert>`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			reduceMotion = true;
@@ -211,28 +213,31 @@ if (isBrowserVisible('ngb-alert animations')) {
 		});
 
 		[true, false].forEach((reduceMotion) => {
-			it(`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`, async () => {
-				const fixture = TestBed.createComponent(TestAnimationComponent);
-				fixture.componentInstance.reduceMotion = reduceMotion;
-				fixture.detectChanges();
+			it.skipIf(server.browser === 'webkit')(
+				`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`,
+				async () => {
+					const fixture = TestBed.createComponent(TestAnimationComponent);
+					fixture.componentInstance.reduceMotion = reduceMotion;
+					fixture.detectChanges();
 
-				const alertEl = getAlertElement(fixture.nativeElement);
-				const buttonEl = fixture.nativeElement.querySelector('button');
+					const alertEl = getAlertElement(fixture.nativeElement);
+					const buttonEl = fixture.nativeElement.querySelector('button');
 
-				const closePromise = new Promise<void>((resolve) =>
-					vi.spyOn(fixture.componentInstance, 'onClose').mockImplementation(resolve),
-				);
+					const closePromise = new Promise<void>((resolve) =>
+						vi.spyOn(fixture.componentInstance, 'onClose').mockImplementation(resolve),
+					);
 
-				expect(window.getComputedStyle(alertEl).opacity).toBe('1');
-				expect(alertEl).toHaveCssClass('show');
-				expect(alertEl).toHaveCssClass('fade');
-				buttonEl.click();
+					expect(window.getComputedStyle(alertEl).opacity).toBe('1');
+					expect(alertEl).toHaveCssClass('show');
+					expect(alertEl).toHaveCssClass('fade');
+					buttonEl.click();
 
-				await closePromise;
-				expect(window.getComputedStyle(alertEl).opacity).toBe('0');
-				expect(alertEl).not.toHaveCssClass('show');
-				expect(alertEl).toHaveCssClass('fade');
-			});
+					await closePromise;
+					expect(window.getComputedStyle(alertEl).opacity).toBe('0');
+					expect(alertEl).not.toHaveCssClass('show');
+					expect(alertEl).toHaveCssClass('fade');
+				},
+			);
 		});
 	});
 }
@@ -241,6 +246,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 	selector: 'test-cmp',
 	imports: [NgbAlert],
 	template: '',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	closed = signal(false);

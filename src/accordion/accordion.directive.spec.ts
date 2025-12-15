@@ -613,6 +613,7 @@ describe('ngb-accordion directive', () => {
 					}
 				</div>
 			`,
+			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class CloseOthersComponent {
 			keys = ['one', 'two', 'three', 'four'];
@@ -1019,6 +1020,7 @@ it(`should allow querying from the body template`, () => {
 				</div>
 			</div>
 		`,
+		changeDetection: ChangeDetectionStrategy.OnPush,
 	})
 	class QueryTestComponent {
 		@ViewChild('bar')
@@ -1088,6 +1090,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 				</div>
 			`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			reduceMotion = true;
@@ -1265,6 +1268,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 		NgbAccordionBody,
 		NgbAccordionToggle,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	destroyOnHide = input(true);
