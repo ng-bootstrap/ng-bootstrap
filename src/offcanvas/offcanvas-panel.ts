@@ -50,14 +50,8 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 	@Input() animation: boolean;
 	@Input() ariaLabelledBy?: string;
 	@Input() ariaDescribedBy?: string;
-	/**
-	 * @defaultValue `true`
-	 */
 	@Input() keyboard = true;
 	@Input() panelClass: string;
-	/**
-	 * @defaultValue `'start'`
-	 */
 	@Input() position: 'start' | 'end' | 'top' | 'bottom' = 'start';
 
 	@Output('dismiss') dismissEvent = new EventEmitter();

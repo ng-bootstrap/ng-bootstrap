@@ -176,6 +176,9 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
 	modalDialogClass: string;
 	backdropClass: string;
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}

@@ -60,8 +60,6 @@ export class NgbProgressbar {
 	 * If `true`, the stripes on the progress bar are animated.
 	 *
 	 * Takes effect only for browsers supporting CSS3 animations, and if `striped` is `true`.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() animated = this._config.animated;
 
@@ -69,21 +67,16 @@ export class NgbProgressbar {
 	 * The accessible progress bar name.
 	 *
 	 * @since 13.1.0
-	 * @defaultValue `'progress bar'`
 	 */
 	@Input() ariaLabel = this._config.ariaLabel;
 
 	/**
 	 * If `true`, the progress bars will be displayed as striped.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() striped = this._config.striped;
 
 	/**
 	 * If `true`, the current percentage will be shown in the `xx%` format.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() showValue = this._config.showValue;
 
@@ -94,7 +87,6 @@ export class NgbProgressbar {
 	 *  `"success"`, `"info"`, `"warning"`, `"danger"`, `"primary"`, `"secondary"`, `"dark"` and so on.
 	 *
 	 * @since 5.2.0
-	 * @defaultValue `undefined`
 	 */
 	@Input() textType = this._config.textType;
 
@@ -103,8 +95,6 @@ export class NgbProgressbar {
 	 *
 	 * Supports types based on Bootstrap background color variants, like:
 	 *  `"success"`, `"info"`, `"warning"`, `"danger"`, `"primary"`, `"secondary"`, `"dark"` and so on.
-	 *
-	 * @defaultValue `undefined`
 	 */
 	@Input() type = this._config.type;
 
@@ -112,8 +102,6 @@ export class NgbProgressbar {
 	 * The current value for the progress bar.
 	 *
 	 * Should be in the `[0, max]` range.
-	 *
-	 * @defaultValue `0`
 	 */
 	@Input({ required: true }) value = 0;
 
@@ -121,8 +109,6 @@ export class NgbProgressbar {
 	 * The height of the progress bar.
 	 *
 	 * Accepts any valid CSS height values, ex. `"2rem"`
-	 *
-	 * @defaultValue `undefined`
 	 */
 	@Input() height = this._config.height;
 

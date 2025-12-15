@@ -98,8 +98,6 @@ export class NgbNavItem implements OnInit {
 	 * If `true`, the current nav item is disabled and can't be toggled by user.
 	 *
 	 * Nevertheless disabled nav can be selected programmatically via the `.select()` method and the `[activeId]` binding.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() disabled = false;
 
@@ -220,15 +218,12 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	 * If `true`, nav change will be animated.
 	 *
 	 * @since 8.0.0
-	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
 	/**
 	 * If `true`, non-active nav content will be removed from DOM
 	 * Otherwise it will just be hidden
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() destroyOnHide = this._config.destroyOnHide;
 
@@ -236,8 +231,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	 * The orientation of navs.
 	 *
 	 * Using `vertical` will also add the `aria-orientation` attribute
-	 *
-	 * @defaultValue `'horizontal'`
 	 */
 	@Input() orientation = this._config.orientation;
 
@@ -245,8 +238,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	 * Role attribute generating strategy:
 	 * - `false` - no role attributes will be generated
 	 * - `'tablist'` - 'tablist', 'tab' and 'tabpanel' will be generated (default)
-	 *
-	 * @defaultValue `'tablist'`
 	 */
 	@Input() roles = this._config.roles;
 
@@ -260,7 +251,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	 * See the [list of available keyboard shortcuts](#/components/nav/overview#keyboard-shortcuts).
 	 *
 	 * @since 6.1.0
-	 * @defaultValue `true`
 	 */
 	@Input() keyboard = this._config.keyboard;
 

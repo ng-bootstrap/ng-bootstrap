@@ -19,6 +19,9 @@ export class NgbNavConfig {
 	roles: 'tablist' | false = 'tablist';
 	keyboard: boolean | 'changeWithArrows' = true;
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}

@@ -90,19 +90,10 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 	@Input() animation: boolean;
 	@Input() ariaLabelledBy: string;
 	@Input() ariaDescribedBy: string;
-	/**
-	 * @defaultValue `true`
-	 */
 	@Input() backdrop: boolean | string = true;
 	@Input() centered: string;
 	@Input() fullscreen: string | boolean;
-	/**
-	 * @defaultValue `true`
-	 */
 	@Input() keyboard = true;
-	/**
-	 * @defaultValue `'dialog'`
-	 */
 	@Input() role: string = 'dialog';
 	@Input() scrollable: string;
 	@Input() size: string;

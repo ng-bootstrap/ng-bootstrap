@@ -83,15 +83,11 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	/**
 	 * If `true`, the rating can't be changed or focused.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() disabled = false;
 
 	/**
 	 * The maximal rating that can be given.
-	 *
-	 * @defaultValue `10`
 	 */
 	@Input() max = this._config.max;
 
@@ -102,15 +98,11 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	/**
 	 * If `true`, the rating can't be changed.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() readonly = this._config.readonly;
 
 	/**
 	 * If `true`, the rating can be reset to `0` by mouse clicking currently set rating.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input() resettable = this._config.resettable;
 
@@ -127,7 +119,6 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	 * If the component is disabled, `tabindex` will still be set to `-1`.
 	 *
 	 * @since 13.1.0
-	 * @defaultValue `0`
 	 */
 	@Input() tabindex = this._config.tabindex;
 

@@ -60,9 +60,6 @@ export class NgbDropdownItem {
 
 	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
-	/**
-	 * @defaultValue `0`
-	 */
 	@Input() tabindex: string | number = 0;
 
 	@Input()
@@ -192,8 +189,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 * * `false` - the dropdown can only be closed manually via `close()` or `toggle()` methods.
 	 * * `"inside"` - the dropdown will close on inside menu clicks, but not outside clicks.
 	 * * `"outside"` - the dropdown will close only on the outside clicks and not on menu clicks.
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() autoClose = this._config.autoClose;
 
@@ -211,8 +206,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 	/**
 	 * Defines whether or not the dropdown menu is opened initially.
-	 *
-	 * @defaultValue `false`
 	 */
 	@Input('open') _open = false;
 
@@ -222,8 +215,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
-	 *
-	 * @defaultValue `['bottom-start', 'bottom-end', 'top-start', 'top-end']`
 	 */
 	@Input() placement = this._config.placement;
 
@@ -232,7 +223,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 * Receives current popper options and returns modified ones.
 	 *
 	 * @since 13.1.0
-	 * @defaultValue `(options) => options`
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
@@ -241,7 +231,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 * Currently only supports "body".
 	 *
 	 * @since 4.1.0
-	 * @defaultValue `null`
 	 */
 	@Input() container: null | 'body' = this._config.container;
 

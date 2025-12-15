@@ -78,7 +78,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * If `true`, tooltip opening and closing will be animated.
 	 *
 	 * @since 8.0.0
-	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
@@ -92,7 +91,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * as well as `Escape` presses
 	 *
 	 * @since 3.0.0
-	 * @defaultValue `true`
 	 */
 	@Input() autoClose = this._config.autoClose;
 
@@ -102,8 +100,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * The default order of preference is `"auto"`.
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
-	 *
-	 * @defaultValue `'auto'`
 	 */
 	@Input() placement = this._config.placement;
 
@@ -112,7 +108,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * Receives current popper options and returns modified ones.
 	 *
 	 * @since 13.1.0
-	 * @defaultValue `(options) => options`
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
@@ -121,8 +116,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 *
 	 * Supports a space separated list of event names.
 	 * For more details see the [triggers demo](#/components/tooltip/examples#triggers).
-	 *
-	 * @defaultValue `'hover focus'`
 	 */
 	@Input() triggers = this._config.triggers;
 
@@ -138,8 +131,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * A selector specifying the element the tooltip should be appended to.
 	 *
 	 * Currently only supports `"body"`.
-	 *
-	 * @defaultValue `undefined`
 	 */
 	@Input() container = this._config.container;
 
@@ -147,7 +138,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * If `true`, tooltip is disabled and won't be displayed.
 	 *
 	 * @since 1.1.0
-	 * @defaultValue `false`
 	 */
 	@Input() disableTooltip = this._config.disableTooltip;
 
@@ -155,7 +145,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * An optional class applied to the tooltip window element.
 	 *
 	 * @since 3.2.0
-	 * @defaultValue `undefined`
 	 */
 	@Input() tooltipClass = this._config.tooltipClass;
 
@@ -170,7 +159,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
-	 * @defaultValue `0`
 	 */
 	@Input() openDelay = this._config.openDelay;
 
@@ -178,7 +166,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * The closing delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
-	 * @defaultValue `0`
 	 */
 	@Input() closeDelay = this._config.closeDelay;
 

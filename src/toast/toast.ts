@@ -88,23 +88,18 @@ export class NgbToast implements AfterContentInit, OnChanges {
 	 * Animation is triggered only when the `.hide()` or `.show()` functions are called
 	 *
 	 * @since 8.0.0
-	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
 	/**
 	 * Delay after which the toast will hide (ms).
 	 * default: `500` (ms) (inherited from NgbToastConfig)
-	 *
-	 * @defaultValue `5000`
 	 */
 	@Input() delay = this._config.delay;
 
 	/**
 	 * Auto hide the toast after a delay in ms.
 	 * default: `true` (inherited from NgbToastConfig)
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() autohide = this._config.autohide;
 

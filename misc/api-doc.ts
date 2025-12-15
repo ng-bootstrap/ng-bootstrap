@@ -328,7 +328,7 @@ class APIDocVisitor {
 
 			// Accessor
 			else if (isGetAccessor(member)) {
-				properties.push({ ...this.visitNamedDeclaration(member), ...releaseInfo });
+				properties.push({ ...this.visitNamedDeclaration(member), defaultValue, ...releaseInfo });
 			}
 		}
 

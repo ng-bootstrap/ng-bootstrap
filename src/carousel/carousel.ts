@@ -50,8 +50,6 @@ export class NgbSlide {
 	 * Slide id that must be unique for the entire document.
 	 *
 	 * If not provided, will be generated in the `ngb-slide-xx` format.
-	 *
-	 * @defaultValue `'ngb-slide-XX'` where XX is auto-incremented
 	 */
 	@Input() id = `ngb-slide-${nextId++}`;
 
@@ -157,8 +155,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 * A flag to enable/disable the animations.
 	 *
 	 * @since 8.0.0
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
@@ -195,8 +191,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 
 	/**
 	 * If `true`, allows to interact with carousel using keyboard 'arrow left' and 'arrow right'.
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() keyboard = this._config.keyboard;
 
@@ -230,8 +224,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 * If `true`, 'previous' and 'next' navigation arrows will be visible on the slide.
 	 *
 	 * @since 2.2.0
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() showNavigationArrows = this._config.showNavigationArrows;
 
@@ -239,8 +231,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 * If `true`, navigation indicators at the bottom of the slide will be visible.
 	 *
 	 * @since 2.2.0
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() showNavigationIndicators = this._config.showNavigationIndicators;
 

@@ -58,8 +58,6 @@ export class NgbAlert {
 	 * or via the `.close()` function
 	 *
 	 * @since 8.0.0
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() animation = this._config.animation;
 
@@ -68,8 +66,6 @@ export class NgbAlert {
 	 *
 	 * The close button (×) will be displayed and you can be notified
 	 * of the event with the `(closed)` output.
-	 *
-	 * @defaultValue `true`
 	 */
 	@Input() dismissible = this._config.dismissible;
 
@@ -78,8 +74,6 @@ export class NgbAlert {
 	 *
 	 * Bootstrap provides styles for the following types: `'success'`, `'info'`, `'warning'`, `'danger'`, `'primary'`,
 	 * `'secondary'`, `'light'` and `'dark'`.
-	 *
-	 * @defaultValue `'warning'`
 	 */
 	@Input() type = this._config.type;
 

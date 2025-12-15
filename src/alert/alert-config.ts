@@ -15,6 +15,9 @@ export class NgbAlertConfig {
 	dismissible = true;
 	type = 'warning';
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}
