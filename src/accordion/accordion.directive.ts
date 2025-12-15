@@ -214,6 +214,8 @@ export class NgbAccordionItem implements AfterContentInit {
 	 * If `true`, the content of the accordion item's body will be removed from the DOM. It will be just hidden otherwise.
 	 *
 	 * This property can also be set up on the parent [`NgbAccordion` directive](#/components/accordion/api#NgbAccordionDirective).
+	 *
+	 * @defaultValue `true` - initialized from the parent NgbAccordion directive
 	 */
 	@Input() set destroyOnHide(destroyOnHide: boolean) {
 		this._destroyOnHide = destroyOnHide;
@@ -232,7 +234,7 @@ export class NgbAccordionItem implements AfterContentInit {
 	/**
 	 *	If `true`, the accordion item will be collapsed. Otherwise, it will be expanded.
 	 *
-	 * @param collapsed New state of the accordion item.
+	 * @defaultValue `true`
 	 */
 	@Input() set collapsed(collapsed: boolean) {
 		if (collapsed) {

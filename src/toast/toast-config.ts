@@ -44,6 +44,9 @@ export class NgbToastConfig implements NgbToastOptions {
 	delay = 5000;
 	ariaLive: 'polite' | 'assertive' = 'polite';
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}

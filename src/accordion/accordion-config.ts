@@ -15,6 +15,9 @@ export class NgbAccordionConfig {
 	closeOthers = false;
 	destroyOnHide = true;
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}

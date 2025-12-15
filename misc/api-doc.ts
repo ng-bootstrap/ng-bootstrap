@@ -101,17 +101,20 @@ function isPrivate(member) {
 function getJsDocTags(symbol: Symbol): {
 	deprecated?: { version: string; description: string };
 	since?: { version: string; description: string };
+	defaultValue?: string;
 } {
 	return !symbol
 		? {}
-		: symbol
-				.getJsDocTags()
-				.filter((el) => ['deprecated', 'since'].includes(el.name))
-				.reduce((obj, el) => {
+		: symbol.getJsDocTags().reduce((obj, el) => {
+				if (el.name === 'defaultValue') {
+					// Extract the defaultValue text, removing backticks if present
+					obj[el.name] = el.text?.[0]?.text?.trim().replace(/^`|`$/g, '') || '';
+				} else if (['deprecated', 'since'].includes(el.name)) {
 					const [version, ...rest] = el.text[0].text.split(' ');
 					obj[el.name] = { version, description: rest.join(' ').trim() };
-					return obj;
-				}, {});
+				}
+				return obj;
+		  }, {});
 }
 
 class APIDocVisitor {
@@ -284,7 +287,7 @@ class APIDocVisitor {
 
 			// Release info tags
 			const symbol = this.typeChecker.getSymbolAtLocation(member.name);
-			const { deprecated, since } = getJsDocTags(symbol);
+			const { deprecated, since, defaultValue } = getJsDocTags(symbol);
 			const releaseInfo = { deprecated, since };
 
 			const inputDecorator = getDecoratorOfType(member, 'Input');
@@ -293,9 +296,12 @@ class APIDocVisitor {
 			// Input accessor or property
 			if (inputDecorator) {
 				if (isPropertyDeclaration(member)) {
-					inputs.push({ ...this.visitInputProperty(member, inputDecorator), ...releaseInfo });
+					// For property inputs, prefer initializer value over JSDoc @defaultValue, but fall back to JSDoc if no initializer
+					const propertyInput = this.visitInputProperty(member, inputDecorator);
+					inputs.push({ ...propertyInput, defaultValue: propertyInput.defaultValue || defaultValue, ...releaseInfo });
 				} else if (isSetAccessorDeclaration(member)) {
-					inputs.push({ ...this.visitInputOrOutputDeclaration(member, inputDecorator), ...releaseInfo });
+					// For setter inputs, use JSDoc @defaultValue since there's no initializer
+					inputs.push({ ...this.visitInputOrOutputDeclaration(member, inputDecorator), defaultValue, ...releaseInfo });
 				}
 			}
 
@@ -320,7 +326,7 @@ class APIDocVisitor {
 
 			// Accessor
 			else if (isGetAccessor(member)) {
-				properties.push({ ...this.visitNamedDeclaration(member), ...releaseInfo });
+				properties.push({ ...this.visitNamedDeclaration(member), defaultValue, ...releaseInfo });
 			}
 		}
 

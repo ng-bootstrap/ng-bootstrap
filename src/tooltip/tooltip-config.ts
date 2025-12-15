@@ -24,6 +24,9 @@ export class NgbTooltipConfig {
 	openDelay = 0;
 	closeDelay = 0;
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}

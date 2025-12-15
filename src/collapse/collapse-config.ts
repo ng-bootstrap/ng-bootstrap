@@ -14,6 +14,9 @@ export class NgbCollapseConfig {
 
 	horizontal = false;
 
+	/**
+	 * @defaultValue `true`
+	 */
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}
