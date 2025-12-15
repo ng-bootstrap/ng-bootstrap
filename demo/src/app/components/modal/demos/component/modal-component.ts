@@ -30,7 +30,7 @@ export class NgbdModalComponent {
 	private modalService = inject(NgbModal);
 
 	open() {
-		const modalRef = this.modalService.open(NgbdModalContent);
-		modalRef.componentInstance.name = 'World';
+		const modalRef = this.modalService.open<NgbdModalContent>(NgbdModalContent);
+		modalRef.componentInstance!.name = 'World';
 	}
 }
