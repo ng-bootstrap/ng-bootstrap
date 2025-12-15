@@ -336,6 +336,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 					});
 				}
 			}
+			this._changeDetector.markForCheck();
 		}
 	}
 
