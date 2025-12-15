@@ -1,16 +1,16 @@
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
 	NgbNav,
 	NgbNavConfig,
-	NgbNavItem,
-	NgbNavLinkBase,
-	NgbNavOutlet,
 	NgbNavContent,
+	NgbNavItem,
 	NgbNavItemRole,
 	NgbNavLink,
+	NgbNavLinkBase,
 	NgbNavLinkButton,
+	NgbNavOutlet,
 	NgbNavPane,
 } from './nav.module';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
@@ -19,96 +19,82 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { environment } from '../utils/transition/ngbTransition';
-import { server } from 'vitest/browser';
+import { Locator, page, server, userEvent } from 'vitest/browser';
 
-function createTestComponent(html: string, detectChanges = true) {
-	return createGenericTestComponent(html, TestComponent, detectChanges) as ComponentFixture<TestComponent>;
+class NavTester {
+	readonly fixture: ComponentFixture<TestComponent>;
+	readonly root: Locator;
+	readonly componentInstance: TestComponent;
+	readonly navDirective: NgbNav;
+
+	constructor(html: string) {
+		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.root = page.elementLocator(this.fixture.nativeElement);
+		this.componentInstance = this.fixture.componentInstance;
+		this.navDirective = this.fixture.debugElement.query(By.directive(NgbNav)).injector.get(NgbNav);
+	}
+
+	readonly nav = page.getByCss('[ngbNav]');
+	readonly items = page.getByCss('[ngbNavItem]');
+	readonly links = page.getByCss('[ngbNavLink]');
+	readonly outlet = page.getByCss('.tab-content');
+	readonly contents = this.outlet.getByCss('*');
 }
 
-function getNavDirective(fixture: ComponentFixture<any>): NgbNav {
-	return fixture.debugElement.query(By.directive(NgbNav)).injector.get(NgbNav);
+async function expectLinks(tester: NavTester, expected: boolean[], shouldHaveNavItemClass = false) {
+	await expect
+		.element(tester.links, { message: `expected to find ${expected.length} links` })
+		.toHaveLength(expected.length);
+
+	for (let i = 0; i < expected.length; i++) {
+		const link = tester.links.nth(i);
+		await expect.element(link).toHaveClass('nav-link');
+		if (expected[i]) {
+			await expect.element(link).toHaveClass('active');
+		} else {
+			await expect.element(link).not.toHaveClass('active');
+		}
+
+		if (shouldHaveNavItemClass) {
+			await expect.element(link).toHaveClass('nav-item');
+		} else {
+			await expect.element(link).not.toHaveClass('nav-item');
+		}
+	}
 }
 
-function getNav(fixture: ComponentFixture<any>): HTMLElement {
-	return fixture.debugElement.query(By.directive(NgbNav)).nativeElement;
-}
+async function expectContents(tester: NavTester, expected: string[], activeIndex = 0) {
+	await expect
+		.element(tester.contents, { message: `expected to find ${expected.length} contents` })
+		.toHaveLength(expected.length);
 
-function getOutlet(fixture: ComponentFixture<any>): HTMLElement {
-	return fixture.debugElement.query(By.directive(NgbNavOutlet)).nativeElement;
-}
-
-function getContents(fixture: ComponentFixture<any>): HTMLElement[] {
-	return Array.from(getOutlet(fixture).children) as HTMLElement[];
-}
-
-function getContent(fixture: ComponentFixture<any>): HTMLElement {
-	return Array.from(getOutlet(fixture).children)[0] as HTMLElement;
-}
-
-function getItems(fixture: ComponentFixture<any>): HTMLElement[] {
-	return fixture.debugElement.queryAll(By.directive(NgbNavItem)).map((debugElement) => debugElement.nativeElement);
-}
-
-function getLinks(fixture: ComponentFixture<any>): HTMLElement[] {
-	return fixture.debugElement.queryAll(By.directive(NgbNavLinkBase)).map((debugElement) => debugElement.nativeElement);
-}
-
-function createKeyDownEvent(key: string) {
-	const event = { key, preventDefault: () => {}, stopPropagation: () => {} };
-	vi.spyOn(event, 'preventDefault');
-	vi.spyOn(event, 'stopPropagation');
-	return event;
-}
-
-function expectLinks(fixture: ComponentFixture<any>, expected: boolean[], shouldHaveNavItemClass = false) {
-	const links = getLinks(fixture);
-	expect(links.length, `expected to find ${expected.length} links, but found ${links.length}`).toBe(expected.length);
-
-	links.forEach(({ classList }, i) => {
-		expect(classList.contains('nav-link'), `link should have 'nav-link' class`).toBe(true);
-		expect(classList.contains('active'), `link should ${expected[i] ? '' : 'not'} have 'active' class`).toBe(
-			expected[i],
-		);
-		expect(
-			classList.contains('nav-item'),
-			`link should ${shouldHaveNavItemClass ? '' : 'not'} have 'nav-item' class`,
-		).toBe(shouldHaveNavItemClass);
-	});
-}
-
-function expectContents(fixture: ComponentFixture<any>, expected: string[], activeIndex = 0) {
-	const contents = getContents(fixture);
-	expect(contents.length, `expected to find ${expected.length} contents, but found ${contents.length}`).toBe(
-		expected.length,
-	);
-
-	for (let i = 0; i < expected.length; ++i) {
-		const text = contents[i].innerText;
-		expect(text, `expected to find '${expected[i]}' in content ${i + 1}, but found '${text}'`).toBe(expected[i]);
-		expect(
-			contents[i].classList.contains('active'),
-			`content should ${i === activeIndex ? '' : 'not'} have 'active' class`,
-		).toBe(i === activeIndex);
+	for (let i = 0; i < expected.length; i++) {
+		await expect.element(tester.contents.nth(i)).toHaveTextContent(expected[i]);
+		if (i === activeIndex) {
+			await expect.element(tester.contents.nth(i)).toHaveClass('active');
+		} else {
+			await expect.element(tester.contents.nth(i)).not.toHaveClass('active');
+		}
 	}
 }
 
 describe('nav', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 	});
 
 	it('should initialize inputs with default values', () => {
-		let nav = getNavDirective(createTestComponent('<ul ngbNav></ul>'));
+		const tester = new NavTester('<ul ngbNav></ul>');
 		let config = TestBed.inject(NgbNavConfig);
 
-		expect(nav.destroyOnHide).toBe(config.destroyOnHide);
-		expect(nav.roles).toBe(config.roles);
-		expect(nav.orientation).toBe(config.orientation);
-		expect(nav.keyboard).toBe(config.keyboard);
+		expect(tester.navDirective.destroyOnHide).toBe(config.destroyOnHide);
+		expect(tester.navDirective.roles).toBe(config.roles);
+		expect(tester.navDirective.orientation).toBe(config.orientation);
+		expect(tester.navDirective.keyboard).toBe(config.keyboard);
 	});
 
-	it(`should set and allow overriding CSS classes`, () => {
-		const fixture = createTestComponent(`
+	it(`should set and allow overriding CSS classes`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [class]="'nav-tabs my-nav'">
         <li ngbNavItem [class]="'my-nav-item'">
             <button ngbNavLink [class]="'my-nav-link'"></button>
@@ -116,21 +102,18 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n" [class]="'my-tab-content'"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expect(getNav(fixture)).toHaveCssClass('nav');
-		expect(getNav(fixture)).toHaveCssClass('my-nav');
-		expect(getItems(fixture)[0]).toHaveCssClass('nav-item');
-		expect(getItems(fixture)[0]).toHaveCssClass('my-nav-item');
-		expect(getLinks(fixture)[0]).toHaveCssClass('nav-link');
-		expect(getLinks(fixture)[0]).toHaveCssClass('my-nav-link');
-		expect(getOutlet(fixture)).toHaveCssClass('tab-content');
-		expect(getOutlet(fixture)).toHaveCssClass('my-tab-content');
-		expect(getContent(fixture)).toHaveCssClass('tab-pane');
+		await expect.element(tester.nav).toHaveClass('nav', 'my-nav');
+		await expect.element(tester.items.nth(0)).toHaveClass('nav-item', 'my-nav-item');
+		await expect.element(tester.links.nth(0)).toHaveClass('nav-link', 'my-nav-link');
+		await expect.element(tester.outlet).toHaveClass('tab-content', 'my-tab-content');
+		await expect.element(tester.contents).toHaveClass('tab-pane');
 	});
 
-	it(`should set correct A11Y roles`, () => {
-		const fixture = createTestComponent(`
+	it(`should set correct A11Y roles`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink></button>
@@ -138,16 +121,17 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expect(getNav(fixture).getAttribute('role')).toBe('tablist');
-		expect(getItems(fixture)[0].getAttribute('role')).toBe('presentation');
-		expect(getLinks(fixture)[0].getAttribute('role')).toBe('tab');
-		expect(getContent(fixture).getAttribute('role')).toBe('tabpanel');
+		await expect.element(tester.nav).toHaveRole('tablist');
+		await expect.element(tester.items.nth(0)).toHaveRole('presentation');
+		await expect.element(tester.links.nth(0)).toHaveRole('tab');
+		await expect.element(tester.contents).toHaveRole('tabpanel');
 	});
 
-	it(`should not set any A11Y roles if [roles]='false'`, () => {
-		const fixture = createTestComponent(`
+	it(`should not set any A11Y roles if [roles]='false'`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink></button>
@@ -155,16 +139,17 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expect(getNav(fixture).getAttribute('role')).toBeNull();
-		expect(getItems(fixture)[0].getAttribute('role')).toBeNull();
-		expect(getLinks(fixture)[0].getAttribute('role')).toBeNull();
-		expect(getContent(fixture).getAttribute('role')).toBeNull();
+		await expect.element(tester.nav).not.toHaveAttribute('role');
+		await expect.element(tester.items.nth(0)).not.toHaveAttribute('role');
+		await expect.element(tester.links.nth(0)).not.toHaveAttribute('role');
+		await expect.element(tester.contents).not.toHaveAttribute('role');
 	});
 
-	it(`should allow overriding any A11Y roles`, () => {
-		const fixture = createTestComponent(`
+	it(`should allow overriding any A11Y roles`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" role="list" class="nav-tabs">
         <li ngbNavItem role="myItemRole">
             <button ngbNavLink role="myLinkRole"></button>
@@ -172,50 +157,51 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n" paneRole="myPaneRole"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expect(getNav(fixture).getAttribute('role')).toBe('list');
-		expect(getItems(fixture)[0].getAttribute('role')).toBe('myItemRole');
-		expect(getLinks(fixture)[0].getAttribute('role')).toBe('myLinkRole');
-		expect(getContent(fixture).getAttribute('role')).toBe('myPaneRole');
+		await expect.element(tester.nav).toHaveAttribute('role', 'list');
+		await expect.element(tester.items.nth(0)).toHaveAttribute('role', 'myItemRole');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('role', 'myLinkRole');
+		await expect.element(tester.contents).toHaveAttribute('role', 'myPaneRole');
 	});
 
-	it(`should set orientation CSS and 'aria-orientation' correctly`, () => {
-		const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" [orientation]="orientation" [roles]="roles">
+	it(`should set orientation CSS and 'aria-orientation' correctly`, async () => {
+		const html = `
+      <ul ngbNav #n="ngbNav" [orientation]="orientation()" [roles]="roles()">
         <li ngbNavItem>
             <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
-    `);
+    `;
+		const tester = new NavTester(html);
 
 		// horizontal + 'tablist'
-		expect(getNav(fixture)).not.toHaveCssClass('flex-column');
-		expect(getNav(fixture).getAttribute('aria-orientation')).toBeNull();
+		await expect.element(tester.nav).not.toHaveClass('flex-column');
+		await expect.element(tester.nav).not.toHaveAttribute('aria-orientation');
 
 		// vertical + 'tablist'
-		fixture.componentInstance.orientation = 'vertical';
-		fixture.detectChanges();
-		expect(getNav(fixture)).toHaveCssClass('flex-column');
-		expect(getNav(fixture).getAttribute('aria-orientation')).toBe('vertical');
+		tester.componentInstance.orientation.set('vertical');
+
+		await expect.element(tester.nav).toHaveClass('flex-column');
+		await expect.element(tester.nav).toHaveAttribute('aria-orientation', 'vertical');
 
 		// vertical + no 'tablist'
-		fixture.componentInstance.roles = false;
-		fixture.detectChanges();
-		expect(getNav(fixture)).toHaveCssClass('flex-column');
-		expect(getNav(fixture).getAttribute('aria-orientation')).toBeNull();
+		tester.componentInstance.roles.set(false);
+
+		await expect.element(tester.nav).toHaveClass('flex-column');
+		await expect.element(tester.nav).not.toHaveAttribute('aria-orientation');
 
 		// horizontal + no 'tablist'
-		fixture.componentInstance.orientation = 'horizontal';
-		fixture.detectChanges();
-		expect(getNav(fixture)).not.toHaveCssClass('flex-column');
-		expect(getNav(fixture).getAttribute('aria-orientation')).toBeNull();
+		tester.componentInstance.orientation.set('horizontal');
+
+		await expect.element(tester.nav).not.toHaveClass('flex-column');
+		await expect.element(tester.nav).not.toHaveAttribute('aria-orientation');
 	});
 
-	it(`should initially select first tab, if no [activeId] provided`, () => {
-		const fixture = createTestComponent(
-			`
+	it(`should initially select first tab, if no [activeId] provided`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs" (activeIdChange)="onActiveIdChange($event)" (navChange)="onNavChange($event)">
         <li [ngbNavItem]="1">
             <button ngbNavLink>link 1</button>
@@ -227,22 +213,22 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `,
-			false,
-		);
+    `;
+		const tester = new NavTester(html);
 
-		const navChangeSpy = vi.spyOn(fixture.componentInstance, 'onNavChange');
-		const activeIdChangeSpy = vi.spyOn(fixture.componentInstance, 'onActiveIdChange');
-		fixture.detectChanges();
+		const navChangeSpy = vi.spyOn(tester.componentInstance, 'onNavChange');
+		const activeIdChangeSpy = vi.spyOn(tester.componentInstance, 'onActiveIdChange');
 
-		expectLinks(fixture, [true, false]);
-		expectContents(fixture, ['content 1']);
+		await expect.element(tester.nav).toBeVisible();
+
+		await expectLinks(tester, [true, false]);
+		await expectContents(tester, ['content 1']);
 		expect(activeIdChangeSpy).toHaveBeenCalledWith(1);
 		expect(navChangeSpy).toHaveBeenCalledTimes(0);
 	});
 
-	it(`should initially select nothing, if [activeId] provided is incorrect`, () => {
-		const fixture = createTestComponent(`
+	it(`should initially select nothing, if [activeId] provided is incorrect`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [activeId]="100" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -250,25 +236,27 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [false]);
-		expect(getContent(fixture)).toBeUndefined();
+		await expectLinks(tester, [false]);
+		await expect.element(tester.contents).not.toBeInTheDocument();
 	});
 
-	it(`should work without any items provided`, () => {
-		const fixture = createTestComponent(`
+	it(`should work without any items provided`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expect(getLinks(fixture).length).toBe(0);
-		expect(getContent(fixture)).toBeUndefined();
+		await expect.element(tester.links).toHaveLength(0);
+		await expect.element(tester.contents).not.toBeInTheDocument();
 	});
 
-	it(`should work without nav content provided`, () => {
-		const fixture = createTestComponent(`
+	it(`should work without nav content provided`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -278,19 +266,20 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false]);
-		expectContents(fixture, ['']);
+		await expectLinks(tester, [true, false]);
+		await expectContents(tester, ['']);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true]);
-		expectContents(fixture, ['']);
+		await tester.links.nth(1).click();
+
+		await expectLinks(tester, [false, true]);
+		await expectContents(tester, ['']);
 	});
 
-	it(`should work without 'ngbNavOutlet'`, () => {
-		const fixture = createTestComponent(`
+	it(`should work without 'ngbNavOutlet'`, async () => {
+		const html = `
       <ul ngbNav class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -299,19 +288,20 @@ describe('nav', () => {
             <button ngbNavLink>link 2</button>
         </li>
       </ul>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false]);
+		await expectLinks(tester, [true, false]);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true]);
+		await tester.links.nth(1).click();
+
+		await expectLinks(tester, [false, true]);
 	});
 
-	it(`should work with dynamically generated navs`, () => {
-		const fixture = createTestComponent(`
+	it(`should work with dynamically generated navs`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
-      	@for (item of items; track item) {
+      	@for (item of items(); track item) {
 					<li [ngbNavItem]="item">
 							<button ngbNavLink>link {{ item }}</button>
 							<ng-template ngbNavContent>content {{ item }}</ng-template>
@@ -319,40 +309,39 @@ describe('nav', () => {
         }
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
 		// 2 navs
-		expect(fixture.componentInstance.activeId).toBe(1);
-		expectLinks(fixture, [true, false]);
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false]);
+		await expectContents(tester, ['content 1']);
+		expect(tester.componentInstance.activeId()).toBe(1);
 
 		// 1 nav
-		fixture.componentInstance.items.shift();
-		fixture.detectChanges();
+		tester.componentInstance.items.update((items) => items.slice(1));
 
-		expect(fixture.componentInstance.activeId).toBe(1);
-		expectLinks(fixture, [false]);
-		expect(getContent(fixture)).toBeUndefined();
+		await expectLinks(tester, [false]);
+		await expect(tester.contents).not.toBeInTheDocument();
+		expect(tester.componentInstance.activeId()).toBe(1);
 
 		// adjust activeId
-		fixture.componentInstance.activeId = 2;
-		fixture.detectChanges();
-		expectLinks(fixture, [true]);
-		expectContents(fixture, ['content 2']);
+		tester.componentInstance.activeId.set(2);
+
+		await expectLinks(tester, [true]);
+		await expectContents(tester, ['content 2']);
 
 		// no navs
-		fixture.componentInstance.items.shift();
-		fixture.detectChanges();
+		tester.componentInstance.items.update((items) => items.slice(1));
 
-		expect(fixture.componentInstance.activeId).toBe(2);
-		expect(getLinks(fixture).length).toBe(0);
-		expect(getContent(fixture)).toBeUndefined();
+		await expect.element(tester.links).toHaveLength(0);
+		await expect.element(tester.contents).not.toBeInTheDocument();
+		expect(tester.componentInstance.activeId()).toBe(2);
 	});
 
-	it(`should work with conditional nav items`, () => {
-		const fixture = createTestComponent(`
+	it(`should work with conditional nav items`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
-      	@if (visible) {
+      	@if (visible()) {
 					<li [ngbNavItem]="1">
 							<button ngbNavLink>link 1</button>
 							<ng-template ngbNavContent>content 1</ng-template>
@@ -364,25 +353,24 @@ describe('nav', () => {
         }
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		fixture.componentInstance.activeId = 2;
-		fixture.detectChanges();
+		tester.componentInstance.activeId.set(2);
 
-		expect(fixture.componentInstance.visible).toBe(false);
-		expectLinks(fixture, []);
-		expectContents(fixture, []);
+		expect(tester.componentInstance.visible()).toBe(false);
+		await expectLinks(tester, []);
+		await expectContents(tester, []);
 
-		fixture.componentInstance.visible = true;
-		fixture.detectChanges();
+		tester.componentInstance.visible.set(true);
 
-		expectLinks(fixture, [false, true]);
-		expectContents(fixture, ['content 2']);
+		await expectLinks(tester, [false, true]);
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should change navs with [activeId] binding`, () => {
-		const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
+	it(`should change navs with [activeId] binding`, async () => {
+		const html = `
+      <ul ngbNav #n="ngbNav" [activeId]="activeId()" class="nav-tabs">
         <li [ngbNavItem]="1">
             <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
@@ -393,20 +381,21 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false]);
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false]);
+		await expectContents(tester, ['content 1']);
 
-		fixture.componentInstance.activeId = 2;
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true]);
-		expectContents(fixture, ['content 2']);
+		tester.componentInstance.activeId.set(2);
+
+		await expectLinks(tester, [false, true]);
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should work navs with boundary [ngbNavItem] values`, () => {
-		const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
+	it(`should work navs with boundary [ngbNavItem] values`, async () => {
+		const html = `
+      <ul ngbNav #n="ngbNav" [activeId]="activeId()" class="nav-tabs">
         <li [ngbNavItem]="0">
             <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
@@ -425,34 +414,35 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false, false, false]);
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false, false, false]);
+		await expectContents(tester, ['content 1']);
 
-		fixture.componentInstance.activeId = true;
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true, false, false]);
-		expectContents(fixture, ['content 2']);
+		tester.componentInstance.activeId.set(true);
 
-		fixture.componentInstance.activeId = false;
-		fixture.detectChanges();
-		expectLinks(fixture, [false, false, true, false]);
-		expectContents(fixture, ['content 3']);
+		await expectLinks(tester, [false, true, false, false]);
+		await expectContents(tester, ['content 2']);
 
-		fixture.componentInstance.activeId = 0;
-		fixture.detectChanges();
-		expectLinks(fixture, [true, false, false, false]);
-		expectContents(fixture, ['content 1']);
+		tester.componentInstance.activeId.set(false);
 
-		fixture.componentInstance.activeId = '';
-		fixture.detectChanges();
-		expectLinks(fixture, [false, false, false, false]);
-		expectContents(fixture, []);
+		await expectLinks(tester, [false, false, true, false]);
+		await expectContents(tester, ['content 3']);
+
+		tester.componentInstance.activeId.set(0);
+
+		await expectLinks(tester, [true, false, false, false]);
+		await expectContents(tester, ['content 1']);
+
+		tester.componentInstance.activeId.set('');
+
+		await expectLinks(tester, [false, false, false, false]);
+		await expectContents(tester, []);
 	});
 
-	it(`should allow overriding ids used in DOM with [domId]`, () => {
-		const fixture = createTestComponent(`
+	it(`should allow overriding ids used in DOM with [domId]`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem domId="one">
             <button ngbNavLink>link 1</button>
@@ -464,17 +454,16 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		const links = getLinks(fixture);
-
-		expect(links[0].id).toBe('one');
-		expect(links[1].id).toBe('two');
-		expect(getContent(fixture).id).toBe('one-panel');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('id', 'one');
+		await expect.element(tester.links.nth(1)).toHaveAttribute('id', 'two');
+		await expect.element(tester.contents).toHaveAttribute('id', 'one-panel');
 	});
 
-	it(`should fallback to [domId] if [ngbNavItem] is not set`, () => {
-		const fixture = createTestComponent(`
+	it(`should fallback to [domId] if [ngbNavItem] is not set`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -486,23 +475,20 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		const nav = getNavDirective(fixture);
+		await expectLinks(tester, [true, false]);
+		await expectContents(tester, ['content 1']);
 
-		expectLinks(fixture, [true, false]);
-		expectContents(fixture, ['content 1']);
+		tester.navDirective.select('two');
 
-		nav.select('two');
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true]);
-		expectContents(fixture, ['content 2']);
+		await expectLinks(tester, [false, true]);
+		await expectContents(tester, ['content 2']);
 	});
 
 	describe(`change with`, () => {
-		let fixture: ComponentFixture<TestComponent>;
-		let links: HTMLElement[];
-		let nav: NgbNav;
+		let tester: NavTester;
 		let navChangeSpy: Mock;
 		let activeIdChangeSpy: Mock;
 		let hiddenNavSpy: Mock;
@@ -510,8 +496,8 @@ describe('nav', () => {
 		let hiddenItemSpy: Mock;
 		let shownItemSpy: Mock;
 
-		beforeEach(() => {
-			fixture = createTestComponent(`
+		beforeEach(async () => {
+			const html = `
         <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
         (shown)="onNavShown($event)" (hidden)="onNavHidden($event)" (navChange)="onNavChange($event)">
           <li [ngbNavItem]="1" (hidden)="onItemHidden(1)" (shown)="onItemShown(1)">
@@ -532,28 +518,26 @@ describe('nav', () => {
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
-      `);
+      `;
+			tester = new NavTester(html);
 
-			navChangeSpy = vi.spyOn(fixture.componentInstance, 'onNavChange');
-			activeIdChangeSpy = vi.spyOn(fixture.componentInstance, 'onActiveIdChange');
-			hiddenItemSpy = vi.spyOn(fixture.componentInstance, 'onItemHidden');
-			shownItemSpy = vi.spyOn(fixture.componentInstance, 'onItemShown');
-			hiddenNavSpy = vi.spyOn(fixture.componentInstance, 'onNavHidden');
-			shownNavSpy = vi.spyOn(fixture.componentInstance, 'onNavShown');
-			links = getLinks(fixture);
-			nav = getNavDirective(fixture);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
+			navChangeSpy = vi.spyOn(tester.componentInstance, 'onNavChange');
+			activeIdChangeSpy = vi.spyOn(tester.componentInstance, 'onActiveIdChange');
+			hiddenItemSpy = vi.spyOn(tester.componentInstance, 'onItemHidden');
+			shownItemSpy = vi.spyOn(tester.componentInstance, 'onItemShown');
+			hiddenNavSpy = vi.spyOn(tester.componentInstance, 'onNavHidden');
+			shownNavSpy = vi.spyOn(tester.componentInstance, 'onNavShown');
 		});
 
-		it(`(click) should change navs`, () => {
-			links[1].click();
-			fixture.detectChanges();
+		it(`(click) should change navs`, async () => {
+			await tester.links.nth(1).click();
 
-			expectLinks(fixture, [false, true, false, false]);
-			expectContents(fixture, ['content 2']);
-			expect(fixture.componentInstance.activeId).toBe(2);
+			await expectLinks(tester, [false, true, false, false]);
+			await expectContents(tester, ['content 2']);
+			expect(tester.componentInstance.activeId()).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
 			expect(navChangeSpy).toHaveBeenCalledWith({ activeId: 1, nextId: 2, preventDefault: expect.any(Function) });
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -562,13 +546,12 @@ describe('nav', () => {
 			expect(shownNavSpy).toHaveBeenCalledWith(2);
 		});
 
-		it(`(click) on the same nav should do nothing`, () => {
-			links[0].click();
-			fixture.detectChanges();
+		it(`(click) on the same nav should do nothing`, async () => {
+			await tester.links.nth(0).click();
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).not.toHaveBeenCalled();
@@ -577,13 +560,13 @@ describe('nav', () => {
 			expect(shownNavSpy).not.toHaveBeenCalled();
 		});
 
-		it(`(click) should not change to a disabled nav`, () => {
-			links[2].click();
-			fixture.detectChanges();
+		it(`(click) should not change to a disabled nav`, async () => {
+			// click without going through the locator click, because the button is disabled
+			(tester.links.nth(2).element() as HTMLElement).click();
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).not.toHaveBeenCalled();
@@ -591,12 +574,12 @@ describe('nav', () => {
 			expect(hiddenNavSpy).not.toHaveBeenCalled();
 			expect(shownNavSpy).not.toHaveBeenCalled();
 
-			links[3].click();
-			fixture.detectChanges();
+			// click without going through the locator click, because the button is disabled
+			(tester.links.nth(3).element() as HTMLElement).click();
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).not.toHaveBeenCalled();
@@ -605,13 +588,12 @@ describe('nav', () => {
 			expect(shownNavSpy).not.toHaveBeenCalled();
 		});
 
-		it(`[activeId] should change navs`, () => {
-			fixture.componentInstance.activeId = 2;
-			fixture.detectChanges();
+		it(`[activeId] should change navs`, async () => {
+			tester.componentInstance.activeId.set(2);
 
-			expectLinks(fixture, [false, true, false, false]);
-			expectContents(fixture, ['content 2']);
-			expect(fixture.componentInstance.activeId).toBe(2);
+			await expectLinks(tester, [false, true, false, false]);
+			await expectContents(tester, ['content 2']);
+			expect(tester.componentInstance.activeId()).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -620,13 +602,12 @@ describe('nav', () => {
 			expect(shownNavSpy).toHaveBeenCalledWith(2);
 		});
 
-		it(`[activeId] on the same nav should do nothing`, () => {
-			fixture.componentInstance.activeId = 1;
-			fixture.detectChanges();
+		it(`[activeId] on the same nav should do nothing`, async () => {
+			tester.componentInstance.activeId.set(1);
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).not.toHaveBeenCalled();
@@ -635,13 +616,12 @@ describe('nav', () => {
 			expect(shownNavSpy).not.toHaveBeenCalled();
 		});
 
-		it(`[activeId] should change to a disabled nav`, () => {
-			fixture.componentInstance.activeId = 3;
-			fixture.detectChanges();
+		it(`[activeId] should change to a disabled nav`, async () => {
+			tester.componentInstance.activeId.set(3);
 
-			expectLinks(fixture, [false, false, true, false]);
-			expectContents(fixture, ['content 3']);
-			expect(fixture.componentInstance.activeId).toBe(3);
+			await expectLinks(tester, [false, false, true, false]);
+			await expectContents(tester, ['content 3']);
+			expect(tester.componentInstance.activeId()).toBe(3);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -650,13 +630,12 @@ describe('nav', () => {
 			expect(shownNavSpy).toHaveBeenCalledWith(3);
 		});
 
-		it(`[activeId] should change to an invalid nav`, () => {
-			fixture.componentInstance.activeId = 1000;
-			fixture.detectChanges();
+		it(`[activeId] should change to an invalid nav`, async () => {
+			tester.componentInstance.activeId.set(1000);
 
-			expectLinks(fixture, [false, false, false, false]);
-			expect(getContent(fixture)).toBeUndefined();
-			expect(fixture.componentInstance.activeId).toBe(1000);
+			await expectLinks(tester, [false, false, false, false]);
+			await expect(tester.contents).not.toBeInTheDocument();
+			expect(tester.componentInstance.activeId()).toBe(1000);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -665,13 +644,12 @@ describe('nav', () => {
 			expect(shownNavSpy).not.toHaveBeenCalled();
 		});
 
-		it(`'.select()' should change navs`, () => {
-			nav.select(2);
-			fixture.detectChanges();
+		it(`'.select()' should change navs`, async () => {
+			tester.navDirective.select(2);
 
-			expectLinks(fixture, [false, true, false, false]);
-			expectContents(fixture, ['content 2']);
-			expect(fixture.componentInstance.activeId).toBe(2);
+			await expectLinks(tester, [false, true, false, false]);
+			await expectContents(tester, ['content 2']);
+			expect(tester.componentInstance.activeId()).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -680,13 +658,12 @@ describe('nav', () => {
 			expect(shownNavSpy).toHaveBeenCalledWith(2);
 		});
 
-		it(`'.select()' on the same nav should do nothing`, () => {
-			nav.select(1);
-			fixture.detectChanges();
+		it(`'.select()' on the same nav should do nothing`, async () => {
+			tester.navDirective.select(1);
 
-			expectLinks(fixture, [true, false, false, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false, false, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).not.toHaveBeenCalled();
@@ -695,13 +672,12 @@ describe('nav', () => {
 			expect(shownNavSpy).not.toHaveBeenCalled();
 		});
 
-		it(`'.select()' should change to a disabled nav`, () => {
-			nav.select(3);
-			fixture.detectChanges();
+		it(`'.select()' should change to a disabled nav`, async () => {
+			tester.navDirective.select(3);
 
-			expectLinks(fixture, [false, false, true, false]);
-			expectContents(fixture, ['content 3']);
-			expect(fixture.componentInstance.activeId).toBe(3);
+			await expectLinks(tester, [false, false, true, false]);
+			await expectContents(tester, ['content 3']);
+			expect(tester.componentInstance.activeId()).toBe(3);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(3);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
@@ -710,12 +686,11 @@ describe('nav', () => {
 			expect(hiddenNavSpy).toHaveBeenCalledWith(1);
 			expect(shownNavSpy).toHaveBeenCalledWith(3);
 
-			nav.select(4);
-			fixture.detectChanges();
+			tester.navDirective.select(4);
 
-			expectLinks(fixture, [false, false, false, true]);
-			expectContents(fixture, ['content 4']);
-			expect(fixture.componentInstance.activeId).toBe(4);
+			await expectLinks(tester, [false, false, false, true]);
+			await expectContents(tester, ['content 4']);
+			expect(tester.componentInstance.activeId()).toBe(4);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(4);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
@@ -725,13 +700,12 @@ describe('nav', () => {
 			expect(shownNavSpy).toHaveBeenCalledWith(4);
 		});
 
-		it(`'.select()' should change to an invalid nav`, () => {
-			nav.select(1000);
-			fixture.detectChanges();
+		it(`'.select()' should change to an invalid nav`, async () => {
+			tester.navDirective.select(1000);
 
-			expectLinks(fixture, [false, false, false, false]);
-			expect(getContent(fixture)).toBeUndefined();
-			expect(fixture.componentInstance.activeId).toBe(1000);
+			await expectLinks(tester, [false, false, false, false]);
+			await expect.element(tester.contents).not.toBeInTheDocument();
+			expect(tester.componentInstance.activeId()).toBe(1000);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(1000);
 			expect(navChangeSpy).toHaveBeenCalledTimes(0);
 			expect(hiddenItemSpy).toHaveBeenCalledWith(1);
@@ -741,8 +715,8 @@ describe('nav', () => {
 		});
 	});
 
-	it(`should not change container scroll position after switching navs`, () => {
-		const fixture = createTestComponent(`
+	it(`should not change container scroll position after switching navs`, async () => {
+		const html = `
         <div class="container" style="overflow: scroll; height: 5rem; border: 1px solid gray; padding-top: 2rem;">
           <ul ngbNav #n="ngbNav" class="nav-tabs">
             <li ngbNavItem>
@@ -756,10 +730,11 @@ describe('nav', () => {
           </ul>
           <div [ngbNavOutlet]="n"></div>
         </div>
-      `);
+      `;
+		const tester = new NavTester(html);
+		await expect.element(tester.nav).toBeVisible();
 
-		const links = getLinks(fixture);
-		const container = fixture.nativeElement.querySelector('.container');
+		const container = page.getByCss('.container').element() as HTMLElement;
 
 		// scroll to bottom
 		container.scrollTop = container.scrollHeight;
@@ -767,19 +742,18 @@ describe('nav', () => {
 		expect(container.scrollTop).toBe(scrollTop);
 
 		// staying at the same position after changing the nav
-		links[1].click();
-		fixture.detectChanges();
+		await tester.links.nth(1).click();
+
 		expect(container.scrollTop).toBe(scrollTop);
 	});
 
 	describe(`(navChange) preventDefault()`, () => {
-		let fixture: ComponentFixture<TestComponent>;
-		let links: HTMLElement[];
 		let navChangeSpy: Mock;
 		let activeIdChangeSpy: Mock;
+		let tester: NavTester;
 
-		beforeEach(() => {
-			fixture = createTestComponent(`
+		beforeEach(async () => {
+			const html = `
         <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
         (navChange)="onNavChangePrevent($event)">
           <li [ngbNavItem]="1">
@@ -792,30 +766,29 @@ describe('nav', () => {
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
-      `);
+      `;
+			tester = new NavTester(html);
 
-			navChangeSpy = vi.spyOn(fixture.componentInstance, 'onNavChangePrevent');
-			activeIdChangeSpy = vi.spyOn(fixture.componentInstance, 'onActiveIdChange');
-			links = getLinks(fixture);
+			await expectLinks(tester, [true, false]);
+			await expectContents(tester, ['content 1']);
 
-			expectLinks(fixture, [true, false]);
-			expectContents(fixture, ['content 1']);
+			navChangeSpy = vi.spyOn(tester.componentInstance, 'onNavChangePrevent');
+			activeIdChangeSpy = vi.spyOn(tester.componentInstance, 'onActiveIdChange');
 		});
 
-		it(`on (click) should not change navs`, () => {
-			links[1].click();
-			fixture.detectChanges();
+		it(`on (click) should not change navs`, async () => {
+			await tester.links.nth(1).click();
 
-			expectLinks(fixture, [true, false]);
-			expectContents(fixture, ['content 1']);
-			expect(fixture.componentInstance.activeId).toBe(1);
+			await expectLinks(tester, [true, false]);
+			await expectContents(tester, ['content 1']);
+			expect(tester.componentInstance.activeId()).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
 			expect(navChangeSpy).toHaveBeenCalledWith({ activeId: 1, nextId: 2, preventDefault: expect.any(Function) });
 		});
 	});
 
-	it(`should work with two-way [(activeId)] binding`, () => {
-		const fixture = createTestComponent(`
+	it(`should work with two-way [(activeId)] binding`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)" class="nav-tabs">
         <li [ngbNavItem]="1">
             <button ngbNavLink>link 1</button>
@@ -827,20 +800,22 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
+		await tester.fixture.whenStable();
 
-		const activeIdChangeSpy = vi.spyOn(fixture.componentInstance, 'onActiveIdChange');
+		const activeIdChangeSpy = vi.spyOn(tester.componentInstance, 'onActiveIdChange');
 
-		expect(fixture.componentInstance.activeId).toBe(1);
+		expect(tester.componentInstance.activeId()).toBe(1);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
+		await tester.links.nth(1).click();
+
 		expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
-		expect(fixture.componentInstance.activeId).toBe(2);
+		expect(tester.componentInstance.activeId()).toBe(2);
 	});
 
-	it(`should render only one nav content by default`, () => {
-		const fixture = createTestComponent(`
+	it(`should render only one nav content by default`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -852,17 +827,18 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectContents(fixture, ['content 1']);
+		await expectContents(tester, ['content 1']);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectContents(fixture, ['content 2']);
+		await tester.links.nth(1).click();
+
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should render all nav contents with [destroyOnHide]='false'`, () => {
-		const fixture = createTestComponent(`
+	it(`should render all nav contents with [destroyOnHide]='false'`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs" [destroyOnHide]="false">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -874,17 +850,18 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectContents(fixture, ['content 1', 'content 2'], 0);
+		await expectContents(tester, ['content 1', 'content 2'], 0);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectContents(fixture, ['content 1', 'content 2'], 1);
+		await tester.links.nth(1).click();
+
+		await expectContents(tester, ['content 1', 'content 2'], 1);
 	});
 
-	it(`should allow overriding [destroyOnHide] per nav item (destroyOnHide === true)`, () => {
-		const fixture = createTestComponent(`
+	it(`should allow overriding [destroyOnHide] per nav item (destroyOnHide === true)`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -896,17 +873,18 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectContents(fixture, ['content 1', 'content 2'], 0);
+		await expectContents(tester, ['content 1', 'content 2'], 0);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectContents(fixture, ['content 2']);
+		await tester.links.nth(1).click();
+
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should allow overriding [destroyOnHide] per nav item (destroyOnHide === false)`, () => {
-		const fixture = createTestComponent(`
+	it(`should allow overriding [destroyOnHide] per nav item (destroyOnHide === false)`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" [destroyOnHide]="false" class="nav-tabs">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -918,17 +896,18 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectContents(fixture, ['content 1']);
+		await expectContents(tester, ['content 1']);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectContents(fixture, ['content 1', 'content 2'], 1);
+		await tester.links.nth(1).click();
+
+		await expectContents(tester, ['content 1', 'content 2'], 1);
 	});
 
-	it(`should work with alternative markup without <ul> and <li>`, () => {
-		const fixture = createTestComponent(`
+	it(`should work with alternative markup without <ul> and <li>`, async () => {
+		const html = `
       <nav ngbNav #n="ngbNav" class="nav-tabs">
         <ng-container ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -940,19 +919,20 @@ describe('nav', () => {
         </ng-container>
       </nav>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false], true);
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false], true);
+		await expectContents(tester, ['content 1']);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true], true);
-		expectContents(fixture, ['content 2']);
+		await tester.links.nth(1).click();
+
+		await expectLinks(tester, [false, true], true);
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should work with alternative markup with links`, () => {
-		const fixture = createTestComponent(`
+	it(`should work with alternative markup with links`, async () => {
+		const html = `
       <nav ngbNav #n="ngbNav" class="nav-tabs">
         <ng-container ngbNavItem>
             <a ngbNavLink>link 1</a>
@@ -964,54 +944,55 @@ describe('nav', () => {
         </ng-container>
       </nav>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectLinks(fixture, [true, false], true);
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false], true);
+		await expectContents(tester, ['content 1']);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectLinks(fixture, [false, true], true);
-		expectContents(fixture, ['content 2']);
+		await tester.links.nth(1).click();
+
+		await expectLinks(tester, [false, true], true);
+		await expectContents(tester, ['content 2']);
 	});
 
-	it(`should add correct CSS classes for disabled tabs`, () => {
-		const fixture = createTestComponent(`
+	it(`should add correct CSS classes for disabled tabs`, async () => {
+		const html = `
         <ul ngbNav #n="ngbNav" class="nav-tabs">
-          <li ngbNavItem [disabled]="disabled">
+          <li ngbNavItem [disabled]="disabled()">
               <button ngbNavLink>link 1</button>
               <ng-template ngbNavContent>content 1</ng-template>
           </li>
-          <li ngbNavItem [disabled]="disabled">
+          <li ngbNavItem [disabled]="disabled()">
               <a ngbNavLink>link 2</a>
               <ng-template ngbNavContent>content 2</ng-template>
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
-      `);
+      `;
+		const tester = new NavTester(html);
 
-		const links = getLinks(fixture);
-		expectLinks(fixture, [true, false]);
-		expect(links[0]).toHaveCssClass('disabled');
-		expect(links[1]).toHaveCssClass('disabled');
-		expect(links[0].getAttribute('disabled')).toBe('');
-		expect(links[1].getAttribute('disabled')).toBeNull();
-		expect(links[0].getAttribute('type')).toBe('button');
-		expect(links[1].getAttribute('type')).toBeNull();
-		expectContents(fixture, ['content 1']);
+		await expectLinks(tester, [true, false]);
+		await expect.element(tester.links.nth(0)).toHaveClass('disabled');
+		await expect.element(tester.links.nth(1)).toHaveClass('disabled');
+		await expect.element(tester.links.nth(0)).toBeDisabled();
+		await expect.element(tester.links.nth(1)).not.toHaveAttribute('disabled');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('type', 'button');
+		await expect.element(tester.links.nth(1)).not.toHaveAttribute('type');
+		await expectContents(tester, ['content 1']);
 
-		fixture.componentInstance.disabled = false;
-		fixture.detectChanges();
-		expectLinks(fixture, [true, false]);
-		expect(links[0]).not.toHaveCssClass('disabled');
-		expect(links[1]).not.toHaveCssClass('disabled');
-		expect(links[0].getAttribute('disabled')).toBeNull();
-		expect(links[1].getAttribute('disabled')).toBeNull();
-		expectContents(fixture, ['content 1']);
+		tester.componentInstance.disabled.set(false);
+
+		await expectLinks(tester, [true, false]);
+		await expect.element(tester.links.nth(0)).not.toHaveClass('disabled');
+		await expect.element(tester.links.nth(1)).not.toHaveClass('disabled');
+		await expect.element(tester.links.nth(0)).not.toBeDisabled();
+		await expect.element(tester.links.nth(1)).not.toHaveAttribute('disabled');
+		await expectContents(tester, ['content 1']);
 	});
 
-	it(`should set 'aria-selected', 'aria-controls' and 'aria-labelledby' attributes correctly`, () => {
-		const fixture = createTestComponent(`
+	it(`should set 'aria-selected', 'aria-controls' and 'aria-labelledby' attributes correctly`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem domId="one">
             <button ngbNavLink>link 1</button>
@@ -1023,45 +1004,45 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		const links = getLinks(fixture);
-		expect(links[0].getAttribute('aria-controls')).toBe('one-panel');
-		expect(links[0].getAttribute('aria-selected')).toBe('true');
-		expect(links[1].getAttribute('aria-controls')).toBeNull();
-		expect(links[1].getAttribute('aria-selected')).toBe('false');
-		expect(getContent(fixture).getAttribute('aria-labelledby')).toBe('one');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('aria-controls', 'one-panel');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('aria-selected', 'true');
+		await expect.element(tester.links.nth(1)).not.toHaveAttribute('aria-controls');
+		await expect.element(tester.links.nth(1)).toHaveAttribute('aria-selected', 'false');
+		await expect.element(tester.contents).toHaveAttribute('aria-labelledby', 'one');
 
-		links[1].click();
-		fixture.detectChanges();
-		expect(links[0].getAttribute('aria-controls')).toBeNull();
-		expect(links[0].getAttribute('aria-selected')).toBe('false');
-		expect(links[1].getAttribute('aria-controls')).toBe('two-panel');
-		expect(links[1].getAttribute('aria-selected')).toBe('true');
-		expect(getContent(fixture).getAttribute('aria-labelledby')).toBe('two');
+		await tester.links.nth(1).click();
+
+		await expect.element(tester.links.nth(0)).not.toHaveAttribute('aria-controls');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('aria-selected', 'false');
+		await expect.element(tester.links.nth(1)).toHaveAttribute('aria-controls', 'two-panel');
+		await expect.element(tester.links.nth(1)).toHaveAttribute('aria-selected', 'true');
+		await expect.element(tester.contents).toHaveAttribute('aria-labelledby', 'two');
 	});
 
-	it(`should set 'aria-disabled' attribute correctly`, () => {
-		const fixture = createTestComponent(`
+	it(`should set 'aria-disabled' attribute correctly`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
-        <li ngbNavItem [disabled]="disabled">
+        <li ngbNavItem [disabled]="disabled()">
             <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		const links = getLinks(fixture);
-		expect(links[0].getAttribute('aria-disabled')).toBe('true');
+		await expect.element(tester.links.nth(0)).toHaveAttribute('aria-disabled', 'true');
 
-		fixture.componentInstance.disabled = false;
-		fixture.detectChanges();
-		expect(links[0].getAttribute('aria-disabled')).toBe('false');
+		tester.componentInstance.disabled.set(false);
+
+		await expect.element(tester.links.nth(0)).toHaveAttribute('aria-disabled', 'false');
 	});
 
-	it(`should pass the 'active' value to content template`, () => {
-		const fixture = createTestComponent(`
+	it(`should pass the 'active' value to content template`, async () => {
+		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs" [destroyOnHide]="false">
         <li ngbNavItem>
             <button ngbNavLink>link 1</button>
@@ -1073,18 +1054,19 @@ describe('nav', () => {
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
-    `);
+    `;
+		const tester = new NavTester(html);
 
-		expectContents(fixture, ['1-true', '2-false'], 0);
+		await expectContents(tester, ['1-true', '2-false'], 0);
 
-		getLinks(fixture)[1].click();
-		fixture.detectChanges();
-		expectContents(fixture, ['1-false', '2-true'], 1);
+		await tester.links.nth(1).click();
+
+		await expectContents(tester, ['1-false', '2-true'], 1);
 	});
 
 	describe(`nav keyboard navigation`, () => {
-		it(`should not work for nav with role different from 'tablist`, () => {
-			const fixture = createTestComponent(`
+		it(`should not work for nav with role different from 'tablist`, async () => {
+			const html = `
         <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs">
           <li ngbNavItem>
               <button ngbNavLink></button>
@@ -1096,53 +1078,51 @@ describe('nav', () => {
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
-      `);
+      `;
+			const tester = new NavTester(html);
 
-			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent('ArrowRight');
+			await userEvent.tab();
 
-			links[0].focus();
-			expect(document.activeElement).toBe(links[0]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
+			await userEvent.keyboard('{ArrowRight>}');
+
+			await expect.element(tester.links.nth(0)).toHaveFocus();
 		});
 
-		it(`should ignore disabled tabs`, () => {
-			const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" class="nav-tabs">
-        <li [ngbNavItem]="1">
-            <button ngbNavLink>link 1</button>
-            <ng-template ngbNavContent>content 1</ng-template>
-        </li>
-        <li [ngbNavItem]="2" [disabled]="true">
-            <button ngbNavLink>disabled</button>
-            <ng-template ngbNavContent>content 2</ng-template>
-        </li>
-        <li [ngbNavItem]="3">
-            <button ngbNavLink>link 3</button>
-            <ng-template ngbNavContent>content 3</ng-template>
-        </li>
-      </ul>
-      <div [ngbNavOutlet]="n"></div>
-    `);
+		it(`should ignore disabled tabs`, async () => {
+			const html = `
+				<ul ngbNav #n="ngbNav" class="nav-tabs">
+					<li [ngbNavItem]="1">
+							<button ngbNavLink>link 1</button>
+							<ng-template ngbNavContent>content 1</ng-template>
+					</li>
+					<li [ngbNavItem]="2" [disabled]="true">
+							<button ngbNavLink>disabled</button>
+							<ng-template ngbNavContent>content 2</ng-template>
+					</li>
+					<li [ngbNavItem]="3">
+							<button ngbNavLink>link 3</button>
+							<ng-template ngbNavContent>content 3</ng-template>
+					</li>
+				</ul>
+				<div [ngbNavOutlet]="n"></div>
+			`;
+			const tester = new NavTester(html);
 
-			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent('ArrowRight');
+			await userEvent.tab();
 
-			links[0].focus();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[2]);
-			expectLinks(fixture, [true, false, false]);
+			await userEvent.keyboard('{ArrowRight>}');
+
+			await expect.element(tester.links.nth(2)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 		});
 
-		it(`should move focus correctly between tablinks on 'arrow right', 'arrow left', 'home', 'end'`, () => {
-			const fixture = createTestComponent(`
+		it(`should move focus correctly between tablinks on 'arrow right', 'arrow left', 'home', 'end'`, async () => {
+			const html = `
         <ul ngbNav #n="ngbNav" class="nav-tabs">
           <li ngbNavItem>
               <button ngbNavLink></button>
@@ -1158,91 +1138,91 @@ describe('nav', () => {
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
-      `);
+      `;
+			const tester = new NavTester(html);
 
-			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent('ArrowRight');
-			const eventArrowLeft = createKeyDownEvent('ArrowLeft');
-			const eventHomeKey = createKeyDownEvent('Home');
-			const eventEndKey = createKeyDownEvent('End');
+			await userEvent.tab();
 
-			links[0].focus();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[1]);
-			expectLinks(fixture, [true, false, false]);
+			await userEvent.keyboard('{ArrowRight>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowLeft', eventArrowLeft);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(1)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[2]);
-			expectLinks(fixture, [true, false, false]);
+			await userEvent.keyboard('{/ArrowRight}');
+			await userEvent.keyboard('{ArrowLeft>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/ArrowLeft}');
+			await userEvent.keyboard('{End>}');
+			await expect.element(tester.links.nth(2)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/End}');
+			await userEvent.keyboard('{Home>}');
+
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/Home}');
 		});
 
-		it(`should move focus correctly for vertical nav on 'arrow down', 'arrow up', 'home', 'end'`, () => {
-			const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" class="nav-tabs" orientation="vertical">
-        <li ngbNavItem>
-            <button ngbNavLink></button>
-            <ng-template ngbTabContent></ng-template>
-        </li>
-        <li ngbNavItem>
-            <button ngbNavLink></button>
-            <ng-template ngbTabContent></ng-template>
-        </li>
-        <li ngbNavItem>
-            <button ngbNavLink></button>
-            <ng-template ngbTabContent></ng-template>
-        </li>
-      </ul>
-      <div [ngbNavOutlet]="n"></div>
-    `);
+		it(`should move focus correctly for vertical nav on 'arrow down', 'arrow up', 'home', 'end'`, async () => {
+			const html = `
+				<ul ngbNav #n="ngbNav" class="nav-tabs" orientation="vertical">
+					<li ngbNavItem>
+							<button ngbNavLink></button>
+							<ng-template ngbTabContent></ng-template>
+					</li>
+					<li ngbNavItem>
+							<button ngbNavLink></button>
+							<ng-template ngbTabContent></ng-template>
+					</li>
+					<li ngbNavItem>
+							<button ngbNavLink></button>
+							<ng-template ngbTabContent></ng-template>
+					</li>
+				</ul>
+				<div [ngbNavOutlet]="n"></div>
+			`;
+			const tester = new NavTester(html);
 
-			const links = getLinks(fixture);
-			const eventArrowUp = createKeyDownEvent('ArrowUp');
-			const eventArrowDown = createKeyDownEvent('ArrowDown');
-			const eventHomeKey = createKeyDownEvent('Home');
-			const eventEndKey = createKeyDownEvent('End');
+			await userEvent.tab();
 
-			links[0].focus();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowDown', eventArrowDown);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[1]);
-			expectLinks(fixture, [true, false, false]);
+			await userEvent.keyboard('{ArrowDown>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowUp', eventArrowUp);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(1)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[2]);
-			expectLinks(fixture, [true, false, false]);
+			await userEvent.keyboard('{/ArrowDown}');
+			await userEvent.keyboard('{ArrowUp>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/ArrowUp}');
+			await userEvent.keyboard('{End>}');
+			await expect.element(tester.links.nth(2)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/End}');
+			await userEvent.keyboard('{Home>}');
+
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/Home}');
 		});
 
-		it(`should change tab and focus  on 'arrow right', 'arrow left', 'home', 'end' when keyboard is 'changeWithArrows'`, () => {
-			const fixture = createTestComponent(`
+		it(`should change tab and focus  on 'arrow right', 'arrow left', 'home', 'end' when keyboard is 'changeWithArrows'`, async () => {
+			const html = `
           <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="changeWithArrows">
             <li ngbNavItem>
                 <button ngbNavLink></button>
@@ -1258,37 +1238,37 @@ describe('nav', () => {
             </li>
           </ul>
           <div [ngbNavOutlet]="n"></div>
-        `);
+        `;
+			const tester = new NavTester(html);
 
-			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent('ArrowRight');
-			const eventArrowLeft = createKeyDownEvent('ArrowLeft');
-			const eventHomeKey = createKeyDownEvent('Home');
-			const eventEndKey = createKeyDownEvent('End');
+			await userEvent.tab();
 
-			links[0].focus();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[1]);
-			expectLinks(fixture, [false, true, false]);
+			await userEvent.keyboard('{ArrowRight>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowLeft', eventArrowLeft);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(1)).toHaveFocus();
+			await expectLinks(tester, [false, true, false]);
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[2]);
-			expectLinks(fixture, [false, false, true]);
+			await userEvent.keyboard('{/ArrowRight}');
+			await userEvent.keyboard('{ArrowLeft>}');
 
-			fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
-			fixture.detectChanges();
-			expect(document.activeElement).toBe(links[0]);
-			expectLinks(fixture, [true, false, false]);
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/ArrowLeft}');
+			await userEvent.keyboard('{End>}');
+			await expect.element(tester.links.nth(2)).toHaveFocus();
+			await expectLinks(tester, [false, false, true]);
+
+			await userEvent.keyboard('{/End}');
+			await userEvent.keyboard('{Home>}');
+
+			await expect.element(tester.links.nth(0)).toHaveFocus();
+			await expectLinks(tester, [true, false, false]);
+
+			await userEvent.keyboard('{/Home}');
 		});
 	});
 });
@@ -1296,17 +1276,7 @@ describe('nav', () => {
 if (isBrowserVisible('ngb-nav animations')) {
 	describe('ngb-nav animations', () => {
 		@Component({
-			imports: [
-				NgbNavContent,
-				NgbNav,
-				NgbNavItem,
-				NgbNavItemRole,
-				NgbNavLink,
-				NgbNavLinkButton,
-				NgbNavLinkBase,
-				NgbNavOutlet,
-				NgbNavPane,
-			],
+			imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
 			template: `
 				<ul ngbNav #n="ngbNav" class="nav-tabs" (shown)="onNavShownSpy($event)" (hidden)="onNavHiddenSpy($event)">
 					<li [ngbNavItem]="1" (shown)="onItemShownSpy(1)" (hidden)="onItemHiddenSpy(1)">
@@ -1324,15 +1294,29 @@ if (isBrowserVisible('ngb-nav animations')) {
 				</ul>
 				<div [ngbNavOutlet]="n"></div>
 			`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
+			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
-			reduceMotion = false;
+			reduceMotion = signal(false);
 			onItemHiddenSpy = vi.fn();
 			onItemShownSpy = vi.fn();
 			onNavHiddenSpy = vi.fn();
 			onNavShownSpy = vi.fn();
 		}
+
+		class NavAnimationTester {
+			readonly fixture = TestBed.createComponent(TestAnimationComponent);
+			readonly componentInstance = this.fixture.componentInstance;
+			readonly links = page.getByCss('[ngbNavLink]');
+			readonly outlet = page.getByCss('.tab-content');
+			readonly contents = this.outlet.getByCss('*');
+
+			clickLinkSync(i: number) {
+				(this.links.nth(i).element() as HTMLElement).click();
+			}
+		}
+
 		let transitionTimerDelayMs: Mock;
 
 		beforeEach(() => {
@@ -1346,32 +1330,64 @@ if (isBrowserVisible('ngb-nav animations')) {
 			transitionTimerDelayMs.mockRestore();
 		});
 
-		function expectContentState(pane: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
-			classes.forEach((c) => expect(pane).toHaveCssClass(c));
-			noClasses.forEach((c) => expect(pane).not.toHaveCssClass(c));
-			expect(window.getComputedStyle(pane).opacity).toBe(opacity);
+		function expectLinksSync(tester: NavAnimationTester, expected: boolean[], shouldHaveNavItemClass = false) {
+			expect(tester.links, `expected to find ${expected.length} links`).toHaveLength(expected.length);
+
+			for (let i = 0; i < expected.length; i++) {
+				const link = tester.links.nth(i);
+				expect(link).toHaveClass('nav-link');
+				if (expected[i]) {
+					expect(link).toHaveClass('active');
+				} else {
+					expect(link).not.toHaveClass('active');
+				}
+
+				if (shouldHaveNavItemClass) {
+					expect(link).toHaveClass('nav-item');
+				} else {
+					expect(link).not.toHaveClass('nav-item');
+				}
+			}
 		}
 
-		it(`should run simple fade in/out transition when switching navs (force-reduced-motion = true)`, () => {
-			const fixture = TestBed.createComponent(TestAnimationComponent);
-			const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = fixture.componentInstance;
-			fixture.componentInstance.reduceMotion = true;
-			fixture.detectChanges();
+		function expectContentsSync(tester: NavAnimationTester, expected: string[], activeIndex = 0) {
+			expect(tester.contents, `expected to find ${expected.length} contents`).toHaveLength(expected.length);
+
+			for (let i = 0; i < expected.length; i++) {
+				expect(tester.contents.nth(i)).toHaveTextContent(expected[i]);
+				if (i === activeIndex) {
+					expect(tester.contents.nth(i)).toHaveClass('active');
+				} else {
+					expect(tester.contents.nth(i)).not.toHaveClass('active');
+				}
+			}
+		}
+
+		function expectContentState(pane: Locator, classes: string[], noClasses: string[], opacity: string) {
+			classes.forEach((c) => expect(pane).toHaveClass(c));
+			noClasses.forEach((c) => expect(pane).not.toHaveClass(c));
+			expect(window.getComputedStyle(pane.element()).opacity).toBe(opacity);
+		}
+
+		it(`should run simple fade in/out transition when switching navs (force-reduced-motion = true)`, async () => {
+			const tester = new NavAnimationTester();
+			const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = tester.componentInstance;
+			tester.componentInstance.reduceMotion.set(true);
+			await tester.fixture.whenStable();
 
 			// 1. checking links have good initial values (1 is active)
-			const links = getLinks(fixture);
-			expectLinks(fixture, [true, false, false]);
-			expectContents(fixture, ['content 1']);
-			expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+			expectLinksSync(tester, [true, false, false]);
+			expectContentsSync(tester, ['content 1']);
+			expectContentState(tester.contents, ['fade', 'show'], [], '1');
 
 			// 2. switching from 1 -> 2
-			links[1].click();
-			fixture.detectChanges();
+			tester.clickLinkSync(1);
+			await tester.fixture.whenStable();
 
 			// 3. everything is updated synchronously
-			expectLinks(fixture, [false, true, false]);
-			expectContents(fixture, ['content 2']);
-			expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+			expectLinksSync(tester, [false, true, false]);
+			expectContentsSync(tester, ['content 2']);
+			expectContentState(tester.contents, ['fade', 'show'], [], '1');
 			expect(vi.mocked(onItemHiddenSpy).mock.calls).toEqual([[1]]);
 			expect(vi.mocked(onNavHiddenSpy).mock.calls).toEqual([[1]]);
 			expect(vi.mocked(onItemShownSpy).mock.calls).toEqual([[2]]);
@@ -1382,18 +1398,17 @@ if (isBrowserVisible('ngb-nav animations')) {
 		it.skipIf(server.browser === 'webkit')(
 			`should run simple fade in/out transition when switching navs (force-reduced-motion = false)`,
 			async () => {
-				const fixture = TestBed.createComponent(TestAnimationComponent);
-				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = fixture.componentInstance;
-				fixture.componentInstance.reduceMotion = false;
-				fixture.detectChanges();
+				const tester = new NavAnimationTester();
+				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = tester.componentInstance;
+				tester.componentInstance.reduceMotion.set(false);
+				await tester.fixture.whenStable();
 
 				// TEST: 1 is active, switching 1 -> 2, catching nav (hidden), catching nav (shown)
 
 				// 1. checking links have good initial values (1 is active)
-				const links = getLinks(fixture);
-				expectLinks(fixture, [true, false, false]);
-				expectContents(fixture, ['content 1']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+				expectLinksSync(tester, [true, false, false]);
+				expectContentsSync(tester, ['content 1']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '1');
 
 				const hiddenPromise = new Promise<void>((resolve) =>
 					onNavHiddenSpy.mockImplementation((hiddenId) => {
@@ -1403,17 +1418,16 @@ if (isBrowserVisible('ngb-nav animations')) {
 				);
 
 				// 2. switching from 1 -> 2
-				links[1].click();
-				fixture.detectChanges();
+				tester.clickLinkSync(1);
+				await tester.fixture.whenStable();
 
 				// 3. links are updated synchronously
-				expectLinks(fixture, [false, true, false]);
+				expectLinksSync(tester, [false, true, false]);
 
 				// 4. adding 2nd content, 1st still active
-				expectContents(fixture, ['content 1', 'content 2'], 0);
-				const [first, second] = getContents(fixture);
-				expectContentState(first, ['fade'], ['show'], '1');
-				expectContentState(second, ['fade'], ['show'], '0');
+				expectContentsSync(tester, ['content 1', 'content 2'], 0);
+				expectContentState(tester.contents.nth(0), ['fade'], ['show'], '1');
+				expectContentState(tester.contents.nth(1), ['fade'], ['show'], '0');
 
 				// 5. (hidden) was fired on the nav
 				await hiddenPromise;
@@ -1424,17 +1438,17 @@ if (isBrowserVisible('ngb-nav animations')) {
 						resolve();
 					}),
 				);
-				fixture.detectChanges();
-				expectContents(fixture, ['content 2']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '0');
+				await tester.fixture.whenStable();
+				expectContentsSync(tester, ['content 2']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '0');
 
 				// 6. (shown) was fired on the nav
 				await shownPromise;
-				fixture.detectChanges();
+				await tester.fixture.whenStable();
 				expect(vi.mocked(onItemHiddenSpy).mock.calls).toEqual([[1]]);
 				expect(vi.mocked(onItemShownSpy).mock.calls).toEqual([[2]]);
-				expectContents(fixture, ['content 2']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+				expectContentsSync(tester, ['content 2']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '1');
 			},
 		);
 
@@ -1442,18 +1456,17 @@ if (isBrowserVisible('ngb-nav animations')) {
 		it.skipIf(server.browser === 'webkit')(
 			`should fade in to the new pane if switched after fading out has started already`,
 			async () => {
-				const fixture = TestBed.createComponent(TestAnimationComponent);
-				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = fixture.componentInstance;
-				fixture.componentInstance.reduceMotion = false;
-				fixture.detectChanges();
+				const tester = new NavAnimationTester();
+				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = tester.fixture.componentInstance;
+				tester.componentInstance.reduceMotion.set(false);
+				await tester.fixture.whenStable();
 
 				// TEST: 1 is active, switching 1 -> 2, switching 2 -> 3 while fading out 1, catching nav (shown)
 
 				// 1. checking links have good initial values (1 is active)
-				const links = getLinks(fixture);
-				expectLinks(fixture, [true, false, false]);
-				expectContents(fixture, ['content 1']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+				expectLinksSync(tester, [true, false, false]);
+				expectContentsSync(tester, ['content 1']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '1');
 
 				const shownPromise = new Promise<void>((resolve) =>
 					onNavShownSpy.mockImplementation((shownId) => {
@@ -1463,39 +1476,37 @@ if (isBrowserVisible('ngb-nav animations')) {
 				);
 
 				// 2. switching from 1 -> 2
-				links[1].click();
-				fixture.detectChanges();
+				tester.clickLinkSync(1);
+				await tester.fixture.whenStable();
 
 				// 3. links are updated synchronously
-				expectLinks(fixture, [false, true, false]);
+				expectLinksSync(tester, [false, true, false]);
 
 				// 4. adding 2nd content, 1st still active
-				expectContents(fixture, ['content 1', 'content 2'], 0);
-				let [first, second] = getContents(fixture);
-				expectContentState(first, ['fade'], ['show'], '1');
-				expectContentState(second, ['fade'], ['show'], '0');
+				expectContentsSync(tester, ['content 1', 'content 2'], 0);
+				expectContentState(tester.contents.nth(0), ['fade'], ['show'], '1');
+				expectContentState(tester.contents.nth(1), ['fade'], ['show'], '0');
 
 				// 5. switching from 2 -> 3 immediately
-				links[2].click();
-				fixture.detectChanges();
+				tester.clickLinkSync(2);
+				await tester.fixture.whenStable();
 
 				// 6. links are updated synchronously
-				expectLinks(fixture, [false, false, true]);
+				expectLinksSync(tester, [false, false, true]);
 
 				// 7. removing 2nd, adding 3rd content, 1st still active
-				expectContents(fixture, ['content 1', 'content 3'], 0);
-				[first, second] = getContents(fixture);
-				expectContentState(first, ['fade'], ['show'], '1');
-				expectContentState(second, ['fade'], ['show'], '0');
+				expectContentsSync(tester, ['content 1', 'content 3'], 0);
+				expectContentState(tester.contents.nth(0), ['fade'], ['show'], '1');
+				expectContentState(tester.contents.nth(1), ['fade'], ['show'], '0');
 
 				// 8. (shown) should be fired only when switching 2 -> 3
 				await shownPromise;
-				fixture.detectChanges();
+				await tester.fixture.whenStable();
 				expect(onNavHiddenSpy).toHaveBeenCalledWith(1);
 				expect(onItemHiddenSpy).toHaveBeenCalledWith(1);
 				expect(onItemShownSpy).toHaveBeenCalledWith(3);
-				expectContents(fixture, ['content 3']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+				expectContentsSync(tester, ['content 3']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '1');
 			},
 		);
 
@@ -1503,69 +1514,63 @@ if (isBrowserVisible('ngb-nav animations')) {
 		it.skipIf(server.browser === 'webkit')(
 			`should reverse fade in if switched to a new pane after fading in has started already`,
 			async () => {
-				const fixture = TestBed.createComponent(TestAnimationComponent);
-				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = fixture.componentInstance;
-				fixture.componentInstance.reduceMotion = false;
-				fixture.detectChanges();
+				const tester = new NavAnimationTester();
+				const { onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy } = tester.componentInstance;
+				tester.componentInstance.reduceMotion.set(false);
+				await tester.fixture.whenStable();
 
 				// TEST: 1 is active, switching 1 -> 2, switching 2 -> 3 while fading in 2, catching nav (shown)
-				let first: HTMLElement;
-				let second: HTMLElement;
-
 				// 1. checking links have good initial values (1 is active)
-				const links = getLinks(fixture);
-				expectLinks(fixture, [true, false, false]);
-				expectContents(fixture, ['content 1']);
-				expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+				expectLinksSync(tester, [true, false, false]);
+				expectContentsSync(tester, ['content 1']);
+				expectContentState(tester.contents, ['fade', 'show'], [], '1');
 
 				await new Promise<void>((done) => {
-					onNavHiddenSpy.mockImplementation((hiddenId) => {
+					onNavHiddenSpy.mockImplementation(async (hiddenId) => {
 						// 5. (hidden) is fired 2 times, for 1 -> 2 them for 2 -> 3
 						// we care only about the 1 -> 2
 						if (hiddenId === 1) {
-							fixture.detectChanges();
-							expectContents(fixture, ['content 2']);
-							expectContentState(getContent(fixture), ['fade', 'show'], [], '0');
+							await tester.fixture.whenStable();
+							expectContentsSync(tester, ['content 2']);
+							expectContentState(tester.contents, ['fade', 'show'], [], '0');
 
 							// 6. switching 2 -> 3
-							links[2].click();
-							fixture.detectChanges();
+							tester.clickLinkSync(2);
+							await tester.fixture.whenStable();
 
 							// 7. links are updated synchronously
-							expectLinks(fixture, [false, false, true]);
+							expectLinksSync(tester, [false, false, true]);
 
 							// 8. adding 3rd content, 2nd still active (only starting fading in)
-							expectContents(fixture, ['content 2', 'content 3'], 0);
-							[first, second] = getContents(fixture);
-							expectContentState(first, ['fade'], ['show'], '0');
-							expectContentState(second, ['fade'], ['show'], '0');
+							expectContentsSync(tester, ['content 2', 'content 3'], 0);
+							expectContentState(tester.contents.nth(0), ['fade'], ['show'], '0');
+							expectContentState(tester.contents.nth(1), ['fade'], ['show'], '0');
 						}
 					});
 
-					onNavShownSpy.mockImplementation((shownId) => {
+					onNavShownSpy.mockImplementation(async (shownId) => {
 						// 9. (shown) is fired only for 2 -> 3
-						fixture.detectChanges();
+						await tester.fixture.whenStable();
 						expect(shownId).toBe(3);
 						expect(vi.mocked(onNavHiddenSpy).mock.calls).toEqual([[1], [2]]);
 						expect(vi.mocked(onItemHiddenSpy).mock.calls).toEqual([[1], [2]]);
 						expect(vi.mocked(onItemShownSpy).mock.calls).toEqual([[3]]);
-						expectContents(fixture, ['content 3']);
-						expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+						expectContentsSync(tester, ['content 3']);
+						expectContentState(tester.contents, ['fade', 'show'], [], '1');
 						done();
 					});
 
 					// 2. switching from 1 -> 2
-					links[1].click();
-					fixture.detectChanges();
+					tester.clickLinkSync(1);
+					tester.fixture.whenStable().then(() => {
+						// 3. links are updated synchronously
+						expectLinksSync(tester, [false, true, false]);
 
-					// 3. links are updated synchronously
-					expectLinks(fixture, [false, true, false]);
-
-					// 4. adding 2nd content, 1st still active
-					expectContents(fixture, ['content 1', 'content 2'], 0);
-					[first, second] = getContents(fixture);
-					expectContentState(first, ['fade'], ['show'], '1');
-					expectContentState(second, ['fade'], ['show'], '0');
+						// 4. adding 2nd content, 1st still active
+						expectContentsSync(tester, ['content 1', 'content 2'], 0);
+						expectContentState(tester.contents.nth(0), ['fade'], ['show'], '1');
+						expectContentState(tester.contents.nth(1), ['fade'], ['show'], '0');
+					});
 				});
 			},
 		);
@@ -1586,14 +1591,15 @@ if (isBrowserVisible('ngb-nav animations')) {
 		NgbNavOutlet,
 		NgbNavPane,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
-	activeId;
-	disabled = true;
-	items = [1, 2];
-	orientation = 'horizontal';
-	roles: 'tablist' | false = 'tablist';
-	visible = false;
+	activeId = signal<number | boolean | string | undefined>(undefined);
+	disabled = signal(true);
+	items = signal([1, 2]);
+	orientation = signal('horizontal');
+	roles = signal<'tablist' | false>('tablist');
+	visible = signal(false);
 	onActiveIdChange = (id) => {};
 	onNavChange = () => {};
 	onItemHidden = () => {};
