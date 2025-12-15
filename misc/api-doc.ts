@@ -105,18 +105,16 @@ function getJsDocTags(symbol: Symbol): {
 } {
 	return !symbol
 		? {}
-		: symbol
-				.getJsDocTags()
-				.reduce((obj, el) => {
-					if (el.name === 'defaultValue') {
-						// Extract the defaultValue text, removing backticks if present
-						obj[el.name] = el.text?.[0]?.text?.trim().replace(/^`|`$/g, '') || '';
-					} else if (['deprecated', 'since'].includes(el.name)) {
-						const [version, ...rest] = el.text[0].text.split(' ');
-						obj[el.name] = { version, description: rest.join(' ').trim() };
-					}
-					return obj;
-				}, {});
+		: symbol.getJsDocTags().reduce((obj, el) => {
+				if (el.name === 'defaultValue') {
+					// Extract the defaultValue text, removing backticks if present
+					obj[el.name] = el.text?.[0]?.text?.trim().replace(/^`|`$/g, '') || '';
+				} else if (['deprecated', 'since'].includes(el.name)) {
+					const [version, ...rest] = el.text[0].text.split(' ');
+					obj[el.name] = { version, description: rest.join(' ').trim() };
+				}
+				return obj;
+		  }, {});
 }
 
 class APIDocVisitor {

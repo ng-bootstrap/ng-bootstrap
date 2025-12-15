@@ -215,7 +215,7 @@ export class NgbAccordionItem implements AfterContentInit {
 	 *
 	 * This property can also be set up on the parent [`NgbAccordion` directive](#/components/accordion/api#NgbAccordionDirective).
 	 *
-	 * @defaultValue `true - initialized from the parent NgbAccordion directive`
+	 * @defaultValue `true` - initialized from the parent NgbAccordion directive
 	 */
 	@Input() set destroyOnHide(destroyOnHide: boolean) {
 		this._destroyOnHide = destroyOnHide;
