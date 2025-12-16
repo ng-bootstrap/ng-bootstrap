@@ -47,7 +47,7 @@ let nextId = 0;
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
-		style: 'position: absolute;',
+		'[style.position]': '"absolute"',
 		'(mouseenter)': 'onMouseEnter()',
 		'(mouseleave)': 'onMouseLeave()',
 	},
