@@ -201,7 +201,7 @@ export class NgbScrollSpyMenu implements NgbScrollSpyRef, AfterViewInit {
 	exportAs: 'ngbScrollSpy',
 	host: {
 		tabindex: '0',
-		style: 'overflow-y: auto',
+		'[style.overflow-y]': '"auto"',
 	},
 	providers: [NgbScrollSpyService],
 })
