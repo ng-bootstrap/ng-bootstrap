@@ -33,7 +33,7 @@
 						"coverageReporters": ["lcov"],
 						"browsers": ["ChromiumHeadless"],
 						"runnerConfig": "src/vitest.config.ts",
-						"include": ["src/(accordion|alert|collapse|dropdown|nav)/**/*.spec.ts"]
+						"include": ["src/(accordion|alert|collapse|dropdown|progressbar|nav)/**/*.spec.ts"]
 					},
 					"configurations": {
 						"other-browsers": {
@@ -41,12 +41,12 @@
 						},
 						"zone": {
 							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|nav)/**/*.spec.ts"]
+							"include": ["src/!(accordion|alert|collapse|dropdown|progressbar|nav)/**/*.spec.ts"]
 						},
 						"zone-other-browsers": {
 							"browsers": ["FirefoxHeadless", "WebkitHeadless"],
 							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|nav)/**/*.spec.ts"]
+							"include": ["src/!(accordion|alert|collapse|dropdown|progressbar|nav)/**/*.spec.ts"]
 						}
 					}
 				},
