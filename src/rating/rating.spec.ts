@@ -15,7 +15,7 @@ import { NgbRating } from './rating';
 import { NgbRatingConfig } from './rating-config';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, Locator } from 'vitest/browser';
 
 function createKeyDownEvent(key: string) {
 	const event = { key, preventDefault: () => {} };
@@ -26,13 +26,18 @@ function createKeyDownEvent(key: string) {
 class RatingTester {
 	readonly fixture: ComponentFixture<TestComponent>;
 	readonly componentInstance: TestComponent;
-	readonly rating = page.getByCss('ngb-rating');
-	readonly stars = page.getByCss('ngb-rating span:not(.visually-hidden)');
-	readonly ariaStars = page.getByCss('ngb-rating .visually-hidden');
+	readonly root: Locator;
+	readonly rating: Locator;
+	readonly stars: Locator;
+	readonly ariaStars: Locator;
 
 	constructor(html: string) {
 		this.fixture = createGenericTestComponent(html, TestComponent, false);
 		this.componentInstance = this.fixture.componentInstance;
+		this.root = page.elementLocator(this.fixture.nativeElement);
+		this.rating = this.root.getByCss('ngb-rating');
+		this.stars = this.root.getByCss('ngb-rating span:not(.visually-hidden)');
+		this.ariaStars = this.root.getByCss('ngb-rating .visually-hidden');
 	}
 
 	static async create(html: string) {
@@ -682,8 +687,9 @@ describe('ngb-rating', () => {
 					false,
 				);
 				readonly componentInstance = this.fixture.componentInstance;
-				readonly rating = page.getByCss('ngb-rating').nth(0);
-				readonly disabledRating = page.getByCss('ngb-rating').nth(1);
+				readonly root = page.elementLocator(this.fixture.nativeElement);
+				readonly rating = this.root.getByCss('ngb-rating').nth(0);
+				readonly disabledRating = this.root.getByCss('ngb-rating').nth(1);
 				readonly stars = this.rating.getByCss('span:not(.visually-hidden)');
 				readonly disabledStars = this.disabledRating.getByCss('span:not(.visually-hidden)');
 
@@ -727,7 +733,7 @@ describe('ngb-rating', () => {
 		it('should handle clicks and update form control', async () => {
 			const tester = await RatingTester.create(`
 				<form [formGroup]="form">
-					<ngb-rating formControlName="rating" max="5"></ngb-rating>
+					<ngb-rating formControlName="rating" max="5"/>
 				</form>
 			`);
 
@@ -747,8 +753,8 @@ describe('ngb-rating', () => {
 		it('should work with both rate input and form control', async () => {
 			const tester = await RatingTester.create(`
 				<form [formGroup]="form">
-					<ngb-rating [(rate)]="rate" formControlName="rating" max="5"></ngb-rating>
-				</form>
+					<ngb-rating [(rate)]="rate" formControlName="rating" max="5"/>
+				</form>/>
 			`);
 
 			await tester.expectStarsStateToBe([false, false, false, false, false]);
@@ -773,7 +779,7 @@ describe('ngb-rating', () => {
 		it('should disable widget when a control is disabled', async () => {
 			const tester = await RatingTester.create(`
 				<form [formGroup]="form">
-					<ngb-rating formControlName="rating" max="5"></ngb-rating>
+					<ngb-rating formControlName="rating" max="5"/>
 				</form>
 			`);
 
@@ -794,7 +800,7 @@ describe('ngb-rating', () => {
 		it('should mark control as touched on blur', async () => {
 			const tester = await RatingTester.create(`
 				<form [formGroup]="form">
-				<ngb-rating formControlName="rating" max="5"></ngb-rating>
+					<ngb-rating formControlName="rating" max="5"/>
 				</form>
 			`);
 			const element = tester.fixture.debugElement.query(By.directive(NgbRating));
