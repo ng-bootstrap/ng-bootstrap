@@ -1,49 +1,23 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef, signal } from '@angular/core';
 
 import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
 import { beforeEach, describe, expect, it } from 'vitest';
-
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
-
-function getAriaLabel(nativeEl): string {
-	return getProgress(nativeEl).getAttribute('aria-label') || '';
-}
-
-function getBarWidth(nativeEl): string {
-	return getProgressbar(nativeEl).style.width;
-}
-
-function getBarHeight(nativeEl): string {
-	return getProgress(nativeEl).style.height;
-}
-
-function getBarValue(nativeEl): number {
-	return parseInt(getProgress(nativeEl).getAttribute('aria-valuenow')!, 10);
-}
-
-function getProgress(nativeEl: Element): HTMLElement {
-	return nativeEl.querySelector('.progress') as HTMLElement;
-}
-
-function getProgressbar(nativeEl: Element): HTMLElement {
-	return nativeEl.querySelector('.progress-bar') as HTMLElement;
-}
+import { page } from 'vitest/browser';
 
 describe('ngb-progressbar', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
-	});
-
 	describe('business logic', () => {
+		let fixture: ComponentFixture<NgbProgressbar>;
+		let progressRef: ComponentRef<NgbProgressbar>;
 		let progressCmp: NgbProgressbar;
 
 		beforeEach(() => {
-			progressCmp = TestBed.createComponent(NgbProgressbar).componentInstance;
+			fixture = TestBed.createComponent(NgbProgressbar);
+			progressRef = fixture.componentRef;
+			progressCmp = fixture.componentRef.instance;
 		});
 
 		it('should initialize inputs with default values', () => {
@@ -55,265 +29,317 @@ describe('ngb-progressbar', () => {
 			expect(progressCmp.type).toBe(defaultConfig.type);
 		});
 
-		it('should calculate the percentage (default max size)', () => {
-			progressCmp.value = 50;
+		it('should calculate the percentage (default max size)', async () => {
+			progressRef.setInput('value', 50);
+			await fixture.whenStable();
+
 			expect(progressCmp.getPercentValue()).toBe(50);
 
-			progressCmp.value = 25;
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
+
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom max size)', () => {
-			progressCmp.max = 150;
+		it('should calculate the percentage (custom max size)', async () => {
+			progressRef.setInput('max', 150);
+			progressRef.setInput('value', 75);
+			await fixture.whenStable();
 
-			progressCmp.value = 75;
 			expect(progressCmp.getPercentValue()).toBe(50);
 
-			progressCmp.value = 30;
+			progressRef.setInput('value', 30);
+			await fixture.whenStable();
+
 			expect(progressCmp.getPercentValue()).toBe(20);
 		});
 
-		it('should calculate the percentage (custom max size of null)', () => {
-			progressCmp.max = <any>null;
+		it('should calculate the percentage (custom max size of null)', async () => {
+			progressRef.setInput('max', <any>null);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom max size of undefined)', () => {
-			progressCmp.max = <any>undefined;
+		it('should calculate the percentage (custom max size of undefined)', async () => {
+			progressRef.setInput('max', <any>undefined);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom max size of zero)', () => {
-			progressCmp.max = 0;
+		it('should calculate the percentage (custom max size of zero)', async () => {
+			progressRef.setInput('max', 0);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom negative max size)', () => {
-			progressCmp.max = -10;
+		it('should calculate the percentage (custom negative max size)', async () => {
+			progressRef.setInput('max', -10);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom max size of positive infinity)', () => {
-			progressCmp.max = Number.POSITIVE_INFINITY;
+		it('should calculate the percentage (custom max size of positive infinity)', async () => {
+			progressRef.setInput('max', Number.POSITIVE_INFINITY);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should calculate the percentage (custom max size of negative infinity)', () => {
-			progressCmp.max = Number.NEGATIVE_INFINITY;
+		it('should calculate the percentage (custom max size of negative infinity)', async () => {
+			progressRef.setInput('max', Number.NEGATIVE_INFINITY);
+			progressRef.setInput('value', 25);
+			await fixture.whenStable();
 
-			progressCmp.value = 25;
 			expect(progressCmp.getPercentValue()).toBe(25);
 		});
 
-		it('should set the value to 0 for negative numbers', () => {
-			progressCmp.value = -20;
+		it('should set the value to 0 for negative numbers', async () => {
+			progressRef.setInput('value', -20);
+			await fixture.whenStable();
+
 			expect(progressCmp.getValue()).toBe(0);
 		});
 
-		it('should set the value to max if it is higher than max (default max size)', () => {
-			progressCmp.value = 120;
+		it('should set the value to max if it is higher than max (default max size)', async () => {
+			progressRef.setInput('value', 120);
+			await fixture.whenStable();
+
 			expect(progressCmp.getValue()).toBe(100);
 		});
 
-		it('should set the value to max if it is higher than max (custom max size)', () => {
-			progressCmp.max = 150;
-			progressCmp.value = 170;
+		it('should set the value to max if it is higher than max (custom max size)', async () => {
+			progressRef.setInput('max', 150);
+			progressRef.setInput('value', 170);
+			await fixture.whenStable();
+
 			expect(progressCmp.getValue()).toBe(150);
 		});
 
-		it('should update the value if max updates to a smaller value', () => {
-			progressCmp.value = 80;
-			progressCmp.max = 70;
+		it('should update the value if max updates to a smaller value', async () => {
+			progressRef.setInput('value', 80);
+			progressRef.setInput('max', 70);
+			await fixture.whenStable();
+
 			expect(progressCmp.getValue()).toBe(70);
 		});
 
-		it('should not update the value if max updates to a larger value', () => {
-			progressCmp.value = 120;
-			progressCmp.max = 150;
+		it('should not update the value if max updates to a larger value', async () => {
+			progressRef.setInput('value', 120);
+			progressRef.setInput('max', 150);
+			await fixture.whenStable();
+
 			expect(progressCmp.getValue()).toBe(120);
 		});
 	});
 
 	describe('UI logic', () => {
-		it('accepts a value and respond to value changes', () => {
-			const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		class ProgressbarTester {
+			private readonly fixture: ComponentFixture<TestComponent>;
+			readonly componentInstance: TestComponent;
+			readonly progress = page.getByCss('.progress');
+			readonly progressBar = page.getByCss('.progress-bar');
 
-			expect(getBarWidth(fixture.nativeElement)).toBe('10%');
+			constructor(html: string) {
+				this.fixture = createGenericTestComponent(html, TestComponent, false);
+				this.componentInstance = this.fixture.componentInstance;
+			}
 
-			// this might fail in IE11 if attribute binding order is not respected for the <progress> element:
-			// <progress [value]="" [max]=""> will fail with value = 1
-			// <progress [max]="" [value]=""> will work with value = 10
-			expect(getBarValue(fixture.nativeElement)).toBe(10);
+			static async create(html: string) {
+				const tester = new ProgressbarTester(html);
+				await tester.whenStable();
+				return tester;
+			}
 
-			fixture.componentInstance.value = 30;
-			fixture.detectChanges();
-			expect(getBarWidth(fixture.nativeElement)).toBe('30%');
-			expect(getBarValue(fixture.nativeElement)).toBe(30);
+			async whenStable() {
+				await this.fixture.whenStable();
+			}
+			async expectBarWidthToBe(expectedWidth: string) {
+				await expect.element(this.progressBar).toHaveStyle({ width: expectedWidth });
+			}
+			async expectBarHeightToBe(expectedHeight: string) {
+				await expect.element(this.progress).toHaveStyle({ height: expectedHeight });
+			}
+			async expectBarValueToBe(expectedValue: number) {
+				await expect.element(this.progress).toHaveAttribute('aria-valuenow', expectedValue.toString());
+			}
+			async expectAriaLabelToBe(expectedLabel: string) {
+				await expect.element(this.progress).toHaveAttribute('aria-label', expectedLabel);
+			}
+		}
+
+		it('accepts a value and respond to value changes', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()"/>');
+
+			await tester.expectBarWidthToBe('10%');
+			await tester.expectBarValueToBe(10);
+
+			tester.componentInstance.value.set(30);
+			await tester.whenStable();
+
+			await tester.expectBarWidthToBe('30%');
+			await tester.expectBarValueToBe(30);
 		});
 
-		it('accepts a max value and respond to max changes', () => {
-			const html = '<ngb-progressbar [value]="value" [max]="max"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts a max value and respond to max changes', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [max]="max()"/>');
 
-			expect(getBarWidth(fixture.nativeElement)).toBe('20%');
+			await tester.expectBarWidthToBe('20%');
 
-			fixture.componentInstance.max = 200;
-			fixture.detectChanges();
-			expect(getBarWidth(fixture.nativeElement)).toBe('5%');
+			tester.componentInstance.max.set(200);
+			await tester.whenStable();
+
+			await tester.expectBarWidthToBe('5%');
 		});
 
-		it('accepts a value and max value above default values', () => {
-			const html = '<ngb-progressbar [value]="150" [max]="150"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts a value and max value above default values', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="150" [max]="150"/>');
 
-			expect(getBarWidth(fixture.nativeElement)).toBe('100%');
+			await tester.expectBarWidthToBe('100%');
 		});
 
-		it('accepts a custom type', () => {
-			const html = '<ngb-progressbar [value]="value" [type]="type"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts a custom type', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [type]="type()"/>');
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-warning');
+			await expect.element(tester.progressBar).toHaveClass('text-bg-warning');
 
-			fixture.componentInstance.type = 'info';
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-info');
+			tester.componentInstance.type.set('info');
+			await tester.whenStable();
 
-			fixture.componentInstance.type = 'dark';
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-dark');
+			await expect.element(tester.progressBar).toHaveClass('text-bg-info');
+
+			tester.componentInstance.type.set('dark');
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).toHaveClass('text-bg-dark');
 		});
 
-		it('accepts a custom text type', () => {
-			const html = '<ngb-progressbar [value]="value" [textType]="textType"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts a custom text type', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [textType]="textType()"/>');
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-light');
+			await expect.element(tester.progressBar).toHaveClass('text-light');
 
-			fixture.componentInstance.textType = 'info';
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-info');
+			tester.componentInstance.textType.set('info');
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).toHaveClass('text-info');
 		});
 
-		it('accepts a custom type and text type', () => {
-			const html = '<ngb-progressbar [value]="value" [type]="type" [textType]="textType"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts a custom type and text type', async () => {
+			const tester = await ProgressbarTester.create(
+				'<ngb-progressbar [value]="value()" [type]="type()" [textType]="textType()"/>',
+			);
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-light');
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-warning');
+			await expect.element(tester.progressBar).toHaveClass('text-light');
+			await expect.element(tester.progressBar).toHaveClass('bg-warning');
 
-			fixture.componentInstance.type = 'danger';
-			fixture.componentInstance.textType = 'info';
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-danger');
-			expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('text-bg-danger');
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-info');
+			tester.componentInstance.type.set('danger');
+			tester.componentInstance.textType.set('info');
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).toHaveClass('bg-danger');
+			await expect.element(tester.progressBar).not.toHaveClass('text-bg-danger');
+			await expect.element(tester.progressBar).toHaveClass('text-info');
 		});
 
-		it('accepts animated as normal attr', () => {
-			const html = '<ngb-progressbar [value]="value" [animated]="animated"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts animated as normal attr', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [animated]="animated()"/>');
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-animated');
+			await expect.element(tester.progressBar).toHaveClass('progress-bar-animated');
 
-			fixture.componentInstance.animated = false;
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-bar-animated');
+			tester.componentInstance.animated.set(false);
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).not.toHaveClass('progress-bar-animated');
 		});
 
-		it('accepts striped as normal attr', () => {
-			const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('accepts striped as normal attr', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [striped]="striped()"/>');
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
+			await expect.element(tester.progressBar).toHaveClass('progress-bar-striped');
 
-			fixture.componentInstance.striped = false;
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-bar-striped');
+			tester.componentInstance.striped.set(false);
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).not.toHaveClass('progress-bar-striped');
 		});
 
-		it('should not add "false" CSS class', () => {
-			const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should not add "false" CSS class', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="value()" [striped]="striped()"/>');
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
-			expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
+			await expect.element(tester.progressBar).toHaveClass('progress-bar-striped');
+			await expect.element(tester.progressBar).not.toHaveClass('false');
 		});
 
-		it('should stay striped when the type changes', () => {
-			const html = '<ngb-progressbar [value]="value" [type]="type" [striped]="true"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should stay striped when the type changes', async () => {
+			const tester = await ProgressbarTester.create(
+				'<ngb-progressbar [value]="value()" [type]="type()" [striped]="true"/>',
+			);
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-warning');
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
+			await expect.element(tester.progressBar).toHaveClass('text-bg-warning');
+			await expect.element(tester.progressBar).toHaveClass('progress-bar-striped');
 
-			fixture.componentInstance.type = 'success';
-			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-success');
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
+			tester.componentInstance.type.set('success');
+			await tester.whenStable();
+
+			await expect.element(tester.progressBar).toHaveClass('text-bg-success');
+			await expect.element(tester.progressBar).toHaveClass('progress-bar-striped');
 		});
 
-		it('sets the min and max values as aria attributes', () => {
-			const html = '<ngb-progressbar [value]="130" [max]="150"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('sets the min and max values as aria attributes', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="130" [max]="150"/>');
 
-			expect(getProgress(fixture.nativeElement).getAttribute('aria-valuemin')).toBe('0');
-			expect(getProgress(fixture.nativeElement).getAttribute('aria-valuemax')).toBe('150');
+			await expect.element(tester.progress).toHaveAttribute('aria-valuemin', '0');
+			await expect.element(tester.progress).toHaveAttribute('aria-valuemax', '150');
 		});
 
-		it('should display the progress-bar label', () => {
-			const html = '<ngb-progressbar [value]="150" [max]="150">label goes here</ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should display the progress-bar label', async () => {
+			const tester = await ProgressbarTester.create(
+				'<ngb-progressbar [value]="150" [max]="150">label goes here</ngb-progressbar>',
+			);
 
-			expect(fixture.nativeElement.textContent).toContain('label goes here');
+			await expect.element(tester.progressBar).toHaveTextContent('label goes here');
 		});
 
-		it('should display the current percentage value', () => {
-			const html = '<ngb-progressbar [showValue]="true" [value]="150" [max]="150"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should display the current percentage value', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [showValue]="true" [value]="150" [max]="150"/>');
 
-			expect(fixture.nativeElement.textContent).toContain('100%');
+			await expect.element(tester.progressBar).toHaveTextContent('100%');
 		});
 
-		it('should accepts height values', () => {
-			const html = '<ngb-progressbar [value]="150" height="10px"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should accepts height values', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar [value]="150" height="10px"/>');
 
-			expect(getBarHeight(fixture.nativeElement)).toBe('10px');
+			await tester.expectBarHeightToBe('10px');
 		});
 
-		it('should have default accessible name', () => {
-			const html = '<ngb-progressbar></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should have default accessible name', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar/>');
 
-			expect(getAriaLabel(fixture.nativeElement)).toBe('progress bar');
+			await tester.expectAriaLabelToBe('progress bar');
 		});
 
-		it('should have custom accessible name', () => {
-			const html = '<ngb-progressbar ariaLabel="flupke"></ngb-progressbar>';
-			const fixture = createTestComponent(html);
+		it('should have custom accessible name', async () => {
+			const tester = await ProgressbarTester.create('<ngb-progressbar ariaLabel="flupke"/>');
 
-			expect(getAriaLabel(fixture.nativeElement)).toBe('flupke');
+			await tester.expectAriaLabelToBe('flupke');
 		});
 
-		it('should set width on progress when inside <ngb-progressbar-stacked>', () => {
-			const html =
-				'<ngb-progressbar-stacked><ngb-progressbar [value]="50"></ngb-progressbar></ngb-progressbar-stacked>';
-			const fixture = createTestComponent(html);
+		it('should set width on progress when inside <ngb-progressbar-stacked>', async () => {
+			const tester = await ProgressbarTester.create(
+				'<ngb-progressbar-stacked><ngb-progressbar [value]="50"/></ngb-progressbar-stacked>',
+			);
 
-			expect(getBarWidth(fixture.nativeElement)).toBe('');
-			expect(getProgress(fixture.nativeElement).style.width).toBe('50%');
+			await expect.element(tester.progressBar).not.toHaveStyle({ width: '50%' });
+			await expect.element(tester.progress).toHaveStyle({ width: '50%' });
 		});
 	});
 
@@ -372,13 +398,14 @@ describe('ngb-progressbar', () => {
 	selector: 'test-cmp',
 	imports: [NgbProgressbar, NgbProgressbarStacked],
 	template: '',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
-	value = 10;
-	max = 50;
-	animated = true;
-	striped = true;
+	value = signal(10);
+	max = signal(50);
+	animated = signal(true);
+	striped = signal(true);
 
-	textType = 'light';
-	type = 'warning';
+	textType = signal('light');
+	type = signal('warning');
 }
