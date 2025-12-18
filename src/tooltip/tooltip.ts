@@ -20,6 +20,7 @@ import {
 	TemplateRef,
 	ViewEncapsulation,
 	DOCUMENT,
+	HostListener
 } from '@angular/core';
 
 import {
@@ -199,6 +200,13 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _opening = true;
 	private _transitioning = false;
 
+	@HostListener('mouseleave', ['$event'])
+	onMouseLeave(event: MouseEvent) {
+		if (this.isOpen()) {
+			this.close();
+		}
+	}
+
 	/**
 	 * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
 	 *
@@ -223,6 +231,9 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 * The `context` is an optional value to be injected into the tooltip template when it is created.
 	 */
 	open(context?: any) {
+		if (this.disableTooltip) {
+			return;
+		}
 		if (!this._opening && this._transitioning) {
 			this._transitioning = false;
 			ngbCompleteTransition(this._windowRef!.location.nativeElement);
@@ -364,9 +375,20 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 		);
 	}
 
-	ngOnChanges({ tooltipClass }: SimpleChanges) {
-		if (tooltipClass && this.isOpen()) {
-			this._windowRef!.setInput('tooltipClass', tooltipClass.currentValue);
+	ngOnChanges({ tooltipClass, disableTooltip }: SimpleChanges) {
+		if (this.isOpen()) {
+			if (tooltipClass) {
+				this._windowRef!.setInput('tooltipClass', tooltipClass.currentValue);
+			}
+			if (disableTooltip.currentValue) {
+				this.close();
+			}
+		}  else {
+			if (disableTooltip) {
+				if (disableTooltip.previousValue !== undefined && disableTooltip.currentValue === false) {
+					this.open();
+				}
+			}
 		}
 	}
 

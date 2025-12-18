@@ -11,6 +11,7 @@ import { NgbdTooltipTarget } from './demos/custom-target/tooltip-target';
 import { NgbdTooltipTplcontent } from './demos/tplcontent/tooltip-tplcontent';
 import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwithcontext';
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
+import { NgbdTooltipDisable } from './demos/disable/tooltip-disable';
 import { Routes } from '@angular/router';
 import { COMPONENT_DATA, ComponentData } from '../../tokens';
 
@@ -88,6 +89,13 @@ const DATA: ComponentData = {
 			type: NgbdTooltipConfig,
 			code: 'tooltip/demos/config/tooltip-config.ts',
 			markup: 'tooltip/demos/config/tooltip-config.html',
+		},
+		{
+			fragment: 'disable',
+			title: 'Disable or enable tooltip',
+			type: NgbdTooltipDisable,
+			code: 'tooltip/demos/disable/tooltip-disable.ts',
+			markup: 'tooltip/demos/disable/tooltip-disable.html',
 		},
 	],
 };
