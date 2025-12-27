@@ -2,6 +2,7 @@ import {
 	ApplicationRef,
 	ComponentRef,
 	createComponent,
+	EnvironmentInjector,
 	EventEmitter,
 	inject,
 	Injectable,
@@ -24,6 +25,7 @@ import { NgbOffcanvasPanel } from './offcanvas-panel';
 export class NgbOffcanvasStack {
 	private _applicationRef = inject(ApplicationRef);
 	private _injector = inject(Injector);
+	private _environmentInjector = inject(EnvironmentInjector);
 	private _document = inject(DOCUMENT);
 	private _scrollBar = inject(ScrollBar);
 
@@ -75,7 +77,10 @@ export class NgbOffcanvasStack {
 		}
 
 		const activeOffcanvas = new NgbActiveOffcanvas();
-		const contentRef = this._getContentRef(options.injector || contentInjector, content, activeOffcanvas);
+
+		contentInjector = options.injector || contentInjector;
+		const environmentInjector = contentInjector.get(EnvironmentInjector, null) || this._environmentInjector;
+		const contentRef = this._getContentRef(contentInjector, environmentInjector, content, activeOffcanvas);
 
 		let backdropCmptRef: ComponentRef<NgbOffcanvasBackdrop> | undefined =
 			options.backdrop !== false ? this._attachBackdrop(containerEl) : undefined;
@@ -159,6 +164,7 @@ export class NgbOffcanvasStack {
 
 	private _getContentRef(
 		contentInjector: Injector,
+		environmentInjector: EnvironmentInjector,
 		content: Type<any> | TemplateRef<any> | string,
 		activeOffcanvas: NgbActiveOffcanvas,
 	): ContentRef {
@@ -169,7 +175,7 @@ export class NgbOffcanvasStack {
 		} else if (isString(content)) {
 			return this._createFromString(content);
 		} else {
-			return this._createFromComponent(contentInjector, content, activeOffcanvas);
+			return this._createFromComponent(contentInjector, environmentInjector, content, activeOffcanvas);
 		}
 	}
 
@@ -195,6 +201,7 @@ export class NgbOffcanvasStack {
 
 	private _createFromComponent(
 		contentInjector: Injector,
+		environmentInjector: EnvironmentInjector,
 		componentType: Type<any>,
 		context: NgbActiveOffcanvas,
 	): ContentRef {
@@ -203,7 +210,7 @@ export class NgbOffcanvasStack {
 			parent: contentInjector,
 		});
 		const componentRef = createComponent(componentType, {
-			environmentInjector: this._applicationRef.injector,
+			environmentInjector,
 			elementInjector,
 		});
 		const componentNativeEl = componentRef.location.nativeElement;
