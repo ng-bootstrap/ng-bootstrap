@@ -33,7 +33,9 @@
 						"coverageReporters": ["lcov"],
 						"browsers": ["ChromiumHeadless"],
 						"runnerConfig": "src/vitest.config.ts",
-						"include": ["src/(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
+						"include": [
+							"src/(carousel)/**/*.spec.ts"
+						]
 					},
 					"configurations": {
 						"other-browsers": {
@@ -41,12 +43,12 @@
 						},
 						"zone": {
 							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
+							"include": ["src/!(accordion|alert|carousel||dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
 						},
 						"zone-other-browsers": {
 							"browsers": ["FirefoxHeadless", "WebkitHeadless"],
 							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
+							"include": ["src/!(accordion|alert|carousel|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
 						}
 					}
 				},

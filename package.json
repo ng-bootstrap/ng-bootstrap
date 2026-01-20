@@ -12,6 +12,7 @@
     "prepare": "is-ci || husky install .husky",
     "build": "yarn ngb:build && yarn demo:build",
     "test": "yarn ngb:lint && yarn ngb:test && yarn schematics:test",
+		"test:zoneless": "ng test ng-bootstrap --coverage --watch=false",
     "tdd": "yarn ngb:tdd",
     "e2e": "yarn e2e-app:lint && yarn ngb:e2e && yarn demo:e2e",
     "demo": "yarn demo:docs && yarn demo:sources && yarn demo:stackblitzes && yarn demo:serve",
