@@ -1,4 +1,4 @@
-import { inject, Service, Injector } from '@angular/core';
+import { Binding, inject, Service, Injector } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -46,6 +46,28 @@ export interface NgbModalOptions {
 	 * then the modal won't be dismissed.
 	 */
 	beforeDismiss?: () => boolean | Promise<boolean>;
+
+	/**
+	 * Bind values and functions of parent component to the modal component's inputs and outputs. Use Angular's
+	 * [`inputBinding`](https://angular.dev/api/core/inputBinding), [`twoWayBinding`](https://angular.dev/api/core/twoWayBinding)
+	 * and [`outputBinding`](https://angular.dev/api/core/outputBinding) functions.
+	 *
+	 * @since 22.0.0
+	 *
+	 * @example
+	 * ```ts
+	 * const response = signal('');
+	 *
+	 * NgbModal.open(ModalComponent, {
+	 *   bindings: [
+	 *     inputBinding('name', () => 'World'),
+	 *     twoWayBinding('response', response),
+	 *     outputBinding('send', (value) => console.log('Response sent: ' + value)),
+	 *   ]
+	 * })
+	 * ```
+	 */
+	bindings?: Binding[];
 
 	/**
 	 * If `true`, the modal will be centered vertically.
@@ -164,6 +186,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
 	ariaDescribedBy: string;
 	backdrop: boolean | 'static' = true;
 	beforeDismiss: () => boolean | Promise<boolean>;
+	bindings: Binding[];
 	centered: boolean;
 	container: string | HTMLElement;
 	fullscreen: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | boolean | string = false;

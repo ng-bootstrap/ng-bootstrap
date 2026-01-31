@@ -213,6 +213,7 @@ export class NgbModalStack {
 		const componentRef = createComponent(componentType, {
 			environmentInjector,
 			elementInjector,
+			bindings: options.bindings,
 		});
 		const componentNativeEl = componentRef.location.nativeElement;
 		if (options.scrollable) {

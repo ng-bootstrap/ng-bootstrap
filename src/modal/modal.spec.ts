@@ -1,4 +1,19 @@
-import { Component, inject, Injectable, Injector, OnDestroy, signal, ViewChild } from '@angular/core';
+import {
+	Component,
+	inject,
+	Injectable,
+	Injector,
+	input,
+	inputBinding,
+	model,
+	OnDestroy,
+	output,
+	outputBinding,
+	signal,
+	twoWayBinding,
+	Type,
+	ViewChild,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
@@ -872,6 +887,63 @@ describe('ngb-modal', () => {
 			});
 		});
 
+		describe('bindings', () => {
+			it('should bind inputs to content component', () => {
+				const onewaySignal = signal('1');
+				const twoWaySignal = signal('2');
+				let called = false;
+
+				const modalInstance = fixture.componentInstance.openCmpt(WithBindingsCmpt, {
+					bindings: [
+						inputBinding('oneWay', onewaySignal),
+						twoWayBinding('twoWay', twoWaySignal),
+						outputBinding('output', () => (called = true)),
+					],
+				});
+				fixture.detectChanges();
+
+				const instance = modalInstance.componentInstance as WithBindingsCmpt;
+
+				expect(instance.oneWay()).toBe('1');
+				expect(instance.twoWay()).toBe('2');
+				expect(instance.optional()).toBe('default');
+				expect(called).toBeFalsy();
+
+				// Change two-way binding value within the modal component
+				instance.twoWay.set('3');
+				fixture.detectChanges();
+
+				expect(instance.twoWay()).toBe('3');
+
+				// Emit the output within the modal component
+				instance.output.emit();
+				fixture.detectChanges();
+				expect(called).toBeTruthy();
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+
+			it('should open modal if required bindings are not given', () => {
+				const modalInstance = fixture.componentInstance.openCmpt(WithBindingsCmpt);
+				fixture.detectChanges();
+
+				const instance = modalInstance.componentInstance as WithBindingsCmpt;
+
+				// Assert that accessing not provided optional input binding doesn't throw
+				expect(() => instance.optional()).not.toThrow();
+
+				// ... but required bindings do throw an error
+				expect(() => instance.oneWay()).toThrowError(/NG0950/);
+				expect(() => instance.twoWay()).toThrowError(/NG0952/);
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
 		describe('accessibility', () => {
 			it('should support aria-labelledby', () => {
 				const id = 'aria-labelledby-id';
@@ -1366,6 +1438,17 @@ export class WithActiveModalCmpt {
 }
 
 @Component({
+	selector: 'modal-bindings-cmpt',
+	template: '',
+})
+export class WithBindingsCmpt {
+	readonly oneWay = input.required<string>();
+	readonly twoWay = model.required<string>();
+	readonly optional = input<string>('default');
+	readonly output = output<void>();
+}
+
+@Component({
 	selector: 'modal-autofocus-cmpt',
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
@@ -1460,7 +1543,7 @@ class TestComponent {
 	openTpl(options?: NgbModalOptions) {
 		return this.modalService.open(this.tplContent, options);
 	}
-	openCmpt(cmptType: any, options?: NgbModalOptions) {
+	openCmpt(cmptType: Type<any>, options?: NgbModalOptions) {
 		return this.modalService.open(cmptType, options);
 	}
 	openDestroyableTpl(options?: NgbModalOptions) {

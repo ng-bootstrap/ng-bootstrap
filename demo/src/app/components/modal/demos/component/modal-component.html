@@ -1,7 +1,12 @@
 <p>
-	You can pass an existing component as content of the modal window. In this case, if you're still using Angular 8 or
-	older, remember to add the content component in the <code>entryComponents</code> section of your
-	<code>NgModule</code>. For Angular 9 or newer, it's not needed anymore.
+	You can pass an existing component as content of the modal window. You can bind component inputs and
+	outputs with Angular's
+	<a href="https://angular.dev/api/core/inputBinding" target="_blank"><code>inputBinding</code></a>,
+	<a href="https://angular.dev/api/core/twoWayBinding" target="_blank"><code>twoWayBinding</code></a>
+	and <a href="https://angular.dev/api/core/outputBinding" target="_blank"><code>outputBinding</code></a>
+	functions to the parent component.
 </p>
+
+<pre>Response: {{ response() }}</pre>
 
 <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button>
