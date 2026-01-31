@@ -1,4 +1,13 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	inject,
+	Injectable,
+	Injector,
+	OnDestroy,
+	signal,
+	ViewChild,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
@@ -1104,12 +1113,13 @@ describe('ngb-modal', () => {
 						<button class="btn btn-primary" id="close" (click)="close('myResult')">Close me</button>
 					</ng-template>
 				`,
+				changeDetection: ChangeDetectionStrategy.OnPush,
 			})
 			class TestAnimationComponent {
 				@ViewChild('content', { static: true })
 				content;
 
-				constructor(private modalService: NgbModal) {}
+				private readonly modalService = inject(NgbModal);
 
 				open(backdrop: boolean | 'static' = true, keyboard = true) {
 					return this.modalService.open(this.content, { backdrop, keyboard });
@@ -1293,6 +1303,7 @@ describe('ngb-modal', () => {
 		@Component({
 			template: '<router-outlet />',
 			imports: [RouterOutlet],
+			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class AppComponent {}
 
@@ -1329,18 +1340,26 @@ describe('ngb-modal', () => {
 	});
 });
 
-@Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
+@Component({
+	selector: 'custom-injector-cmpt',
+	template: 'Some content',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export class CustomInjectorCmpt implements OnDestroy {
-	constructor(private _spyService: CustomSpyService) {}
+	private readonly _spyService = inject(CustomSpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({
+	selector: 'destroyable-cmpt',
+	template: 'Some content',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
+	private readonly _spyService = inject(SpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
@@ -1350,9 +1369,10 @@ export class DestroyableCmpt implements OnDestroy {
 @Component({
 	selector: 'modal-content-cmpt',
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithActiveModalCmpt {
-	constructor(public activeModal: NgbActiveModal) {}
+	readonly activeModal = inject(NgbActiveModal);
 
 	close() {
 		this.activeModal.close('from inside');
@@ -1362,6 +1382,7 @@ export class WithActiveModalCmpt {
 @Component({
 	selector: 'modal-autofocus-cmpt',
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithAutofocusModalCmpt {}
 
@@ -1371,6 +1392,7 @@ export class WithAutofocusModalCmpt {}
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithFirstFocusableModalCmpt {}
 
@@ -1380,6 +1402,7 @@ export class WithFirstFocusableModalCmpt {}
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WithSkipTabindexFirstFocusableModalCmpt {}
 
@@ -1388,7 +1411,7 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
-		<ng-template #content>Hello, {{ name }}!</ng-template>
+		<ng-template #content>Hello, {{ name() }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
@@ -1401,8 +1424,8 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			<button id="dismiss" (click)="modal.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			@if (show) {
-				<button id="if" (click)="show = false">Click me</button>
+			@if (show()) {
+				<button id="if" (click)="show.set(false)">Click me</button>
 			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
@@ -1414,11 +1437,12 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			>Open</div
 		>
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
-	name = 'World';
-	openedModal: NgbModalRef;
-	show = true;
+	readonly name = signal('World');
+	openedModal?: NgbModalRef;
+	readonly show = signal(true);
 	@ViewChild('content', { static: true })
 	tplContent;
 	@ViewChild('destroyableContent', { static: true })
@@ -1432,7 +1456,7 @@ class TestComponent {
 	@ViewChild('contentWithIf', { static: true })
 	tplContentWithIf;
 
-	constructor(public modalService: NgbModal) {}
+	readonly modalService = inject(NgbModal);
 
 	open(content: string, options?: NgbModalOptions) {
 		this.openedModal = this.modalService.open(content, options);
@@ -1498,11 +1522,12 @@ class TestComponent {
 			<div class="not-to-hide"></div>
 		</div>
 	`,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestA11yComponent {
-	constructor(private modalService: NgbModal) {}
+	private readonly modalService = inject(NgbModal);
 
-	open(options?: any) {
+	open(options?: NgbModalOptions) {
 		return this.modalService.open('foo', options);
 	}
 }
