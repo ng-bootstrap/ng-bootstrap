@@ -1,8 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input, inputBinding, model, output, outputBinding, signal, twoWayBinding } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-content',
+	imports: [FormsModule],
 	template: `
 		<div class="offcanvas-header">
 			<h5 class="offcanvas-title">Offcanvas</h5>
@@ -14,7 +16,13 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/off
 			></button>
 		</div>
 		<div class="offcanvas-body">
-			<div>Hello {{ name }}</div>
+			<p>Hello, {{ name() }}!</p>
+
+			<div class="d-flex gap-2 mb-2">
+				<input class="form-control" [(ngModel)]="response" placeholder="Write a response" />
+				<button class="btn btn-primary" (click)="send.emit(response())">Send</button>
+			</div>
+
 			<button type="button" class="btn btn-outline-secondary" (click)="activeOffcanvas.close('Close click')">
 				Close
 			</button>
@@ -31,7 +39,9 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/off
 })
 export class NgbdOffcanvasContent {
 	readonly activeOffcanvas = inject(NgbActiveOffcanvas);
-	@Input() name: string;
+	readonly name = input.required<string>();
+	readonly response = model.required<string>();
+	readonly send = output<string>();
 }
 
 @Component({
@@ -41,8 +51,15 @@ export class NgbdOffcanvasContent {
 export class NgbdOffcanvasComponent {
 	private readonly offcanvasService = inject(NgbOffcanvas);
 
+	readonly response = signal('');
+
 	open() {
-		const offcanvasRef = this.offcanvasService.open(NgbdOffcanvasContent);
-		offcanvasRef.componentInstance.name = 'World';
+		this.offcanvasService.open(NgbdOffcanvasContent, {
+			bindings: [
+				inputBinding('name', () => 'World'),
+				twoWayBinding('response', this.response),
+				outputBinding('send', (value) => console.log('Response sent: ' + value)),
+			]
+		});
 	}
 }
