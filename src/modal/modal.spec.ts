@@ -1,4 +1,4 @@
-import { Component, Service, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, Service, Injector, OnDestroy, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
@@ -45,9 +45,9 @@ describe('ngb-modal', () => {
 		});
 
 		describe('basic functionality', () => {
-			it('should open and close modal with default options', () => {
+			it('should open and close modal with default options', async () => {
 				const modalInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 
 				const modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
@@ -55,142 +55,142 @@ describe('ngb-modal', () => {
 				expect(modalEl.classList.contains('show')).toBe(true);
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should open and close modal from a TemplateRef content', () => {
+			it('should open and close modal from a TemplateRef content', async () => {
 				const modalInstance = fixture.componentInstance.openTpl();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Hello, World!');
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should properly destroy TemplateRef content', () => {
+			it('should properly destroy TemplateRef content', async () => {
 				const spyService = fixture.debugElement.injector.get(SpyService);
 				const modalInstance = fixture.componentInstance.openDestroyableTpl();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Some content');
 				expect(spyService.called).toBeFalsy();
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(spyService.called).toBeTruthy();
 			});
 
-			it('should open and close modal from a component type', () => {
+			it('should open and close modal from a component type', async () => {
 				const spyService = fixture.debugElement.injector.get(SpyService);
 				const modalInstance = fixture.componentInstance.openCmpt(DestroyableCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Some content');
 				expect(spyService.called).toBeFalsy();
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(spyService.called).toBeTruthy();
 			});
 
-			it('should inject active modal ref when component is used as content', () => {
+			it('should inject active modal ref when component is used as content', async () => {
 				fixture.componentInstance.openCmpt(WithActiveModalCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Close');
 
 				(<HTMLElement>document.querySelector('button.closeFromInside')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should expose component used as modal content', () => {
+			it('should expose component used as modal content', async () => {
 				const modalInstance = fixture.componentInstance.openCmpt(WithActiveModalCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Close');
 				expect(modalInstance.componentInstance instanceof WithActiveModalCmpt).toBeTruthy();
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(modalInstance.componentInstance).toBe(undefined);
 			});
 
-			it('should open and close modal from inside', () => {
+			it('should open and close modal from inside', async () => {
 				fixture.componentInstance.openTplClose();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should open and dismiss modal from inside', () => {
+			it('should open and dismiss modal from inside', async () => {
 				fixture.componentInstance.openTplDismiss().result.catch(NOOP);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should open and close modal from template implicit context', () => {
+			it('should open and close modal from template implicit context', async () => {
 				fixture.componentInstance.openTplImplicitContext();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should open and dismiss modal from template implicit context', () => {
+			it('should open and dismiss modal from template implicit context', async () => {
 				fixture.componentInstance.openTplImplicitContext().result.catch(NOOP);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it(`should emit 'closed' on close`, () => {
+			it(`should emit 'closed' on close`, async () => {
 				const closedSpy = vi.fn();
 				fixture.componentInstance.openTplClose().closed.subscribe(closedSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				expect(closedSpy).toHaveBeenCalledWith('myResult');
 			});
 
-			it(`should emit 'dismissed' on dismissal`, () => {
+			it(`should emit 'dismissed' on dismissal`, async () => {
 				const dismissSpy = vi.fn();
 				fixture.componentInstance.openTplDismiss().dismissed.subscribe(dismissSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				expect(dismissSpy).toHaveBeenCalledWith('myReason');
 			});
 
-			it('should resolve result promise on close', () => {
+			it('should resolve result promise on close', async () => {
 				let resolvedResult;
 				fixture.componentInstance.openTplClose().result.then((result) => (resolvedResult = result));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				fixture.whenStable().then(() => {
@@ -198,14 +198,14 @@ describe('ngb-modal', () => {
 				});
 			});
 
-			it('should reject result promise on dismiss', () => {
+			it('should reject result promise on dismiss', async () => {
 				let rejectReason;
 				fixture.componentInstance.openTplDismiss().result.catch((reason) => (rejectReason = reason));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				fixture.whenStable().then(() => {
@@ -213,30 +213,29 @@ describe('ngb-modal', () => {
 				});
 			});
 
-			it(`should emit 'shown' and 'hidden' events`, () => {
+			it(`should emit 'shown' and 'hidden' events`, async () => {
 				const shownSpy = vi.fn();
 				const hiddenSpy = vi.fn();
 				const modalRef = fixture.componentInstance.openTplClose();
 				modalRef.shown.subscribe(shownSpy);
 				modalRef.hidden.subscribe(hiddenSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 				expect(shownSpy).toHaveBeenCalledWith(undefined);
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(hiddenSpy).toHaveBeenCalledWith(undefined);
 			});
 
 			it('should add / remove "modal-open" class to body when modal is open', async () => {
 				const modalRef = fixture.componentInstance.open('bar');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 				expect(document.body).toHaveCssClass('modal-open');
 
 				modalRef.close('bar result');
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(document.body).not.toHaveCssClass('modal-open');
@@ -245,85 +244,81 @@ describe('ngb-modal', () => {
 			it('should remove / restore scroll bar when multiple stacked modals are open and closed', async () => {
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 				const modal1Ref = fixture.componentInstance.open('bar');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.body).toHaveCssClass('modal-open');
 				expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
 
 				const modal2Ref = fixture.componentInstance.open('baz');
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(document.body).toHaveCssClass('modal-open');
 				expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
 
 				modal1Ref.close('bar result');
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(document.body).toHaveCssClass('modal-open');
 				expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
 
 				modal2Ref.close('baz result');
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(document.body).not.toHaveCssClass('modal-open');
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 			});
 
-			it('should not throw when close called multiple times', () => {
+			it('should not throw when close called multiple times', async () => {
 				const modalInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should dismiss with dismissAll', () => {
+			it('should dismiss with dismissAll', async () => {
 				fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 
 				fixture.componentInstance.dismissAll('dismissAllArg');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should not throw when dismissAll called with no active modal', () => {
+			it('should not throw when dismissAll called with no active modal', async () => {
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				fixture.componentInstance.dismissAll();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should not throw when dismiss called multiple times', () => {
+			it('should not throw when dismiss called multiple times', async () => {
 				const modalRef = fixture.componentInstance.open('foo');
 				modalRef.result.catch(NOOP);
 
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 
 				modalRef.dismiss('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 
 				modalRef.dismiss('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
 			it('should indicate if there are open modal windows', async () => {
 				fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(fixture.componentInstance.modalService.hasOpenModals()).toBeTruthy();
 
 				fixture.componentInstance.dismissAll();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(fixture.componentInstance.modalService.hasOpenModals()).toBeFalsy();
@@ -331,104 +326,102 @@ describe('ngb-modal', () => {
 		});
 
 		describe('backdrop options', () => {
-			it('should have backdrop by default', () => {
+			it('should have backdrop by default', async () => {
 				const modalInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(fixture.nativeElement).toHaveBackdrop();
 
 				modalInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(fixture.nativeElement).not.toHaveBackdrop();
 			});
 
-			it('should open and close modal without backdrop', () => {
+			it('should open and close modal without backdrop', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { backdrop: false });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(fixture.nativeElement).not.toHaveBackdrop();
 
 				modalInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(fixture.nativeElement).not.toHaveBackdrop();
 			});
 
-			it('should open and close modal without backdrop from template content', () => {
+			it('should open and close modal without backdrop from template content', async () => {
 				const modalInstance = fixture.componentInstance.openTpl({ backdrop: false });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveModal('Hello, World!');
 				expect(fixture.nativeElement).not.toHaveBackdrop();
 
 				modalInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveModal();
 				expect(fixture.nativeElement).not.toHaveBackdrop();
 			});
 
-			it('should not dismiss on clicks that result in detached elements', () => {
+			it('should not dismiss on clicks that result in detached elements', async () => {
 				const modalInstance = fixture.componentInstance.openTplIf({});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#if')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('beforeDismiss options', () => {
-			it('should not dismiss when the callback returns false', () => {
+			it('should not dismiss when the callback returns false', async () => {
 				const modalInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => {
 						return false;
 					},
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should dismiss when the callback does not return false', () => {
+			it('should dismiss when the callback does not return false', async () => {
 				fixture.componentInstance.openTplDismiss(<any>{ beforeDismiss: () => {} });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
 			it('should not dismiss when the returned promise is resolved with false', async () => {
 				const modalInstance = fixture.componentInstance.openTplDismiss({ beforeDismiss: () => Promise.resolve(false) });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				modalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
@@ -437,61 +430,58 @@ describe('ngb-modal', () => {
 				const modalInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => Promise.reject('error'),
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				modalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
 			it('should dismiss when the returned promise is not resolved with false', async () => {
 				fixture.componentInstance.openTplDismiss(<any>{ beforeDismiss: () => Promise.resolve() });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should dismiss when the callback is not defined', () => {
+			it('should dismiss when the callback is not defined', async () => {
 				fixture.componentInstance.openTplDismiss({});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('container options', () => {
-			it('should attach window and backdrop elements to the specified container', () => {
+			it('should attach window and backdrop elements to the specified container', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { container: '#testContainer' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo', '#testContainer');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should attach window and backdrop elements to the specified container DOM element', () => {
+			it('should attach window and backdrop elements to the specified container DOM element', async () => {
 				const containerDomEl = document.querySelector('div#testContainer');
 				const modalInstance = fixture.componentInstance.open('foo', { container: containerDomEl as HTMLElement });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo', '#testContainer');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
@@ -504,281 +494,281 @@ describe('ngb-modal', () => {
 		});
 
 		describe('size options', () => {
-			it('should render modals with specified size', () => {
+			it('should render modals with specified size', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { size: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-sm');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should accept any strings as modal size', () => {
+			it('should accept any strings as modal size', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { size: 'ginormous' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-ginormous');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should actualize the modals render with specified size', () => {
+			it('should actualize the modals render with specified size', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { size: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-sm');
 
 				fixture.componentInstance.update({ size: 'xl' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-xl');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('fullscreen options', () => {
-			it('should render modals with fullscreen === true', () => {
+			it('should render modals with fullscreen === true', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should render modals with specified fullscreen size', () => {
+			it('should render modals with specified fullscreen size', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should render modals with any string as fullscreen size', () => {
+			it('should render modals with any string as fullscreen size', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'blah' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-blah-down');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('update fullscreen options', () => {
-			it('should render modals with small fullscreen after update', () => {
+			it('should render modals with small fullscreen after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen');
 
 				fixture.componentInstance.update({ fullscreen: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should render modals with specified fullscreen size after update', () => {
+			it('should render modals with specified fullscreen size after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
 
 				fixture.componentInstance.update({ fullscreen: 'xl' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-xl-down');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should render modals with any string as fullscreen size after update', () => {
+			it('should render modals with any string as fullscreen size after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'sm' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
 
 				fixture.componentInstance.update({ fullscreen: 'blah' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-blah-down');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('window custom class options', () => {
-			it('should render modals with the correct window custom classes', () => {
+			it('should render modals with the correct window custom classes', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { windowClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('bar');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('update window custom class options', () => {
-			it('should render modals with the correct window custom classes after update', () => {
+			it('should render modals with the correct window custom classes after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { windowClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('bar');
 
 				fixture.componentInstance.update({ windowClass: 'foo' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('foo');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('update of backdrop custom class options ', () => {
-			it('should render modals with the correct backdrop custom classes after update', () => {
+			it('should render modals with the correct backdrop custom classes after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { backdropClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('bar');
 
 				fixture.componentInstance.update({ backdropClass: 'my-fancy-backdrop' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('my-fancy-backdrop');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('backdrop custom class options', () => {
-			it('should render modals with the correct backdrop custom classes', () => {
+			it('should render modals with the correct backdrop custom classes', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { backdropClass: 'my-fancy-backdrop' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('my-fancy-backdrop');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('modal dialog custom class options', () => {
-			it('should render modals with the correct dialog custom classes', () => {
+			it('should render modals with the correct dialog custom classes', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { modalDialogClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('update of modal dialog customing class options ', () => {
-			it('should render modals with the correct dialog custom classes after update', () => {
+			it('should render modals with the correct dialog custom classes after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { modalDialogClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
 
 				fixture.componentInstance.update({ modalDialogClass: 'toc' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('toc');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('custom injector option', () => {
-			it('should render modal with a custom injector', () => {
+			it('should render modal with a custom injector', async () => {
 				const customInjector = Injector.create({
 					providers: [{ provide: CustomSpyService, useClass: CustomSpyService, deps: [] }],
 				});
 				const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, { injector: customInjector });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('Some content');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('focus management', () => {
 			describe('initial focus', () => {
-				it('should focus the proper specified element when [ngbAutofocus] is used', () => {
-					fixture.detectChanges();
+				it('should focus the proper specified element when [ngbAutofocus] is used', async () => {
+					await fixture.whenStable();
 					const modal = fixture.componentInstance.openCmpt(WithAutofocusModalCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.withNgbAutofocus'));
 					modal.close();
 				});
 
-				it('should focus the first focusable element when [ngbAutofocus] is not used', () => {
-					fixture.detectChanges();
+				it('should focus the first focusable element when [ngbAutofocus] is not used', async () => {
+					await fixture.whenStable();
 					const modal = fixture.componentInstance.openCmpt(WithFirstFocusableModalCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.firstFocusable'));
 					modal.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 
-				it('should skip element with tabindex=-1 when finding the first focusable element', () => {
-					fixture.detectChanges();
+				it('should skip element with tabindex=-1 when finding the first focusable element', async () => {
+					await fixture.whenStable();
 					const modal = fixture.componentInstance.openCmpt(WithSkipTabindexFirstFocusableModalCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.other'));
 					modal.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 
-				it('should focus modal window as a default fallback option', () => {
-					fixture.detectChanges();
+				it('should focus modal window as a default fallback option', async () => {
+					await fixture.whenStable();
 					const modal = fixture.componentInstance.open('content');
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
 					modal.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 			});
 		});
 
 		describe('window element ordering', () => {
-			it('should place newer windows on top of older ones', () => {
+			it('should place newer windows on top of older ones', async () => {
 				const modalInstance1 = fixture.componentInstance.open('foo', { windowClass: 'window-1' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalInstance2 = fixture.componentInstance.open('bar', { windowClass: 'window-2' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				let windows = document.querySelectorAll('ngb-modal-window');
 				expect(windows.length).toBe(2);
@@ -787,7 +777,7 @@ describe('ngb-modal', () => {
 
 				modalInstance2.close();
 				modalInstance1.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 			});
 
 			it('should iterate over multiple modal instances', async () => {
@@ -798,11 +788,11 @@ describe('ngb-modal', () => {
 				});
 				expect(n).toBeUndefined();
 				fixture.componentInstance.open('foo', { windowClass: 'window-1' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(n).toBe(1);
 
 				fixture.componentInstance.open('bar', { windowClass: 'window-2' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(n).toBe(2);
 
 				let windows = document.querySelectorAll('ngb-modal-window');
@@ -811,7 +801,6 @@ describe('ngb-modal', () => {
 				expect(windows[1]).toHaveCssClass('window-2');
 
 				fixture.componentInstance.dismissAll();
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveModal();
@@ -820,142 +809,139 @@ describe('ngb-modal', () => {
 		});
 
 		describe('vertically centered', () => {
-			it('should render modals vertically centered', () => {
+			it('should render modals vertically centered', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { centered: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-centered');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('update centered options', () => {
-			it('should render modals vertically centered after update', () => {
+			it('should render modals vertically centered after update', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { centered: false });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog');
 
 				fixture.componentInstance.update({ centered: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-centered');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('scrollable content', () => {
-			it('should render scrollable content modals', () => {
+			it('should render scrollable content modals', async () => {
 				const modalInstance = fixture.componentInstance.open('foo', { scrollable: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-scrollable');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should add specific styling to content component host', () => {
+			it('should add specific styling to content component host', async () => {
 				const modalInstance = fixture.componentInstance.openCmpt(DestroyableCmpt, { scrollable: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(document.querySelector('destroyable-cmpt')).toHaveCssClass('component-host-scrollable');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 		});
 
 		describe('accessibility', () => {
-			it('should support aria-labelledby', () => {
+			it('should support aria-labelledby', async () => {
 				const id = 'aria-labelledby-id';
 
 				const modalInstance = fixture.componentInstance.open('foo', { ariaLabelledBy: id });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should support aria-describedby', () => {
+			it('should support aria-describedby', async () => {
 				const id = 'aria-describedby-id';
 
 				const modalInstance = fixture.componentInstance.open('foo', { ariaDescribedBy: id });
-				fixture.detectChanges();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-describedby')).toBe(id);
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should support update of aria-labelledby options', () => {
+			it('should support update of aria-labelledby options', async () => {
 				const id = 'aria-labelledby-id';
 				const newId = 'aria-labelledby-new-id';
 
 				const modalInstance = fixture.componentInstance.open('foo', { ariaLabelledBy: id });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
 
 				fixture.componentInstance.update({ ariaLabelledBy: newId });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(modalElement.getAttribute('aria-labelledby')).toBe(newId);
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should support update of aria-describedby options', () => {
+			it('should support update of aria-describedby options', async () => {
 				const id = 'aria-describedby-id';
 				const newId = 'aria-describedby-new-id';
 
 				const modalInstance = fixture.componentInstance.open('foo', { ariaDescribedBy: id });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-describedby')).toBe(id);
 
 				fixture.componentInstance.update({ ariaDescribedBy: newId });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(modalElement.getAttribute('aria-describedby')).toBe(newId);
 
 				modalInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
-			it('should have aria-modal attribute', () => {
+			it('should have aria-modal attribute', async () => {
 				const a11yFixture = TestBed.createComponent(TestA11yComponent);
 				const modalInstance = a11yFixture.componentInstance.open();
-				a11yFixture.detectChanges();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-modal')).toBe('true');
 
 				modalInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
 
 			it('should add aria-hidden attributes to siblings when attached to body', async () => {
 				const a11yFixture = TestBed.createComponent(TestA11yComponent);
 				const modalInstance = a11yFixture.componentInstance.open();
-				a11yFixture.detectChanges();
 
 				const modal = document.querySelector('ngb-modal-window')!;
 				const backdrop = document.querySelector('ngb-modal-backdrop')!;
@@ -969,7 +955,6 @@ describe('ngb-modal', () => {
 				expect(modal.hasAttribute('aria-hidden')).toBe(false);
 
 				modalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				ariaHidden = document.querySelectorAll('[aria-hidden]');
@@ -981,7 +966,6 @@ describe('ngb-modal', () => {
 			it('should add aria-hidden attributes to siblings when attached to a container', async () => {
 				const a11yFixture = TestBed.createComponent(TestA11yComponent);
 				const modalInstance = a11yFixture.componentInstance.open({ container: '#container' });
-				a11yFixture.detectChanges();
 
 				const modal = document.querySelector('ngb-modal-window')!;
 				const backdrop = document.querySelector('ngb-modal-backdrop')!;
@@ -1005,7 +989,6 @@ describe('ngb-modal', () => {
 				});
 
 				modalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				const ariaHidden = document.querySelectorAll('[aria-hidden]');
@@ -1020,7 +1003,6 @@ describe('ngb-modal', () => {
 				const a11yFixture = TestBed.createComponent(TestA11yComponent);
 				const firstModalInstance = a11yFixture.componentInstance.open();
 				const secondModalInstance = a11yFixture.componentInstance.open();
-				a11yFixture.detectChanges();
 
 				let modals = document.querySelectorAll('ngb-modal-window');
 				let backdrops = document.querySelectorAll('ngb-modal-backdrop');
@@ -1039,7 +1021,6 @@ describe('ngb-modal', () => {
 				expect(backdrops[1].hasAttribute('aria-hidden')).toBe(true);
 
 				secondModalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				ariaHidden = document.querySelectorAll('[aria-hidden]');
@@ -1052,7 +1033,6 @@ describe('ngb-modal', () => {
 				expect(backdrops[0].hasAttribute('aria-hidden')).toBe(true);
 
 				firstModalInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				ariaHidden = document.querySelectorAll('[aria-hidden]');
@@ -1071,27 +1051,27 @@ describe('ngb-modal', () => {
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
-		it('should accept global configuration under the NgbModalConfig token', () => {
+		it('should accept global configuration under the NgbModalConfig token', async () => {
 			const modalInstance = fixture.componentInstance.open('foo');
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement).toHaveModal('foo');
 			expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-sm');
 
 			modalInstance.close('some reason');
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 
-		it('should override global configuration with local options', () => {
+		it('should override global configuration with local options', async () => {
 			const modalInstance = fixture.componentInstance.open('foo', { size: 'lg' });
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement).toHaveModal('foo');
 			expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-lg');
 			expect(document.querySelector('.modal-dialog')).not.toHaveCssClass('modal-sm');
 
 			modalInstance.close('some reason');
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 	});
 
@@ -1109,7 +1089,7 @@ describe('ngb-modal', () => {
 				@ViewChild('content', { static: true })
 				content;
 
-				constructor(private modalService: NgbModal) {}
+				private readonly modalService = inject(NgbModal);
 
 				open(backdrop: boolean | 'static' = true, keyboard = true) {
 					return this.modalService.open(this.content, { backdrop, keyboard });
@@ -1130,7 +1110,6 @@ describe('ngb-modal', () => {
 						document.body.classList.add('ngb-reduce-motion');
 					}
 					const component = TestBed.createComponent(TestAnimationComponent);
-					component.detectChanges();
 
 					const modalRef = component.componentInstance.open();
 
@@ -1164,7 +1143,6 @@ describe('ngb-modal', () => {
 						document.body.classList.add('ngb-reduce-motion');
 					}
 					const component = TestBed.createComponent(TestAnimationComponent);
-					component.detectChanges();
 
 					const modalRef = component.componentInstance.open('static');
 					let modalEl: HTMLElement | null = null;
@@ -1173,7 +1151,7 @@ describe('ngb-modal', () => {
 
 					modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
 					modalEl.click();
-					component.detectChanges();
+
 					if (reduceMotion) {
 						expect(modalEl.classList.contains('modal-static')).toBe(false);
 					} else {
@@ -1184,14 +1162,11 @@ describe('ngb-modal', () => {
 					const hiddenPromise = firstValueFrom(modalRef.hidden);
 					closeButton.click();
 					await hiddenPromise;
-
-					component.detectChanges();
 				});
 			});
 
 			it(`should not bump modal window on click if backdrop is not static`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
-				component.detectChanges();
 
 				const modalRef = component.componentInstance.open();
 				let modalEl: HTMLElement | null = null;
@@ -1201,20 +1176,17 @@ describe('ngb-modal', () => {
 				modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
 
 				modalEl.click();
-				component.detectChanges();
+
 				expect(modalEl.classList.contains('modal-static')).toBe(false);
 
 				const hiddenPromise = firstValueFrom(modalRef.hidden);
 				const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 				closeButton.click();
 				await hiddenPromise;
-
-				component.detectChanges();
 			});
 
 			it(`should not bump modal window if backdrop is static and modal itself is clicked)`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
-				component.detectChanges();
 
 				const modalRef = component.componentInstance.open('static');
 				let modalEl: HTMLElement | null = null;
@@ -1225,7 +1197,7 @@ describe('ngb-modal', () => {
 				const insideDiv = document.querySelector('#inside-div') as HTMLElement;
 
 				insideDiv.click();
-				component.detectChanges();
+
 				expect(modalEl.classList.contains('modal-static')).toBe(false);
 
 				const hiddenPromise = firstValueFrom(modalRef.hidden);
@@ -1233,12 +1205,10 @@ describe('ngb-modal', () => {
 				closeButton.click();
 
 				await hiddenPromise;
-				component.detectChanges();
 			});
 
 			it(`should bump modal window on Escape if backdrop is static`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
-				component.detectChanges();
 
 				// currently, to keep backward compatibility, the modal is closed on escape if keyboard is true,
 				// even if backdrop is static. This will be fixed in the future.
@@ -1252,20 +1222,16 @@ describe('ngb-modal', () => {
 				// dispatch keydown event on modal window
 				modalEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 
-				component.detectChanges();
 				expect(modalEl.classList.contains('modal-static')).toBe(true);
 
 				const hiddenPromise = firstValueFrom(modalRef.hidden);
 				const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 				closeButton.click();
 				await hiddenPromise;
-
-				component.detectChanges();
 			});
 
 			it(`should not bump modal window on Escape if backdrop is not static`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
-				component.detectChanges();
 
 				const modalRef = component.componentInstance.open();
 				let modalEl: HTMLElement | null = null;
@@ -1276,15 +1242,12 @@ describe('ngb-modal', () => {
 
 				modalEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 
-				component.detectChanges();
 				expect(modalEl.classList.contains('modal-static')).toBe(false);
 
 				const hiddenPromise = firstValueFrom(modalRef.hidden);
 				const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 				closeButton.click();
 				await hiddenPromise;
-
-				component.detectChanges();
 			});
 		});
 	}
@@ -1314,12 +1277,11 @@ describe('ngb-modal', () => {
 			const router = TestBed.inject(Router);
 
 			const fixture = TestBed.createComponent(AppComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			// opening by navigating
 			router.navigate(['lazy']);
 			await fixture.whenStable();
-			fixture.detectChanges();
 			expect(fixture.nativeElement).toHaveModal('lazy modal');
 
 			// closing by navigating away
@@ -1334,16 +1296,19 @@ describe('ngb-modal', () => {
 	template: 'Some content',
 })
 export class CustomInjectorCmpt implements OnDestroy {
-	constructor(private _spyService: CustomSpyService) {}
+	private readonly _spyService = inject(CustomSpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({
+	selector: 'destroyable-cmpt',
+	template: 'Some content',
+})
 export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
+	private readonly _spyService = inject(SpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
@@ -1355,7 +1320,7 @@ export class DestroyableCmpt implements OnDestroy {
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveModalCmpt {
-	constructor(public activeModal: NgbActiveModal) {}
+	readonly activeModal = inject(NgbActiveModal);
 
 	close() {
 		this.activeModal.close('from inside');
@@ -1391,7 +1356,7 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
-		<ng-template #content>Hello, {{ name }}!</ng-template>
+		<ng-template #content>Hello, {{ name() }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
@@ -1404,8 +1369,8 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			<button id="dismiss" (click)="modal.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			@if (show) {
-				<button id="if" (click)="show = false">Click me</button>
+			@if (show()) {
+				<button id="if" (click)="show.set(false)">Click me</button>
 			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
@@ -1419,9 +1384,9 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 	`,
 })
 class TestComponent {
-	name = 'World';
-	openedModal: NgbModalRef;
-	show = true;
+	readonly name = signal('World');
+	openedModal?: NgbModalRef;
+	readonly show = signal(true);
 	@ViewChild('content', { static: true })
 	tplContent;
 	@ViewChild('destroyableContent', { static: true })
@@ -1435,7 +1400,7 @@ class TestComponent {
 	@ViewChild('contentWithIf', { static: true })
 	tplContentWithIf;
 
-	constructor(public modalService: NgbModal) {}
+	readonly modalService = inject(NgbModal);
 
 	open(content: string, options?: NgbModalOptions) {
 		this.openedModal = this.modalService.open(content, options);
@@ -1503,9 +1468,9 @@ class TestComponent {
 	`,
 })
 class TestA11yComponent {
-	constructor(private modalService: NgbModal) {}
+	private readonly modalService = inject(NgbModal);
 
-	open(options?: any) {
+	open(options?: NgbModalOptions) {
 		return this.modalService.open('foo', options);
 	}
 }
