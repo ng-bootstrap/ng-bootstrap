@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, Injectable, Injector, OnDestroy, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -45,9 +45,9 @@ describe('ngb-offcanvas', () => {
 		});
 
 		describe('basic functionality', () => {
-			it('should open and close offcanvas with default options', () => {
+			it('should open and close offcanvas with default options', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				const offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
@@ -55,129 +55,129 @@ describe('ngb-offcanvas', () => {
 				expect(offcanvasEl.classList.contains('show')).toBe(true);
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should open and close offcanvas from a TemplateRef content', () => {
+			it('should open and close offcanvas from a TemplateRef content', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTpl();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Hello, World!');
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should properly destroy TemplateRef content', () => {
+			it('should properly destroy TemplateRef content', async () => {
 				const spyService = fixture.debugElement.injector.get(SpyService);
 				const offcanvasInstance = fixture.componentInstance.openDestroyableTpl();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Some content');
 				expect(spyService.called).toBeFalsy();
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(spyService.called).toBeTruthy();
 			});
 
-			it('should open and close offcanvas from a component type', () => {
+			it('should open and close offcanvas from a component type', async () => {
 				const spyService = fixture.debugElement.injector.get(SpyService);
 				const offcanvasInstance = fixture.componentInstance.openCmpt(DestroyableCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Some content');
 				expect(spyService.called).toBeFalsy();
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(spyService.called).toBeTruthy();
 			});
 
-			it('should inject active offcanvas ref when component is used as content', () => {
+			it('should inject active offcanvas ref when component is used as content', async () => {
 				fixture.componentInstance.openCmpt(WithActiveOffcanvasCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Close');
 
 				(<HTMLElement>document.querySelector('button.closeFromInside')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should expose component used as offcanvas content', () => {
+			it('should expose component used as offcanvas content', async () => {
 				const offcanvasInstance = fixture.componentInstance.openCmpt(WithActiveOffcanvasCmpt);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Close');
 				expect(offcanvasInstance.componentInstance instanceof WithActiveOffcanvasCmpt).toBeTruthy();
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(offcanvasInstance.componentInstance).toBe(undefined);
 			});
 
-			it('should open and close offcanvas from inside', () => {
+			it('should open and close offcanvas from inside', async () => {
 				fixture.componentInstance.openTplClose();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should open and dismiss offcanvas from inside', () => {
+			it('should open and dismiss offcanvas from inside', async () => {
 				fixture.componentInstance.openTplDismiss().result.catch(NOOP);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should open and close offcanvas from template implicit context', () => {
+			it('should open and close offcanvas from template implicit context', async () => {
 				fixture.componentInstance.openTplImplicitContext();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should open and dismiss offcanvas from template implicit context', () => {
+			it('should open and dismiss offcanvas from template implicit context', async () => {
 				fixture.componentInstance.openTplImplicitContext().result.catch(NOOP);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it(`should emit 'closed' on close`, () => {
+			it(`should emit 'closed' on close`, async () => {
 				const closedSpy = vi.fn();
 				fixture.componentInstance.openTplClose().closed.subscribe(closedSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				expect(closedSpy).toHaveBeenCalledWith('myResult');
 			});
 
-			it(`should emit 'dismissed' on dismissal`, () => {
+			it(`should emit 'dismissed' on dismissal`, async () => {
 				const dismissSpy = vi.fn();
 				fixture.componentInstance.openTplDismiss().dismissed.subscribe(dismissSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				expect(dismissSpy).toHaveBeenCalledWith('myReason');
@@ -186,11 +186,11 @@ describe('ngb-offcanvas', () => {
 			it('should resolve result promise on close', async () => {
 				let resolvedResult;
 				fixture.componentInstance.openTplClose().result.then((result) => (resolvedResult = result));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				await fixture.whenStable();
@@ -200,29 +200,29 @@ describe('ngb-offcanvas', () => {
 			it('should reject result promise on dismiss', async () => {
 				let rejectReason;
 				fixture.componentInstance.openTplDismiss().result.catch((reason) => (rejectReason = reason));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				await fixture.whenStable();
 				expect(rejectReason).toBe('myReason');
 			});
 
-			it(`should emit 'shown' and 'hidden' events`, () => {
+			it(`should emit 'shown' and 'hidden' events`, async () => {
 				const shownSpy = vi.fn();
 				const hiddenSpy = vi.fn();
 				const modalRef = fixture.componentInstance.openTplClose();
 				modalRef.shown.subscribe(shownSpy);
 				modalRef.hidden.subscribe(hiddenSpy);
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 				expect(shownSpy).toHaveBeenCalledWith(undefined);
 
 				(<HTMLElement>document.querySelector('button#close')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(hiddenSpy).toHaveBeenCalledWith(undefined);
 			});
@@ -230,86 +230,84 @@ describe('ngb-offcanvas', () => {
 			it('should remove / restore scroll bar when offcanvas is open and closed', async () => {
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 				const offcanvasRef = fixture.componentInstance.open('bar');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
 
 				offcanvasRef.close('bar result');
-				fixture.detectChanges();
 				await fixture.whenStable();
 
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 			});
 
-			it('should not throw when close called multiple times', () => {
+			it('should not throw when close called multiple times', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should dismiss with service dismiss', () => {
+			it('should dismiss with service dismiss', async () => {
 				fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				fixture.componentInstance.dismiss('dismissArg');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
 			it('should dismiss with backdrop mousedown', async () => {
 				let rejectReason: any;
 				fixture.componentInstance.open('foo').result.catch((reason) => (rejectReason = reason));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				document.querySelector('ngb-offcanvas-backdrop')?.dispatchEvent(new Event('mousedown'));
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				await fixture.whenStable();
 				expect(rejectReason).toBe(OffcanvasDismissReasons.BACKDROP_CLICK);
 			});
 
-			it('should not throw when service dismiss called with no active offcanvas', () => {
+			it('should not throw when service dismiss called with no active offcanvas', async () => {
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				fixture.componentInstance.dismiss();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should not throw when dismiss called multiple times', () => {
+			it('should not throw when dismiss called multiple times', async () => {
 				const modalRef = fixture.componentInstance.open('foo');
 				modalRef.result.catch(NOOP);
 
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				modalRef.dismiss('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 
 				modalRef.dismiss('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
 			it('should indicate if there is an open offcanvas', async () => {
 				fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBe(true);
 
 				fixture.componentInstance.dismiss();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.componentInstance.offcanvasService.hasOpenOffcanvas()).toBe(false);
@@ -317,43 +315,43 @@ describe('ngb-offcanvas', () => {
 		});
 
 		describe('backdrop options', () => {
-			it('should have backdrop by default', () => {
+			it('should have backdrop by default', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(fixture.nativeElement).toHaveOffcanvasBackdrop();
 
 				offcanvasInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it('should open and close offcanvas without backdrop', () => {
+			it('should open and close offcanvas without backdrop', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { backdrop: false });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 
 				offcanvasInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it('should open and close offcanvas with static backdrop', () => {
+			it('should open and close offcanvas with static backdrop', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { backdrop: 'static' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(fixture.nativeElement).toHaveOffcanvasBackdrop();
 
 				offcanvasInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
@@ -363,11 +361,11 @@ describe('ngb-offcanvas', () => {
 				let rejectReason: any;
 				const offcanvasInstance = fixture.componentInstance.open('foo', { backdrop: 'static' });
 				offcanvasInstance.result.catch((reason) => (rejectReason = reason));
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
 				document.querySelector('ngb-offcanvas-backdrop')?.dispatchEvent(new Event('mousedown'));
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveOffcanvas();
 				expect(fixture.nativeElement).toHaveOffcanvasBackdrop();
@@ -376,67 +374,67 @@ describe('ngb-offcanvas', () => {
 				expect(rejectReason).toBeUndefined();
 
 				offcanvasInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it('should open and close offcanvas without backdrop from template content', () => {
+			it('should open and close offcanvas without backdrop from template content', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTpl({ backdrop: false });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).toHaveOffcanvas('Hello, World!');
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 
 				offcanvasInstance.close('some reason');
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it('should not dismiss on clicks that result in detached elements', () => {
+			it('should not dismiss on clicks that result in detached elements', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTplIf({});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#if')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('beforeDismiss options', () => {
-			it('should not dismiss when the callback returns false', () => {
+			it('should not dismiss when the callback returns false', async () => {
 				const offcanvasInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => {
 						return false;
 					},
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should dismiss when the callback does not return false', () => {
+			it('should dismiss when the callback does not return false', async () => {
 				fixture.componentInstance.openTplDismiss(<any>{ beforeDismiss: () => {} });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
@@ -444,16 +442,14 @@ describe('ngb-offcanvas', () => {
 				const offcanvasInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => Promise.resolve(false),
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
@@ -462,69 +458,66 @@ describe('ngb-offcanvas', () => {
 				const offcanvasInstance = fixture.componentInstance.openTplDismiss({
 					beforeDismiss: () => Promise.reject('error'),
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
 			it('should dismiss when the returned promise is not resolved with false', async () => {
 				fixture.componentInstance.openTplDismiss(<any>{ beforeDismiss: () => Promise.resolve() });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should dismiss when the callback is not defined', () => {
+			it('should dismiss when the callback is not defined', async () => {
 				fixture.componentInstance.openTplDismiss({});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas();
 
 				(<HTMLElement>document.querySelector('button#dismiss')).click();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('container options', () => {
-			it('should attach offcanvas and backdrop elements to the specified container', () => {
+			it('should attach offcanvas and backdrop elements to the specified container', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { container: '#testContainer' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo', '#testContainer');
 				expect(fixture.nativeElement).toHaveOffcanvasBackdrop('#testContainer');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it('should attach offcanvas and backdrop elements to the specified container DOM element', () => {
+			it('should attach offcanvas and backdrop elements to the specified container DOM element', async () => {
 				const containerDomEl = document.querySelector('div#testContainer');
 				const offcanvasInstance = fixture.componentInstance.open('foo', { container: containerDomEl as HTMLElement });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo', '#testContainer');
 				expect(fixture.nativeElement).toHaveOffcanvasBackdrop('#testContainer');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 				expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
 			});
 
-			it("should throw when the specified container element doesn't exist", () => {
+			it("should throw when the specified container element doesn't exist", async () => {
 				const brokenSelector = '#notInTheDOM';
 				expect(() => {
 					fixture.componentInstance.open('foo', { container: brokenSelector });
@@ -533,154 +526,153 @@ describe('ngb-offcanvas', () => {
 		});
 
 		describe('position options', () => {
-			it('should render offcanvas with specified position', () => {
+			it('should render offcanvas with specified position', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { position: 'end' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(document.querySelector('ngb-offcanvas-panel')).toHaveCssClass('offcanvas-end');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('panel custom class options', () => {
-			it('should render offcanvas with the correct panel custom classes', () => {
+			it('should render offcanvas with the correct panel custom classes', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { panelClass: 'bar' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(document.querySelector('ngb-offcanvas-panel')).toHaveCssClass('bar');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('backdrop custom class options', () => {
-			it('should render offcanvas with the correct backdrop custom classes', () => {
+			it('should render offcanvas with the correct backdrop custom classes', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { backdropClass: 'my-fancy-backdrop' });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(document.querySelector('ngb-offcanvas-backdrop')).toHaveCssClass('my-fancy-backdrop');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('custom injector option', () => {
-			it('should render offcanvas with a custom injector', () => {
+			it('should render offcanvas with a custom injector', async () => {
 				const customInjector = Injector.create({
 					providers: [{ provide: CustomSpyService, useClass: CustomSpyService, deps: [] }],
 				});
 				const offcanvasInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, { injector: customInjector });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('Some content');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('focus management', () => {
 			describe('initial focus', () => {
-				it('should focus the proper specified element when [ngbAutofocus] is used', () => {
-					fixture.detectChanges();
+				it('should focus the proper specified element when [ngbAutofocus] is used', async () => {
+					await fixture.whenStable();
 					const offcanvasInstance = fixture.componentInstance.openCmpt(WithAutofocusOffcanvasCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.withNgbAutofocus'));
 					offcanvasInstance.close();
 				});
 
-				it('should focus the first focusable element when [ngbAutofocus] is not used', () => {
-					fixture.detectChanges();
+				it('should focus the first focusable element when [ngbAutofocus] is not used', async () => {
+					await fixture.whenStable();
 					const offcanvasInstance = fixture.componentInstance.openCmpt(WithFirstFocusableOffcanvasCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.firstFocusable'));
 					offcanvasInstance.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 
-				it('should skip element with tabindex=-1 when finding the first focusable element', () => {
-					fixture.detectChanges();
+				it('should skip element with tabindex=-1 when finding the first focusable element', async () => {
+					await fixture.whenStable();
 					const offcanvasInstance = fixture.componentInstance.openCmpt(WithSkipTabindexFirstFocusableOffcanvasCmpt);
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('button.other'));
 					offcanvasInstance.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 
-				it('should focus offcanvas panel as a default fallback option', () => {
-					fixture.detectChanges();
+				it('should focus offcanvas panel as a default fallback option', async () => {
+					await fixture.whenStable();
 					const offcanvasInstance = fixture.componentInstance.open('content');
-					fixture.detectChanges();
+					await fixture.whenStable();
 
 					expect(document.activeElement).toBe(document.querySelector('ngb-offcanvas-panel'));
 					offcanvasInstance.close();
-					fixture.detectChanges();
+					await fixture.whenStable();
 				});
 			});
 		});
 
 		describe('scrollable document', () => {
-			it('should keep the document scrollable', () => {
+			it('should keep the document scrollable', async () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo', { scroll: true });
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).toHaveOffcanvas('foo');
 				expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 		});
 
 		describe('accessibility', () => {
-			it('should support aria-labelledby', () => {
+			it('should support aria-labelledby', async () => {
 				const id = 'aria-labelledby-id';
 
 				const offcanvasInstance = fixture.componentInstance.open('foo', { ariaLabelledBy: id });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-offcanvas-panel');
 				expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should support aria-describedby', () => {
+			it('should support aria-describedby', async () => {
 				const id = 'aria-describedby-id';
 
 				const offcanvasInstance = fixture.componentInstance.open('foo', { ariaDescribedBy: id });
-				fixture.detectChanges();
+				await fixture.whenStable();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-offcanvas-panel');
 				expect(modalElement.getAttribute('aria-describedby')).toBe(id);
 
 				offcanvasInstance.close('some result');
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
-			it('should have aria-modal attribute', () => {
+			it('should have aria-modal attribute', async () => {
 				const a11yFixture = TestBed.createComponent(TestA11yComponent);
 				const offcanvasInstance = a11yFixture.componentInstance.open();
-				a11yFixture.detectChanges();
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-offcanvas-panel');
 				expect(modalElement.getAttribute('aria-modal')).toBe('true');
 
 				offcanvasInstance.close();
-				fixture.detectChanges();
+				await fixture.whenStable();
 				expect(fixture.nativeElement).not.toHaveOffcanvas();
 			});
 
@@ -698,21 +690,21 @@ describe('ngb-offcanvas', () => {
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
-		it('should accept global configuration under the NgbOffcanvasConfig token', () => {
+		it('should accept global configuration under the NgbOffcanvasConfig token', async () => {
 			const offcanvasInstance = fixture.componentInstance.open('foo');
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement).toHaveOffcanvas('foo');
 			expect(document.querySelector('ngb-offcanvas-panel')).toHaveCssClass('offcanvas-end');
 			expect(document.querySelector('ngb-offcanvas-panel')).not.toHaveCssClass('offcanvas-start');
 
 			offcanvasInstance.close('some reason');
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 
-		it('should override global configuration with local options', () => {
+		it('should override global configuration with local options', async () => {
 			const offcanvasInstance = fixture.componentInstance.open('foo', { position: 'top' });
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement).toHaveOffcanvas('foo');
 			expect(document.querySelector('ngb-offcanvas-panel')).toHaveCssClass('offcanvas-top');
@@ -720,7 +712,7 @@ describe('ngb-offcanvas', () => {
 			expect(document.querySelector('ngb-offcanvas-panel')).not.toHaveCssClass('offcanvas-start');
 
 			offcanvasInstance.close('some reason');
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 	});
 
@@ -738,7 +730,7 @@ describe('ngb-offcanvas', () => {
 				@ViewChild('content', { static: true })
 				content;
 
-				constructor(private offcanvasService: NgbOffcanvas) {}
+				private readonly offcanvasService = inject(NgbOffcanvas);
 
 				open(backdrop = true, keyboard = true) {
 					return this.offcanvasService.open(this.content, { backdrop, keyboard });
@@ -759,11 +751,11 @@ describe('ngb-offcanvas', () => {
 						document.body.classList.add('ngb-reduce-motion');
 					}
 					const component = TestBed.createComponent(TestAnimationComponent);
-					component.detectChanges();
+					await component.whenStable();
 
 					const offcanvasRef = component.componentInstance.open();
 					const shownPromise = firstValueFrom(offcanvasRef.shown);
-					component.detectChanges();
+					await component.whenStable();
 
 					// Ensure that everything works fine after a reflow
 					document.body.getBoundingClientRect();
@@ -778,7 +770,6 @@ describe('ngb-offcanvas', () => {
 
 					await shownPromise;
 
-					component.detectChanges();
 					await component.whenStable();
 
 					expect(offcanvasEl.classList.contains('showing')).toBe(false);
@@ -798,7 +789,7 @@ describe('ngb-offcanvas', () => {
 
 			it(`should start hiding even if the show animation isn't finished yet`, async () => {
 				const component = TestBed.createComponent(TestAnimationComponent);
-				component.detectChanges();
+				await component.whenStable();
 
 				const offcanvasRef = component.componentInstance.open();
 
@@ -812,13 +803,12 @@ describe('ngb-offcanvas', () => {
 					expect(offcanvasEl).toBeNull();
 				});
 
-				component.detectChanges();
+				await component.whenStable();
 				offcanvasEl = document.querySelector('ngb-offcanvas-panel')!;
 				expect(offcanvasEl.classList.contains('show')).toBe(true);
 				expect(offcanvasEl.classList.contains('showing')).toBe(true);
 
 				await firstValueFrom(offcanvasRef.shown);
-				component.detectChanges();
 				await component.whenStable();
 
 				expect(offcanvasEl.classList.contains('show')).toBe(true);
@@ -863,12 +853,11 @@ describe('ngb-offcanvas', () => {
 			const router = TestBed.inject(Router);
 
 			const fixture = TestBed.createComponent(AppComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			// opening by navigating
 			router.navigate(['lazy']);
 			await fixture.whenStable();
-			fixture.detectChanges();
 			expect(fixture.nativeElement).toHaveOffcanvas('lazy offcanvas');
 
 			// closing by navigating away
@@ -883,16 +872,19 @@ describe('ngb-offcanvas', () => {
 	template: 'Some content',
 })
 export class CustomInjectorCmpt implements OnDestroy {
-	constructor(private _spyService: CustomSpyService) {}
+	private readonly _spyService = inject(CustomSpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({
+	selector: 'destroyable-cmpt',
+	template: 'Some content',
+})
 export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
+	private readonly _spyService = inject(SpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
@@ -904,7 +896,7 @@ export class DestroyableCmpt implements OnDestroy {
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveOffcanvasCmpt {
-	constructor(public activeModal: NgbActiveOffcanvas) {}
+	readonly activeModal = inject(NgbActiveOffcanvas);
 
 	close() {
 		this.activeModal.close('from inside');
@@ -940,7 +932,7 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
-		<ng-template #content>Hello, {{ name }}!</ng-template>
+		<ng-template #content>Hello, {{ name() }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
@@ -953,8 +945,8 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 			<button id="dismiss" (click)="offcanvas.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			@if (show) {
-				<button id="if" (click)="show = false">Click me</button>
+			@if (show()) {
+				<button id="if" (click)="show.set(false)">Click me</button>
 			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
@@ -962,9 +954,9 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 	`,
 })
 class TestComponent {
-	name = 'World';
-	openedModal: NgbOffcanvasRef;
-	show = true;
+	readonly name = signal('World');
+	openedOffcanvas?: NgbOffcanvasRef;
+	readonly show = signal(true);
 	@ViewChild('content', { static: true })
 	tplContent;
 	@ViewChild('destroyableContent', { static: true })
@@ -978,15 +970,15 @@ class TestComponent {
 	@ViewChild('contentWithIf', { static: true })
 	tplContentWithIf;
 
-	constructor(public offcanvasService: NgbOffcanvas) {}
+	readonly offcanvasService = inject(NgbOffcanvas);
 
 	open(content: string, options?: NgbOffcanvasOptions) {
-		this.openedModal = this.offcanvasService.open(content, options);
-		return this.openedModal;
+		this.openedOffcanvas = this.offcanvasService.open(content, options);
+		return this.openedOffcanvas;
 	}
 	close() {
-		if (this.openedModal) {
-			this.openedModal.close('ok');
+		if (this.openedOffcanvas) {
+			this.openedOffcanvas.close('ok');
 		}
 	}
 	dismiss(reason?: any) {
@@ -1041,9 +1033,9 @@ class TestComponent {
 	`,
 })
 class TestA11yComponent {
-	constructor(private offcanvasService: NgbOffcanvas) {}
+	private readonly offcanvasService = inject(NgbOffcanvas);
 
-	open(options?: any) {
+	open(options?: NgbOffcanvasOptions) {
 		return this.offcanvasService.open('foo', options);
 	}
 }
