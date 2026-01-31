@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, Injectable, Injector, OnDestroy, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -738,7 +738,7 @@ describe('ngb-offcanvas', () => {
 				@ViewChild('content', { static: true })
 				content;
 
-				constructor(private offcanvasService: NgbOffcanvas) {}
+				private readonly offcanvasService = inject(NgbOffcanvas);
 
 				open(backdrop = true, keyboard = true) {
 					return this.offcanvasService.open(this.content, { backdrop, keyboard });
@@ -883,16 +883,19 @@ describe('ngb-offcanvas', () => {
 	template: 'Some content',
 })
 export class CustomInjectorCmpt implements OnDestroy {
-	constructor(private _spyService: CustomSpyService) {}
+	private readonly _spyService = inject(CustomSpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({
+	selector: 'destroyable-cmpt',
+	template: 'Some content',
+})
 export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
+	private readonly _spyService = inject(SpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
@@ -904,7 +907,7 @@ export class DestroyableCmpt implements OnDestroy {
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveOffcanvasCmpt {
-	constructor(public activeModal: NgbActiveOffcanvas) {}
+	readonly activeModal = inject(NgbActiveOffcanvas);
 
 	close() {
 		this.activeModal.close('from inside');
@@ -940,7 +943,7 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
-		<ng-template #content>Hello, {{ name }}!</ng-template>
+		<ng-template #content>Hello, {{ name() }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
@@ -953,8 +956,8 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 			<button id="dismiss" (click)="offcanvas.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			@if (show) {
-				<button id="if" (click)="show = false">Click me</button>
+			@if (show()) {
+				<button id="if" (click)="show.set(false)">Click me</button>
 			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
@@ -962,9 +965,9 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 	`,
 })
 class TestComponent {
-	name = 'World';
-	openedModal: NgbOffcanvasRef;
-	show = true;
+	readonly name = signal('World');
+	openedOffcanvas?: NgbOffcanvasRef;
+	readonly show = signal(true);
 	@ViewChild('content', { static: true })
 	tplContent;
 	@ViewChild('destroyableContent', { static: true })
@@ -978,15 +981,15 @@ class TestComponent {
 	@ViewChild('contentWithIf', { static: true })
 	tplContentWithIf;
 
-	constructor(public offcanvasService: NgbOffcanvas) {}
+	readonly offcanvasService = inject(NgbOffcanvas);
 
 	open(content: string, options?: NgbOffcanvasOptions) {
-		this.openedModal = this.offcanvasService.open(content, options);
-		return this.openedModal;
+		this.openedOffcanvas = this.offcanvasService.open(content, options);
+		return this.openedOffcanvas;
 	}
 	close() {
-		if (this.openedModal) {
-			this.openedModal.close('ok');
+		if (this.openedOffcanvas) {
+			this.openedOffcanvas.close('ok');
 		}
 	}
 	dismiss(reason?: any) {
@@ -1041,9 +1044,9 @@ class TestComponent {
 	`,
 })
 class TestA11yComponent {
-	constructor(private offcanvasService: NgbOffcanvas) {}
+	private readonly offcanvasService = inject(NgbOffcanvas);
 
-	open(options?: any) {
+	open(options?: NgbOffcanvasOptions) {
 		return this.offcanvasService.open('foo', options);
 	}
 }
