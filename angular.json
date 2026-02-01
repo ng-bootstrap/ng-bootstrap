@@ -47,7 +47,7 @@
 						"browsers": ["ChromiumHeadless"],
 						"runnerConfig": "src/vitest.config.ts",
 						"include": [
-							"src/(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip)/**/*.spec.ts"
+							"src/(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip|typeahead)/**/*.spec.ts"
 						]
 					},
 					"configurations": {
@@ -57,14 +57,14 @@
 						"zone": {
 							"setupFiles": ["src/setup-zone-test.ts"],
 							"include": [
-								"src/!(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip)/**/*.spec.ts"
+								"src/!(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip|typeahead)/**/*.spec.ts"
 							]
 						},
 						"zone-other-browsers": {
 							"browsers": ["FirefoxHeadless", "WebkitHeadless"],
 							"setupFiles": ["src/setup-zone-test.ts"],
 							"include": [
-								"src/!(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip)/**/*.spec.ts"
+								"src/!(accordion|alert|carousel|collapse|datepicker|dropdown|modal|offcanvas|pagination|popover|progressbar|nav|rating|timepicker|toast|tooltip|typeahead)/**/*.spec.ts"
 							]
 						}
 					}
