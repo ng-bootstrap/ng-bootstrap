@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
@@ -42,7 +42,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 		vi.useFakeTimers();
 	});
 
@@ -105,7 +105,7 @@ describe('ngb-carousel', () => {
 
 	it('should mark the requested slide as active', () => {
 		const html = `
-       <ngb-carousel [activeId]="activeSlideId">
+       <ngb-carousel [activeId]="activeSlideId()">
          <ng-template ngbSlide id="1">foo</ng-template>
          <ng-template ngbSlide id="2">bar</ng-template>
        </ngb-carousel>
@@ -114,7 +114,7 @@ describe('ngb-carousel', () => {
 		// set the second slide active (instead of the first one by default), before the first change detection
 		const fixture = createTestComponent(html, false);
 
-		fixture.componentInstance.activeSlideId = '2';
+		fixture.componentInstance.activeSlideId.set('2');
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 	});
@@ -300,11 +300,11 @@ describe('ngb-carousel', () => {
       <ngb-carousel #c [interval]="0">
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
-        @if (addNewSlide) {
+        @if (addNewSlide()) {
         	<ng-template ngbSlide>baz</ng-template>
         }
       </ngb-carousel>
-      <button id="next" (click)="c.next(); addNewSlide = true">Next</button>
+      <button id="next" (click)="c.next(); addNewSlide.set(true)">Next</button>
     `;
 
 		const fixture = createTestComponent(html);
@@ -320,7 +320,7 @@ describe('ngb-carousel', () => {
 	it('should mark component for check when slides change', () => {
 		const html = `
       <ngb-carousel #c [interval]="0">
-      	@for (s of slides; track $index) {
+      	@for (s of slides(); track $index) {
 					<ng-template ngbSlide>
 						<div class="slide">{{ s }}</div>
 					</ng-template>
@@ -335,7 +335,7 @@ describe('ngb-carousel', () => {
 		const fixture = createTestComponent(html);
 		expect(getSlidesText(fixture.nativeElement)).toEqual(['a', 'b']);
 
-		fixture.componentInstance.slides = ['c', 'd'];
+		fixture.componentInstance.slides.set(['c', 'd']);
 		fixture.detectChanges();
 		expect(getSlidesText(fixture.nativeElement)).toEqual(['c', 'd']);
 		expectActiveSlides(fixture.nativeElement, [true, false]);
@@ -579,7 +579,7 @@ describe('ngb-carousel', () => {
 
 	it('should change slide with different rate when interval value changed', () => {
 		const html = `
-      <ngb-carousel [interval]="interval">
+      <ngb-carousel [interval]="interval()">
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
         <ng-template ngbSlide>zoo</ng-template>
@@ -587,7 +587,7 @@ describe('ngb-carousel', () => {
     `;
 
 		const fixture = createTestComponent(html);
-		fixture.componentInstance.interval = 5000;
+		fixture.componentInstance.interval.set(5000);
 		fixture.detectChanges();
 
 		expectActiveSlides(fixture.nativeElement, [true, false, false]);
@@ -596,7 +596,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
-		fixture.componentInstance.interval = 1000;
+		fixture.componentInstance.interval.set(1000);
 		fixture.detectChanges();
 
 		vi.advanceTimersByTime(1001);
@@ -606,7 +606,7 @@ describe('ngb-carousel', () => {
 
 	it('should listen to mouse events based on pauseOnHover attribute', () => {
 		const html = `
-    <ngb-carousel [pauseOnHover]="pauseOnHover">
+    <ngb-carousel [pauseOnHover]="pauseOnHover()">
       <ng-template ngbSlide>foo</ng-template>
       <ng-template ngbSlide>bar</ng-template>
     </ngb-carousel>
@@ -634,7 +634,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 
-		fixture.componentInstance.pauseOnHover = false;
+		fixture.componentInstance.pauseOnHover.set(false);
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -762,7 +762,7 @@ describe('ngb-carousel', () => {
 
 	it('should change on key arrowRight and arrowstart', () => {
 		const html = `
-            <ngb-carousel [keyboard]="keyboard" [wrap]="false">
+            <ngb-carousel [keyboard]="keyboard()" [wrap]="false">
               <ng-template ngbSlide>foo</ng-template>
               <ng-template ngbSlide>bar</ng-template>
             </ngb-carousel>
@@ -779,7 +779,7 @@ describe('ngb-carousel', () => {
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		fixture.componentInstance.keyboard = false;
+		fixture.componentInstance.keyboard.set(false);
 		fixture.detectChanges();
 		fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {}); // prev()
 		fixture.detectChanges();
@@ -788,7 +788,7 @@ describe('ngb-carousel', () => {
 
 	it('should listen to keyevents based on keyboard attribute', () => {
 		const html = `
-               <ngb-carousel [keyboard]="keyboard" >
+               <ngb-carousel [keyboard]="keyboard()">
                  <ng-template ngbSlide>foo</ng-template>
                  <ng-template ngbSlide>bar</ng-template>
                </ngb-carousel>
@@ -797,13 +797,13 @@ describe('ngb-carousel', () => {
 		const fixture = createTestComponent(html);
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		fixture.componentInstance.keyboard = false;
+		fixture.componentInstance.keyboard.set(false);
 		fixture.detectChanges();
 		fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {}); // prev()
 		fixture.detectChanges();
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		fixture.componentInstance.keyboard = true;
+		fixture.componentInstance.keyboard.set(true);
 		fixture.detectChanges();
 		fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {}); // next()
 		fixture.detectChanges();
@@ -812,7 +812,7 @@ describe('ngb-carousel', () => {
 
 	it('should render navigation indicators according to the flags', () => {
 		const html = `
-    <ngb-carousel [showNavigationIndicators]="showNavigationIndicators">
+    <ngb-carousel [showNavigationIndicators]="showNavigationIndicators()">
       <ng-template ngbSlide>foo</ng-template>
     </ngb-carousel>
   `;
@@ -824,7 +824,7 @@ describe('ngb-carousel', () => {
 		expect(fixture.nativeElement.querySelectorAll('.carousel-indicators.visually-hidden > button').length).toBe(0);
 		expect(getIndicatorElements(fixture.nativeElement).length).toBe(1);
 
-		fixture.componentInstance.showNavigationIndicators = false;
+		fixture.componentInstance.showNavigationIndicators.set(false);
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelectorAll('.carousel-indicators.visually-hidden > button').length).toBe(1);
 		expect(getIndicatorElements(fixture.nativeElement).length).toBe(1);
@@ -832,7 +832,7 @@ describe('ngb-carousel', () => {
 
 	it('should render navigation buttons according to the flags', () => {
 		const html = `
-    <ngb-carousel [showNavigationArrows]="showNavigationArrows">
+    <ngb-carousel [showNavigationArrows]="showNavigationArrows()">
       <ng-template ngbSlide>foo</ng-template>
     </ngb-carousel>
   `;
@@ -841,7 +841,7 @@ describe('ngb-carousel', () => {
 		expect(getSlideElements(fixture.nativeElement).length).toBe(1);
 		expect(getArrowElements(fixture.nativeElement).length).toBe(2);
 
-		fixture.componentInstance.showNavigationArrows = false;
+		fixture.componentInstance.showNavigationArrows.set(false);
 		fixture.detectChanges();
 		expect(getArrowElements(fixture.nativeElement).length).toBe(0);
 	});
@@ -907,10 +907,10 @@ if (isBrowserVisible('ngb-carousel animations')) {
 					<ng-template ngbSlide id="three">Three</ng-template>
 				</ngb-carousel>
 			`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onSlid = (payload) => payload;
 		}
 
@@ -922,7 +922,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		it(`should run slide transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
+			fixture.componentInstance.reduceMotion.set(false);
 			fixture.detectChanges();
 
 			const nativeEl = fixture.nativeElement;
@@ -963,7 +963,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		it(`should run slide transition (force-reduced-motion = true)`, () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = true;
+			fixture.componentInstance.reduceMotion.set(true);
 			fixture.detectChanges();
 
 			const nativeEl = fixture.nativeElement;
@@ -994,7 +994,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		it(`should revert slide transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
+			fixture.componentInstance.reduceMotion.set(false);
 			fixture.detectChanges();
 
 			const nativeEl = fixture.nativeElement;
@@ -1051,7 +1051,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		it(`should revert slide transition (force-reduced-motion = true)`, () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = true;
+			fixture.componentInstance.reduceMotion.set(true);
 			fixture.detectChanges();
 
 			const nativeEl = fixture.nativeElement;
@@ -1115,14 +1115,14 @@ class TestComponentOnPush {}
 	template: '',
 })
 class TestComponent {
-	addNewSlide = false;
-	interval;
-	activeSlideId;
-	keyboard = true;
-	pauseOnHover = true;
-	showNavigationArrows = true;
-	showNavigationIndicators = true;
-	slides = ['a', 'b'];
-	carouselSlideCallBack = (event: NgbSlideEvent) => {};
-	carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};
+	readonly addNewSlide = signal(false);
+	readonly interval = signal<number | undefined>(undefined);
+	readonly activeSlideId = signal<string | undefined>(undefined);
+	readonly keyboard = signal(true);
+	readonly pauseOnHover = signal(true);
+	readonly showNavigationArrows = signal(true);
+	readonly showNavigationIndicators = signal(true);
+	readonly slides = signal(['a', 'b']);
+	readonly carouselSlideCallBack = (event: NgbSlideEvent) => {};
+	readonly carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};
 }
