@@ -518,9 +518,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 	template: ``,
 })
 class TestComponent {
-	rootScrollSpyService = inject(NgbScrollSpyService);
-	active = 'two';
-	visible = true;
+	readonly rootScrollSpyService = inject(NgbScrollSpyService);
 	processChanges = (_: any, changeActive: (active: string) => void) => {
 		changeActive('overridden!');
 	};

@@ -400,11 +400,10 @@ describe('ngb-progressbar', () => {
 	template: '',
 })
 class TestComponent {
-	value = signal(10);
-	max = signal(50);
-	animated = signal(true);
-	striped = signal(true);
-
-	textType = signal('light');
-	type = signal('warning');
+	readonly value = signal(10);
+	readonly max = signal(50);
+	readonly animated = signal(true);
+	readonly striped = signal(true);
+	readonly textType = signal('light');
+	readonly type = signal('warning');
 }

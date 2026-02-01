@@ -634,12 +634,12 @@ describe('Custom config as provider', () => {
 	template: ``,
 })
 class TestComponent {
-	isOpen = signal(false);
-	stateChanges: boolean[] = [];
-	dropdownClass = signal('custom-class');
-	disabled = signal(false);
-	show = signal(true);
-	popperOptions = signal<(options: Partial<Options>) => Partial<Options>>((options) => options);
+	readonly isOpen = signal(false);
+	readonly stateChanges: boolean[] = [];
+	readonly dropdownClass = signal('custom-class');
+	readonly disabled = signal(false);
+	readonly show = signal(true);
+	readonly popperOptions = signal<(options: Partial<Options>) => Partial<Options>>((options) => options);
 
 	recordStateChange($event) {
 		this.stateChanges.push($event);
