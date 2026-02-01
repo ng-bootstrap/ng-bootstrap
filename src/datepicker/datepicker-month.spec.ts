@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test/common';
+import { TestBed } from '@angular/core/testing';
+import { createGenericAsyncTestComponent } from '../test/common';
 
-import { Component, Service, provideZoneChangeDetection } from '@angular/core';
+import { Component, Service, signal } from '@angular/core';
 
 import { NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth } from './datepicker.module';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
@@ -11,19 +11,19 @@ import { NgbDateStruct } from './ngb-date-struct';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const createTestComponent = () =>
-	createGenericTestComponent(
+	createGenericAsyncTestComponent(
 		`
   <ngb-datepicker #dp
                   [dayTemplate]="dt"
-                  [weekdays]="weekdays"
-                  [showWeekNumbers]="showWeekNumbers"
-                  [outsideDays]="outsideDays"
+                  [weekdays]="weekdays()"
+                  [showWeekNumbers]="showWeekNumbers()"
+                  [outsideDays]="outsideDays()"
                   (dateSelect)="onClick($event)">
     <ng-template #dt let-date="date">{{ date.day }}</ng-template>
   </ngb-datepicker>
 `,
 		TestComponent,
-	) as ComponentFixture<TestComponent>;
+	);
 
 function getWeekNumbers(element: HTMLElement): HTMLElement[] {
 	return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-week-number'));
@@ -232,35 +232,35 @@ describe('ngb-datepicker-month', () => {
 			},
 		});
 		TestBed.configureTestingModule({
-			providers: [provideZoneChangeDetection(), { provide: NgbDatepickerService, useClass: MockDatepickerService }],
+			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }],
 		});
 	});
 
-	it('should show/hide week numbers', () => {
-		const fixture = createTestComponent();
+	it('should show/hide week numbers', async () => {
+		const fixture = await createTestComponent();
 
 		expectWeekNumbers(fixture.nativeElement, ['1', '2', '3']);
 		expectWeekLabel(fixture.nativeElement, '');
 
-		fixture.componentInstance.showWeekNumbers = false;
-		fixture.detectChanges();
+		fixture.componentInstance.showWeekNumbers.set(false);
+		await fixture.whenStable();
 
 		expectWeekNumbers(fixture.nativeElement, []);
 		expectWeekLabel(fixture.nativeElement, '');
 	});
 
-	it('should use custom template to display dates', () => {
-		const fixture = createTestComponent();
+	it('should use custom template to display dates', async () => {
+		const fixture = await createTestComponent();
 		expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
 	});
 
-	it('should use "date" as an implicit value for the template', () => {
-		const fixture = createTestComponent();
+	it('should use "date" as an implicit value for the template', async () => {
+		const fixture = await createTestComponent();
 		expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
 	});
 
-	it('should send date selection events', () => {
-		const fixture = createTestComponent();
+	it('should send date selection events', async () => {
+		const fixture = await createTestComponent();
 
 		vi.spyOn(fixture.componentInstance, 'onClick');
 
@@ -270,8 +270,8 @@ describe('ngb-datepicker-month', () => {
 		expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 8, 1));
 	});
 
-	it('should not send date selection events for hidden and disabled dates', () => {
-		const fixture = createTestComponent();
+	it('should not send date selection events for hidden and disabled dates', async () => {
+		const fixture = await createTestComponent();
 
 		vi.spyOn(fixture.componentInstance, 'onClick');
 
@@ -282,8 +282,8 @@ describe('ngb-datepicker-month', () => {
 		expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
 	});
 
-	it('should set cursor to pointer or default', () => {
-		const fixture = createTestComponent();
+	it('should set cursor to pointer or default', async () => {
+		const fixture = await createTestComponent();
 
 		const dates = getDates(fixture.nativeElement);
 		// hidden
@@ -294,8 +294,8 @@ describe('ngb-datepicker-month', () => {
 		expect(window.getComputedStyle(dates[2]).getPropertyValue('cursor')).toBe('default');
 	});
 
-	it('should apply correct CSS classes to days', () => {
-		const fixture = createTestComponent();
+	it('should apply correct CSS classes to days', async () => {
+		const fixture = await createTestComponent();
 
 		let dates = getDates(fixture.nativeElement);
 		// hidden
@@ -312,87 +312,87 @@ describe('ngb-datepicker-month', () => {
 		expect(dates[2]).toHaveCssClass('ngb-dp-today');
 	});
 
-	it('should not display collapsed weeks', () => {
-		const fixture = createTestComponent();
+	it('should not display collapsed weeks', async () => {
+		const fixture = await createTestComponent();
 
 		expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
 	});
 
-	it('should add correct aria-label attribute', () => {
-		const fixture = createTestComponent();
+	it('should add correct aria-label attribute', async () => {
+		const fixture = await createTestComponent();
 
 		let dates = getDates(fixture.nativeElement);
 		expect(dates[0].getAttribute('aria-label')).toBe('Monday');
 	});
 
-	it('should render custom month layout', () => {
-		const fixture = createGenericTestComponent(
+	it('should render custom month layout', async () => {
+		const fixture = await createGenericAsyncTestComponent(
 			`
       <ngb-datepicker #dp
-                      [weekdays]="weekdays"
-                      [showWeekNumbers]="showWeekNumbers"
-                      [outsideDays]="outsideDays"
+                      [weekdays]="weekdays()"
+                      [showWeekNumbers]="showWeekNumbers()"
+                      [outsideDays]="outsideDays()"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent>
           <ngb-datepicker-month [month]="{month: 8, year: 2016}"></ngb-datepicker-month>
         </ng-template>
       </ngb-datepicker>`,
 			TestComponent,
-		) as ComponentFixture<TestComponent>;
+		);
 		expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
 	});
 
-	it('should render custom month template', () => {
-		const fixture = createGenericTestComponent(
+	it('should render custom month template', async () => {
+		const fixture = await createGenericAsyncTestComponent(
 			`
       <ngb-datepicker #dp
-                      [weekdays]="weekdays"
-                      [showWeekNumbers]="showWeekNumbers"
-                      [outsideDays]="outsideDays"
+                      [weekdays]="weekdays()"
+                      [showWeekNumbers]="showWeekNumbers()"
+                      [outsideDays]="outsideDays()"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-datepicker>
     `,
 			TestComponent,
-		) as ComponentFixture<TestComponent>;
+		);
 		expectDates(fixture.nativeElement, []);
 		expect(fixture.nativeElement.querySelectorAll('.customClass').length).toEqual(1);
 		expect(fixture.nativeElement.querySelectorAll('.customClass')[0].innerText.trim()).toEqual('Custom Content');
 	});
 
-	it('should prefer custom month template passed via the input', () => {
-		const fixture = createGenericTestComponent(
+	it('should prefer custom month template passed via the input', async () => {
+		const fixture = await createGenericAsyncTestComponent(
 			`
 			<ng-template #cc><div class="customClass">Custom Content</div></ng-template>
       <ngb-datepicker #dp
-                      [weekdays]="weekdays"
-                      [showWeekNumbers]="showWeekNumbers"
-                      [outsideDays]="outsideDays"
+                      [weekdays]="weekdays()"
+                      [showWeekNumbers]="showWeekNumbers()"
+                      [outsideDays]="outsideDays()"
                       [contentTemplate]='cc'
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Inline Content</div></ng-template>
       </ngb-datepicker>
     `,
 			TestComponent,
-		) as ComponentFixture<TestComponent>;
+		);
 		expectDates(fixture.nativeElement, []);
 		expect(fixture.nativeElement.querySelectorAll('.customClass').length).toEqual(1);
 		expect(fixture.nativeElement.querySelectorAll('.customClass')[0].innerText.trim()).toEqual('Custom Content');
 	});
 
-	it('should handle keyboard events with custom month template', () => {
-		const fixture = createGenericTestComponent(
+	it('should handle keyboard events with custom month template', async () => {
+		const fixture = await createGenericAsyncTestComponent(
 			`
       <ngb-datepicker #dp
-                      [weekdays]="weekdays"
-                      [showWeekNumbers]="showWeekNumbers"
-                      [outsideDays]="outsideDays"
+                      [weekdays]="weekdays()"
+                      [showWeekNumbers]="showWeekNumbers()"
+                      [outsideDays]="outsideDays()"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-datepicker>
     `,
 			TestComponent,
-		) as ComponentFixture<TestComponent>;
+		);
 		expectDates(fixture.nativeElement, []);
 		expect(fixture.nativeElement.querySelectorAll('.customClass').length).toEqual(1);
 		expect(fixture.nativeElement.querySelectorAll('.customClass')[0].innerText.trim()).toEqual('Custom Content');
@@ -405,9 +405,9 @@ describe('ngb-datepicker-month', () => {
 	template: '',
 })
 class TestComponent {
-	weekdays = true;
-	showWeekNumbers = true;
-	outsideDays = 'visible';
+	readonly weekdays = signal(true);
+	readonly showWeekNumbers = signal(true);
+	readonly outsideDays = signal('visible');
 
 	onClick = (event) => {};
 }

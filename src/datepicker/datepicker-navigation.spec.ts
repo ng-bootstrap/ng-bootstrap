@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { createGenericTestComponent, triggerEvent } from '../test/common';
+import { createGenericAsyncTestComponent, triggerEvent } from '../test/common';
 import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/datepicker/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NavigationEvent } from './datepicker-view-model';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
@@ -11,8 +11,7 @@ import { NgbDate } from './ngb-date';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestComponent);
 
 function changeSelect(element: HTMLSelectElement, value: string) {
 	element.value = value;
@@ -21,25 +20,25 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 
 describe('ngb-datepicker-navigation', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 	});
 
-	it('should toggle navigation select component', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date"
-          [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
+	it('should toggle navigation select component', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect()" [date]="date()"
+          [selectBoxes]="selectBoxes()"></ngb-datepicker-navigation>`);
 
 		expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).not.toBeNull();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
 
-		fixture.componentInstance.showSelect = false;
-		fixture.detectChanges();
+		fixture.componentInstance.showSelect.set(false);
+		await fixture.whenStable();
 		expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).toBeNull();
 	});
 
-	it('should send date selection event', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date"
-          [selectBoxes]="selectBoxes" (select)="onSelect($event)"></ngb-datepicker-navigation>`);
+	it('should send date selection event', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date()"
+          [selectBoxes]="selectBoxes()" (select)="onSelect($event)"></ngb-datepicker-navigation>`);
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
 		const yearSelect = getYearSelect(fixture.nativeElement);
@@ -52,42 +51,42 @@ describe('ngb-datepicker-navigation', () => {
 		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2020, 8, 1));
 	});
 
-	it('should make prev navigation button disabled', () => {
-		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation [prevDisabled]="prevDisabled"></ngb-datepicker-navigation>`,
+	it('should make prev navigation button disabled', async () => {
+		const fixture = await createTestComponent(
+			`<ngb-datepicker-navigation [prevDisabled]="prevDisabled()"></ngb-datepicker-navigation>`,
 		);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		expect(links[0].hasAttribute('disabled')).toBeFalsy();
 
-		fixture.componentInstance.prevDisabled = true;
-		fixture.detectChanges();
+		fixture.componentInstance.prevDisabled.set(true);
+		await fixture.whenStable();
 		expect(links[0].hasAttribute('disabled')).toBeTruthy();
 	});
 
-	it('should make next navigation button disabled', () => {
-		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation [nextDisabled]="nextDisabled"></ngb-datepicker-navigation>`,
+	it('should make next navigation button disabled', async () => {
+		const fixture = await createTestComponent(
+			`<ngb-datepicker-navigation [nextDisabled]="nextDisabled()"></ngb-datepicker-navigation>`,
 		);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		expect(links[1].hasAttribute('disabled')).toBeFalsy();
 
-		fixture.componentInstance.nextDisabled = true;
-		fixture.detectChanges();
+		fixture.componentInstance.nextDisabled.set(true);
+		await fixture.whenStable();
 		expect(links[1].hasAttribute('disabled')).toBeTruthy();
 	});
 
-	it('should make year and month select boxes disabled', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [date]="date"
-      [showSelect]="true" [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
+	it('should make year and month select boxes disabled', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [date]="date()"
+      [showSelect]="true" [selectBoxes]="selectBoxes()"></ngb-datepicker-navigation>`);
 
 		expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
 		expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
 	});
 
-	it('should send navigation events', () => {
-		const fixture = createTestComponent(
+	it('should send navigation events', async () => {
+		const fixture = await createTestComponent(
 			`<ngb-datepicker-navigation (navigate)="onNavigate($event)"></ngb-datepicker-navigation>`,
 		);
 		const [previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
@@ -108,8 +107,8 @@ describe('ngb-datepicker-navigation', () => {
 		expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith(NavigationEvent.NEXT);
 	});
 
-	it('should retain focus on the navigation links after click', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+	it('should retain focus on the navigation links after click', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
 		const [previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
 
 		// prev
@@ -121,8 +120,8 @@ describe('ngb-datepicker-navigation', () => {
 		expect(document.activeElement).toBe(nextButton);
 	});
 
-	it('should have buttons of type button', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+	it('should have buttons of type button', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		links.forEach((link) => {
@@ -130,8 +129,8 @@ describe('ngb-datepicker-navigation', () => {
 		});
 	});
 
-	it('should have correct titles and aria attributes on buttons', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+	it('should have correct titles and aria attributes on buttons', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		expect(links[0].getAttribute('aria-label')).toBe('Previous month');
@@ -140,16 +139,16 @@ describe('ngb-datepicker-navigation', () => {
 		expect(links[1].getAttribute('title')).toBe('Next month');
 	});
 
-	it('should have a live-attribute announcing month selection updates', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [months]="months" />`);
+	it('should have a live-attribute announcing month selection updates', async () => {
+		const fixture = await createTestComponent(`<ngb-datepicker-navigation [months]="months()" />`);
 
 		const monthsAnnouncer = fixture.nativeElement.querySelector(
 			'ngb-datepicker-navigation .visually-hidden[aria-live="polite"]',
 		);
 		expect(monthsAnnouncer).toBeTruthy();
 		expect(monthsAnnouncer.textContent).toBe('August 2016');
-		fixture.componentInstance.months = [{ firstDate: new NgbDate(2016, 9, 1) }];
-		fixture.detectChanges();
+		fixture.componentInstance.months.set([{ firstDate: new NgbDate(2016, 9, 1) }]);
+		await fixture.whenStable();
 		expect(monthsAnnouncer.textContent).toBe('September 2016');
 	});
 });
@@ -160,12 +159,15 @@ describe('ngb-datepicker-navigation', () => {
 	template: '',
 })
 class TestComponent {
-	date = new NgbDate(2016, 8, 1);
-	prevDisabled = false;
-	nextDisabled = false;
-	showSelect = true;
-	selectBoxes = { months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], years: [2015, 2016, 2017, 2018, 2019, 2020] };
-	months = [{ firstDate: new NgbDate(2016, 8, 1) }];
+	readonly date = signal(new NgbDate(2016, 8, 1));
+	readonly prevDisabled = signal(false);
+	readonly nextDisabled = signal(false);
+	readonly showSelect = signal(true);
+	readonly selectBoxes = signal({
+		months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		years: [2015, 2016, 2017, 2018, 2019, 2020],
+	});
+	readonly months = signal([{ firstDate: new NgbDate(2016, 8, 1) }]);
 
 	onNavigate = (event) => {};
 	onSelect = (date) => {};

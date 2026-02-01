@@ -1,8 +1,8 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { createGenericTestComponent } from '../test/common';
+import { createGenericAsyncTestComponent } from '../test/common';
 
-import { Component, Service, provideZoneChangeDetection } from '@angular/core';
+import { Component, Service, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import {
@@ -18,11 +18,10 @@ import { NgbInputDatepickerConfig } from './datepicker-input-config';
 import { Options } from '@popperjs/core';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const createTestCmpt = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestCmpt = (html: string, waitForStable = true) =>
+	createGenericAsyncTestComponent(html, TestComponent, waitForStable);
 
-const createTestNativeCmpt = (html: string) =>
-	createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
+const createTestNativeCmpt = (html: string) => createGenericAsyncTestComponent(html, TestNativeComponent);
 
 function expectSameValues(inputDatepicker: NgbInputDatepicker, config: NgbInputDatepickerConfig) {
 	['autoClose', 'container', 'positionTarget', 'placement'].forEach((field) =>
@@ -46,11 +45,11 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
 
 describe('NgbInputDatepicker', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 	});
 
-	it('should initialize inputs with provided datepicker config', () => {
-		const fixture = createTestCmpt(`<input ngbDatepicker>`);
+	it('should initialize inputs with provided datepicker config', async () => {
+		const fixture = await createTestCmpt(`<input ngbDatepicker>`);
 		const defaultConfig = TestBed.inject(NgbInputDatepickerConfig);
 
 		const inputDatepicker = fixture.debugElement
@@ -59,14 +58,14 @@ describe('NgbInputDatepicker', () => {
 		expectSameValues(inputDatepicker, defaultConfig);
 	});
 
-	it('should initialize inputs with provided config', () => {
+	it('should initialize inputs with provided config', async () => {
 		// overrideComponent should happen before any injections, so createTestCmpt will fail here
 		TestBed.configureTestingModule({ providers: [NgbInputDatepickerConfig] });
 		TestBed.overrideComponent(TestComponent, { set: { template: '<input ngbDatepicker>' } });
 		const config = TestBed.inject(NgbInputDatepickerConfig);
 		customizeConfig(config);
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const inputDatepicker = fixture.debugElement
 			.query(By.directive(NgbInputDatepicker))
@@ -74,8 +73,8 @@ describe('NgbInputDatepicker', () => {
 		expectSameValues(inputDatepicker, config);
 	});
 
-	it('should work when wrapped in the <label> and toggled with (click)', () => {
-		const fixture = createTestCmpt(`
+	it('should work when wrapped in the <label> and toggled with (click)', async () => {
+		const fixture = await createTestCmpt(`
       <label>
         <input ngbDatepicker #d="ngbDatepicker" [startDate]="{year: 2018, month: 3}" (click)="d.toggle()">
       </label>`);
@@ -84,17 +83,17 @@ describe('NgbInputDatepicker', () => {
 
 		// open
 		dpInput.open();
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		// click on a date
 		fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click(); // 1 MAR 2018
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		expect(dpInput.isOpen()).toBe(false);
 	});
 
 	describe('Custom config as provider', () => {
-		it('should initialize inputs with provided config as provider', () => {
+		it('should initialize inputs with provided config as provider', async () => {
 			TestBed.configureTestingModule({
 				providers: [NgbInputDatepickerConfig],
 			});
@@ -103,7 +102,7 @@ describe('NgbInputDatepicker', () => {
 			customizeConfig(config);
 
 			const fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const inputDatepicker = fixture.debugElement
 				.query(By.directive(NgbInputDatepicker))
@@ -111,7 +110,7 @@ describe('NgbInputDatepicker', () => {
 			expectSameValues(inputDatepicker, config);
 		});
 
-		it('should provide config to child datepicker', () => {
+		it('should provide config to child datepicker', async () => {
 			TestBed.configureTestingModule({
 				providers: [NgbInputDatepickerConfig],
 			});
@@ -124,7 +123,7 @@ describe('NgbInputDatepicker', () => {
 				.query(By.directive(NgbInputDatepicker))
 				.injector.get(NgbInputDatepicker);
 			inputDatepicker.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const datepicker = fixture.nativeElement.querySelector('ngb-datepicker');
 			expect(datepicker).not.toBeNull();
 			expect(getWeekdays(datepicker)).toEqual(['S', 'M', 'T', 'W', 'T', 'F', 'S']);
@@ -132,8 +131,8 @@ describe('NgbInputDatepicker', () => {
 	});
 
 	describe('open, close and toggle', () => {
-		it('should allow controlling datepicker popup from outside', () => {
-			const fixture = createTestCmpt(`
+		it('should allow controlling datepicker popup from outside', async () => {
+			const fixture = await createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker">
           <button (click)="open(d)">Open</button>
           <button (click)="close(d)">Close</button>
@@ -142,19 +141,19 @@ describe('NgbInputDatepicker', () => {
 			const buttons = fixture.nativeElement.querySelectorAll('button');
 
 			buttons[0].click(); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
 
 			buttons[1].click(); // close
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 
 			buttons[2].click(); // toggle
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
 
 			buttons[2].click(); // toggle
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 		});
 
@@ -162,21 +161,21 @@ describe('NgbInputDatepicker', () => {
 			createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [placement]="'bottom-right'">`);
 		});
 
-		it('should cleanup datepicker when parent container is destroyed', () => {
-			const fixture = createTestCmpt(`@if (show) {
+		it('should cleanup datepicker when parent container is destroyed', async () => {
+			const fixture = await createTestCmpt(`@if (show()) {
            <input ngbDatepicker #d="ngbDatepicker" />
 				 }`);
 			const datepicker = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			datepicker.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
 
 			const closedSpy = vi.fn();
 			datepicker.closed.subscribe(closedSpy);
 
-			fixture.componentInstance.show = false;
-			fixture.detectChanges();
+			fixture.componentInstance.show.set(false);
+			await fixture.whenStable();
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 			expect(closedSpy).toHaveBeenCalledTimes(1);
 		});
@@ -184,64 +183,60 @@ describe('NgbInputDatepicker', () => {
 
 	describe('ngModel interactions', () => {
 		it('should not change again the value in the model on a change coming from the model (popup closed)', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
-			fixture.detectChanges();
+			const fixture = await createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+			await fixture.whenStable();
 
 			const input = fixture.nativeElement.querySelector('input');
 
 			const value = new NgbDate(2018, 8, 29);
-			fixture.componentInstance.date = value;
+			fixture.componentInstance.date.set(value);
 
-			fixture.detectChanges();
-			await Promise.resolve();
-			expect(fixture.componentInstance.date).toBe(value);
+			await fixture.whenStable();
+			expect(fixture.componentInstance.date()).toBe(value);
 			expect(input.value).toBe('2018-08-29');
 		});
 
 		it('should not change again the value in the model on a change coming from the model (popup opened)', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker">
+			const fixture = await createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker">
       <button (click)="open(d)">Open</button>`);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const button = fixture.nativeElement.querySelector('button');
 			const input = fixture.nativeElement.querySelector('input');
 
 			button.click(); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const value = new NgbDate(2018, 8, 29);
-			fixture.componentInstance.date = value;
-			fixture.detectChanges();
-			await Promise.resolve();
-			expect(fixture.componentInstance.date).toBe(value);
+			fixture.componentInstance.date.set(value);
+			await fixture.whenStable();
+			expect(fixture.componentInstance.date()).toBe(value);
 			expect(input.value).toBe('2018-08-29');
 		});
 
 		it('should format bound date as ISO (by default) in the input field', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker [ngModel]="date()">`);
 			const input = fixture.nativeElement.querySelector('input');
 
-			fixture.componentInstance.date = { year: 2016, month: 10, day: 10 };
-			fixture.detectChanges();
-			await Promise.resolve();
+			fixture.componentInstance.date.set({ year: 2016, month: 10, day: 10 });
+			await fixture.whenStable();
 			expect(input.value).toBe('2016-10-10');
 
-			fixture.componentInstance.date = { year: 2016, month: 10, day: 15 };
-			fixture.detectChanges();
-			await Promise.resolve();
+			fixture.componentInstance.date.set({ year: 2016, month: 10, day: 15 });
+			await fixture.whenStable();
 			expect(input.value).toBe('2016-10-15');
 		});
 
-		it('should parse user-entered date as ISO (by default)', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+		it('should parse user-entered date as ISO (by default)', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
 			inputDebugEl.triggerEventHandler('input', { target: { value: '2016-09-10' } });
-			expect(fixture.componentInstance.date).toEqual({ year: 2016, month: 9, day: 10 });
+			expect(fixture.componentInstance.date()).toEqual({ year: 2016, month: 9, day: 10 });
 		});
 
 		it('should not update the model twice with the same value on input and on change', async () => {
-			const fixture = createTestCmpt(
+			const fixture = await createTestCmpt(
 				`<input ngbDatepicker [(ngModel)]="date" (ngModelChange)="onModelChange($event)">`,
 			);
 			const componentInstance = fixture.componentInstance;
@@ -249,13 +244,11 @@ describe('NgbInputDatepicker', () => {
 			vi.spyOn(componentInstance, 'onModelChange');
 
 			await fixture.whenStable();
-			fixture.detectChanges();
 
 			inputDebugEl.triggerEventHandler('input', { target: { value: '2018-08-29' } });
 			await fixture.whenStable();
-			fixture.detectChanges();
 
-			const value = componentInstance.date;
+			const value = componentInstance.date();
 			expect(value).toEqual({ year: 2018, month: 8, day: 29 });
 			expect(componentInstance.onModelChange).toHaveBeenCalledTimes(1);
 			expect(componentInstance.onModelChange).toHaveBeenCalledWith(value);
@@ -263,77 +256,66 @@ describe('NgbInputDatepicker', () => {
 			inputDebugEl.triggerEventHandler('change', { target: { value: '2018-08-29' } });
 
 			await fixture.whenStable();
-			fixture.detectChanges();
 
-			expect(fixture.componentInstance.date).toBe(value);
+			expect(fixture.componentInstance.date()).toBe(value);
 
 			// the value is still the same, there should not be new calls of onModelChange:
 			expect(componentInstance.onModelChange).toHaveBeenCalledTimes(1);
 		});
 
 		it('should set only valid dates', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker [ngModel]="date()">`);
 			const input = fixture.nativeElement.querySelector('input');
 
-			fixture.componentInstance.date = <any>{};
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(<any>{});
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = <any>null;
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(<any>null);
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = <any>new Date();
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(<any>new Date());
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = <any>undefined;
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(<any>undefined);
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = new NgbDate(300000, 1, 1);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new NgbDate(300000, 1, 1));
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = new NgbDate(2017, 2, <any>null);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new NgbDate(2017, 2, <any>null));
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = new NgbDate(2017, <any>null, 5);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new NgbDate(2017, <any>null, 5));
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = new NgbDate(<any>null, 2, 5);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new NgbDate(<any>null, 2, 5));
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 
-			fixture.componentInstance.date = new NgbDate(<any>'2017', <any>'03', <any>'10');
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new NgbDate(<any>'2017', <any>'03', <any>'10'));
 			await fixture.whenStable();
 			expect(input.value).toBe('');
 		});
 
 		it('should propagate disabled state', async () => {
-			const fixture = createTestCmpt(`
-        <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker" [disabled]="isDisabled">
+			const fixture = await createTestCmpt(`
+        <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker" [disabled]="isDisabled()">
         <button (click)="open(d)">Open</button>`);
-			fixture.componentInstance.isDisabled = true;
-			fixture.detectChanges();
+			fixture.componentInstance.isDisabled.set(true);
+			await fixture.whenStable();
 
 			const button = fixture.nativeElement.querySelector('button');
 			const input = fixture.nativeElement.querySelector('input');
 
 			button.click(); // open
 			await fixture.whenStable();
-			fixture.detectChanges();
 			const buttonInDatePicker = fixture.nativeElement.querySelector('ngb-datepicker button');
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
@@ -345,10 +327,9 @@ describe('NgbInputDatepicker', () => {
 			expect(dayElements[11]).toHaveCssClass('disabled');
 			expect(dayElements[21]).toHaveCssClass('disabled');
 
-			fixture.componentInstance.isDisabled = false;
-			fixture.detectChanges();
+			fixture.componentInstance.isDisabled.set(false);
 			await fixture.whenStable();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
 			expect(input.disabled).toBeFalsy();
@@ -360,12 +341,12 @@ describe('NgbInputDatepicker', () => {
 			expect(dayElements2[21]).not.toHaveCssClass('disabled');
 		});
 
-		it('should propagate disabled state without form control', () => {
-			const fixture = createTestCmpt(`
-        <input ngbDatepicker #d="ngbDatepicker" [disabled]="isDisabled">
+		it('should propagate disabled state without form control', async () => {
+			const fixture = await createTestCmpt(`
+        <input ngbDatepicker #d="ngbDatepicker" [disabled]="isDisabled()">
         <button (click)="open(d)">Open</button>`);
-			fixture.componentInstance.isDisabled = true;
-			fixture.detectChanges();
+			fixture.componentInstance.isDisabled.set(true);
+			await fixture.whenStable();
 
 			const button = fixture.nativeElement.querySelector('button');
 			const input = fixture.nativeElement.querySelector('input');
@@ -373,7 +354,7 @@ describe('NgbInputDatepicker', () => {
 			expect(input.disabled).toBeTruthy();
 
 			button.click(); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const buttonInDatePicker = fixture.nativeElement.querySelector('ngb-datepicker button');
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
@@ -385,8 +366,8 @@ describe('NgbInputDatepicker', () => {
 			expect(dayElements[11]).toHaveCssClass('disabled');
 			expect(dayElements[21]).toHaveCssClass('disabled');
 
-			fixture.componentInstance.isDisabled = false;
-			fixture.detectChanges();
+			fixture.componentInstance.isDisabled.set(false);
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
 			expect(input.disabled).toBeFalsy();
@@ -399,20 +380,19 @@ describe('NgbInputDatepicker', () => {
 		});
 
 		it('should propagate touched state on (blur)', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
 			expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
 
 			inputDebugEl.triggerEventHandler('blur', {});
 			await fixture.whenStable();
-			fixture.detectChanges();
 
 			expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
 		});
 
 		it('should propagate touched state when setting a date', async () => {
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
       <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker">
       <button (click)="open(d)">Open</button>`);
 
@@ -424,31 +404,29 @@ describe('NgbInputDatepicker', () => {
 			buttonDebugEl.triggerEventHandler('click', {}); // open
 			inputDebugEl.triggerEventHandler('change', { target: { value: '2016-09-10' } });
 			await fixture.whenStable();
-			fixture.detectChanges();
 
 			expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
 		});
 
 		it('should update model with updateOnBlur when selecting a date', async () => {
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
       <input ngbDatepicker [startDate]="{year: 2018, month: 3}" [(ngModel)]="date" #d="ngbDatepicker"
              [ngModelOptions]="{updateOn: 'blur'}">`);
 
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			// open
 			dpInput.open();
-			fixture.detectChanges();
 			await fixture.whenStable();
 			expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
-			expect(fixture.componentInstance.date).toBeUndefined();
+			expect(fixture.componentInstance.date()).toBeUndefined();
 
 			// select date
 			fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click(); // 1 MAR 2018
-			fixture.detectChanges();
-			expect(fixture.componentInstance.date).toEqual({ year: 2018, month: 3, day: 1 });
+			await fixture.whenStable();
+			expect(fixture.componentInstance.date()).toEqual({ year: 2018, month: 3, day: 1 });
 			expect(inputDebugEl.nativeElement.value).toBe('2018-03-01');
 			expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
 		});
@@ -456,24 +434,22 @@ describe('NgbInputDatepicker', () => {
 
 	describe('manual data entry', () => {
 		it('should reformat value entered by a user when it is valid', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
 			inputDebugEl.triggerEventHandler('change', { target: { value: '2016-9-1' } });
 			await fixture.whenStable();
-			fixture.detectChanges();
 
 			expect(inputDebugEl.nativeElement.value).toBe('2016-09-01');
 		});
 
 		it('should retain value entered by a user if it is not valid', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
 			inputDebugEl.nativeElement.value = '2016-09-aa';
 			inputDebugEl.triggerEventHandler('change', { target: { value: inputDebugEl.nativeElement.value } });
 			await fixture.whenStable();
-			fixture.detectChanges();
 
 			expect(inputDebugEl.nativeElement.value).toBe('2016-09-aa');
 		});
@@ -482,43 +458,39 @@ describe('NgbInputDatepicker', () => {
 	describe('validation', () => {
 		describe('values set from model', () => {
 			it('should not return errors for valid model', async () => {
-				const fixture = createTestCmpt(
+				const fixture = await createTestCmpt(
 					`<form><input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" name="dp"></form>`,
 				);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 				expect(form.control.hasError('ngbDate', ['dp'])).toBeFalsy();
 			});
 
 			it('should not return errors for empty model', async () => {
-				const fixture = createTestCmpt(`<form><input ngbDatepicker [ngModel]="date" name="dp"></form>`);
+				const fixture = await createTestCmpt(`<form><input ngbDatepicker [ngModel]="date()" name="dp"></form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 			});
 
 			it('should return "invalid" errors for invalid model', async () => {
-				const fixture = createTestCmpt(`<form><input ngbDatepicker [ngModel]="5" name="dp"></form>`);
+				const fixture = await createTestCmpt(`<form><input ngbDatepicker [ngModel]="5" name="dp"></form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 				expect(form.control.getError('ngbDate', ['dp']).invalid).toBe(5);
 			});
 
 			it('should return "minDate" errors for dates before minimal date', async () => {
-				const fixture = createTestCmpt(`<form>
+				const fixture = await createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [minDate]="{year: 2017, month: 6, day: 4}" name="dp">
         </form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 				expect(form.control.getError('ngbDate', ['dp']).minDate).toEqual({
@@ -528,12 +500,11 @@ describe('NgbInputDatepicker', () => {
 			});
 
 			it('should return "maxDate" errors for dates after maximal date', async () => {
-				const fixture = createTestCmpt(`<form>
+				const fixture = await createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [maxDate]="{year: 2017, month: 2, day: 4}" name="dp">
         </form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 				expect(form.control.getError('ngbDate', ['dp']).maxDate).toEqual({
@@ -543,80 +514,70 @@ describe('NgbInputDatepicker', () => {
 			});
 
 			it('should update validity status when model changes', async () => {
-				const fixture = createTestCmpt(`<form><input ngbDatepicker [ngModel]="date" name="dp"></form>`);
+				const fixture = await createTestCmpt(`<form><input ngbDatepicker [ngModel]="date()" name="dp"></form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.componentRef.instance.date = <any>'invalid';
-				fixture.detectChanges();
+				fixture.componentRef.instance.date.set(<any>'invalid');
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 
-				fixture.componentRef.instance.date = { year: 2015, month: 7, day: 3 };
-				fixture.detectChanges();
+				fixture.componentRef.instance.date.set({ year: 2015, month: 7, day: 3 });
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 			});
 
 			it('should update validity status when minDate changes', async () => {
-				const fixture = createTestCmpt(`<form>
-          <input ngbDatepicker [ngModel]="{year: 2017, month: 2, day: 4}" [minDate]="date" name="dp">
+				const fixture = await createTestCmpt(`<form>
+          <input ngbDatepicker [ngModel]="{year: 2017, month: 2, day: 4}" [minDate]="date()" name="dp">
         </form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 
-				fixture.componentRef.instance.date = { year: 2018, month: 7, day: 3 };
-				fixture.detectChanges();
+				fixture.componentRef.instance.date.set({ year: 2018, month: 7, day: 3 });
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 			});
 
 			it('should update validity status when maxDate changes', async () => {
-				const fixture = createTestCmpt(`<form>
-          <input ngbDatepicker [ngModel]="{year: 2017, month: 2, day: 4}" [maxDate]="date" name="dp">
+				const fixture = await createTestCmpt(`<form>
+          <input ngbDatepicker [ngModel]="{year: 2017, month: 2, day: 4}" [maxDate]="date()" name="dp">
         </form>`);
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 
-				fixture.componentRef.instance.date = { year: 2015, month: 7, day: 3 };
-				fixture.detectChanges();
+				fixture.componentRef.instance.date.set({ year: 2015, month: 7, day: 3 });
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 			});
 
 			it('should update validity for manually entered dates', async () => {
-				const fixture = createTestCmpt(`<form><input ngbDatepicker [(ngModel)]="date" name="dp"></form>`);
+				const fixture = await createTestCmpt(`<form><input ngbDatepicker [(ngModel)]="date" name="dp"></form>`);
 				const inputDebugEl = fixture.debugElement.query(By.css('input'));
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
 				inputDebugEl.triggerEventHandler('input', { target: { value: '2016-09-10' } });
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 
 				inputDebugEl.triggerEventHandler('input', { target: { value: 'invalid' } });
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.invalid).toBeTruthy();
 			});
 
 			it('should consider empty strings as valid', async () => {
-				const fixture = createTestCmpt(`<form><input ngbDatepicker [(ngModel)]="date" name="dp"></form>`);
+				const fixture = await createTestCmpt(`<form><input ngbDatepicker [(ngModel)]="date" name="dp"></form>`);
 				const inputDebugEl = fixture.debugElement.query(By.css('input'));
 				const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
 				inputDebugEl.triggerEventHandler('change', { target: { value: '2016-09-10' } });
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 
 				inputDebugEl.triggerEventHandler('change', { target: { value: '' } });
-				fixture.detectChanges();
 				await fixture.whenStable();
 				expect(form.control.valid).toBeTruthy();
 			});
@@ -624,230 +585,228 @@ describe('NgbInputDatepicker', () => {
 	});
 
 	describe('options', () => {
-		it('should propagate the "dayTemplate" option', () => {
-			const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [dayTemplate]="t">`);
+		it('should propagate the "dayTemplate" option', async () => {
+			const fixture = await createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [dayTemplate]="t">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.dayTemplate).toBeDefined();
 		});
 
-		it('should propagate the "contentTemplate" option', () => {
-			const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [contentTemplate]="t">`);
+		it('should propagate the "contentTemplate" option', async () => {
+			const fixture = await createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [contentTemplate]="t">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.contentTemplate).toBeDefined();
 		});
 
-		it('should propagate the "dayTemplateData" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [dayTemplateData]="noop">`);
+		it('should propagate the "dayTemplateData" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [dayTemplateData]="noop">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.dayTemplateData).toBeDefined();
 		});
 
-		it('should propagate the "displayMonths" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [displayMonths]="3">`);
+		it('should propagate the "displayMonths" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [displayMonths]="3">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.displayMonths).toBe(3);
 		});
 
-		it('should propagate the "firstDayOfWeek" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [firstDayOfWeek]="5">`);
+		it('should propagate the "firstDayOfWeek" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [firstDayOfWeek]="5">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.firstDayOfWeek).toBe(5);
 		});
 
-		it('should propagate the "footerTemplate" option', () => {
-			const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [footerTemplate]="t">`);
+		it('should propagate the "footerTemplate" option', async () => {
+			const fixture = await createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [footerTemplate]="t">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.footerTemplate).toBeDefined();
 		});
 
-		it('should propagate the "markDisabled" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [markDisabled]="noop">`);
+		it('should propagate the "markDisabled" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [markDisabled]="noop">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.markDisabled).toBeDefined();
 		});
 
-		it('should propagate the "minDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="{year: 2016, month: 9, day: 13}">`);
+		it('should propagate the "minDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [minDate]="{year: 2016, month: 9, day: 13}">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.minDate).toEqual({ year: 2016, month: 9, day: 13 });
 		});
 
-		it('should propagate the "maxDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [maxDate]="{year: 2016, month: 9, day: 13}">`);
+		it('should propagate the "maxDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [maxDate]="{year: 2016, month: 9, day: 13}">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.maxDate).toEqual({ year: 2016, month: 9, day: 13 });
 		});
 
-		it('should dynamically propagate the "minDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate">`);
+		it('should dynamically propagate the "minDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [minDate]="minDate()">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-			fixture.componentRef.instance.minDate = { year: 2018, month: 12, day: 31 };
+			fixture.componentRef.instance.minDate.set({ year: 2018, month: 12, day: 31 });
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.minDate).toEqual({ year: 2018, month: 12, day: 31 });
 
-			fixture.componentRef.instance.minDate = { year: 2019, month: 11, day: 14 };
-			fixture.detectChanges();
+			fixture.componentRef.instance.minDate.set({ year: 2019, month: 11, day: 14 });
+			await fixture.whenStable();
 			expect(dp.minDate).toEqual({ year: 2019, month: 11, day: 14 });
 		});
 
-		it('should dynamically propagate the "maxDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [maxDate]="maxDate">`);
+		it('should dynamically propagate the "maxDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [maxDate]="maxDate()">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 31 };
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 31 });
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 31 });
 
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 14 };
-			fixture.detectChanges();
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 14 });
+			await fixture.whenStable();
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 14 });
 		});
 
-		it('should dynamically propagate the "maxDate" and "minDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate" [maxDate]="maxDate">`);
+		it('should dynamically propagate the "maxDate" and "minDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [minDate]="minDate()" [maxDate]="maxDate()">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-			fixture.componentRef.instance.minDate = { year: 2019, month: 11, day: 14 };
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 31 };
+			fixture.componentRef.instance.minDate.set({ year: 2019, month: 11, day: 14 });
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 31 });
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.minDate).toEqual({ year: 2019, month: 11, day: 14 });
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 31 });
 
-			fixture.componentRef.instance.minDate = { year: 2019, month: 10, day: 14 };
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 14 };
-			fixture.detectChanges();
+			fixture.componentRef.instance.minDate.set({ year: 2019, month: 10, day: 14 });
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 14 });
+			await fixture.whenStable();
 
 			expect(dp.minDate).toEqual({ year: 2019, month: 10, day: 14 });
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 14 });
 		});
 
-		it('should propagate the "outsideDays" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker outsideDays="collapsed">`);
+		it('should propagate the "outsideDays" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker outsideDays="collapsed">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.outsideDays).toEqual('collapsed');
 		});
 
-		it('should propagate the "navigation" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker navigation="none">`);
+		it('should propagate the "navigation" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker navigation="none">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.navigation).toBe('none');
 		});
 
-		it('should propagate the "weekdays" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [weekdays]="false">`);
+		it('should propagate the "weekdays" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [weekdays]="false">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.weekdays).toBe(false);
 		});
 
-		it('should propagate the "showWeekNumbers" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [showWeekNumbers]="true">`);
+		it('should propagate the "showWeekNumbers" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [showWeekNumbers]="true">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.showWeekNumbers).toBeTruthy();
 		});
 
-		it('should propagate the "startDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [startDate]="{year: 2016, month: 9}">`);
+		it('should propagate the "startDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [startDate]="{year: 2016, month: 9}">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.startDate).toEqual({ year: 2016, month: 9 });
 		});
 
 		it('should propagate model as "startDate" option when "startDate" not provided', async () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="{year: 2016, month: 9, day: 13}">`);
+			const fixture = await createTestCmpt(`<input ngbDatepicker [ngModel]="{year: 2016, month: 9, day: 13}">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			await fixture.whenStable();
-			fixture.detectChanges();
 			dpInput.open();
 
-			fixture.detectChanges();
 			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.startDate).toEqual(new NgbDate(2016, 9, 13));
 		});
 
-		it('should relay the "navigate" event', () => {
-			const fixture = createTestCmpt(
+		it('should relay the "navigate" event', async () => {
+			const fixture = await createTestCmpt(
 				`<input ngbDatepicker [startDate]="{year: 2016, month: 9}" (navigate)="onNavigate($event)">`,
 			);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
@@ -855,7 +814,7 @@ describe('NgbInputDatepicker', () => {
 			vi.spyOn(fixture.componentInstance, 'onNavigate');
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
 				current: null,
 				next: { year: 2016, month: 9 },
@@ -871,15 +830,15 @@ describe('NgbInputDatepicker', () => {
 			});
 		});
 
-		it('should relay the "closed" event', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker (closed)="onClose()">`);
+		it('should relay the "closed" event', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker (closed)="onClose()">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			vi.spyOn(fixture.componentInstance, 'onClose');
 
 			// open
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			// close
 			dpInput.close();
@@ -888,7 +847,7 @@ describe('NgbInputDatepicker', () => {
 
 		it('should emit both "dateSelect" and "onModelChange" events', async () => {
 			vi.useRealTimers();
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
           <input ngbDatepicker ngModel [startDate]="{year: 2018, month: 3}"
           (ngModelChange)="onModelChange($event)" (dateSelect)="onDateSelect($event)">`);
 
@@ -898,24 +857,20 @@ describe('NgbInputDatepicker', () => {
 
 			// open
 			dpInput.open();
-			fixture.detectChanges();
 			await fixture.whenStable();
 
 			// click on a date
 			fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click(); // 1 MAR 2018
-			fixture.detectChanges();
 			await fixture.whenStable();
 			expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(1);
 			expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
 
 			// open again
 			dpInput.open();
-			fixture.detectChanges();
 			await fixture.whenStable();
 
 			// click the same date
 			fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click(); // 1 MAR 2018
-			fixture.detectChanges();
 			await fixture.whenStable();
 			expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
 			expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
@@ -924,9 +879,9 @@ describe('NgbInputDatepicker', () => {
 			expect(fixture.componentInstance.onModelChange).toHaveBeenCalledWith({ year: 2018, month: 3, day: 1 });
 		});
 
-		it('should add custom popup class via "popupClass" input', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [datepickerClass]="popupClass">`);
-			fixture.detectChanges();
+		it('should add custom popup class via "popupClass" input', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [datepickerClass]="popupClass()">`);
+			await fixture.whenStable();
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 			dpInput.open();
 
@@ -937,23 +892,23 @@ describe('NgbInputDatepicker', () => {
 			expect(element).not.toHaveCssClass('my-another-datepicker-popup');
 
 			// empty value
-			fixture.componentInstance.popupClass = '';
-			fixture.detectChanges();
+			fixture.componentInstance.popupClass.set('');
+			await fixture.whenStable();
 			expect(element).not.toHaveCssClass('my-datepicker-popup');
 			expect(element).not.toHaveCssClass('my-another-datepicker-popup');
 
 			// another value
-			fixture.componentInstance.popupClass = 'my-another-datepicker-popup';
-			fixture.detectChanges();
+			fixture.componentInstance.popupClass.set('my-another-datepicker-popup');
+			await fixture.whenStable();
 			expect(element).not.toHaveCssClass('my-datepicker-popup');
 			expect(element).toHaveCssClass('my-another-datepicker-popup');
 		});
 	});
 
 	describe('container', () => {
-		it('should be appended to the element matching the selector passed to "container"', () => {
+		it('should be appended to the element matching the selector passed to "container"', async () => {
 			const selector = 'body';
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
           <button (click)="open(d)">Open</button>
       `);
@@ -961,15 +916,15 @@ describe('NgbInputDatepicker', () => {
 			// open date-picker
 			const button = fixture.nativeElement.querySelector('button');
 			button.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 			expect(document.querySelector(selector)!.querySelector('ngb-datepicker')).not.toBeNull();
 		});
 
-		it('should properly destroy datepicker window when the "container" option is used', () => {
+		it('should properly destroy datepicker window when the "container" option is used', async () => {
 			const selector = 'body';
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
           <button (click)="open(d)">Open</button>
           <button (click)="close(d)">Close</button>
@@ -978,22 +933,22 @@ describe('NgbInputDatepicker', () => {
 			// open date-picker
 			const buttons = fixture.nativeElement.querySelectorAll('button');
 			buttons[0].click(); // open button
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 			expect(document.querySelector(selector)!.querySelector('ngb-datepicker')).not.toBeNull();
 
 			// close date-picker
 			buttons[1].click(); // close button
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
 			expect(document.querySelector(selector)!.querySelector('ngb-datepicker')).toBeNull();
 		});
 
-		it('should add .ngb-dp-body class when attached to body', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [container]="container">`);
-			fixture.detectChanges();
+		it('should add .ngb-dp-body class when attached to body', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [container]="container()">`);
+			await fixture.whenStable();
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			// No container specified
@@ -1005,8 +960,8 @@ describe('NgbInputDatepicker', () => {
 
 			// Body
 			dpInput.close();
-			fixture.componentInstance.container = 'body';
-			fixture.detectChanges();
+			fixture.componentInstance.container.set('body');
+			await fixture.whenStable();
 			dpInput.open();
 
 			element = document.querySelector('ngb-datepicker') as HTMLElement;
@@ -1016,7 +971,7 @@ describe('NgbInputDatepicker', () => {
 
 		it('should not scroll when opening datepicker attached to body', async () => {
 			vi.useRealTimers();
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
 	<input ngbDatepicker container="body"/>
 	<div style="height: 10000px"></div>
 `);
@@ -1026,7 +981,7 @@ describe('NgbInputDatepicker', () => {
 			// open datepicker
 			const dp = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 			dp.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			// browser starts scrolling if focus was set before popper positioning
 			await new Promise<void>((resolve) =>
@@ -1038,7 +993,7 @@ describe('NgbInputDatepicker', () => {
 		});
 
 		it('should modify the popper options', async () => {
-			const fixture = createTestCmpt(`
+			const fixture = await createTestCmpt(`
         <input ngbDatepicker container="body"/>
         <div style="height: 10000px"></div>
       `);
@@ -1064,120 +1019,137 @@ describe('NgbInputDatepicker', () => {
 
 	describe('focus restore', () => {
 		beforeEach(() => {
-			vi.useFakeTimers();
+			vi.useFakeTimers({ shouldAdvanceTime: true });
 		});
 
 		afterEach(() => {
 			vi.useRealTimers();
 		});
 
-		function open(fixture: ComponentFixture<TestComponent>) {
+		async function open(fixture: ComponentFixture<TestComponent>) {
 			const dp = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 			dp.open();
 			vi.runAllTimers();
-			fixture.detectChanges();
+			await fixture.whenStable();
 		}
 
 		function selectDateAndClose(fixture: ComponentFixture<TestComponent>) {
 			fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click(); // 1 MAR 2018
-			fixture.detectChanges();
 		}
 
-		it('should focus previously focused element', () => {
-			const fixture = createTestCmpt(`
+		it('should focus previously focused element', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			// initial focus
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			focusableEl.focus();
 			expect(document.activeElement).toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
 			expect(document.activeElement).toBe(focusableEl);
 		});
 
-		it('should focus using selector provided via [restoreFocus]', () => {
-			const fixture = createTestCmpt(`
+		it('should focus using selector provided via [restoreFocus]', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker restoreFocus="#focusable" [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			expect(document.activeElement).not.toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
 			expect(document.activeElement).toBe(focusableEl);
 		});
 
-		it('should focus using element provided via [restoreFocus]', () => {
-			const fixture = createTestCmpt(`
+		it('should focus using element provided via [restoreFocus]', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div #el tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="el" [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			expect(document.activeElement).not.toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
 			expect(document.activeElement).toBe(focusableEl);
 		});
 
-		it('should fallback to body if [restoreFocus] selector is invalid', () => {
-			const fixture = createTestCmpt(`
+		it('should fallback to body if [restoreFocus] selector is invalid', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker restoreFocus=".invalid-element" [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			focusableEl.focus();
 			expect(document.activeElement).toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
 			expect(document.activeElement).toBe(document.body);
 		});
 
-		it('should fallback to body if [restoreFocus] value is falsy', () => {
-			const fixture = createTestCmpt(`
+		it('should fallback to body if [restoreFocus] value is falsy', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="null" [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			focusableEl.focus();
 			expect(document.activeElement).toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
 			expect(document.activeElement).toBe(document.body);
 		});
 
-		it('should fallback to body if [restoreFocus] value is truthy', () => {
-			const fixture = createTestCmpt(`
+		it('should fallback to body if [restoreFocus] value is truthy', async () => {
+			const fixture = await createTestCmpt(
+				`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="true" [startDate]="{year: 2018, month: 3}"/>
-      `);
+      `,
+				false,
+			);
 
 			const focusableEl = fixture.nativeElement.querySelector('#focusable');
 			focusableEl.focus();
 			expect(document.activeElement).toBe(focusableEl);
 
-			open(fixture);
+			await open(fixture);
 			expect(document.activeElement).not.toBe(focusableEl);
 
 			selectDateAndClose(fixture);
@@ -1193,44 +1165,42 @@ describe('NgbInputDatepicker', () => {
 		});
 
 		it('should format bound date as ISO (by default) in the input field', async () => {
-			const fixture = createTestNativeCmpt(`<input ngbDatepicker [ngModel]="date">`);
+			const fixture = await createTestNativeCmpt(`<input ngbDatepicker [ngModel]="date()">`);
 			const input = fixture.nativeElement.querySelector('input');
 
-			fixture.componentInstance.date = new Date(2018, 0, 3);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new Date(2018, 0, 3));
 			await fixture.whenStable();
 			expect(input.value).toBe('2018-01-03');
 
-			fixture.componentInstance.date = new Date(2018, 10, 13);
-			fixture.detectChanges();
+			fixture.componentInstance.date.set(new Date(2018, 10, 13));
 			await fixture.whenStable();
 			expect(input.value).toBe('2018-11-13');
 		});
 
-		it('should parse user-entered date as ISO (by default)', () => {
-			const fixture = createTestNativeCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+		it('should parse user-entered date as ISO (by default)', async () => {
+			const fixture = await createTestNativeCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
 			const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
 			inputDebugEl.triggerEventHandler('input', { target: { value: '2018-01-03' } });
-			expect(fixture.componentInstance.date).toEqual(new Date(2018, 0, 3));
+			expect(fixture.componentInstance.date()).toEqual(new Date(2018, 0, 3));
 		});
 
-		it('should dynamically propagate the "maxDate" and "minDate" option', () => {
-			const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate" [maxDate]="maxDate">`);
+		it('should dynamically propagate the "maxDate" and "minDate" option', async () => {
+			const fixture = await createTestCmpt(`<input ngbDatepicker [minDate]="minDate()" [maxDate]="maxDate()">`);
 			const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-			fixture.componentRef.instance.minDate = { year: 2019, month: 11, day: 14 };
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 31 };
+			fixture.componentRef.instance.minDate.set({ year: 2019, month: 11, day: 14 });
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 31 });
 
 			dpInput.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
 			expect(dp.minDate).toEqual({ year: 2019, month: 11, day: 14 });
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 31 });
 
-			fixture.componentRef.instance.minDate = { year: 2019, month: 10, day: 14 };
-			fixture.componentRef.instance.maxDate = { year: 2019, month: 12, day: 14 };
-			fixture.detectChanges();
+			fixture.componentRef.instance.minDate.set({ year: 2019, month: 10, day: 14 });
+			fixture.componentRef.instance.maxDate.set({ year: 2019, month: 12, day: 14 });
+			await fixture.whenStable();
 
 			expect(dp.minDate).toEqual({ year: 2019, month: 10, day: 14 });
 			expect(dp.maxDate).toEqual({ year: 2019, month: 12, day: 14 });
@@ -1257,7 +1227,7 @@ class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 	template: '',
 })
 class TestNativeComponent {
-	date: Date;
+	readonly date = signal<Date | undefined>(undefined);
 }
 
 @Component({
@@ -1266,13 +1236,13 @@ class TestNativeComponent {
 	template: '',
 })
 class TestComponent {
-	container;
-	date: NgbDateStruct;
-	minDate: NgbDateStruct;
-	maxDate: NgbDateStruct;
-	isDisabled;
-	popupClass = 'my-datepicker-popup';
-	show = true;
+	readonly container = signal<string | undefined>(undefined);
+	readonly date = signal<NgbDateStruct | undefined>(undefined);
+	readonly minDate = signal<NgbDateStruct | undefined>(undefined);
+	readonly maxDate = signal<NgbDateStruct | undefined>(undefined);
+	readonly isDisabled = signal<boolean | undefined>(undefined);
+	readonly popupClass = signal('my-datepicker-popup');
+	readonly show = signal(true);
 
 	onNavigate(params) {}
 
