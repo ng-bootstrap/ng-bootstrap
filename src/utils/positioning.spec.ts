@@ -1,8 +1,8 @@
 import { getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement } from './positioning';
 import { Placement as PopperPlacement } from '@popperjs/core';
 import { NgbRTL } from './rtl';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { createGenericTestComponent } from '../test/common';
+import { TestBed } from '@angular/core/testing';
+import { createGenericAsyncTestComponent } from '../test/common';
 import { Component } from '@angular/core';
 import { NgbTooltip } from '../tooltip/tooltip';
 import { By } from '@angular/platform-browser';
@@ -163,17 +163,15 @@ describe('positioning', () => {
 			});
 		});
 
-		const createTestComponent = (html: string) =>
-			<ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
-
 		it('should apply correct classes for rtl', async () => {
-			const fixture = createTestComponent(
+			const fixture = await createGenericAsyncTestComponent(
 				`<div ngbTooltip="Great tip!" placement="end" style="margin-top: 100px;"></div>`,
+				TestComponent,
 			);
 			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
 
 			tooltip.open();
-			await Promise.resolve();
+			await fixture.whenStable();
 
 			let windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-end');
@@ -182,7 +180,7 @@ describe('positioning', () => {
 			rtlMock.isRTL = () => true;
 
 			tooltip.open();
-			await Promise.resolve();
+			await fixture.whenStable();
 
 			windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-start');

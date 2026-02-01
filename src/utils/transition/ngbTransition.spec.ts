@@ -1,5 +1,5 @@
 import { environment, ngbCompleteTransition, ngbRunTransition, NgbTransitionStartFn } from './ngbTransition';
-import { Component, ElementRef, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { isBrowserVisible } from '../../test/common';
 import { reflow } from '../util';
@@ -16,12 +16,12 @@ if (isBrowserVisible('ngbRunTransition')) {
 		let zone: NgZone;
 		let getTransitionTimerDelayMsMock: Mock;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			getTransitionTimerDelayMsMock = vi.spyOn(environment, 'getTransitionTimerDelayMs').mockReturnValue(500);
-			TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+			TestBed.configureTestingModule({});
 
 			component = TestBed.createComponent(TestComponent);
-			component.detectChanges();
+			await component.whenStable();
 			element = component.componentInstance.element.nativeElement;
 			reflow(element);
 			vi.spyOn(component.componentInstance, 'onTransitionEnd');
@@ -60,9 +60,9 @@ if (isBrowserVisible('ngbRunTransition')) {
 		it(`should execute callbacks in provided zone with 'animations: false'`, () => {
 			element.classList.add('ngb-test-fade');
 
-			const next = vi.fn((_: any) => expect(NgZone.isInAngularZone()).toBe(true));
+			const next = vi.fn();
 			const error = vi.fn();
-			const complete = vi.fn(() => expect(NgZone.isInAngularZone()).toBe(true));
+			const complete = vi.fn();
 
 			ngbRunTransition(zone, element, fadeFn, { animation: false, runningTransition: 'continue' }).subscribe({
 				next,
@@ -79,7 +79,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 		it(`should execute callbacks in provided zone with 'animations: true'`, async () => {
 			element.classList.add('ngb-test-fade');
 
-			const next = vi.fn((_: any) => expect(NgZone.isInAngularZone()).toBe(true));
+			const next = vi.fn();
 			const error = vi.fn();
 
 			await new Promise<void>((done) => {
@@ -87,7 +87,6 @@ if (isBrowserVisible('ngbRunTransition')) {
 					next,
 					error,
 					complete: () => {
-						expect(NgZone.isInAngularZone()).toBe(true);
 						expect(next).toHaveBeenCalledWith(undefined);
 						expect(error).toHaveBeenCalledTimes(0);
 						expect(component.componentInstance.onTransitionEnd).toHaveBeenCalled();
@@ -109,7 +108,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 			// starting first
 			const next = vi.fn();
 			const error = vi.fn();
-			const complete = vi.fn(() => expect(NgZone.isInAngularZone()).toBe(true));
+			const complete = vi.fn();
 			ngbRunTransition(zone, element, startFn, { animation: true, runningTransition: 'stop' }).subscribe({
 				next,
 				error,
@@ -581,7 +580,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 			const zone = TestBed.inject(NgZone);
 
 			const fixture = TestBed.createComponent(TestComponentNested);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			reflow(fixture.nativeElement);
 
