@@ -78,7 +78,8 @@ export function generateSelectBoxYears(date: NgbDate, minDate: NgbDate | null, m
 		return [];
 	}
 
-	const start = minDate ? Math.max(minDate.year, date.year - 500) : date.year - 10;
+	// Note: Native HTML input type="date" has year range starting from 1
+	const start = Math.max(1, minDate ? Math.max(minDate.year, date.year - 500) : date.year - 10);
 	const end = maxDate ? Math.min(maxDate.year, date.year + 500) : date.year + 10;
 
 	const length = end - start + 1;
