@@ -296,6 +296,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				this._afterRenderRef = afterEveryRender(
 					{
 						mixedReadWrite: () => {
+							const hostEl = this._getPositionTargetElement();
+							if (!hostEl.isConnected || (hostEl.offsetParent === null && hostEl.offsetWidth === 0)) {
+								this._ngZone.run(() => this.close());
+								return;
+							}
 							this._positioning.update();
 						},
 					},
