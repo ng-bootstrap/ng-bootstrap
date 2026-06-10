@@ -7,7 +7,7 @@
     "node": ">=24.11.1",
     "npm": "Please use Yarn to install dependencies"
   },
-  "packageManager": "yarn@4.12.0",
+  "packageManager": "yarn@4.16.0",
   "scripts": {
     "prepare": "is-ci || husky install .husky",
     "build": "yarn ngb:build && yarn demo:build",
