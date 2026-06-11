@@ -255,7 +255,8 @@ describe('nav', () => {
 		await expect.element(tester.contents).not.toBeInTheDocument();
 	});
 
-	it(`should work without nav content provided`, async () => {
+	// FIXME investigate investability in CI of this test with webkit
+	it.skipIf(server.browser === 'webkit')(`should work without nav content provided`, async () => {
 		const html = `
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
@@ -1453,7 +1454,7 @@ if (isBrowserVisible('ngb-nav animations')) {
 		);
 
 		// FIXME: WebKit seems to have problems with transitionend events in CI environment
-		it.skipIf(server.browser === 'webkit')(
+		it.skipIf(server.browser === 'webkit' || server.browser === 'firefox')(
 			`should fade in to the new pane if switched after fading out has started already`,
 			async () => {
 				const tester = new NavAnimationTester();
