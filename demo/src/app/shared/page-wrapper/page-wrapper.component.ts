@@ -44,7 +44,7 @@ export class NgbdPageWrapper {
 	constructor() {
 		const largeScreenQL = matchMedia('(max-width: 1199.98px)');
 		this.isLargeScreenOrLess.set(largeScreenQL.matches);
-		// eslint-disable-next-line deprecation/deprecation
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		largeScreenQL.addListener(({ matches }) => this.isLargeScreenOrLess.set(matches));
 
 		afterNextRender(() => {

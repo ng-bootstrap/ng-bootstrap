@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 // extracts only the minor version from package.json
 // ex. ngBootstrap: "9.0.0" -> "9.0.0"
 // ex. bootstrap: "4.0.1" -> "4.0"
