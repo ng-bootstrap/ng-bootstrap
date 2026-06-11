@@ -60,13 +60,13 @@ export class ComponentWrapper {
 		// information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
 		// TODO: we should implements our own mediamatcher, according to bootstrap layout.
 		const smallScreenQL = matchMedia('(max-width: 767.98px)');
-		// eslint-disable-next-line deprecation/deprecation
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		smallScreenQL.addListener(({ matches }) => this.isSmallScreenOrLess.set(matches));
 		this.isSmallScreenOrLess.set(smallScreenQL.matches);
 
 		const largeScreenQL = matchMedia('(max-width: 1199.98px)');
 		this.isLargeScreenOrLess.set(largeScreenQL.matches);
-		// eslint-disable-next-line deprecation/deprecation
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		largeScreenQL.addListener(({ matches }) => this.isLargeScreenOrLess.set(matches));
 	}
 

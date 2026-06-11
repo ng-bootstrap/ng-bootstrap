@@ -1338,9 +1338,8 @@ describe('ngb-datepicker', () => {
 		it('should prevent overriding of calendar', () => {
 			try {
 				(<any>dp)['calendar'] = null;
-			} catch (e) {
-				// eslint-disable-next-line no-empty
-			}
+				// eslint-disable-next-line no-empty -- the attempted override is expected to throw in this test
+			} catch (e) {}
 			expect(dp.calendar).toBeTruthy();
 		});
 	});

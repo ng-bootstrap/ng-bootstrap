@@ -49,12 +49,6 @@
 							"include": ["src/!(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
 						}
 					}
-				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": ["src/**/*.{ts,html}", "schematics/**/*.ts"]
-					}
 				}
 			}
 		},
@@ -133,12 +127,6 @@
 					},
 					"defaultConfiguration": "development"
 				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": ["demo/**/*.{ts,html}"]
-					}
-				},
 				"extract-i18n": {
 					"builder": "@angular/build:extract-i18n",
 					"options": {
@@ -194,12 +182,6 @@
 						}
 					},
 					"defaultConfiguration": "development"
-				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": ["e2e-app/**/*.{ts,html}"]
-					}
 				}
 			}
 		},
@@ -256,12 +238,6 @@
 						}
 					},
 					"defaultConfiguration": "development"
-				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": ["ssr-app/**/*.{ts,html}"]
-					}
 				}
 			}
 		},

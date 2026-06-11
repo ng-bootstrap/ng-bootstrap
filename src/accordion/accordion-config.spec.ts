@@ -1,4 +1,3 @@
-/* eslint-disable deprecation/deprecation */
 import { NgbAccordionConfig } from './accordion-config';
 import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
