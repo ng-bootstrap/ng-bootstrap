@@ -83,7 +83,7 @@
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
     "@eslint/js": "^9.39.4",
-    "@playwright/test": "^1.39.0",
+    "@playwright/test": "^1.60.0",
     "@popperjs/core": "2.11.8",
     "@rollup/plugin-replace": "^5.0.4",
     "@rollup/plugin-typescript": "^11.1.5",

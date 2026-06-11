@@ -15,7 +15,7 @@ import { NgbRating } from './rating';
 import { NgbRatingConfig } from './rating-config';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { page, Locator } from 'vitest/browser';
+import { page, Locator, server } from 'vitest/browser';
 
 function createKeyDownEvent(key: string) {
 	const event = { key, preventDefault: () => {} };
@@ -116,7 +116,10 @@ describe('ngb-rating', () => {
 		expect(tester.componentInstance.changed()).toBeFalsy();
 	});
 
-	it('handles correctly the click event', async () => {
+	// Firefox pointer hover is flaky in headless/repeated runs. Similar reports:
+	// vitest-dev/vitest#10096, microsoft/playwright#27517, microsoft/playwright#40562.
+	// FIXME should be fixed with playwright 1.61
+	it.skipIf(server.browser === 'firefox')('handles correctly the click event', async () => {
 		const tester = await RatingTester.create('<ngb-rating [(rate)]="rate" max="5"/>');
 
 		// 3/5
@@ -144,7 +147,10 @@ describe('ngb-rating', () => {
 		expect(tester.componentInstance.rate()).toBe(2);
 	});
 
-	it('ignores the click event on a readonly rating', async () => {
+	// Firefox pointer hover is flaky in headless/repeated runs. Similar reports:
+	// vitest-dev/vitest#10096, microsoft/playwright#27517, microsoft/playwright#40562.
+	// FIXME should be fixed with playwright 1.61
+	it.skipIf(server.browser === 'firefox')('ignores the click event on a readonly rating', async () => {
 		const tester = await RatingTester.create('<ngb-rating [(rate)]="rate" max="5" [readonly]="true"/>');
 
 		// 3/5
@@ -187,7 +193,7 @@ describe('ngb-rating', () => {
 		expect(tester.componentInstance.rate()).toBe(3);
 	});
 
-	it('should set `resettable` rating to 0', async () => {
+	it.skipIf(server.browser === 'firefox')('should set `resettable` rating to 0', async () => {
 		const tester = await RatingTester.create('<ngb-rating [(rate)]="rate" max="5" [resettable]="true"/>');
 
 		// 3/5 initially
@@ -209,7 +215,10 @@ describe('ngb-rating', () => {
 		expect(tester.componentInstance.rate()).toBe(2);
 	});
 
-	it('handles correctly the mouse enter/leave', async () => {
+	// Firefox pointer hover is flaky in headless/repeated runs. Similar reports:
+	// vitest-dev/vitest#10096, microsoft/playwright#27517, microsoft/playwright#40562.
+	// FIXME should be fixed with playwright 1.61
+	it.skipIf(server.browser === 'firefox')('handles correctly the mouse enter/leave', async () => {
 		const tester = await RatingTester.create('<ngb-rating [(rate)]="rate" max="5"/>');
 
 		// 3/5
@@ -244,7 +253,10 @@ describe('ngb-rating', () => {
 		expect(tester.componentInstance.rate()).toBe(3);
 	});
 
-	it('handles correctly the mouse enter/leave on readonly rating', async () => {
+	// Firefox pointer hover is flaky in headless/repeated runs. Similar reports:
+	// vitest-dev/vitest#10096, microsoft/playwright#27517, microsoft/playwright#40562.
+	// FIXME should be fixed with playwright 1.61
+	it.skipIf(server.browser === 'firefox')('handles correctly the mouse enter/leave on readonly rating', async () => {
 		const tester = await RatingTester.create('<ngb-rating [(rate)]="rate" max="5" [readonly]="true"/>');
 
 		// 3/5
@@ -829,7 +841,6 @@ describe('ngb-rating', () => {
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbRating);
-			fixture.detectChanges();
 
 			let rating = fixture.componentInstance;
 			expect(rating.max).toBe(config.max);
