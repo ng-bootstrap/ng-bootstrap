@@ -19,6 +19,7 @@ import { TooltipAutocloseComponent } from './tooltip/autoclose/tooltip-autoclose
 import { TooltipFocusComponent } from './tooltip/focus/tooltip-focus.component';
 import { TooltipPositionComponent } from './tooltip/position/tooltip-position.component';
 import { TypeaheadAutoCloseComponent } from './typeahead/autoclose/typeahead-autoclose.component';
+import { TypeaheadScrollComponent } from './typeahead/scroll/typeahead-scroll.component';
 import { TypeaheadFocusComponent } from './typeahead/focus/typeahead-focus.component';
 import { TimepickerFilterComponent } from './timepicker/filter/timepicker-filter.component';
 import { TimepickerNavigationComponent } from './timepicker/navigation/timepicker-navigation.component';
@@ -90,6 +91,7 @@ export const ROUTES: Routes = [
 		children: [
 			{ path: 'focus', component: TypeaheadFocusComponent },
 			{ path: 'autoclose', component: TypeaheadAutoCloseComponent },
+			{ path: 'scroll', component: TypeaheadScrollComponent },
 			{ path: 'validation', component: TypeaheadValidationComponent },
 		],
 	},
