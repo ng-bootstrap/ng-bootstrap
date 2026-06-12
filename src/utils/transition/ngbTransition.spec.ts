@@ -1,12 +1,5 @@
 import { environment, ngbCompleteTransition, ngbRunTransition, NgbTransitionStartFn } from './ngbTransition';
-import {
-	Component,
-	ElementRef,
-	NgZone,
-	provideZoneChangeDetection,
-	ViewChild,
-	ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, ElementRef, NgZone, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { isBrowserVisible } from '../../test/common';
 import { reflow } from '../util';
@@ -629,7 +622,6 @@ if (isBrowserVisible('ngbRunTransition')) {
 }
 
 @Component({
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: ` <div #element class="ngb-test-transition ngb-test-show" (transitionend)="onTransitionEnd()"></div>`,
 })
 class TestComponent {

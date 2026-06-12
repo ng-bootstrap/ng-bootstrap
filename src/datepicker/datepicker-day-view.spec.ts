@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Component, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
+import { Component, provideZoneChangeDetection, signal } from '@angular/core';
 import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -20,7 +20,7 @@ describe('ngbDatepickerDayView', () => {
 		const el = getElement(fixture.nativeElement);
 		expect(el.innerText).toBe('22');
 
-		fixture.componentInstance.date = new NgbDate(2016, 7, 25);
+		fixture.componentInstance.date.set(new NgbDate(2016, 7, 25));
 		fixture.detectChanges();
 		expect(el.innerText).toBe('25');
 	});
@@ -32,7 +32,7 @@ describe('ngbDatepickerDayView', () => {
 		const el = getElement(fixture.nativeElement);
 		expect(el).not.toHaveCssClass('text-muted');
 
-		fixture.componentInstance.disabled = true;
+		fixture.componentInstance.disabled.set(true);
 		fixture.detectChanges();
 		expect(el).toHaveCssClass('text-muted');
 	});
@@ -45,7 +45,7 @@ describe('ngbDatepickerDayView', () => {
 		expect(el).not.toHaveCssClass('text-muted');
 		expect(el).not.toHaveCssClass('outside');
 
-		fixture.componentInstance.date = new NgbDate(2016, 8, 22);
+		fixture.componentInstance.date.set(new NgbDate(2016, 8, 22));
 		fixture.detectChanges();
 		expect(el).toHaveCssClass('text-muted');
 		expect(el).toHaveCssClass('outside');
@@ -59,7 +59,7 @@ describe('ngbDatepickerDayView', () => {
 		expect(el).not.toHaveCssClass('text-white');
 		expect(el).not.toHaveCssClass('bg-primary');
 
-		fixture.componentInstance.selected = true;
+		fixture.componentInstance.selected.set(true);
 		fixture.detectChanges();
 		expect(el).toHaveCssClass('text-white');
 		expect(el).toHaveCssClass('bg-primary');
@@ -67,8 +67,8 @@ describe('ngbDatepickerDayView', () => {
 
 	it('should not apply muted style if disabled but selected', () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.componentInstance.disabled = true;
-		fixture.componentInstance.selected = true;
+		fixture.componentInstance.disabled.set(true);
+		fixture.componentInstance.selected.set(true);
 		fixture.detectChanges();
 
 		const el = getElement(fixture.nativeElement);
@@ -80,13 +80,12 @@ describe('ngbDatepickerDayView', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepickerDayView],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template:
-		'<div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>',
+		'<div ngbDatepickerDayView [date]="date()" [currentMonth]="currentMonth()" [selected]="selected()" [disabled]="disabled()"></div>',
 })
 class TestComponent {
-	currentMonth = 7;
-	date: NgbDate = new NgbDate(2016, 7, 22);
-	disabled = false;
-	selected = false;
+	readonly currentMonth = signal(7);
+	readonly date = signal(new NgbDate(2016, 7, 22));
+	readonly disabled = signal(false);
+	readonly selected = signal(false);
 }

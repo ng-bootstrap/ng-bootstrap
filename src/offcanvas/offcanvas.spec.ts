@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -880,7 +880,6 @@ describe('ngb-offcanvas', () => {
 
 @Component({
 	selector: 'custom-injector-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: 'Some content',
 })
 export class CustomInjectorCmpt implements OnDestroy {
@@ -891,7 +890,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', changeDetection: ChangeDetectionStrategy.Eager, template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -902,7 +901,6 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'offcanvas-content-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveOffcanvasCmpt {
@@ -915,14 +913,12 @@ export class WithActiveOffcanvasCmpt {
 
 @Component({
 	selector: 'offcanvas-autofocus-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-firstfocusable-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -932,7 +928,6 @@ export class WithFirstFocusableOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-skip-tabindex-firstfocusable-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -943,7 +938,6 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 @Component({
 	selector: 'test-cmpt',
 	imports: [DestroyableCmpt],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
@@ -1026,7 +1020,6 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>

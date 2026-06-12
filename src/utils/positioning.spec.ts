@@ -3,7 +3,7 @@ import { Placement as PopperPlacement } from '@popperjs/core';
 import { NgbRTL } from './rtl';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbTooltip } from '../tooltip/tooltip';
 import { By } from '@angular/platform-browser';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -195,7 +195,6 @@ describe('positioning', () => {
 @Component({
 	selector: 'positioning-test-cmpt',
 	template: ``,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [NgbTooltip],
 })
 export class TestComponent {}

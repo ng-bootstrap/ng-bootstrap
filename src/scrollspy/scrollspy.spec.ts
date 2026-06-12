@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import {
 	NgbScrollSpy,
@@ -515,7 +515,6 @@ if (isBrowserVisible('ScrollSpy directives')) {
 
 @Component({
 	imports: [NgbScrollSpy, NgbScrollSpyItem, NgbScrollSpyFragment, NgbScrollSpyMenu, AsyncPipe],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: ``,
 })
 class TestComponent {

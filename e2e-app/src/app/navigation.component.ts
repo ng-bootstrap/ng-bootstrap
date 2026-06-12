@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { ROUTES } from './app.routes';
@@ -7,7 +7,7 @@ import { ROUTES } from './app.routes';
 	selector: 'app-navigation',
 	template: `
 		<a role="button" class="btn btn-outline-primary ms-3" id="navigate-home" href="#/">Menu</a>
-		<div [hidden]="isHidden">
+		<div [hidden]="isHidden()">
 			@for (route of routes; track route) {
 				<div class="card m-1 d-inline-block" style="width: 290px;">
 					<div class="card-header">{{ route.path }}</div>
@@ -30,14 +30,14 @@ import { ROUTES } from './app.routes';
 })
 export class NavigationComponent {
 	routes;
-	isHidden = false;
+	readonly isHidden = signal(false);
 
 	constructor(public router: Router) {
 		this.routes = ROUTES;
 
 		router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
-				this.isHidden = evt.url !== '/';
+				this.isHidden.set(evt.url !== '/');
 			}
 		});
 	}
