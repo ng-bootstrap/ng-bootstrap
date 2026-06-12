@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,6 @@ const items = ['one', 'two', 'three'];
 @Component({
 	imports: [FormsModule, NgbTypeahead, NgbDropdown, NgbDropdownMenu, NgbDropdownModule, NgbDropdownToggle],
 	templateUrl: './typeahead-autoclose.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TypeaheadAutoCloseComponent {
 	showHint = false;

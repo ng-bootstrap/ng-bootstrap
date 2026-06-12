@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import docs from '../../../api-docs';
 import { ClassDesc } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
@@ -17,7 +17,6 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
  */
 @Component({
 	selector: 'ngbd-api-docs-config',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [RouterLink, NgbdApiDocsBadge],
 	templateUrl: './api-docs-config.component.html',
 })

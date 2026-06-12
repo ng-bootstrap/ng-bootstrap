@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'ngbd-page-header',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [RouterLink],
 	host: {
 		class: 'd-block',

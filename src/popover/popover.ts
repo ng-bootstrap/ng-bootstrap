@@ -1,7 +1,6 @@
 import {
 	afterEveryRender,
 	AfterRenderRef,
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ComponentRef,
@@ -42,7 +41,6 @@ let nextId = 0;
 @Component({
 	selector: 'ngb-popover-window',
 	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		'[class]': '"popover" + (popoverClass ? " " + popoverClass : "")',

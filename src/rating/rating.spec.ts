@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	FormControl,
 	FormsModule,
@@ -876,7 +876,6 @@ describe('ngb-rating', () => {
 	selector: 'test-cmp',
 	imports: [NgbRating, FormsModule, ReactiveFormsModule],
 	template: '',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	changed = signal(false);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import { RouterLink } from '@angular/router';
 import { NgbdTableOverviewDemo } from './demo/table-overview-demo.component';
@@ -8,7 +8,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 @Component({
 	selector: 'ngbd-table-overview',
 	imports: [NgbAlert, RouterLink, NgbdTableOverviewDemo, PageHeaderComponent],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './table-overview.component.html',
 	host: {
 		'[class.overview]': 'true',

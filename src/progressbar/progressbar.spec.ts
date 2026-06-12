@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, ComponentRef, signal } from '@angular/core';
+import { Component, ComponentRef, signal } from '@angular/core';
 
 import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
@@ -398,7 +398,6 @@ describe('ngb-progressbar', () => {
 	selector: 'test-cmp',
 	imports: [NgbProgressbar, NgbProgressbarStacked],
 	template: '',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	value = signal(10);

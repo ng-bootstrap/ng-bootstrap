@@ -1,6 +1,5 @@
 import {
 	AfterViewChecked,
-	ChangeDetectionStrategy,
 	Component,
 	ElementRef,
 	EventEmitter,
@@ -16,7 +15,6 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 
 @Component({
 	selector: 'ngb-datepicker-navigation-select',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker-navigation-select.scss',
 	template: `

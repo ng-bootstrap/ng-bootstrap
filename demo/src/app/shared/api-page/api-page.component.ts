@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import apiDocs from '../../../api-docs';
 import { NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig } from '../api-docs';
@@ -39,7 +39,6 @@ function toMenuItems(names: string[]): MenuItem[] {
 
 @Component({
 	selector: 'ngbd-api-page',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig],
 	template: `
 		@for (component of components; track component) {

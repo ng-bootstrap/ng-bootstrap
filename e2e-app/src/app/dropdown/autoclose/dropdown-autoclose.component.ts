@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
 	NgbDropdown,
@@ -11,7 +11,6 @@ import {
 @Component({
 	imports: [FormsModule, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	templateUrl: './dropdown-autoclose.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownAutoCloseComponent {
 	autoClose: boolean | 'inside' | 'outside' = true;

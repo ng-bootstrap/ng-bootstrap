@@ -1,7 +1,6 @@
 import {
 	afterEveryRender,
 	AfterRenderRef,
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ComponentRef,
@@ -39,7 +38,6 @@ let nextId = 0;
 
 @Component({
 	selector: 'ngb-tooltip-window',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		'[class]': '"tooltip" + (tooltipClass ? " " + tooltipClass : "")',

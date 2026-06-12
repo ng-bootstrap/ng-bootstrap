@@ -1,13 +1,4 @@
-import {
-	afterNextRender,
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	inject,
-	input,
-	signal,
-	viewChild,
-} from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 
 import { ISnippet } from '../services/snippet';
 import { CodeHighlightService } from '../services/code-highlight.service';
@@ -15,7 +6,6 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-code',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbTooltip],
 	template: `
 		<div class="position-relative">

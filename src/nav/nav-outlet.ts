@@ -1,6 +1,5 @@
 import {
 	AfterViewInit,
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	Directive,
@@ -50,7 +49,6 @@ export class NgbNavPane {
 		class: 'tab-content',
 	},
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		@for (item of nav.items; track item) {
 			@if (item.isPanelInDom() || isPanelTransitioning(item)) {

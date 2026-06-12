@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Locator, page } from 'vitest/browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NgbCollapse } from './collapse';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
@@ -114,7 +114,6 @@ if (isBrowserVisible('ngb-collapse animations')) {
 				></div>
 			`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
-			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			collapsed = signal(false);
@@ -272,7 +271,6 @@ if (isBrowserVisible('ngb-collapse animations')) {
 	selector: 'test-cmp',
 	imports: [NgbCollapse],
 	template: '<div [ngbCollapse]="collapsed()"></div>',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	collapsed = signal(false);

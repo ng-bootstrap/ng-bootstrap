@@ -214,7 +214,6 @@ export class NgbDatepickerMonth {
 	exportAs: 'ngbDatepicker',
 	selector: 'ngb-datepicker',
 	imports: [NgTemplateOutlet, NgbDatepickerDayView, NgbDatepickerMonth, NgbDatepickerNavigation],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker.scss',
 	host: {

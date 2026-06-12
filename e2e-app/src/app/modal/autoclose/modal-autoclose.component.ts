@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
 import { ModalDismissReasons, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 @Component({
 	imports: [FormsModule, JsonPipe],
 	templateUrl: './modal-autoclose.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalAutoCloseComponent {
 	private modalRef: NgbModalRef | null = null;

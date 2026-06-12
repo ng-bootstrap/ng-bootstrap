@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { getValueInRange, isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbProgressbarConfig } from './progressbar-config';
 import { PercentPipe } from '@angular/common';
@@ -9,7 +9,6 @@ import { PercentPipe } from '@angular/common';
 @Component({
 	selector: 'ngb-progressbar',
 	imports: [PercentPipe],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		class: 'progress',
@@ -132,7 +131,6 @@ export class NgbProgressbar {
  */
 @Component({
 	selector: 'ngb-progressbar-stacked',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		class: 'progress-stacked',

@@ -1,7 +1,6 @@
 import {
 	AfterContentChecked,
 	AfterContentInit,
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ContentChild,
@@ -44,7 +43,6 @@ let nextId = 0;
 	host: {
 		class: 'accordion-body',
 	},
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 	private _item = inject(NgbAccordionItem);

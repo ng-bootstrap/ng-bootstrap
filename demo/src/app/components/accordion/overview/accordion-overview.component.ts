@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
@@ -9,7 +9,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 
 @Component({
 	selector: 'ngbd-accordion-overview',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [CodeComponent, RouterLink, NgbdAccordionDemoComponent, PageHeaderComponent],
 	templateUrl: './accordion-overview.component.html',
 	host: { class: 'overview' },

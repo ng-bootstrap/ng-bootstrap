@@ -1,5 +1,4 @@
 import {
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ContentChild,
@@ -40,7 +39,6 @@ export interface StarTemplateContext {
 @Component({
 	selector: 'ngb-rating',
 	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		class: 'd-inline-flex',

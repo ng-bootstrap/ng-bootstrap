@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, Input, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
 
 @Component({
 	selector: '[ngbDatepickerDayView]',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker-day-view.scss',
 	host: {

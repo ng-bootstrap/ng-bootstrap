@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import {
 	NgbDropdown,
@@ -632,7 +632,6 @@ describe('Custom config as provider', () => {
 	selector: 'test-cmp',
 	imports: [NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	template: ``,
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	isOpen = signal(false);

@@ -1100,7 +1100,6 @@ if (isBrowserVisible('ngb-carousel animations')) {
 @Component({
 	selector: 'test-cmp-on-push',
 	imports: [NgbCarousel, NgbSlide],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ngb-carousel>
 			<ng-template ngbSlide>foo</ng-template>

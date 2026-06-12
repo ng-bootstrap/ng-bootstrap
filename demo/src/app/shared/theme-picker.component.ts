@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import {
 	NgbDropdown,
 	NgbDropdownToggle,
@@ -23,7 +23,6 @@ const THEMES: Theme[] = [
 
 @Component({
 	selector: 'ngbd-theme-picker',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	template: `
 		<div class="nav-item" ngbDropdown>

@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-acccordion-deprecation',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbAlert],
 	template: `
 		<ngb-alert type="warning" [dismissible]="false">
