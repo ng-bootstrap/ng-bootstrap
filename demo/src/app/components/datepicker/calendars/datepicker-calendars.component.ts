@@ -90,7 +90,7 @@ const DEMOS: Demo[] = [
 			displayed.
 		</p>
 
-		<ngbd-code [snippet]="snippets.calendars"></ngbd-code>
+		<ngbd-code [snippet]="snippets.calendars" />
 
 		<br />
 
@@ -106,7 +106,7 @@ const DEMOS: Demo[] = [
 				[markup]="demo.markup"
 				component="datepicker"
 			>
-				<ng-template [ngComponentOutlet]="demo.type"></ng-template>
+				<ng-template [ngComponentOutlet]="demo.type" />
 			</ngbd-widget-demo>
 		}
 	`,

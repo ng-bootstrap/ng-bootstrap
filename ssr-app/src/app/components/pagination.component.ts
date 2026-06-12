@@ -4,7 +4,7 @@ import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 @Component({
 	selector: 'pagination-component',
 	imports: [NgbPagination],
-	template: ` <ngb-pagination [collectionSize]="70" [(page)]="page" [boundaryLinks]="true"></ngb-pagination> `,
+	template: ` <ngb-pagination [collectionSize]="70" [(page)]="page" [boundaryLinks]="true" /> `,
 })
 export class PaginationComponent {
 	page = 4;

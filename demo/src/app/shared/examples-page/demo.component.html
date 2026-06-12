@@ -48,7 +48,7 @@
 								<a ngbNavLink>
 									<span class="text-truncate" [title]="tabType(file.name)">{{ file.name }}</span>
 								</a>
-								<ngbd-code *ngbNavContent [snippet]="file.snippet"></ngbd-code>
+								<ngbd-code *ngbNavContent [snippet]="file.snippet" />
 							</li>
 						}
 					} @else {
@@ -56,13 +56,13 @@
 							<a ngbNavLink>
 								<span>{{ component() | lowercase }}-{{ fragment() }}.html</span>
 							</a>
-							<ngbd-code *ngbNavContent [snippet]="markupSnippet()"></ngbd-code>
+							<ngbd-code *ngbNavContent [snippet]="markupSnippet()" />
 						</li>
 						<li ngbNavItem="{{ component() }}-{{ fragment() }}-typescript">
 							<a ngbNavLink>
 								<span>{{ component() | lowercase }}-{{ fragment() }}.ts</span>
 							</a>
-							<ngbd-code *ngbNavContent [snippet]="codeSnippet()"></ngbd-code>
+							<ngbd-code *ngbNavContent [snippet]="codeSnippet()" />
 						</li>
 					}
 				</ul>
@@ -70,7 +70,7 @@
 			</div>
 		}
 		<div class="card-body">
-			<ng-content></ng-content>
+			<ng-content />
 		</div>
 	</div>
 </div>

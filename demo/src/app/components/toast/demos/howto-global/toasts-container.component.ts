@@ -15,7 +15,7 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 				[delay]="toast.delay || 5000"
 				(hidden)="toastService.remove(toast)"
 			>
-				<ng-template [ngTemplateOutlet]="toast.template"></ng-template>
+				<ng-template [ngTemplateOutlet]="toast.template" />
 			</ngb-toast>
 		}
 	`,

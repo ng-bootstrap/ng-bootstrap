@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 	template: `
 		<form class="row row-cols-lg-auto">
 			<div class="col-12 mb-3 me-5">
-				<ngb-datepicker [(ngModel)]="model1" name="inline" [startDate]="model1"></ngb-datepicker>
+				<ngb-datepicker [(ngModel)]="model1" name="inline" [startDate]="model1" />
 			</div>
 
 			<div class="col-12 mb-3">

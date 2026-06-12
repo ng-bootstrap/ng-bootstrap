@@ -135,6 +135,6 @@ export class NgbProgressbar {
 	host: {
 		class: 'progress-stacked',
 	},
-	template: `<ng-content></ng-content>`,
+	template: `<ng-content />`,
 })
 export class NgbProgressbarStacked {}

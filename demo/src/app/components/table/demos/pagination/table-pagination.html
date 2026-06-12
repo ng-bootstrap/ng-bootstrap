@@ -35,8 +35,7 @@
 		[(page)]="page"
 		[pageSize]="pageSize"
 		(pageChange)="refreshCountries()"
-	>
-	</ngb-pagination>
+	/>
 
 	<select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshCountries()">
 		<option [ngValue]="2">2 items per page</option>

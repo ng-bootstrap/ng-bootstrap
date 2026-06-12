@@ -18,11 +18,7 @@
 			<i class="bi bi-github" style="font-size: 1.5rem; color: var(--bs-heading-color)"></i>
 		</a>
 	</h3>
-	<ngbd-api-docs-badge
-		type="Configuration"
-		[deprecated]="apiDocs().deprecated"
-		[since]="apiDocs().since"
-	></ngbd-api-docs-badge>
+	<ngbd-api-docs-badge type="Configuration" [deprecated]="apiDocs().deprecated" [since]="apiDocs().since" />
 	@if (apiDocs().deprecated) {
 		<p>{{ apiDocs().deprecated?.description }}</p>
 	}

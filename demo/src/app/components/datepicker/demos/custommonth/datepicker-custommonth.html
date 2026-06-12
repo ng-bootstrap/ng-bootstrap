@@ -13,7 +13,7 @@
 			@for (month of dp.state.months; track month) {
 				<div>
 					<div class="text-primary p-1 fw-bold">{{ dp.i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
-					<ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
+					<ngb-datepicker-month class="border rounded" [month]="month" />
 				</div>
 			}
 		</div>

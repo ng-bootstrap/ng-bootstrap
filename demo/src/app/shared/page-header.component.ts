@@ -14,7 +14,7 @@ import { RouterLink } from '@angular/router';
 			</a>
 			{{ title() }}
 		</h2>
-		<ng-content></ng-content>
+		<ng-content />
 	`,
 })
 export class PageHeaderComponent {
