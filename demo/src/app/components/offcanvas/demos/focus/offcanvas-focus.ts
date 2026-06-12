@@ -1,9 +1,8 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-firstfocus',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="offcanvas-header">
 			<h4 class="offcanvas-title">Offcanvas title</h4>
@@ -23,7 +22,6 @@ export class NgbdOffcanvasFirstFocus {
 
 @Component({
 	selector: 'ngbd-offcanvas-autofocus',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="offcanvas-header">
 			<h4 class="offcanvas-title">Offcanvas title</h4>
@@ -45,7 +43,6 @@ export class NgbdOffcanvasAutoFocus {
 
 @Component({
 	selector: 'ngbd-offcanvas-focus',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './offcanvas-focus.html',
 })
 export class NgbdOffcanvasFocus {

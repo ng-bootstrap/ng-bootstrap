@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
@@ -10,7 +10,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 	selector: 'ngbd-scrollspy-overview',
 	imports: [CodeComponent, RouterLink, PageHeaderComponent],
 	templateUrl: './scrollspy-overview.component.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdScrollSpyOverviewComponent extends NgbdOverviewPage {

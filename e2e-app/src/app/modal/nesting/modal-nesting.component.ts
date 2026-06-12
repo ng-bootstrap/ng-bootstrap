@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import {
@@ -30,7 +30,6 @@ import { FormsModule } from '@angular/forms';
 		NgbTooltip,
 		NgbPopover,
 	],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-nesting.component.html',
 })
 export class ModalNestingComponent {

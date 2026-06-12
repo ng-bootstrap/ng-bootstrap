@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
@@ -95,7 +95,6 @@ const COUNTRIES: Country[] = [
 @Component({
 	selector: 'ngbd-table-pagination',
 	imports: [DecimalPipe, FormsModule, NgbPagination],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './table-pagination.html',
 })
 export class NgbdTablePagination {

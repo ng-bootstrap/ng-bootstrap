@@ -1,10 +1,9 @@
-import { Component, inject, signal, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngbd-modal-stacked',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -29,7 +28,6 @@ export class NgbdModal1Content {
 }
 
 @Component({
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -49,7 +47,6 @@ export class NgbdModal2Content {
 
 @Component({
 	selector: 'ngbd-modal-stacked',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-stacked.html',
 })
 export class NgbdModalStacked {

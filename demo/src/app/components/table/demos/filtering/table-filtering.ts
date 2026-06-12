@@ -1,4 +1,4 @@
-import { Component, PipeTransform, ChangeDetectionStrategy } from '@angular/core';
+import { Component, PipeTransform } from '@angular/core';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -55,7 +55,6 @@ function search(text: string, pipe: PipeTransform): Country[] {
 	selector: 'ngbd-table-filtering',
 	imports: [DecimalPipe, AsyncPipe, ReactiveFormsModule, NgbHighlight],
 	templateUrl: './table-filtering.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [DecimalPipe],
 })
 export class NgbdTableFiltering {

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { TypeaheadComponent } from './components/typeahead.component';
 import { TooltipComponent } from './components/tooltip.component';
 import { TimepickerComponent } from './components/timepicker.component';
@@ -36,7 +36,6 @@ import { ScrollSpyComponent } from './components/scrollspy.component';
 		TooltipComponent,
 		TypeaheadComponent,
 	],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="container p-5">
 			<h1>ng-bootstrap SSR test application</h1>

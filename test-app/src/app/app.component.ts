@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'app-root',
 	imports: [NgbModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="container">
 			<ngb-alert type="success" [dismissible]="false">

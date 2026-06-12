@@ -1,8 +1,7 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-role.component.html',
 })
 export class ModalRoleComponent {

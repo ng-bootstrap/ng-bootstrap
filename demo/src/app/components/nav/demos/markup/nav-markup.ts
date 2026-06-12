@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -12,7 +12,6 @@ import {
 @Component({
 	selector: 'ngbd-nav-markup',
 	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavLink, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-markup.html',
 })
 export class NgbdNavMarkup {}

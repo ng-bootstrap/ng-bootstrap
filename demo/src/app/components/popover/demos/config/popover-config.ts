@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbPopoverConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
 	selector: 'ngbd-popover-config',
 	imports: [NgbPopover],
 	templateUrl: './popover-config.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbPopoverConfig],
 })
 export class NgbdPopoverConfig {

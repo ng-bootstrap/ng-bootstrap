@@ -1,11 +1,10 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbSlide, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap/carousel';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-carousel-pause',
 	imports: [NgbCarousel, NgbSlide, FormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './carousel-pause.html',
 })
 export class NgbdCarouselPause {

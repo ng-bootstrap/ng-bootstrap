@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
 	selector: 'ngbd-rating-form',
 	imports: [NgbRating, ReactiveFormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './rating-form.html',
 })
 export class NgbdRatingForm {

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -24,7 +24,6 @@ import {
 		NgbNavLinkBase,
 		NgbNavOutlet,
 	],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-vertical.html',
 })
 export class NgbdNavVertical {

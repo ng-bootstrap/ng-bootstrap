@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import {
 	NgbNavContent,
@@ -22,7 +22,6 @@ import {
 		NgbNavOutlet,
 		NgbAlert,
 	],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-keep-content.html',
 })
 export class NgbdNavKeep {

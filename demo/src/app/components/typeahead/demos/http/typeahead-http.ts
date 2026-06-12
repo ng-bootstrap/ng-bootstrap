@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, OperatorFunction } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
@@ -35,7 +35,6 @@ export class WikipediaService {
 	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-http.html',
 	providers: [WikipediaService],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.form-control {
 			width: 300px;

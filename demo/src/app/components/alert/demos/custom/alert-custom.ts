@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'ngbd-alert-custom',
 	imports: [NgbAlert],
 	templateUrl: './alert-custom.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.alert-custom {
 			color: #99004d;

@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarBuddhist,
@@ -61,7 +61,6 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 	selector: 'ngbd-datepicker-buddhist',
 	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-buddhist.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarBuddhist },
 		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nBuddhist },

@@ -1,10 +1,9 @@
-import { Component, inject, TemplateRef, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-options',
 	templateUrl: './offcanvas-options.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	encapsulation: ViewEncapsulation.None,
 })
 export class NgbdOffcanvasOptions {

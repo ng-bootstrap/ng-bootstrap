@@ -1,4 +1,4 @@
-import { Component, inject, signal, TemplateRef, WritableSignal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
 
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap/offcanvas';
@@ -6,7 +6,6 @@ import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstra
 @Component({
 	selector: 'ngbd-offcanvas-basic',
 	imports: [NgbInputDatepicker],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './offcanvas-basic.html',
 })
 export class NgbdOffcanvasBasic {

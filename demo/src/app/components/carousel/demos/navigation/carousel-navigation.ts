@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbCarouselConfig, NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap/carousel';
 
 @Component({
 	selector: 'ngbd-carousel-navigation',
 	imports: [NgbCarousel, NgbSlide],
 	templateUrl: './carousel-navigation.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbCarouselConfig],
 })
 export class NgbdCarouselNavigation {

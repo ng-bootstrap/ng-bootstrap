@@ -1,4 +1,4 @@
-import { Component, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { NgbTimeStruct, NgbTimeAdapter, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
@@ -32,7 +32,6 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 	templateUrl: './timepicker-adapter.html',
 	// NOTE: For this example we are only providing current component, but probably
 	// NOTE: you will want to provide your main App Module
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [{ provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter }],
 })
 export class NgbdTimepickerAdapter {

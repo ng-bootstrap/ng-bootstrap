@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDatepickerHebrew } from '../demos/hebrew/datepicker-hebrew';
@@ -62,7 +62,6 @@ const DEMOS: Demo[] = [
 @Component({
 	selector: 'ngbd-datepicker-calendars',
 	imports: [NgbAlert, CodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<p>
 			Datepicker relies on <code>NgbCalendar</code> abstract class for calendar-related calculations. Default

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
@@ -6,7 +6,6 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 	imports: [NgbTooltip],
 	templateUrl: './tooltip-customclass.html',
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.my-custom-class .tooltip-inner {
 			background-color: darkgreen;

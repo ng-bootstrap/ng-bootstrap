@@ -1,11 +1,10 @@
-import { Component, inject, TemplateRef, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-options',
 	templateUrl: './modal-options.html',
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.dark-modal .modal-content {
 			background-color: #292b2c;

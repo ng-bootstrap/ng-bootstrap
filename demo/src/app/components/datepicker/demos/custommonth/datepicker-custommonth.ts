@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbDatepicker, NgbInputDatepicker, NgbDatepickerMonth } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
 @Component({
@@ -6,7 +6,6 @@ import { NgbDatepicker, NgbInputDatepicker, NgbDatepickerMonth } from '@ng-boots
 	imports: [NgbDatepicker, NgbInputDatepicker, NgbDatepickerMonth],
 	templateUrl: './datepicker-custommonth.html',
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.no-header-padding .ngb-dp-header {
 			padding: 0;

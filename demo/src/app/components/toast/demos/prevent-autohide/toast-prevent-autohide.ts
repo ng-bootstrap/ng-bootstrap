@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
 	selector: 'ngbd-toast-prevent-autohide',
 	imports: [NgbToast],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './toast-prevent-autohide.html',
 })
 export class NgbdToastPreventAutohide {

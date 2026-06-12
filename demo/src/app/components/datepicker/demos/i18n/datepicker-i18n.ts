@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { NgbDatepickerI18n, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
@@ -45,7 +45,6 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 	selector: 'ngbd-datepicker-i18n',
 	imports: [NgbDatepicker, NgbAlert, FormsModule],
 	templateUrl: './datepicker-i18n.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }],
 })
 export class NgbdDatepickerI18n {

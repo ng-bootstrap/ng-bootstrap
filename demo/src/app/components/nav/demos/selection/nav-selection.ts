@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbNavChangeEvent,
 	NgbNavContent,
@@ -13,7 +13,6 @@ import {
 @Component({
 	selector: 'ngbd-nav-selection',
 	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-selection.html',
 })
 export class NgbdNavSelection {
