@@ -31,7 +31,7 @@ import { PercentPipe } from '@angular/common';
 			[style.width.%]="!stacked ? getPercentValue() : null"
 		>
 			@if (showValue) {
-				<span i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span>
+				<span>{{ getValue() / max | percent }}</span>
 			}
 			<ng-content />
 		</div>

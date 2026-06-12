@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 /**
  * A configuration service for the [`NgbTimepicker`](#/components/timepicker/api#NgbTimepicker) component.
@@ -8,6 +9,27 @@ import { Injectable } from '@angular/core';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbTimepickerConfig {
+	/**
+	 * Stream to emit from when config is changed.
+	 * Use this to notify components to trigger change detection
+	 */
+	readonly changes: Subject<void> = new Subject<void>();
+
+	incrementHoursLabel = $localize`:@@ngb.timepicker.increment-hours:Increment hours`;
+	decrementHoursLabel = $localize`:@@ngb.timepicker.decrement-hours:Decrement hours`;
+	hoursShortLabel = $localize`:@@ngb.timepicker.HH:HH`;
+	hoursLabel = $localize`:@@ngb.timepicker.hours:Hours`;
+
+	incrementMinutesLabel = $localize`:@@ngb.timepicker.increment-minutes:Increment minutes`;
+	decrementMinutesLabel = $localize`:@@ngb.timepicker.decrement-minutes:Decrement minutes`;
+	minutesShortLabel = $localize`:@@ngb.timepicker.MM:MM`;
+	minutesLabel = $localize`:@@ngb.timepicker.minutes:Minutes`;
+
+	incrementSecondsLabel = $localize`:@@ngb.timepicker.increment-seconds:Increment seconds`;
+	decrementSecondsLabel = $localize`:@@ngb.timepicker.decrement-seconds:Decrement seconds`;
+	secondsShortLabel = $localize`:@@ngb.timepicker.SS:SS`;
+	secondsLabel = $localize`:@@ngb.timepicker.seconds:Seconds`;
+
 	meridian = false;
 	spinners = true;
 	seconds = false;

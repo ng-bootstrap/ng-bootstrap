@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
+import { Subject } from 'rxjs';
 
 /**
  * Interface used to type all toast config options. See `NgbToastConfig`.
@@ -37,6 +38,14 @@ export interface NgbToastOptions {
  */
 @Injectable({ providedIn: 'root' })
 export class NgbToastConfig implements NgbToastOptions {
+	/**
+	 * Stream to emit from when config is changed.
+	 * Use this to notify components to trigger change detection
+	 */
+	readonly changes: Subject<void> = new Subject<void>();
+
+	closeLabel = $localize`:@@ngb.toast.close-aria:Close`;
+
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;
 

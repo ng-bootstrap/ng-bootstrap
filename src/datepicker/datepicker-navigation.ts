@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	EventEmitter,
 	inject,
@@ -11,6 +12,8 @@ import { MonthViewModel, NavigationEvent } from './datepicker-view-model';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
+import { NgbDatepickerConfig } from './datepicker-config';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngb-datepicker-navigation',
@@ -25,10 +28,8 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 				class="btn btn-link ngb-dp-arrow-btn"
 				(click)="onClickPrev($event)"
 				[disabled]="prevDisabled"
-				i18n-aria-label="@@ngb.datepicker.previous-month"
-				aria-label="Previous month"
-				i18n-title="@@ngb.datepicker.previous-month"
-				title="Previous month"
+				[attr.aria-label]="_config.previousMonthLabel"
+				[title]="_config.previousMonthLabel"
 			>
 				<span class="ngb-dp-navigation-chevron"></span>
 			</button>
@@ -69,10 +70,8 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 				class="btn btn-link ngb-dp-arrow-btn"
 				(click)="onClickNext($event)"
 				[disabled]="nextDisabled"
-				i18n-aria-label="@@ngb.datepicker.next-month"
-				aria-label="Next month"
-				i18n-title="@@ngb.datepicker.next-month"
-				title="Next month"
+				[attr.aria-label]="_config.nextMonthLabel"
+				[title]="_config.nextMonthLabel"
 			>
 				<span class="ngb-dp-navigation-chevron"></span>
 			</button>
@@ -82,6 +81,8 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 export class NgbDatepickerNavigation {
 	navigation = NavigationEvent;
 
+	_cd = inject(ChangeDetectorRef);
+	_config = inject(NgbDatepickerConfig);
 	i18n = inject(NgbDatepickerI18n);
 
 	@Input() date: NgbDate;
@@ -107,5 +108,11 @@ export class NgbDatepickerNavigation {
 
 	idMonth(month: MonthViewModel) {
 		return month;
+	}
+
+	constructor() {
+		this._config.changes.pipe(takeUntilDestroyed()).subscribe(() => {
+			this._cd.markForCheck();
+		});
 	}
 }

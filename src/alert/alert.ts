@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	EventEmitter,
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs';
 import { NgbAlertConfig } from './alert-config';
 import { ngbRunTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { ngbAlertFadingTransition } from './alert-transition';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -38,8 +40,7 @@ import { ngbAlertFadingTransition } from './alert-transition';
 			<button
 				type="button"
 				class="btn-close"
-				aria-label="Close"
-				i18n-aria-label="@@ngb.alert.close"
+				[attr.aria-label]="_config.closeLabel"
 				(click)="close()"
 			></button>
 		}
@@ -47,8 +48,9 @@ import { ngbAlertFadingTransition } from './alert-transition';
 	styleUrl: './alert.scss',
 })
 export class NgbAlert {
-	private _config = inject(NgbAlertConfig);
+	protected _config = inject(NgbAlertConfig);
 	private _elementRef = inject(ElementRef<HTMLElement>);
+	private _cd = inject(ChangeDetectorRef);
 	private _zone = inject(NgZone);
 
 	/**
@@ -101,5 +103,13 @@ export class NgbAlert {
 		});
 		transition.subscribe(() => this.closed.emit());
 		return transition;
+	}
+
+	constructor() {
+		this._config.changes.pipe(
+			takeUntilDestroyed()
+		).subscribe(() => {
+			this._cd.markForCheck();
+		});
 	}
 }

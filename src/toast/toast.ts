@@ -2,6 +2,7 @@ import {
 	AfterContentInit,
 	afterNextRender,
 	Attribute,
+	ChangeDetectorRef,
 	Component,
 	ContentChild,
 	Directive,
@@ -24,6 +25,7 @@ import { NgbToastConfig } from './toast-config';
 import { ngbRunTransition } from '@ng-bootstrap/ng-bootstrap/utils';
 import { ngbToastFadeInTransition, ngbToastFadeOutTransition } from './toast-transition';
 import { NgTemplateOutlet } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * This directive allows the usage of HTML markup or other directives
@@ -59,14 +61,7 @@ export class NgbToastHeader {}
 		@if (contentHeaderTpl || header) {
 			<div class="toast-header">
 				<ng-template [ngTemplateOutlet]="contentHeaderTpl || headerTpl" />
-				<button
-					type="button"
-					class="btn-close"
-					aria-label="Close"
-					i18n-aria-label="@@ngb.toast.close-aria"
-					(click)="hide()"
-				>
-				</button>
+				<button type="button" class="btn-close" [attr.aria-label]="_config.closeLabel" (click)="hide()"> </button>
 			</div>
 		}
 		<div class="toast-body">
@@ -76,7 +71,8 @@ export class NgbToastHeader {}
 	styleUrl: './toast.scss',
 })
 export class NgbToast implements AfterContentInit, OnChanges {
-	private _config = inject(NgbToastConfig);
+	private _cd = inject(ChangeDetectorRef);
+	protected _config = inject(NgbToastConfig);
 	private _zone = inject(NgZone);
 	private _injector = inject(Injector);
 	private _element = inject(ElementRef);
@@ -138,6 +134,10 @@ export class NgbToast implements AfterContentInit, OnChanges {
 
 	constructor(@Attribute('aria-live') public ariaLive: string) {
 		this.ariaLive ??= this._config.ariaLive;
+
+		this._config.changes.pipe(takeUntilDestroyed()).subscribe(() => {
+			this._cd.markForCheck();
+		});
 	}
 
 	ngAfterContentInit() {

@@ -1,6 +1,7 @@
 import {
 	AfterViewChecked,
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	EventEmitter,
@@ -13,6 +14,8 @@ import {
 import { NgbDate } from './ngb-date';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbDatepickerI18n } from './datepicker-i18n';
+import { NgbDatepickerConfig } from './datepicker-config';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngb-datepicker-navigation-select',
@@ -24,10 +27,8 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 			#month
 			[disabled]="disabled"
 			class="form-select"
-			i18n-aria-label="@@ngb.datepicker.select-month"
-			aria-label="Select month"
-			i18n-title="@@ngb.datepicker.select-month"
-			title="Select month"
+			[attr.aria-label]="_config.selectMonthLabel"
+			[title]="_config.selectMonthLabel"
 			(change)="changeMonth($any($event).target.value)"
 		>
 			@for (m of months; track m) {
@@ -39,10 +40,8 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 			#year
 			[disabled]="disabled"
 			class="form-select"
-			i18n-aria-label="@@ngb.datepicker.select-year"
-			aria-label="Select year"
-			i18n-title="@@ngb.datepicker.select-year"
-			title="Select year"
+			[attr.aria-label]="_config.selectYearLabel"
+			[title]="_config.selectYearLabel"
 			(change)="changeYear($any($event).target.value)"
 		>
 			@for (y of years; track y) {
@@ -55,6 +54,8 @@ export class NgbDatepickerNavigationSelect implements AfterViewChecked {
 	private _month = -1;
 	private _year = -1;
 
+	_cd = inject(ChangeDetectorRef);
+	_config = inject(NgbDatepickerConfig);
 	i18n = inject(NgbDatepickerI18n);
 
 	@Input() date: NgbDate;
@@ -86,5 +87,11 @@ export class NgbDatepickerNavigationSelect implements AfterViewChecked {
 				this.yearSelect.nativeElement.value = `${this._year}`;
 			}
 		}
+	}
+
+	constructor() {
+		this._config.changes.pipe(takeUntilDestroyed()).subscribe(() => {
+			this._cd.markForCheck();
+		});
 	}
 }

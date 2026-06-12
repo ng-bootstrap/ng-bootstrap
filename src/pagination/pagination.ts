@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ContentChild,
 	Directive,
@@ -14,6 +15,7 @@ import {
 import { getValueInRange, isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbPaginationConfig } from './pagination-config';
 import { NgTemplateOutlet } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * A context for the
@@ -158,10 +160,18 @@ export class NgbPaginationPages {
 		role: 'navigation',
 	},
 	template: `
-		<ng-template #first><span aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span></ng-template>
-		<ng-template #previous><span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span></ng-template>
-		<ng-template #next><span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span></ng-template>
-		<ng-template #last><span aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span></ng-template>
+		<ng-template #first
+			><span aria-hidden="true">{{ _config.firstLabel }}</span></ng-template
+		>
+		<ng-template #previous
+			><span aria-hidden="true">{{ _config.previousLabel }}</span></ng-template
+		>
+		<ng-template #next
+			><span aria-hidden="true">{{ _config.nextLabel }}</span></ng-template
+		>
+		<ng-template #last
+			><span aria-hidden="true">{{ _config.lastLabel }}</span></ng-template
+		>
 		<ng-template #ellipsis>...</ng-template>
 		<ng-template #defaultNumber let-page let-currentPage="currentPage">{{ page }}</ng-template>
 		<ng-template #defaultPages let-page let-pages="pages" let-disabled="disabled">
@@ -200,8 +210,7 @@ export class NgbPaginationPages {
 			@if (boundaryLinks) {
 				<li class="page-item" [class.disabled]="previousDisabled()">
 					<a
-						aria-label="First"
-						i18n-aria-label="@@ngb.pagination.first-aria"
+						[attr.aria-label]="_config.firstAriaLabel"
 						class="page-link"
 						href
 						(click)="selectPage(1); $event.preventDefault()"
@@ -218,8 +227,7 @@ export class NgbPaginationPages {
 			@if (directionLinks) {
 				<li class="page-item" [class.disabled]="previousDisabled()">
 					<a
-						aria-label="Previous"
-						i18n-aria-label="@@ngb.pagination.previous-aria"
+						[attr.aria-label]="_config.previousAriaLabel"
 						class="page-link"
 						href
 						(click)="selectPage(page - 1); $event.preventDefault()"
@@ -240,8 +248,7 @@ export class NgbPaginationPages {
 			@if (directionLinks) {
 				<li class="page-item" [class.disabled]="nextDisabled()">
 					<a
-						aria-label="Next"
-						i18n-aria-label="@@ngb.pagination.next-aria"
+						[attr.aria-label]="_config.nextAriaLabel"
 						class="page-link"
 						href
 						(click)="selectPage(page + 1); $event.preventDefault()"
@@ -258,8 +265,7 @@ export class NgbPaginationPages {
 			@if (boundaryLinks) {
 				<li class="page-item" [class.disabled]="nextDisabled()">
 					<a
-						aria-label="Last"
-						i18n-aria-label="@@ngb.pagination.last-aria"
+						[attr.aria-label]="_config.lastAriaLabel"
 						class="page-link"
 						href
 						(click)="selectPage(pageCount); $event.preventDefault()"
@@ -277,7 +283,8 @@ export class NgbPaginationPages {
 	`,
 })
 export class NgbPagination implements OnChanges {
-	private _config = inject(NgbPaginationConfig);
+	protected _config = inject(NgbPaginationConfig);
+	private _cd = inject(ChangeDetectorRef);
 
 	pageCount = 0;
 	pages: number[] = [];
@@ -360,6 +367,12 @@ export class NgbPagination implements OnChanges {
 	 * If the passed value is a string (ex. 'custom'), it will just add the `pagination-custom` css class
 	 */
 	@Input() size = this._config.size;
+
+	constructor() {
+		this._config.changes.pipe(takeUntilDestroyed()).subscribe(() => {
+			this._cd.markForCheck();
+		});
+	}
 
 	hasPrevious(): boolean {
 		return this.page > 1;

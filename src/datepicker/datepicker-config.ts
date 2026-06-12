@@ -1,6 +1,7 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { DayTemplateContext } from './datepicker-day-template-context';
 import { NgbDateStruct } from './ngb-date-struct';
+import { Subject } from 'rxjs';
 
 /**
  * A configuration service for the [`NgbDatepicker`](#/components/datepicker/api#NgbDatepicker) component.
@@ -10,6 +11,18 @@ import { NgbDateStruct } from './ngb-date-struct';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbDatepickerConfig {
+	/**
+	 * Stream to emit from when config is changed.
+	 * Use this to notify components to trigger change detection
+	 */
+	readonly changes: Subject<void> = new Subject<void>();
+
+	selectMonthLabel = $localize`:@@ngb.datepicker.select-month:Select month`;
+	selectYearLabel = $localize`:@@ngb.datepicker.select-year:Select year`;
+
+	previousMonthLabel = $localize`:@@ngb.datepicker.previous-month:Previous month`;
+	nextMonthLabel = $localize`:@@ngb.datepicker.next-month:Next month`;
+
 	dayTemplate: TemplateRef<DayTemplateContext>;
 	dayTemplateData: (date: NgbDateStruct, current?: { year: number; month: number }) => any;
 	footerTemplate: TemplateRef<any>;

@@ -101,11 +101,8 @@ export class NgbSlide {
 		<div class="carousel-inner">
 			@for (slide of slides; track slide; let i = $index; let c = $count) {
 				<div class="carousel-item" [id]="'slide-' + slide.id" role="tabpanel">
-					<span
-						class="visually-hidden"
-						i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number"
-					>
-						Slide {{ i + 1 }} of {{ c }}
+					<span class="visually-hidden">
+						{{ _config.slideNumberLabel }}
 					</span>
 					<ng-template [ngTemplateOutlet]="slide.templateRef" />
 				</div>
@@ -119,11 +116,11 @@ export class NgbSlide {
 				[attr.aria-labelledby]="id + '-previous'"
 			>
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden" i18n="@@ngb.carousel.previous" [id]="id + '-previous'">Previous</span>
+				<span class="visually-hidden" [id]="id + '-previous'">{{ _config.previousLabel }}</span>
 			</button>
 			<button class="carousel-control-next" type="button" (click)="arrowRight()" [attr.aria-labelledby]="id + '-next'">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden" i18n="@@ngb.carousel.next" [id]="id + '-next'">Next</span>
+				<span class="visually-hidden" [id]="id + '-next'">{{ _config.nextLabel }}</span>
 			</button>
 		}
 	`,
@@ -133,7 +130,7 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 
 	public NgbSlideEventSource = NgbSlideEventSource;
 
-	private _config = inject(NgbCarouselConfig);
+	protected _config = inject(NgbCarouselConfig);
 	private _platformId = inject(PLATFORM_ID);
 	private _ngZone = inject(NgZone);
 	private _cd = inject(ChangeDetectorRef);
@@ -414,6 +411,12 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 */
 	focus() {
 		this._container.nativeElement.focus();
+	}
+
+	constructor() {
+		this._config.changes.pipe(takeUntilDestroyed()).subscribe(() => {
+			this._cd.markForCheck();
+		});
 	}
 
 	private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection, source?: NgbSlideEventSource) {

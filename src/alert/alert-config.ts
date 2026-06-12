@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
+import { Subject } from 'rxjs';
 
 /**
  * A configuration service for the [NgbAlert](#/components/alert/api#NgbAlert) component.
@@ -9,8 +10,16 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbAlertConfig {
+	/**
+	 * Stream to emit from when config is changed.
+	 * Use this to notify components to trigger change detection
+	 */
+	readonly changes: Subject<void> = new Subject<void>();
+
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;
+
+	closeLabel = $localize`:@@ngb.alert.close:Close`;
 
 	dismissible = true;
 	type = 'warning';
