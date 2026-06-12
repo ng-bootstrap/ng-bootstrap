@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
 	selector: 'alert-component',
 	imports: [NgbAlert],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<ngb-alert [dismissible]="false">Sample alert here</ngb-alert>
 		<ngb-alert>Sample dismissible alert here</ngb-alert>

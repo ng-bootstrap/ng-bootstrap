@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbPaginationConfig, NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
 	selector: 'ngbd-pagination-config',
 	imports: [NgbPagination],
 	templateUrl: './pagination-config.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbPaginationConfig],
 })
 export class NgbdPaginationConfig {

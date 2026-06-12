@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, Subject, merge, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -71,7 +71,12 @@ const states = [
 	selector: 'ngbd-typeahead-focus',
 	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-focus.html',
-	styles: `.form-control { width: 300px; }`,
+	changeDetection: ChangeDetectionStrategy.Eager,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadFocus {
 	model: any;

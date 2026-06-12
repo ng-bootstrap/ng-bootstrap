@@ -1055,6 +1055,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 @Component({
 	selector: 'test-cmpt',
 	imports: [NgbTooltip],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: ``,
 })
 export class TestComponent {
@@ -1092,6 +1093,7 @@ export class TestOnPushComponent {}
 @Component({
 	selector: 'test-hooks',
 	imports: [NgbTooltip],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<div ngbTooltip="tooltip"></div>`,
 })
 export class TestHooksComponent implements AfterViewInit {

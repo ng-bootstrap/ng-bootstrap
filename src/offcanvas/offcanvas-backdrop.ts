@@ -10,6 +10,7 @@ import {
 	OnInit,
 	Output,
 	ViewEncapsulation,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 	selector: 'ngb-offcanvas-backdrop',
 	encapsulation: ViewEncapsulation.None,
 	template: '',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	host: {
 		'[class]': '"offcanvas-backdrop" + (backdropClass ? " " + backdropClass : "")',
 		'[class.show]': '!animation',

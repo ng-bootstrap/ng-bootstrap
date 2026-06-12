@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbNavConfig,
 	NgbNavContent,
@@ -14,6 +14,7 @@ import {
 	selector: 'ngbd-nav-config',
 	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet],
 	templateUrl: './nav-config.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbNavConfig],
 })
 export class NgbdNavConfig {

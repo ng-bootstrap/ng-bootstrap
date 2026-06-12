@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, NgModule, OnDestroy } from '@angular/core';
+import { Component, inject, Injectable, NgModule, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal } from '../modal/modal';
 import { NgbModalModule } from '../modal/modal.module';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,7 @@ class LazyService {
 }
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '{{ lazyService.text }}',
 })
 class LazyModalContent {
@@ -18,6 +19,7 @@ class LazyModalContent {
 }
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: 'child',
 })
 class LazyComponent implements OnDestroy {

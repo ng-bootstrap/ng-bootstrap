@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
@@ -9,6 +9,7 @@ const VALUES = ['one', 'two', 'three'];
 @Component({
 	selector: 'typeahead-component',
 	imports: [FormsModule, NgbTypeahead],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
 	`,

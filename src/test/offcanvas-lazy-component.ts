@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, Injector, OnDestroy } from '@angular/core';
+import { Component, inject, Injectable, Injector, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { NgbOffcanvas } from '../offcanvas/offcanvas';
 
 @Injectable()
@@ -9,6 +9,7 @@ class LazyService {
 }
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '{{ lazyService.text }}',
 })
 class LazyOffCanvasContent {
@@ -17,6 +18,7 @@ class LazyOffCanvasContent {
 
 @Component({
 	template: 'child',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [LazyService],
 })
 export default class LazyComponent implements OnDestroy {

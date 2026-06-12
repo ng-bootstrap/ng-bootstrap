@@ -1,8 +1,9 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-content',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -24,6 +25,7 @@ export class NgbdModalContent {
 
 @Component({
 	selector: 'ngbd-modal-component',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-component.html',
 })
 export class NgbdModalComponent {

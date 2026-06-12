@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbNav,
 	NgbNavContent,
@@ -12,6 +12,7 @@ import {
 @Component({
 	selector: 'nav-component',
 	imports: [NgbNav, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkBase, NgbNavOutlet],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<ul ngbNav #nav="ngbNav" class="nav-tabs">
 			<li ngbNavItem>

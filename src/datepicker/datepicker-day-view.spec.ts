@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -80,6 +80,7 @@ describe('ngbDatepickerDayView', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepickerDayView],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template:
 		'<div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>',
 })

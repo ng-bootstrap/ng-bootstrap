@@ -12,6 +12,7 @@ import {
 	Output,
 	ViewEncapsulation,
 	DOCUMENT,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -29,6 +30,7 @@ import {
 	selector: 'ngb-offcanvas-panel',
 	template: '<ng-content />',
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	host: {
 		'[class]': '"offcanvas offcanvas-" + position  + (panelClass ? " " + panelClass : "")',
 		role: 'dialog',

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 interface Country {
@@ -38,6 +38,7 @@ const COUNTRIES: Country[] = [
 @Component({
 	selector: 'ngbd-table-basic',
 	imports: [DecimalPipe],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './table-basic.html',
 })
 export class NgbdTableBasic {

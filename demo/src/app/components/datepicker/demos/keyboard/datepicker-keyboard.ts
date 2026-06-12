@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { NgbDatepicker, NgbDatepickerKeyboardService, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
@@ -39,6 +39,7 @@ export class CustomKeyboardService extends NgbDatepickerKeyboardService {
 	selector: 'ngbd-datepicker-keyboard',
 	imports: [NgbDatepicker, FormsModule],
 	templateUrl: './datepicker-keyboard.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [{ provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService }],
 })
 export class NgbdDatepickerKeyboard {

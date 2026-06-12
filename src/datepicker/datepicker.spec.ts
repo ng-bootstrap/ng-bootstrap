@@ -2,7 +2,13 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
-import { Component, TemplateRef, DebugElement, provideZoneChangeDetection } from '@angular/core';
+import {
+	Component,
+	TemplateRef,
+	DebugElement,
+	provideZoneChangeDetection,
+	ChangeDetectionStrategy,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
@@ -179,7 +185,7 @@ describe('ngb-datepicker', () => {
 	it('should throw if max date is before min date', () => {
 		expect(() => {
 			createTestComponent('<ngb-datepicker [minDate]="maxDate" [maxDate]="minDate"></ngb-datepicker>');
-		}).toThrowError();
+		}).toThrow();
 	});
 
 	it('should allow changing min/max dates at the same time', () => {
@@ -195,7 +201,7 @@ describe('ngb-datepicker', () => {
 			fixture.componentInstance.minDate = { year: 2010, month: 1, day: 1 };
 			fixture.componentInstance.maxDate = { year: 2020, month: 12, day: 31 };
 			fixture.detectChanges();
-		}).not.toThrowError();
+		}).not.toThrow();
 	});
 
 	it(`should accept 'startDate' values containing days`, () => {
@@ -1355,6 +1361,7 @@ describe('ngb-datepicker', () => {
 		FormsModule,
 		ReactiveFormsModule,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

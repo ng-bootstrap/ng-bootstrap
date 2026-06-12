@@ -1,9 +1,10 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	imports: [FormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-focus.component.html',
 })
 export class ModalFocusComponent {

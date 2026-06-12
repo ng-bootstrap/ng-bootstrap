@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -7,6 +7,7 @@ import { JsonPipe } from '@angular/common';
 	selector: 'ngbd-datepicker-range',
 	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-range.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.custom-day {
 			text-align: center;

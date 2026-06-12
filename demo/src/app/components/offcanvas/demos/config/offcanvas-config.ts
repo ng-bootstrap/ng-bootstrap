@@ -1,10 +1,11 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
 	selector: 'ngbd-offcanvas-config',
 	templateUrl: './offcanvas-config.html',
 	// add NgbOffcanvasConfig and NgbOffcanvas to the component providers
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbOffcanvasConfig, NgbOffcanvas],
 })
 export class NgbdOffcanvasConfig {

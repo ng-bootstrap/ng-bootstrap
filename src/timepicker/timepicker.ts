@@ -6,6 +6,7 @@ import {
 	OnChanges,
 	SimpleChanges,
 	ViewEncapsulation,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -53,7 +54,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						inputmode="numeric"
 						placeholder="HH"
 						i18n-placeholder="@@ngb.timepicker.HH"
-						[value]="formatHour(model?.hour)"
+						[value]="formatHour($safeNavigationMigration(model?.hour))"
 						(change)="updateHour($any($event).target.value)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
@@ -106,7 +107,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						inputmode="numeric"
 						placeholder="MM"
 						i18n-placeholder="@@ngb.timepicker.MM"
-						[value]="formatMinSec(model?.minute)"
+						[value]="formatMinSec($safeNavigationMigration(model?.minute))"
 						(change)="updateMinute($any($event).target.value)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
@@ -160,7 +161,7 @@ const FILTER_REGEX = /[^0-9]/g;
 							inputmode="numeric"
 							placeholder="SS"
 							i18n-placeholder="@@ngb.timepicker.SS"
-							[value]="formatMinSec(model?.second)"
+							[value]="formatMinSec($safeNavigationMigration(model?.second))"
 							(change)="updateSecond($any($event).target.value)"
 							[readOnly]="readonlyInputs"
 							[disabled]="disabled"
@@ -211,6 +212,7 @@ const FILTER_REGEX = /[^0-9]/g;
 			</div>
 		</fieldset>
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTimepicker), multi: true }],
 })
 export class NgbTimepicker implements ControlValueAccessor, OnChanges {

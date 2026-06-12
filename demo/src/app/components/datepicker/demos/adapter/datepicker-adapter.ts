@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbDateAdapter,
@@ -64,6 +64,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 	templateUrl: './datepicker-adapter.html',
 	// NOTE: For this example we are only providing current component, but probably
 	// NOTE: you will want to provide your main App Module
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbDateAdapter, useClass: CustomAdapter },
 		{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },

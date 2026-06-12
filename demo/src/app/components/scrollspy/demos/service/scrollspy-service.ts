@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap/scrollspy';
 
 @Component({
 	selector: 'ngbd-scrollspy-service',
 	templateUrl: './scrollspy-service.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbScrollSpyService],
 })
 export class NgbdScrollSpyService {

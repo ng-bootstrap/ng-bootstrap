@@ -14,6 +14,7 @@ import {
 	ViewChild,
 	ViewEncapsulation,
 	DOCUMENT,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { fromEvent, Observable, Subject, zip } from 'rxjs';
@@ -73,6 +74,7 @@ const WINDOW_ATTRIBUTES: string[] = [
 		</div>
 	`,
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './modal.scss',
 })
 export class NgbModalWindow implements OnInit, OnDestroy {
@@ -109,8 +111,8 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 		return this.fullscreen === true
 			? ' modal-fullscreen'
 			: isString(this.fullscreen)
-			  ? ` modal-fullscreen-${this.fullscreen}-down`
-			  : '';
+				? ` modal-fullscreen-${this.fullscreen}-down`
+				: '';
 	}
 
 	dismiss(reason): void {

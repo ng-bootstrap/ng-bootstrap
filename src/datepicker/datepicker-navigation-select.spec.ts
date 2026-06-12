@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDate } from './ngb-date';
@@ -144,6 +144,7 @@ describe('ngb-datepicker-navigation-select', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepickerNavigationSelect],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

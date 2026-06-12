@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbDropdownConfig,
 	NgbDropdown,
@@ -12,6 +12,7 @@ import {
 	selector: 'ngbd-dropdown-config',
 	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
 	templateUrl: './dropdown-config.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbDropdownConfig],
 })
 export class NgbdDropdownConfig {

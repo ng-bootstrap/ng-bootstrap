@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
 	selector: 'ngbd-rating-template',
 	imports: [NgbRating],
 	templateUrl: './rating-template.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		i {
 			font-size: 1.5rem;

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 	selector: 'ngbd-datepicker-customday',
 	imports: [NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-customday.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.custom-day {
 			text-align: center;

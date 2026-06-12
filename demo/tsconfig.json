@@ -1,7 +1,6 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": "./",
 		"outDir": "../out-tsc/demo",
 		"types": ["@angular/localize"],
 		"paths": {
@@ -11,5 +10,13 @@
 	},
 	"files": ["src/main.ts"],
 	"include": ["src/**/*.d.ts"],
-	"exclude": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"]
+	"exclude": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"],
+	"angularCompilerOptions": {
+		"extendedDiagnostics": {
+			"checks": {
+				"nullishCoalescingNotNullable": "suppress",
+				"optionalChainNotNullable": "suppress"
+			}
+		}
+	}
 }

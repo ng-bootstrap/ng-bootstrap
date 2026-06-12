@@ -9,6 +9,8 @@
 	"angularCompilerOptions": {
 		"extendedDiagnostics": {
 			"checks": {
+				"nullishCoalescingNotNullable": "suppress",
+				"optionalChainNotNullable": "suppress",
 				"unusedStandaloneImports": "suppress"
 			}
 		}

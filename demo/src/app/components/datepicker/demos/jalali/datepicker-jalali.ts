@@ -1,4 +1,4 @@
-import { Component, inject, Injectable } from '@angular/core';
+import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarPersian,
@@ -32,6 +32,7 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
 	selector: 'ngbd-datepicker-jalali',
 	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-jalali.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarPersian },
 		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nPersian },

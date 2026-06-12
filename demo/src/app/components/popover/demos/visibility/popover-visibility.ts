@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-popover-visibility',
 	imports: [NgbPopover, DatePipe],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './popover-visibility.html',
 })
 export class NgbdPopoverVisibility {

@@ -1,8 +1,9 @@
-import { Component, inject, Type } from '@angular/core';
+import { Component, inject, Type, ChangeDetectionStrategy } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-confirm',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title" id="modal-title">Profile deletion</h4>
@@ -34,6 +35,7 @@ export class NgbdModalConfirm {
 
 @Component({
 	selector: 'ngbd-modal-confirm-autofocus',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title" id="modal-title">Profile deletion</h4>
@@ -69,7 +71,11 @@ const MODALS: { [name: string]: Type<any> } = {
 	autofocus: NgbdModalConfirmAutofocus,
 };
 
-@Component({ selector: 'ngbd-modal-focus', templateUrl: './modal-focus.html' })
+@Component({
+	selector: 'ngbd-modal-focus',
+	changeDetection: ChangeDetectionStrategy.Eager,
+	templateUrl: './modal-focus.html',
+})
 export class NgbdModalFocus {
 	private modalService = inject(NgbModal);
 

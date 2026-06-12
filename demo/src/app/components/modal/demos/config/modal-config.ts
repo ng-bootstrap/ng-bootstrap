@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
 	selector: 'ngbd-modal-config',
 	templateUrl: './modal-config.html',
 	// add NgbModalConfig and NgbModal to the component providers
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbModalConfig, NgbModal],
 })
 export class NgbdModalConfig {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbDropdown,
 	NgbDropdownToggle,
@@ -32,6 +32,7 @@ import {
 		NgbDropdownItem,
 		NgbDropdownButtonItem,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-custom-style.html',
 })
 export class NgbdNavCustomStyle {}

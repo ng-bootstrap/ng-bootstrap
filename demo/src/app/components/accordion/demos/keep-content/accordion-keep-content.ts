@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import {
 	NgbAccordionButton,
@@ -22,6 +22,7 @@ import {
 		NgbAccordionCollapse,
 		NgbAlert,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './accordion-keep-content.html',
 })
 export class NgbdAccordionKeepContent {

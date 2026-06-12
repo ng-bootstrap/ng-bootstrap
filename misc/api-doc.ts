@@ -114,7 +114,7 @@ function getJsDocTags(symbol: Symbol): {
 					obj[el.name] = { version, description: rest.join(' ').trim() };
 				}
 				return obj;
-		  }, {});
+			}, {});
 }
 
 class APIDocVisitor {

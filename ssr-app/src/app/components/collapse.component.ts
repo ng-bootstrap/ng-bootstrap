@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 
 @Component({
 	selector: 'collapse-component',
 	imports: [NgbCollapse],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div [ngbCollapse]="isCollapsed">
 			<div class="card">

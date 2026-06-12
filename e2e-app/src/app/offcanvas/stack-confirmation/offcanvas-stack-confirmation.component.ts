@@ -1,8 +1,9 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './offcanvas-stack-confirmation.component.html',
 })
 export class OffcanvasStackConfirmationComponent {

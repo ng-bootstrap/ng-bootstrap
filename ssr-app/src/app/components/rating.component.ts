@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
@@ -21,6 +21,7 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 			color: red;
 		}
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<ng-template #t let-fill="fill">
 			<span class="star" [class.full]="fill === 100">

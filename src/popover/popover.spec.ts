@@ -1153,7 +1153,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 	});
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', changeDetection: ChangeDetectionStrategy.Eager, template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -1165,6 +1165,7 @@ export class DestroyableCmpt implements OnDestroy {
 @Component({
 	selector: 'test-cmpt',
 	imports: [NgbPopover, NgbTooltip, DestroyableCmpt],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: ``,
 })
 export class TestComponent {
@@ -1203,6 +1204,7 @@ export class TestOnPushComponent {}
 @Component({
 	selector: 'test-hooks',
 	imports: [NgbPopover],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<div ngbPopover="popover"></div>`,
 })
 export class TestHooksComponent implements AfterViewInit {

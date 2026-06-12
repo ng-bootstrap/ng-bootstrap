@@ -16,6 +16,7 @@ import {
 	SimpleChanges,
 	TemplateRef,
 	ViewEncapsulation,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -73,6 +74,7 @@ export class NgbToastHeader {}
 			<ng-content />
 		</div>
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './toast.scss',
 })
 export class NgbToast implements AfterContentInit, OnChanges {

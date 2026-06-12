@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbDate,
@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 	selector: 'ngbd-datepicker-config',
 	imports: [NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-config.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbInputDatepickerConfig],
 })
 export class NgbdDatepickerConfig {

@@ -149,7 +149,7 @@ describe('ngb-datepicker-service', () => {
 
 			expect(() => {
 				service.set({ minDate: minDate, maxDate: new NgbDate(2017, 4, 1) });
-			}).toThrowError();
+			}).toThrow();
 		});
 
 		it(`should allow adjusting 'max' and 'min' dates at the same time`, () => {
@@ -677,7 +677,7 @@ describe('ngb-datepicker-service', () => {
 				expect(() => {
 					service.set({ minDate: new NgbDate(2017, 5, 1) });
 					service.getMonth(new NgbDate(2015, 5, 1));
-				}).toThrowError();
+				}).toThrow();
 			});
 
 			it(`should rebuild 'months' and 'years' only when year change`, () => {

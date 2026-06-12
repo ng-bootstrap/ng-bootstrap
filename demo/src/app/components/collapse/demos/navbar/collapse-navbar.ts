@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'ngbd-collapse-navbar',
 	imports: [NgbCollapse, RouterLink],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './collapse-navbar.html',
 })
 export class NgbdCollapseNavbar {

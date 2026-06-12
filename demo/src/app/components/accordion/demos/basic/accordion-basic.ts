@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbAccordionButton,
 	NgbAccordionDirective,
@@ -20,6 +20,7 @@ import {
 		NgbAccordionBody,
 		NgbAccordionCollapse,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './accordion-basic.html',
 })
 export class NgbdAccordionBasic {}

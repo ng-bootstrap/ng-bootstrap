@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import apiDocs from '../../../api-docs';
 import { NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig } from '../api-docs';
 import { NgbdComponentPage } from '../component-wrapper/component-page.class';
-import { MENU_SEPARATOR, MenuItem } from 'src/app/tokens';
+import { MENU_SEPARATOR, MenuItem } from '../../tokens';
 
 export function getApis(component: string) {
 	const components: string[] = [];

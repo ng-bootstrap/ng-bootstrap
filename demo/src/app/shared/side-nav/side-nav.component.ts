@@ -16,6 +16,8 @@ export class SideNavComponent {
 	deprecatedComponents = DEPRECATED_COMPONENTS;
 
 	isActive(currentRoute: any[]): boolean {
+		// TODO mig v22 - migrate to `isActive` method provided by '@angular/router'
+		// eslint-disable-next-line @typescript-eslint/no-deprecated
 		return this.router.isActive(this.router.createUrlTree(currentRoute), {
 			paths: 'subset',
 			queryParams: 'subset',

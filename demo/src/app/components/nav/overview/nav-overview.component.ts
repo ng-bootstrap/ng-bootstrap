@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
@@ -34,6 +34,7 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 		PageHeaderComponent,
 	],
 	templateUrl: './nav-overview.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdNavOverviewComponent extends NgbdOverviewPage {

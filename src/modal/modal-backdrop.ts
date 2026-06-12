@@ -9,6 +9,7 @@ import {
 	NgZone,
 	OnInit,
 	ViewEncapsulation,
+	ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -22,6 +23,7 @@ const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
 	selector: 'ngb-modal-backdrop',
 	encapsulation: ViewEncapsulation.None,
 	template: '',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	host: {
 		'[class]': '"modal-backdrop" + (backdropClass ? " " + backdropClass : "")',
 		'[class.show]': '!animation',

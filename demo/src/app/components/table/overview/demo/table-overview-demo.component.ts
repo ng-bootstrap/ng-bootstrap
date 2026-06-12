@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 interface Country {
@@ -11,6 +11,7 @@ interface Country {
 @Component({
 	selector: 'ngbd-table-overview-demo',
 	imports: [DecimalPipe],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<table class="table table-striped">
 			<thead>
