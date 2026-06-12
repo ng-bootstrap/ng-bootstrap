@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -7,7 +7,7 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
  * You can inject this service, typically in your root component, and customize its properties
  * to provide default values for all accordions used in the application.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbAccordionConfig {
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;

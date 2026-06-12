@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 import { NgbDateStruct } from '../ngb-date-struct';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
-export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
+export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY(): NgbDateAdapter<any> {
 	return new NgbDateStructAdapter();
 }
 
@@ -18,7 +18,7 @@ export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
  * See the [date format overview](#/components/datepicker/overview#date-model) for more details
  * and the [custom adapter demo](#/components/datepicker/examples#adapter) for an example.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_DATE_ADAPTER_FACTORY })
+@Service({ factory: NGB_DATEPICKER_DATE_ADAPTER_FACTORY })
 export abstract class NgbDateAdapter<D> {
 	/**
 	 * Converts a user-model date of type `D` to an `NgbDateStruct` for internal use.

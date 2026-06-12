@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
 import { Options } from '@popperjs/core';
 
@@ -8,7 +8,7 @@ import { Options } from '@popperjs/core';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the typeaheads used in the application.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbTypeaheadConfig {
 	container;
 	editable = true;

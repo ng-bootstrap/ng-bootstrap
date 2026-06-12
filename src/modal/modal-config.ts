@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Service, Injector } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -155,7 +155,7 @@ export type NgbModalUpdatableOptions = Pick<
  *
  * @since 3.1.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbModalConfig implements Required<NgbModalOptions> {
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;

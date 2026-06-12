@@ -1,4 +1,4 @@
-import {Component, Directive, Injectable, Input, Output} from '@angular/core';
+import {Component, Directive, Input, Output, Service} from '@angular/core';
 
 /**
  * Description
@@ -54,7 +54,7 @@ export class NgbComponent {}
  *
  * @since 2.0.0
  */
-@Injectable()
+@Service()
 export class NgbService {}
 
 /**

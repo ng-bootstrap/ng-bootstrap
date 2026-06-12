@@ -1,5 +1,5 @@
 import { NgbDate } from './ngb-date';
-import { Injectable } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export function fromJSDate(jsDate: Date) {
@@ -26,7 +26,7 @@ export function NGB_DATEPICKER_CALENDAR_FACTORY() {
  * The default implementation uses the Gregorian calendar. You can inject it in your own
  * implementations if necessary to simplify `NgbDate` calculations.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY })
+@Service({ factory: NGB_DATEPICKER_CALENDAR_FACTORY })
 export abstract class NgbCalendar {
 	/**
 	 * Returns the number of days per week.

@@ -5,7 +5,7 @@ import {
 	EnvironmentInjector,
 	EventEmitter,
 	inject,
-	Injectable,
+	Service,
 	Injector,
 	NgZone,
 	TemplateRef,
@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModalRef } from './modal-ref';
 import { NgbModalWindow } from './modal-window';
 import { take } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbModalStack {
 	private _applicationRef = inject(ApplicationRef);
 	private _injector = inject(Injector);

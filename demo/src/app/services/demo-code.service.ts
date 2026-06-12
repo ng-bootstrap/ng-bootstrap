@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
 import sources from '../../demos-sources';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Service()
 export class NgbdDemoCodeService {
 	getDemoSource(fileName?: string): string {
 		return fileName ? sources[fileName] || '' : '';

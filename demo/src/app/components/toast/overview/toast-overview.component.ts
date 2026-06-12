@@ -70,7 +70,7 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
         delay?: number;
       }
 
-      @Injectable({ providedIn: 'root' })
+      @Service()
       export class AppToastService {
         private readonly _toasts = signal<ToastInfo[]>([]);
         readonly toasts = this.toasts.asReadonly();

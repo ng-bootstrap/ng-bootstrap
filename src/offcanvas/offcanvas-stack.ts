@@ -4,7 +4,7 @@ import {
 	createComponent,
 	EventEmitter,
 	inject,
-	Injectable,
+	Service,
 	Injector,
 	NgZone,
 	TemplateRef,
@@ -20,7 +20,7 @@ import { NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbOffcanvasBackdrop } from './offcanvas-backdrop';
 import { NgbOffcanvasPanel } from './offcanvas-panel';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbOffcanvasStack {
 	private _applicationRef = inject(ApplicationRef);
 	private _injector = inject(Injector);

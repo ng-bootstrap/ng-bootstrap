@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { IS_PRODUCTION } from '../tokens';
@@ -9,9 +9,7 @@ declare const gtag: any;
  * Simple Google Analytics service. Note that all its methods don't do anything unless the app
  * is deployed on ng-bootstrap.github.io. This avoids sending events and page views during development.
  */
-@Injectable({
-	providedIn: 'root',
-})
+@Service()
 export class AnalyticsService {
 	private isProduction = inject(IS_PRODUCTION);
 	private router = inject(Router);

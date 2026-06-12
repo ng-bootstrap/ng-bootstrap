@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDatepicker } from './datepicker';
 
 /**
@@ -8,7 +8,7 @@ import { NgbDatepicker } from './datepicker';
  *
  * @since 5.2.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbDatepickerKeyboardService {
 	/**
 	 * Processes a keyboard event.

@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import {Service} from '@angular/core';
 
 /**
  * Service defining default values for progress bars
  */
-@Injectable()
+@Service()
 export class ProgressbarConfig {
 
   /**

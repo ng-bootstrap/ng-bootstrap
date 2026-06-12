@@ -1,4 +1,4 @@
-import { Injectable, signal, TemplateRef } from '@angular/core';
+import { Service, signal, TemplateRef } from '@angular/core';
 
 export interface Toast {
 	template: TemplateRef<any>;
@@ -6,7 +6,7 @@ export interface Toast {
 	delay?: number;
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ToastService {
 	private readonly _toasts = signal<Toast[]>([]);
 	readonly toasts = this._toasts.asReadonly();

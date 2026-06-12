@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -35,7 +35,7 @@ export interface NgbToastOptions {
  *
  * @since 5.0.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbToastConfig implements NgbToastOptions {
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;

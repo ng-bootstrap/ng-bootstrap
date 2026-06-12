@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbScrollSpyProcessChanges } from './scrollspy.service';
 import { defaultProcessChanges } from './scrollspy.utils';
 
@@ -10,7 +10,7 @@ import { defaultProcessChanges } from './scrollspy.utils';
  *
  * @since 15.1.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbScrollSpyConfig {
 	scrollBehavior: 'auto' | 'smooth' = 'smooth';
 	processChanges: NgbScrollSpyProcessChanges = defaultProcessChanges;

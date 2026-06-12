@@ -1,4 +1,4 @@
-import { Injectable, PipeTransform } from '@angular/core';
+import { inject, PipeTransform, Service } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
@@ -42,12 +42,13 @@ function matches(country: Country, term: string, pipe: PipeTransform) {
 	);
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class CountryService {
 	private _loading$ = new BehaviorSubject<boolean>(true);
 	private _search$ = new Subject<void>();
 	private _countries$ = new BehaviorSubject<Country[]>([]);
 	private _total$ = new BehaviorSubject<number>(0);
+	private readonly pipe = inject(DecimalPipe);
 
 	private _state: State = {
 		page: 1,
@@ -57,7 +58,7 @@ export class CountryService {
 		sortDirection: '',
 	};
 
-	constructor(private pipe: DecimalPipe) {
+	constructor() {
 		this._search$
 			.pipe(
 				tap(() => this._loading$.next(true)),

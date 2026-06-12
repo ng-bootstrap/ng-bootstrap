@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Service, Injector } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -90,7 +90,7 @@ export interface NgbOffcanvasOptions {
  *
  * @since 12.1.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;
