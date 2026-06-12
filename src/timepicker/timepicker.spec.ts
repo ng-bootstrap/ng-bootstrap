@@ -1,13 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import {
-	ChangeDetectionStrategy,
-	Component,
-	DebugElement,
-	Injectable,
-	provideZoneChangeDetection,
-} from '@angular/core';
+import { Component, DebugElement, Injectable, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -1633,7 +1627,6 @@ describe('ngb-timepicker', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbTimepicker, FormsModule, ReactiveFormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

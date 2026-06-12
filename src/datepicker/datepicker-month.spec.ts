@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth } from './datepicker.module';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
@@ -402,7 +402,6 @@ describe('ngb-datepicker-month', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

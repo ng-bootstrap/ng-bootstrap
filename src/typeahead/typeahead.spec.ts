@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -1113,7 +1113,6 @@ describe('ngb-typeahead', () => {
 @Component({
 	selector: 'typeahead-test-cmp',
 	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {
@@ -1209,7 +1208,6 @@ class TestOnPushComponent {
 @Component({
 	selector: 'test-async-cmp',
 	imports: [NgbHighlight, NgbTypeahead],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestAsyncComponent {

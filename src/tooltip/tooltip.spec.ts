@@ -6,7 +6,6 @@ import { environment } from '../utils/transition/ngbTransition';
 import { By } from '@angular/platform-browser';
 import {
 	AfterViewInit,
-	ChangeDetectionStrategy,
 	Component,
 	NgZone,
 	provideZoneChangeDetection,
@@ -1055,7 +1054,6 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 @Component({
 	selector: 'test-cmpt',
 	imports: [NgbTooltip],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: ``,
 })
 export class TestComponent {
@@ -1092,7 +1090,6 @@ export class TestOnPushComponent {}
 @Component({
 	selector: 'test-hooks',
 	imports: [NgbTooltip],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<div ngbTooltip="tooltip"></div>`,
 })
 export class TestHooksComponent implements AfterViewInit {

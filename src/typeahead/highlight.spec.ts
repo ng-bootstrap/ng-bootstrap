@@ -2,7 +2,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NgbHighlight } from './highlight';
 
@@ -206,7 +206,6 @@ describe('ngb-highlight', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbHighlight],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {}

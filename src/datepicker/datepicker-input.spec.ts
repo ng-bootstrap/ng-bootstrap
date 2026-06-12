@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import {
@@ -1254,7 +1254,6 @@ class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 @Component({
 	selector: 'test-native-cmp',
 	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth, FormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestNativeComponent {
@@ -1264,7 +1263,6 @@ class TestNativeComponent {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth, FormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
@@ -1331,7 +1331,6 @@ describe('ngb-modal', () => {
 
 @Component({
 	selector: 'custom-injector-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: 'Some content',
 })
 export class CustomInjectorCmpt implements OnDestroy {
@@ -1342,7 +1341,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', changeDetection: ChangeDetectionStrategy.Eager, template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -1353,7 +1352,6 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'modal-content-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveModalCmpt {
@@ -1366,14 +1364,12 @@ export class WithActiveModalCmpt {
 
 @Component({
 	selector: 'modal-autofocus-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusModalCmpt {}
 
 @Component({
 	selector: 'modal-firstfocusable-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1383,7 +1379,6 @@ export class WithFirstFocusableModalCmpt {}
 
 @Component({
 	selector: 'modal-skip-tabindex-firstfocusable-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1394,7 +1389,6 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 @Component({
 	selector: 'test-cmpt',
 	imports: [DestroyableCmpt],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
@@ -1488,7 +1482,6 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>

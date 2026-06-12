@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy, Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
@@ -1112,7 +1112,6 @@ class TestComponentOnPush {}
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbCarousel, NgbSlide, TestComponentOnPush],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

@@ -2,13 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
-import {
-	Component,
-	TemplateRef,
-	DebugElement,
-	provideZoneChangeDetection,
-	ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, TemplateRef, DebugElement, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
@@ -1361,7 +1355,6 @@ describe('ngb-datepicker', () => {
 		FormsModule,
 		ReactiveFormsModule,
 	],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {
