@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbScrollSpy,
 	NgbScrollSpyItem,
@@ -9,7 +9,6 @@ import {
 @Component({
 	selector: 'scrollspy-component',
 	imports: [NgbScrollSpy, NgbScrollSpyItem, NgbScrollSpyFragment, NgbScrollSpyMenu],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div class="row">
 			<div class="col-4">

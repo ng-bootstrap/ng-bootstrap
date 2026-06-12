@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbAccordionConfig,
 	NgbAccordionButton,
@@ -22,7 +22,6 @@ import {
 		NgbAccordionCollapse,
 	],
 	templateUrl: './accordion-config.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbAccordionConfig],
 })
 export class NgbdAccordionConfig {

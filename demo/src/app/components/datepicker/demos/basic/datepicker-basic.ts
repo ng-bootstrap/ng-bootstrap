@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbCalendar, NgbDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -6,7 +6,6 @@ import { JsonPipe } from '@angular/common';
 @Component({
 	selector: 'ngbd-datepicker-basic',
 	imports: [NgbDatepicker, FormsModule, JsonPipe],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './datepicker-basic.html',
 })
 export class NgbdDatepickerBasic {

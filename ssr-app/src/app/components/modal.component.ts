@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 function getDismissReason(reason: any): string {
@@ -14,7 +14,6 @@ function getDismissReason(reason: any): string {
 
 @Component({
 	selector: 'modal-component',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<ng-template #content let-modal>
 			<div class="modal-header">

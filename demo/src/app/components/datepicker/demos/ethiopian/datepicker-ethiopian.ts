@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarEthiopian,
@@ -21,7 +21,6 @@ import { FormsModule } from '@angular/forms';
 			overflow: hidden;
 		}
 	`,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarEthiopian },
 		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nAmharic },

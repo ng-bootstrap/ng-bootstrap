@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
@@ -6,7 +6,6 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 	imports: [NgbPopover],
 	templateUrl: './popover-customclass.html',
 	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.my-custom-class {
 			background: aliceblue;

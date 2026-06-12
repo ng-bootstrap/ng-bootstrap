@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	imports: [FormsModule, NgbTooltip, NgStyle],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './tooltip-position.component.html',
 })
 export class TooltipPositionComponent {

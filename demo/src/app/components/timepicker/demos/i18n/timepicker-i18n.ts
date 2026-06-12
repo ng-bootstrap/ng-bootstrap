@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import { NgbTimepickerI18n, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +33,6 @@ export class CustomTimepickerI18n extends NgbTimepickerI18n {
 	selector: 'ngbd-timepicker-i18n',
 	imports: [NgbTimepicker, NgbAlert, FormsModule],
 	templateUrl: './timepicker-i18n.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		I18n,
 		{

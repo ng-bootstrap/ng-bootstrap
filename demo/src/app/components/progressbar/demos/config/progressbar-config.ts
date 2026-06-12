@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbProgressbarConfig, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap/progressbar';
 
 @Component({
 	selector: 'ngbd-progressbar-config',
 	imports: [NgbProgressbar],
 	templateUrl: './progressbar-config.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbProgressbarConfig],
 })
 export class NgbdProgressbarConfig {

@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
 	selector: 'ngbd-dropdown-navbar',
 	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './dropdown-navbar.html',
 })
 export class NgbdDropdownNavbar {

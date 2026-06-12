@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbDropdown,
 	NgbDropdownItem,
@@ -10,7 +10,6 @@ import {
 @Component({
 	selector: 'dropdown-component',
 	imports: [NgbDropdown, NgbDropdownItem, NgbDropdownButtonItem, NgbDropdownMenu, NgbDropdownToggle],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<div ngbDropdown class="d-inline-block">
 			<button class="btn btn-outline-primary" id="dropdown1" ngbDropdownToggle>Toggle dropdown</button>

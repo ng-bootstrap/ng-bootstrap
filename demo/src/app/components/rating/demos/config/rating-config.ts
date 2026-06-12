@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbRatingConfig, NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
 	selector: 'ngbd-rating-config',
 	imports: [NgbRating],
 	templateUrl: './rating-config.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbRatingConfig],
 })
 export class NgbdRatingConfig {

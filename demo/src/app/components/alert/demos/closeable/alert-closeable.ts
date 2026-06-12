@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 interface Alert {
@@ -44,7 +44,6 @@ const ALERTS: Alert[] = [
 @Component({
 	selector: 'ngbd-alert-closeable',
 	imports: [NgbAlert],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './alert-closeable.html',
 })
 export class NgbdAlertCloseable {

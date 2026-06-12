@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgbTypeaheadConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -75,7 +75,6 @@ const states = [
 			width: 300px;
 		}
 	`,
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbTypeaheadConfig],
 })
 export class NgbdTypeaheadConfig {

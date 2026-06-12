@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbDropdown,
 	NgbDropdownToggle,
@@ -10,7 +10,6 @@ import {
 @Component({
 	selector: 'ngbd-dropdown-disabled',
 	imports: [NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './dropdown-disabled.html',
 })
 export class NgbdDropdownDisabled {}

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgbTimepicker, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { JsonPipe } from '@angular/common';
@@ -6,7 +6,6 @@ import { JsonPipe } from '@angular/common';
 @Component({
 	selector: 'ngbd-timepicker-validation',
 	imports: [NgbTimepicker, ReactiveFormsModule, JsonPipe],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './timepicker-validation.html',
 })
 export class NgbdTimepickerValidation {

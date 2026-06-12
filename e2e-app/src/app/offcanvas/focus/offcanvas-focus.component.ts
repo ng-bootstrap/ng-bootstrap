@@ -1,10 +1,9 @@
-import { Component, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	imports: [FormsModule],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './offcanvas-focus.component.html',
 })
 export class OffcanvasFocusComponent {

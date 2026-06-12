@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarIslamicCivil,
@@ -48,7 +48,6 @@ export class IslamicI18n extends NgbDatepickerI18n {
 	selector: 'ngbd-datepicker-islamiccivil',
 	imports: [NgbDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-islamiccivil.html',
-	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarIslamicCivil },
 		{ provide: NgbDatepickerI18n, useClass: IslamicI18n },

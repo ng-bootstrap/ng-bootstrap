@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { LIB_VERSIONS } from '../../tokens';
 import { CodeComponent } from '../../shared/code.component';
@@ -8,7 +8,6 @@ import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.componen
 
 @Component({
 	imports: [CodeComponent, RouterLink, PageHeaderComponent, NgbdPageWrapper],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {
