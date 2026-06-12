@@ -133,6 +133,7 @@ export class NgbDatepickerContent {
 	},
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker-month.scss',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		@if (viewModel.weekdays.length > 0) {
 			<div class="ngb-dp-week ngb-dp-weekdays" role="row">

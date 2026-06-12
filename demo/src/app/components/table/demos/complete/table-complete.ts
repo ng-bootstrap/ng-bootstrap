@@ -1,5 +1,5 @@
 import { AsyncPipe, DecimalPipe } from '@angular/common';
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Country } from './country';
@@ -13,6 +13,7 @@ import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 	selector: 'ngbd-table-complete',
 	imports: [DecimalPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdSortableHeader, NgbPagination],
 	templateUrl: './table-complete.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [CountryService, DecimalPipe],
 })
 export class NgbdTableComplete {

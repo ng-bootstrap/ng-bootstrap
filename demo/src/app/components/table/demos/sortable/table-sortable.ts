@@ -1,4 +1,13 @@
-import { Component, Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+	Component,
+	Directive,
+	EventEmitter,
+	Input,
+	Output,
+	QueryList,
+	ViewChildren,
+	ChangeDetectionStrategy,
+} from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 interface Country {
@@ -73,6 +82,7 @@ export class NgbdSortableHeader {
 @Component({
 	selector: 'ngbd-table-sortable',
 	imports: [DecimalPipe, NgbdSortableHeader],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './table-sortable.html',
 })
 export class NgbdTableSortable {

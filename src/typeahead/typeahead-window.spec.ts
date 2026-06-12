@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { NgbTypeaheadWindow } from './typeahead-window';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
@@ -196,6 +196,7 @@ describe('ngb-typeahead-window', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbTypeaheadWindow],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

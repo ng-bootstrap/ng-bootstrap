@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbPagination,
 	NgbPaginationNext,
@@ -12,6 +12,7 @@ const FILTER_PAG_REGEX = /[^0-9]/g;
 @Component({
 	selector: 'ngbd-pagination-customization',
 	imports: [NgbPagination, NgbPaginationNext, NgbPaginationNumber, NgbPaginationPrevious, NgbPaginationPages],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './pagination-customization.html',
 })
 export class NgbdPaginationCustomization {

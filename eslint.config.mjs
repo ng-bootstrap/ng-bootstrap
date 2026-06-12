@@ -48,6 +48,7 @@ export default tseslint.config(
 			'@angular-eslint/directive-class-suffix': 'off',
 			'@angular-eslint/no-host-metadata-property': 'off',
 			'@angular-eslint/prefer-inject': 'off',
+			'@angular-eslint/prefer-on-push-component-change-detection': 'off',
 			'@typescript-eslint/adjacent-overload-signatures': 'off',
 			'@typescript-eslint/explicit-module-boundary-types': 'off',
 			'@typescript-eslint/no-deprecated': 'error',

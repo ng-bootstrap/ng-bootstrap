@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap/carousel';
 
 @Component({
 	selector: 'ngbd-carousel-basic',
 	imports: [NgbCarousel, NgbSlide],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './carousel-basic.html',
 })
 export class NgbdCarouselBasic {

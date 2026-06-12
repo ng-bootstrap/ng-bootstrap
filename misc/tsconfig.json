@@ -3,7 +3,8 @@
 		"target": "es2015",
 		"module": "commonjs",
 		"lib": ["es2017"],
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"strict": false
 	},
 	"include": ["./*.ts"]
 }

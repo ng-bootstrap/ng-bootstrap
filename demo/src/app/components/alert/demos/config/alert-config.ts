@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbAlertConfig, NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
@@ -6,6 +6,7 @@ import { NgbAlertConfig, NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 	imports: [NgbAlert],
 	templateUrl: './alert-config.html',
 	// add NgbAlertConfig  to the component providers
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbAlertConfig],
 })
 export class NgbdAlertConfig {

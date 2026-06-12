@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTimepickerConfig, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 	selector: 'ngbd-timepicker-config',
 	imports: [NgbTimepicker, FormsModule],
 	templateUrl: './timepicker-config.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbTimepickerConfig],
 })
 export class NgbdTimepickerConfig {

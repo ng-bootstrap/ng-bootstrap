@@ -11,7 +11,7 @@ import {
 	withPreloading,
 } from '@angular/router';
 import { ROUTES } from './app/routes';
-import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
+import { provideHttpClient, withNoXsrfProtection, withXhr } from '@angular/common/http';
 import { inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { AnalyticsService } from './app/services/analytics.service';
 
@@ -27,7 +27,7 @@ bootstrapApplication(AppComponent, {
 				scrollPositionRestoration: 'enabled',
 			}),
 		),
-		provideHttpClient(withNoXsrfProtection()),
+		provideHttpClient(withXhr(), withNoXsrfProtection()),
 		provideBrowserGlobalErrorListeners(),
 		provideAppInitializer(() => inject(AnalyticsService).start()),
 	],

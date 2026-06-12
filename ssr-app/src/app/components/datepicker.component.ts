@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbDatepicker, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'datepicker-component',
 	imports: [FormsModule, NgbInputDatepicker, NgbDatepicker],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<form class="row row-cols-lg-auto">
 			<div class="col-12 mb-3 me-5">

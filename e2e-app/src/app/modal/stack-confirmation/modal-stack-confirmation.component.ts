@@ -1,7 +1,8 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './modal-stack-confirmation.component.html',
 })
 export class ModalStackConfirmationComponent {

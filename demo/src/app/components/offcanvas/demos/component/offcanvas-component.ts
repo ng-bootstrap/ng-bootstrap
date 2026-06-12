@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
@@ -20,6 +20,7 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/off
 			</button>
 		</div>
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		/* Opening offcanvas as a component requires this style in order to scroll */
 		:host {
@@ -36,6 +37,7 @@ export class NgbdOffcanvasContent {
 
 @Component({
 	selector: 'ngbd-offcanvas-component',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './offcanvas-component.html',
 })
 export class NgbdOffcanvasComponent {

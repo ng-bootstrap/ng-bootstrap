@@ -1633,6 +1633,7 @@ describe('ngb-timepicker', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbTimepicker, FormsModule, ReactiveFormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

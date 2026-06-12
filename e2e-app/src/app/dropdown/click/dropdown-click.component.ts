@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
 	NgbDropdown,
@@ -10,6 +10,7 @@ import {
 
 @Component({
 	imports: [FormsModule, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem, NgbDropdownButtonItem],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<h3>Dropdown click tests</h3>
 		<form>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarHebrew,
@@ -40,6 +40,7 @@ import { JsonPipe } from '@angular/common';
 			direction: ltr;
 		}
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarHebrew },
 		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew },

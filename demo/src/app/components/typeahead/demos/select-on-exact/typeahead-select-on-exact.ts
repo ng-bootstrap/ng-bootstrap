@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
@@ -62,7 +62,12 @@ const states: { name: string }[] = [
 	selector: 'ngbd-typeahead-select-on-exact',
 	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-select-on-exact.html',
-	styles: `.form-control { width: 300px; }`,
+	changeDetection: ChangeDetectionStrategy.Eager,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadSelectOnExact {
 	model: any;

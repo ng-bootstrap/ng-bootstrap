@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Component, inputBinding, signal } from '@angular/core';
+import { Component, inputBinding, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import {
 	NgbPagination,
@@ -897,6 +897,7 @@ describe('ngb-pagination', () => {
 		NgbPaginationPrevious,
 		NgbPaginationPages,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

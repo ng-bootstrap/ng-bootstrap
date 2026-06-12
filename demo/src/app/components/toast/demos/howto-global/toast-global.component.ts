@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, inject, OnDestroy, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 import { ToastService } from './toast-service';
@@ -7,6 +7,7 @@ import { ToastsContainer } from './toasts-container.component';
 @Component({
 	selector: 'ngbd-toast-global',
 	imports: [NgbTooltip, ToastsContainer],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './toast-global.component.html',
 })
 export class NgbdToastGlobal implements OnDestroy {

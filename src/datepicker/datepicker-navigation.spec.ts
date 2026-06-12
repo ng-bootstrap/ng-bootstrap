@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
 import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/datepicker/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 
 import { NavigationEvent } from './datepicker-view-model';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
@@ -157,6 +157,7 @@ describe('ngb-datepicker-navigation', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepickerNavigation],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbDate,
@@ -12,6 +12,7 @@ import { JsonPipe } from '@angular/common';
 	selector: 'ngbd-datepicker-range-popup',
 	imports: [NgbInputDatepicker, FormsModule, JsonPipe],
 	templateUrl: './datepicker-range-popup.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.dp-hidden {
 			width: 0;

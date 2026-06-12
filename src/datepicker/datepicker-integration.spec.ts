@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Injectable, Type } from '@angular/core';
+import { Component, Injectable, Type, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {
 	NgbDatepicker,
@@ -267,6 +267,7 @@ describe('ngb-datepicker integration', () => {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {}

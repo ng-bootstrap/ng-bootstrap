@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Live, ARIA_LIVE_DELAY } from './live';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -43,6 +43,7 @@ describe('LiveAnnouncer', () => {
 
 @Component({
 	selector: 'live-test-cmp',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `<button (click)="say()">say</button>`,
 })
 class TestComponent {

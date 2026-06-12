@@ -1,4 +1,4 @@
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, provideZoneChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
@@ -215,6 +215,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbToast, NgbToastHeader],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 export class TestComponent {

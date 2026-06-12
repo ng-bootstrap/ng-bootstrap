@@ -8,6 +8,18 @@
 			"sourceRoot": "src",
 			"projectType": "library",
 			"architect": {
+				"test-build": {
+					"builder": "@angular/build:application",
+					"options": {
+						"outputPath": "dist/ng-bootstrap-test-build",
+						"index": "src/test/index.html",
+						"browser": "src/test/browser-entry.ts",
+						"polyfills": ["@angular/localize/init"],
+						"tsConfig": "src/tsconfig.spec.json",
+						"styles": ["node_modules/bootstrap/dist/css/bootstrap.min.css", "src/test/test-styles.css"],
+						"scripts": []
+					}
+				},
 				"build": {
 					"builder": "@angular/build:ng-packagr",
 					"options": {
@@ -26,6 +38,7 @@
 				"test": {
 					"builder": "@angular/build:unit-test",
 					"options": {
+						"buildTarget": "ng-bootstrap:test-build",
 						"tsConfig": "src/tsconfig.spec.json",
 						"providersFile": "src/test-providers.ts",
 						"setupFiles": ["src/setup-test.ts"],

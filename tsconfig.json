@@ -2,7 +2,6 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"rootDir": "./",
-		"baseUrl": "./",
 		"outDir": "./dist/out-tsc",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
@@ -19,7 +18,8 @@
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["./src"],
 			"@ng-bootstrap/ng-bootstrap/*": ["./src/*/public-api"]
-		}
+		},
+		"strict": false
 	},
 	"angularCompilerOptions": {
 		"enableI18nLegacyMessageIdFormat": false,

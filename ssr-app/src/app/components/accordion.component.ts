@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbAccordionDirective,
 	NgbAccordionItem,
@@ -20,6 +20,7 @@ import {
 		NgbAccordionBody,
 		NgbAccordionButton,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<style>
 			.custom-header::after {

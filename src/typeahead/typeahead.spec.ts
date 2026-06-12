@@ -1113,6 +1113,7 @@ describe('ngb-typeahead', () => {
 @Component({
 	selector: 'typeahead-test-cmp',
 	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {
@@ -1209,6 +1210,7 @@ class TestOnPushComponent {
 @Component({
 	selector: 'test-async-cmp',
 	imports: [NgbHighlight, NgbTypeahead],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestAsyncComponent {

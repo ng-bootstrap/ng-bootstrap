@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	TemplateRef,
+	ViewEncapsulation,
+	ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { toString } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbHighlight } from './highlight';
@@ -35,6 +44,7 @@ export interface ResultTemplateContext {
 		role: 'listbox',
 		'[id]': 'id',
 	},
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
 			<ngb-highlight [result]="formatter(result)" [term]="term" />

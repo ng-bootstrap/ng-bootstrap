@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgbCalendar, NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-footertemplate',
 	imports: [NgbInputDatepicker, FormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './datepicker-footertemplate.html',
 })
 export class NgbdDatepickerFootertemplate {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -13,6 +13,7 @@ import {
 	selector: 'ngbd-nav-dynamic',
 	imports: [NgbNavContent, NgbNav, NgbNavItem, NgbNavItemRole, NgbNavLinkButton, NgbNavLinkBase, NgbNavOutlet],
 	templateUrl: './nav-dynamic.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.close {
 			font-size: 1.4rem;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbDatepicker, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 
@@ -6,6 +6,7 @@ import { NgbDatepicker, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/da
 	selector: 'ngbd-datepicker-multiple',
 	imports: [NgbDatepicker, NgbInputDatepicker, FormsModule],
 	templateUrl: './datepicker-multiple.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		select.form-select {
 			margin: 0.5rem 0.5rem 0 0;

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { Options } from '@popperjs/core';
 
 @Component({
 	selector: 'ngbd-popover-options',
 	imports: [NgbPopover],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './popover-options.html',
 })
 export class NgbdPopoverOptions {

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbAccordionDirective,
 	NgbAccordionItem,
@@ -20,6 +20,7 @@ import {
 	],
 	templateUrl: './accordion-header.html',
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styles: `
 		.custom-header::after {
 			content: none;

@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarEthiopian,
@@ -16,11 +16,12 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './datepicker-ethiopian.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: `
-	  ngbd-datepicker-ethiopian .ngb-dp-weekday {
+		ngbd-datepicker-ethiopian .ngb-dp-weekday {
 			font-size: x-small;
 			overflow: hidden;
 		}
 	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarEthiopian },
 		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nAmharic },

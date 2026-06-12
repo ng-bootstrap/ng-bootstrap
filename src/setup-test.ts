@@ -1,7 +1,4 @@
 import { expect } from 'vitest';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './test/test-styles.css';
-import '@angular/localize/init';
 import { locators, Locator } from 'vitest/browser';
 
 expect.extend({

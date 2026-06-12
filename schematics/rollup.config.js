@@ -35,7 +35,7 @@ module.exports = [
 				'VERSIONS.POPPER': version(pkg.devDependencies['@popperjs/core']),
 			}),
 			typescript({
-				tsconfig: path.join(__dirname, 'tsconfig.rollup.json'),
+				tsconfig: path.join(__dirname, 'tsconfig.json'),
 			}),
 		],
 	},

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
@@ -73,7 +73,12 @@ const states: State[] = [
 	selector: 'ngbd-typeahead-prevent-manual-entry',
 	imports: [NgbTypeahead, FormsModule, JsonPipe],
 	templateUrl: './typeahead-prevent-manual-entry.html',
-	styles: `.form-control { width: 300px; }`,
+	changeDetection: ChangeDetectionStrategy.Eager,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
 })
 export class NgbdTypeaheadPreventManualEntry {
 	model: State;

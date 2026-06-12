@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
 	NgbDropdown,
 	NgbDropdownItem,
@@ -36,6 +36,7 @@ import {
 		NgbNavModule,
 		NgbNavOutlet,
 	],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './nav-focus.component.html',
 })
 export class NavFocusComponent {

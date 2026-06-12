@@ -1113,6 +1113,7 @@ class TestComponentOnPush {}
 @Component({
 	selector: 'test-cmp',
 	imports: [NgbCarousel, NgbSlide, TestComponentOnPush],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: '',
 })
 class TestComponent {

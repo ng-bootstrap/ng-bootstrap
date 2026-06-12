@@ -12,7 +12,9 @@ export function app(): express.Express {
 	const browserDistFolder = resolve(serverDistFolder, '../browser');
 	const indexHtml = join(serverDistFolder, 'index.server.html');
 
-	const commonEngine = new CommonEngine();
+	// TODO mig v22 - migrate server.ts file to modern pattern
+	// eslint-disable-next-line @typescript-eslint/no-deprecated
+	const commonEngine = new CommonEngine({ allowedHosts: ['localhost'] });
 
 	server.set('view engine', 'html');
 	server.set('views', browserDistFolder);

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { ROUTES } from './app.routes';
 
 @Component({
 	selector: 'app-navigation',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	template: `
 		<a role="button" class="btn btn-outline-primary ms-3" id="navigate-home" href="#/">Menu</a>
 		<div [hidden]="isHidden">

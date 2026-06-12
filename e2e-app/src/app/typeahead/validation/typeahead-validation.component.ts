@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { merge, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
@@ -68,6 +68,7 @@ const states = [
 
 @Component({
 	imports: [FormsModule, NgbTypeahead, ReactiveFormsModule],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './typeahead-validation.component.html',
 })
 export class TypeaheadValidationComponent {

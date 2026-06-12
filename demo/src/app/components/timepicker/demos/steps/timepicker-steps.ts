@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTimepicker, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -6,6 +6,7 @@ import { JsonPipe } from '@angular/common';
 @Component({
 	selector: 'ngbd-timepicker-steps',
 	imports: [NgbTimepicker, FormsModule, JsonPipe],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './timepicker-steps.html',
 })
 export class NgbdTimepickerSteps {

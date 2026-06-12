@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgbTypeaheadConfig, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap/typeahead';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -70,7 +70,12 @@ const states = [
 	selector: 'ngbd-typeahead-config',
 	imports: [NgbTypeahead, FormsModule],
 	templateUrl: './typeahead-config.html',
-	styles: `.form-control { width: 300px; }`,
+	styles: `
+		.form-control {
+			width: 300px;
+		}
+	`,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [NgbTypeaheadConfig],
 })
 export class NgbdTypeaheadConfig {

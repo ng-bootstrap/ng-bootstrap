@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
 	selector: 'ngbd-tooltip-tplwithcontext',
 	imports: [NgbTooltip],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './tooltip-tplwithcontext.html',
 })
 export class NgbdTooltipTplwithcontext {
