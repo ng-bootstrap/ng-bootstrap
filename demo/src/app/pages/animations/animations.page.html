@@ -24,7 +24,7 @@
 		(unit and e2e tests) unchanged.
 	</p>
 
-	<ngbd-page-header title="How to setup" fragment="setup"></ngbd-page-header>
+	<ngbd-page-header title="How to setup" fragment="setup" />
 
 	<p>
 		Animations are enabled by default. You can opt-out and disable them with a simple flag and everything will run
@@ -37,17 +37,17 @@
 		flag:
 	</p>
 
-	<ngbd-code [snippet]="config"></ngbd-code>
+	<ngbd-code [snippet]="config" />
 
 	<p>You can also choose to disable them by component type, by changing the component configuration:</p>
 
-	<ngbd-code [snippet]="widgetConfig"></ngbd-code>
+	<ngbd-code [snippet]="widgetConfig" />
 
 	<p>The last option is to activate/deactivate animations at the component instance level:</p>
 
-	<ngbd-code lang="html" [snippet]="widget"></ngbd-code>
+	<ngbd-code lang="html" [snippet]="widget" />
 
-	<ngbd-page-header title="Limitations" fragment="limitations"></ngbd-page-header>
+	<ngbd-page-header title="Limitations" fragment="limitations" />
 
 	<ol>
 		<li>
@@ -60,11 +60,11 @@
 				imperative API, then toggle some flag at the animation end actually remove the element from the DOM.
 			</p>
 
-			<ngbd-code [snippet]="alert"></ngbd-code>
+			<ngbd-code [snippet]="alert" />
 
 			<p>It will also not work with the control flow syntaxe like <code>&#64;if</code> or <code>&#64;for</code>.</p>
 
-			<ngbd-code [snippet]="alertControlFlow"></ngbd-code>
+			<ngbd-code [snippet]="alertControlFlow" />
 		</li>
 		<li>
 			<p>
@@ -90,7 +90,7 @@
 		</li>
 	</ol>
 
-	<ngbd-page-header title="Cheatsheet" fragment="cheatsheet"></ngbd-page-header>
+	<ngbd-page-header title="Cheatsheet" fragment="cheatsheet" />
 
 	<p>
 		You don't have anything special to do to handle animations apart from alert and toast. But you have some new APIs
@@ -104,20 +104,20 @@
 		<a routerLink="/components/accordion/api" fragment="NgbAccordion">API docs</a> for payload details.
 	</p>
 
-	<ngbd-code [snippet]="recipeAccordion"></ngbd-code>
+	<ngbd-code [snippet]="recipeAccordion" />
 
 	<h4>Alert</h4>
 
 	<p>New <code>(closed)</code> output that notifies that transition has finished.</p>
 
-	<ngbd-code [snippet]="recipeAlertTpl"></ngbd-code>
+	<ngbd-code [snippet]="recipeAlertTpl" />
 
 	<p>
 		New <code>.close()</code> method that triggers closing transition and returns an observable to be notified when it
 		is done.
 	</p>
 
-	<ngbd-code [snippet]="recipeAlertCmp"></ngbd-code>
+	<ngbd-code [snippet]="recipeAlertCmp" />
 
 	<h4>Carousel</h4>
 
@@ -126,7 +126,7 @@
 		<a routerLink="/components/carousel/api" fragment="NgbCarousel">API docs</a> for payload details.
 	</p>
 
-	<ngbd-code [snippet]="recipeCarousel"></ngbd-code>
+	<ngbd-code [snippet]="recipeCarousel" />
 
 	<h4>Collapse</h4>
 
@@ -135,13 +135,13 @@
 		method.
 	</p>
 
-	<ngbd-code [snippet]="recipeCollapse"></ngbd-code>
+	<ngbd-code [snippet]="recipeCollapse" />
 
 	<h4>Modal</h4>
 
 	<p>New <code>.shown</code> and <code>.hidden</code> observable APIs.</p>
 
-	<ngbd-code [snippet]="recipeModal"></ngbd-code>
+	<ngbd-code [snippet]="recipeModal" />
 
 	<h4>Nav</h4>
 
@@ -150,24 +150,24 @@
 		<a routerLink="/components/nav/api" fragment="NgbNav">API docs</a> for payload details.
 	</p>
 
-	<ngbd-code [snippet]="recipeNav"></ngbd-code>
+	<ngbd-code [snippet]="recipeNav" />
 
 	<h4>Popover / Tooltip</h4>
 
 	<p>They both have new <code>(shown)</code> and <code>(hidden)</code> outputs.</p>
 
-	<ngbd-code [snippet]="recipePopoverTooltip"></ngbd-code>
+	<ngbd-code [snippet]="recipePopoverTooltip" />
 
 	<h4>Toast</h4>
 
 	<p>New <code>(shown)</code> and <code>hidden</code> outputs.</p>
 
-	<ngbd-code [snippet]="recipeToastTpl"></ngbd-code>
+	<ngbd-code [snippet]="recipeToastTpl" />
 
 	<p>
 		New <code>.show()</code> and <code>.hide()</code> methods that trigger transitions and return an observable to be
 		notified when it is done.
 	</p>
 
-	<ngbd-code [snippet]="recipeToastCmp"></ngbd-code>
+	<ngbd-code [snippet]="recipeToastCmp" />
 </ngbd-page-wrapper>

@@ -941,7 +941,7 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
-		<ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></ng-template>
+		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
 		</ng-template>

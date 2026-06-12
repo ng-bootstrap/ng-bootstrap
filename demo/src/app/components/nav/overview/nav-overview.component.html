@@ -46,7 +46,7 @@
 		<a routerLink="../examples">working demos</a>):
 	</p>
 
-	<ngbd-code [snippet]="BASIC"></ngbd-code>
+	<ngbd-code [snippet]="BASIC" />
 
 	<br />
 
@@ -64,7 +64,7 @@
 		integration.
 	</p>
 
-	<ngbd-code [snippet]="MARKUP"></ngbd-code>
+	<ngbd-code [snippet]="MARKUP" />
 
 	<p>
 		You can also use the <code>&lt;nav&gt;</code> element if you prefer. See the
@@ -81,7 +81,7 @@
 		<code>ngbNavItem=""</code> and <code>[ngbNavItem]="''"</code> are indistinguishable.
 	</p>
 
-	<ngbd-code [snippet]="SELECTION"></ngbd-code>
+	<ngbd-code [snippet]="SELECTION" />
 
 	<p>It is also possible to select disabled navs with <code>[activeId]</code> and <code>.select()</code>.</p>
 
@@ -125,7 +125,7 @@
 		and add your own. Or you could simply override them by providing <code>role="myRole"</code> where necessary.
 	</p>
 
-	<ngbd-code [snippet]="ROLES"></ngbd-code>
+	<ngbd-code [snippet]="ROLES" />
 </ngbd-page-header>
 
 <ngbd-page-header fragment="routing" [title]="overview['routing']">
@@ -139,15 +139,15 @@
 		component you'd have something like this:
 	</p>
 
-	<ngbd-code [snippet]="ROUTER_TS"></ngbd-code>
+	<ngbd-code [snippet]="ROUTER_TS" />
 
 	<p>and in your template:</p>
 
-	<ngbd-code [snippet]="ROUTER"></ngbd-code>
+	<ngbd-code [snippet]="ROUTER" />
 </ngbd-page-header>
 
 <ngbd-page-header fragment="keyboard-shortcuts" [title]="overview['keyboard-shortcuts']">
-	<ngbd-api-docs-badge [since]="{ version: '6.1.0' }"></ngbd-api-docs-badge>
+	<ngbd-api-docs-badge [since]="{ version: '6.1.0' }" />
 
 	<p>
 		Keyboard support is activated by default and can be changed via the <code>[keyboard]</code> input. Depending on the

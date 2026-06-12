@@ -18,7 +18,7 @@ import { NgbdComponentPage } from '../component-wrapper/component-page.class';
 				[files]="demo.files"
 				[showStackblitz]="demo.showStackblitz ?? true"
 			>
-				<ng-template [ngComponentOutlet]="demo.type"></ng-template>
+				<ng-template [ngComponentOutlet]="demo.type" />
 			</ngbd-widget-demo>
 		}
 	`,

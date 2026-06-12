@@ -18,7 +18,7 @@ const htmlFiles = ['src/**/*.html', 'demo/**/*.html', 'e2e-app/**/*.html', 'ssr-
 
 export default tseslint.config(
 	{
-		ignores: ['**/dist/**', '**/coverage/**', '**/.angular/**', '**/test-reports/**'],
+		ignores: ['**/dist/**', '**/coverage/**', '**/.angular/**', '**/test-reports/**', 'demo/src/public/releases/**'],
 	},
 	{
 		files: tsFiles,
@@ -78,5 +78,8 @@ export default tseslint.config(
 	{
 		files: htmlFiles,
 		extends: [...angular.configs.templateRecommended, eslintConfigPrettier],
+		rules: {
+			'@angular-eslint/template/prefer-self-closing-tags': 'error',
+		},
 	},
 );

@@ -28,7 +28,7 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 			</span>
 		</ng-template>
 
-		<ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+		<ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5" />
 	`,
 })
 export class RatingComponent {

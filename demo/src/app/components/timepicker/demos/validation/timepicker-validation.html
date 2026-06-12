@@ -1,7 +1,7 @@
 <p>Illustrates custom validation, you have to select time between 12:00 and 13:59</p>
 
 <div class="mb-3">
-	<ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
+	<ngb-timepicker [formControl]="ctrl" required />
 	@if (ctrl.valid) {
 		<div class="small form-text text-success">Great choice</div>
 	}

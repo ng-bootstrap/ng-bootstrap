@@ -4,6 +4,6 @@ import { NgbProgressbar } from '@ng-bootstrap/ng-bootstrap/progressbar';
 @Component({
 	selector: 'progress-component',
 	imports: [NgbProgressbar],
-	template: ` <ngb-progressbar [showValue]="true" type="success" [value]="50"></ngb-progressbar> `,
+	template: ` <ngb-progressbar [showValue]="true" type="success" [value]="50" /> `,
 })
 export class ProgressComponent {}

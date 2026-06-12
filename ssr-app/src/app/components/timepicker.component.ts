@@ -5,7 +5,7 @@ import { NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 @Component({
 	selector: 'timepicker-component',
 	imports: [NgbTimepicker, FormsModule],
-	template: ` <ngb-timepicker [(ngModel)]="time"></ngb-timepicker> `,
+	template: ` <ngb-timepicker [(ngModel)]="time" /> `,
 })
 export class TimepickerComponent {
 	time = { hour: 6, minute: 5 };

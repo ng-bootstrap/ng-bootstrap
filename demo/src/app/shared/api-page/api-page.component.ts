@@ -42,13 +42,13 @@ function toMenuItems(names: string[]): MenuItem[] {
 	imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig],
 	template: `
 		@for (component of components; track component) {
-			<ngbd-api-docs [directive]="component"></ngbd-api-docs>
+			<ngbd-api-docs [directive]="component" />
 		}
 		@for (klass of classes; track klass) {
-			<ngbd-api-docs-class [type]="klass"></ngbd-api-docs-class>
+			<ngbd-api-docs-class [type]="klass" />
 		}
 		@for (config of configs; track config) {
-			<ngbd-api-docs-config [type]="config"></ngbd-api-docs-config>
+			<ngbd-api-docs-config [type]="config" />
 		}
 	`,
 })
