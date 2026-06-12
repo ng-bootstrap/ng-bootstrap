@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
 import { NgbDatepickerConfig } from './datepicker-config';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
@@ -12,7 +12,7 @@ import { Options } from '@popperjs/core';
  *
  * @since 5.2.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
 	autoClose: boolean | 'inside' | 'outside' = true;
 	container: null | 'body';

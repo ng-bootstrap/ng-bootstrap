@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Service, Injector } from '@angular/core';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbOffcanvasRef } from './offcanvas-ref';
 import { NgbOffcanvasStack } from './offcanvas-stack';
@@ -11,7 +11,7 @@ import { NgbOffcanvasStack } from './offcanvas-stack';
  *
  * @since 12.1.0
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbOffcanvas {
 	private _injector = inject(Injector);
 	private _offcanvasStack = inject(NgbOffcanvasStack);

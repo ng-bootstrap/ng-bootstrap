@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
 import * as prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
@@ -10,9 +10,7 @@ prism.hooks.add('before-highlightall', (env) => {
 	env['elements'] = [];
 });
 
-@Injectable({
-	providedIn: 'root',
-})
+@Service()
 export class CodeHighlightService {
 	highlight(code: string, lang: string) {
 		return prism.highlight(code.trim(), prism.languages[lang], lang);

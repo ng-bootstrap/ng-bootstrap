@@ -1,4 +1,4 @@
-import { inject, Injectable, LOCALE_ID } from '@angular/core';
+import { inject, Injectable, Service, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { NgbDateStruct } from './ngb-date-struct';
 
@@ -15,9 +15,8 @@ import { NgbDateStruct } from './ngb-date-struct';
  * [Hebrew calendar demo](#/components/datepicker/calendars#hebrew) on how to extend this class and define
  * a custom provider for i18n.
  */
-@Injectable({
-	providedIn: 'root',
-	useFactory: () => new NgbDatepickerI18nDefault(),
+@Service({
+	factory: () => new NgbDatepickerI18nDefault(),
 })
 export abstract class NgbDatepickerI18n {
 	/**

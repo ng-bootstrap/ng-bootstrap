@@ -1,4 +1,4 @@
-import { Component, Directive, Injectable } from '@angular/core';
+import { Component, Directive } from '@angular/core';
 
 /**
  * An internal component
@@ -36,6 +36,6 @@ export interface InternalInterface {
  *
  * @internal
  */
-@Injectable()
+@Service()
 export class InternalService {
 }

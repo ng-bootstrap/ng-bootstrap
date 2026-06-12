@@ -204,7 +204,7 @@ class APIDocVisitor {
 					];
 				}
 				// SERVICE
-				else if (isDecoratorOfType(decorator, ['Injectable'])) {
+				else if (isDecoratorOfType(decorator, ['Service']) || isDecoratorOfType(decorator, ['Injectable'])) {
 					members = this.visitMembers(classDeclaration.members);
 
 					return [

@@ -1,14 +1,13 @@
 import { formatDate } from '@angular/common';
-import { Injectable, LOCALE_ID, inject } from '@angular/core';
+import { Injectable, LOCALE_ID, Service, inject } from '@angular/core';
 
 /**
  * Type of the service supplying day periods (for example, 'AM' and 'PM') to NgbTimepicker component.
  * The default implementation of this service honors the Angular locale, and uses the registered locale data,
  * as explained in the Angular i18n guide.
  */
-@Injectable({
-	providedIn: 'root',
-	useFactory: () => new NgbTimepickerI18nDefault(),
+@Service({
+	factory: () => new NgbTimepickerI18nDefault(),
 })
 export abstract class NgbTimepickerI18n {
 	/**

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID, DOCUMENT } from '@angular/core';
+import { ChangeDetectorRef, inject, Service, NgZone, OnDestroy, PLATFORM_ID, DOCUMENT } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbScrollSpyRef } from './scrollspy';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -103,9 +103,7 @@ export interface NgbScrollToOptions extends ScrollOptions {
  *
  * @since 15.1.0
  */
-@Injectable({
-	providedIn: 'root',
-})
+@Service()
 export class NgbScrollSpyService implements NgbScrollSpyRef, OnDestroy {
 	private _observer: IntersectionObserver | null = null;
 

@@ -1,4 +1,4 @@
-import { inject, Injectable, DOCUMENT } from '@angular/core';
+import { inject, Service, DOCUMENT } from '@angular/core';
 
 /** Type for the callback used to revert the scrollbar. */
 export type ScrollbarReverter = () => void;
@@ -9,7 +9,7 @@ export type ScrollbarReverter = () => void;
  * It allows to hide the scrollbar and compensate the lack of a vertical scrollbar
  * by adding an equivalent padding on the right of the body, and to revert this change.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ScrollBar {
 	private _document = inject(DOCUMENT);
 

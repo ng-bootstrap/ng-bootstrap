@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { Options } from '@popperjs/core';
@@ -9,7 +9,7 @@ import { Options } from '@popperjs/core';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the popovers used in the application.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbPopoverConfig {
 	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;

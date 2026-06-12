@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Service, Injector } from '@angular/core';
 
 import { NgbModalConfig, NgbModalOptions } from './modal-config';
 import { NgbModalRef } from './modal-ref';
@@ -10,7 +10,7 @@ import { NgbModalStack } from './modal-stack';
  * Creating a modal is straightforward: create a component or a template and pass it as an argument to
  * the `.open()` method.
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class NgbModal {
 	private _injector = inject(Injector);
 	private _modalStack = inject(NgbModalStack);

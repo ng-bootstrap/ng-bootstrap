@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Service } from '@angular/core';
 import { NgbTimeStruct } from './ngb-time-struct';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
-export function NGB_DATEPICKER_TIME_ADAPTER_FACTORY() {
+export function NGB_DATEPICKER_TIME_ADAPTER_FACTORY(): NgbTimeAdapter<any> {
 	return new NgbTimeStructAdapter();
 }
 
@@ -19,7 +19,7 @@ export function NGB_DATEPICKER_TIME_ADAPTER_FACTORY() {
  *
  * @since 2.2.0
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_TIME_ADAPTER_FACTORY })
+@Service({ factory: NGB_DATEPICKER_TIME_ADAPTER_FACTORY })
 export abstract class NgbTimeAdapter<T> {
 	/**
 	 * Converts a user-model time of type `T` to an `NgbTimeStruct` for internal use.
