@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 const BADGES = {
 	Directive: 'success',
@@ -11,7 +11,6 @@ const BADGES = {
 
 @Component({
 	selector: 'ngbd-api-docs-badge',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<h5>
 			@if (deprecated()) {

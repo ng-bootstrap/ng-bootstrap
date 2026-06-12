@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { regExpEscape, removeAccents, toString } from '@ng-bootstrap/ng-bootstrap/utils';
 
 /**
@@ -11,7 +11,6 @@ import { regExpEscape, removeAccents, toString } from '@ng-bootstrap/ng-bootstra
  */
 @Component({
 	selector: 'ngb-highlight',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	template: `
 		@for (part of parts; track $index) {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
@@ -12,7 +12,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 	selector: 'ngbd-pagination-overview',
 	imports: [CodeComponent, NgbAlert, NgbdApiDocsBadge, RouterLink, PageHeaderComponent],
 	templateUrl: './pagination-overview.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdPaginationOverviewComponent extends NgbdOverviewPage {

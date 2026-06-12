@@ -1085,7 +1085,6 @@ export class TestComponent {
 @Component({
 	selector: 'test-onpush-cmpt',
 	imports: [NgbTooltip],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: ``,
 })
 export class TestOnPushComponent {}

@@ -1195,7 +1195,6 @@ export class TestComponent {
 
 @Component({
 	selector: 'test-onpush-cmpt',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbPopover],
 	template: ``,
 })

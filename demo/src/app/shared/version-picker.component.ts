@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { LIB_VERSIONS } from '../tokens';
@@ -13,7 +13,6 @@ interface Version {
 
 @Component({
 	selector: 'ngbd-version-picker',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [AsyncPipe, NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem],
 	template: `
 		<div class="nav-item" ngbDropdown>

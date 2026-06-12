@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 
 import { AnalyticsService } from '../../services/analytics.service';
 import { Snippet } from '../../services/snippet';
@@ -25,7 +25,6 @@ const TYPES: { [name: string]: string } = {
 
 @Component({
 	selector: 'ngbd-widget-demo',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		RouterLink,
 		CodeComponent,

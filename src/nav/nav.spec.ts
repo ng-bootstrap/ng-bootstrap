@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -1297,7 +1297,6 @@ if (isBrowserVisible('ngb-nav animations')) {
 				<div [ngbNavOutlet]="n"></div>
 			`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
-			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			reduceMotion = signal(false);
@@ -1593,7 +1592,6 @@ if (isBrowserVisible('ngb-nav animations')) {
 		NgbNavOutlet,
 		NgbNavPane,
 	],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	activeId = signal<number | boolean | string | undefined>(undefined);

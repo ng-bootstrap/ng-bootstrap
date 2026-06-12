@@ -1655,7 +1655,6 @@ class TestComponent {
 	selector: 'test-cmp-on-push',
 	imports: [NgbTimepicker, FormsModule],
 	template: '',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponentOnPush {}
 

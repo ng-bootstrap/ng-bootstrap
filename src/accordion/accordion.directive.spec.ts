@@ -2,17 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import {
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	Inject,
-	input,
-	QueryList,
-	signal,
-	ViewChild,
-	ViewChildren,
-} from '@angular/core';
+import { Component, ElementRef, Inject, input, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 
 import {
 	NgbAccordionButton,
@@ -613,7 +603,6 @@ describe('ngb-accordion directive', () => {
 					}
 				</div>
 			`,
-			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class CloseOthersComponent {
 			keys = ['one', 'two', 'three', 'four'];
@@ -973,7 +962,6 @@ describe('on push change detection strategy', () => {
 			NgbAccordionCollapse,
 			NgbAccordionBody,
 		],
-		changeDetection: ChangeDetectionStrategy.OnPush,
 	})
 	class TestOnPushComponent {}
 	it('Update the other panels accordingly', () => {
@@ -1020,7 +1008,6 @@ it(`should allow querying from the body template`, () => {
 				</div>
 			</div>
 		`,
-		changeDetection: ChangeDetectionStrategy.OnPush,
 	})
 	class QueryTestComponent {
 		@ViewChild('bar')
@@ -1090,7 +1077,6 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 				</div>
 			`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
-			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			reduceMotion = true;
@@ -1268,7 +1254,6 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 		NgbAccordionBody,
 		NgbAccordionToggle,
 	],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	destroyOnHide = input(true);

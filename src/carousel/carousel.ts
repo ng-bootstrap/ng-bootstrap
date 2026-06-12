@@ -3,7 +3,6 @@ import {
 	AfterContentInit,
 	afterNextRender,
 	AfterViewInit,
-	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ContentChildren,
@@ -70,7 +69,6 @@ export class NgbSlide {
 	selector: 'ngb-carousel',
 	exportAs: 'ngbCarousel',
 	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		class: 'carousel slide',

@@ -1,12 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	EventEmitter,
-	inject,
-	Input,
-	Output,
-	ViewEncapsulation,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
 import { MonthViewModel, NavigationEvent } from './datepicker-view-model';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
@@ -15,7 +7,6 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 @Component({
 	selector: 'ngb-datepicker-navigation',
 	imports: [NgbDatepickerNavigationSelect],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrl: './datepicker-navigation.scss',
 	template: `

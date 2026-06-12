@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import docs from '../../../api-docs';
 import { ClassDesc, MethodDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
@@ -13,7 +13,6 @@ import { COMPONENT_DATA } from '../../tokens';
  */
 @Component({
 	selector: 'ngbd-api-docs-class',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [RouterLink, NgbdApiDocsBadge],
 	templateUrl: './api-docs-class.component.html',
 })

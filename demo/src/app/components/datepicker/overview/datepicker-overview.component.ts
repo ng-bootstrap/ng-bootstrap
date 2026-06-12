@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
@@ -9,7 +9,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 
 @Component({
 	selector: 'ngbd-datepicker-overview',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [CodeComponent, RouterLink, NgbAlert, NgbdDatepickerOverviewDemoComponent, PageHeaderComponent],
 	templateUrl: './datepicker-overview.component.html',
 	host: {

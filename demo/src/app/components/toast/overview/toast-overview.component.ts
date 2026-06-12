@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { RouterLink } from '@angular/router';
@@ -32,7 +32,6 @@ import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.cl
 		PageHeaderComponent,
 	],
 	templateUrl: './toast-overview.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdToastOverviewComponent extends NgbdOverviewPage {

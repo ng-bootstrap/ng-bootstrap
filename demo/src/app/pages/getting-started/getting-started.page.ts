@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { LIB_VERSIONS } from '../../tokens';
 import { PageHeaderComponent } from '../../shared/page-header.component';
@@ -8,7 +8,6 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [PageHeaderComponent, CodeComponent, NgbCollapse, NgbAlert, NgbdPageWrapper],
 	templateUrl: './getting-started.page.html',
 })

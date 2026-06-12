@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { server } from 'vitest/browser';
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
@@ -193,7 +193,6 @@ if (isBrowserVisible('ngb-alert animations')) {
 			imports: [NgbAlert],
 			template: ` <ngb-alert type="success" (closed)="onClose()">Cool!</ngb-alert>`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
-			changeDetection: ChangeDetectionStrategy.OnPush,
 		})
 		class TestAnimationComponent {
 			reduceMotion = true;
@@ -246,7 +245,6 @@ if (isBrowserVisible('ngb-alert animations')) {
 	selector: 'test-cmp',
 	imports: [NgbAlert],
 	template: '',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class TestComponent {
 	closed = signal(false);

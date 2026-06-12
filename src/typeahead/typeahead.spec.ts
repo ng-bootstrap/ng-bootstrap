@@ -1193,7 +1193,6 @@ class TestComponent {
 @Component({
 	selector: 'test-onpush-cmp',
 	imports: [NgbHighlight, NgbTypeahead, FormsModule],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: '',
 })
 class TestOnPushComponent {

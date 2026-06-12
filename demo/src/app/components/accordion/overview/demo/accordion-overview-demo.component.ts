@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import {
 	NgbAccordionDirective,
 	NgbAccordionButton,
@@ -11,7 +11,6 @@ import {
 
 @Component({
 	selector: 'ngbd-accordion-demo',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		NgbAccordionButton,
 		NgbAccordionDirective,

@@ -1,13 +1,4 @@
-import {
-	afterNextRender,
-	ChangeDetectionStrategy,
-	Component,
-	computed,
-	contentChildren,
-	inject,
-	input,
-	signal,
-} from '@angular/core';
+import { afterNextRender, Component, computed, contentChildren, inject, input, signal } from '@angular/core';
 import { PageHeaderComponent } from '../page-header.component';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu } from '@ng-bootstrap/ng-bootstrap/dropdown';
@@ -17,7 +8,6 @@ import { SideNavComponent } from '../side-nav/side-nav.component';
 
 @Component({
 	selector: 'ngbd-page-wrapper',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		NgbCollapse,
 		NgbDropdown,

@@ -1,14 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	ElementRef,
-	EventEmitter,
-	inject,
-	Input,
-	NgZone,
-	Output,
-	ViewEncapsulation,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, NgZone, Output, ViewEncapsulation } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -24,7 +14,6 @@ import { ngbAlertFadingTransition } from './alert-transition';
 @Component({
 	selector: 'ngb-alert',
 	exportAs: 'ngbAlert',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		role: 'alert',

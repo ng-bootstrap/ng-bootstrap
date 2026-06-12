@@ -1,5 +1,4 @@
 import {
-	ChangeDetectionStrategy,
 	Component,
 	ContentChild,
 	Directive,
@@ -153,7 +152,6 @@ export class NgbPaginationPages {
 @Component({
 	selector: 'ngb-pagination',
 	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: {
 		role: 'navigation',
 	},
