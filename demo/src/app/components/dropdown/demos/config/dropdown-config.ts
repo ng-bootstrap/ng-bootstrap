@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
 	NgbDropdownConfig,
 	NgbDropdown,
@@ -15,8 +15,9 @@ import {
 	providers: [NgbDropdownConfig],
 })
 export class NgbdDropdownConfig {
-	constructor(config: NgbDropdownConfig) {
+	constructor() {
 		// customize default values of dropdowns used by this component tree
+		const config = inject(NgbDropdownConfig);
 		config.placement = 'top-start';
 		config.autoClose = false;
 	}

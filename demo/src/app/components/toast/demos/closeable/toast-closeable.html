@@ -1,4 +1,4 @@
-@if (show) {
+@if (show()) {
 	<ngb-toast header="Click my close icon →" [autohide]="false" (hidden)="close()">
 		If you close me, I will automatically re-appear after a few seconds.
 	</ngb-toast>

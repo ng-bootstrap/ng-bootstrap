@@ -7,7 +7,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 	encapsulation: ViewEncapsulation.None,
 })
 export class NgbdOffcanvasOptions {
-	private offcanvasService = inject(NgbOffcanvas);
+	private readonly offcanvasService = inject(NgbOffcanvas);
 
 	openEnd(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { position: 'end' });

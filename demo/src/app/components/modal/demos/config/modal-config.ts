@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap/modal';
 
 @Component({
@@ -8,11 +8,11 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap/modal';
 	providers: [NgbModalConfig, NgbModal],
 })
 export class NgbdModalConfig {
-	constructor(
-		config: NgbModalConfig,
-		private modalService: NgbModal,
-	) {
+	private readonly modalService = inject(NgbModal);
+
+	constructor() {
 		// customize default values of modals used by this component tree
+		const config = inject(NgbModalConfig);
 		config.backdrop = 'static';
 		config.keyboard = false;
 	}

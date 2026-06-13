@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 import {
 	NgbNavContent,
@@ -25,5 +25,5 @@ import {
 	templateUrl: './nav-keep-content.html',
 })
 export class NgbdNavKeep {
-	active = 1;
+	readonly active = signal(1);
 }

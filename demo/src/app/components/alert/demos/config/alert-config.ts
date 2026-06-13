@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbAlertConfig, NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 @Component({
@@ -9,8 +9,9 @@ import { NgbAlertConfig, NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 	providers: [NgbAlertConfig],
 })
 export class NgbdAlertConfig {
-	constructor(alertConfig: NgbAlertConfig) {
+	constructor() {
 		// customize default values of alerts used by this component tree
+		const alertConfig = inject(NgbAlertConfig);
 		alertConfig.type = 'success';
 		alertConfig.dismissible = false;
 	}

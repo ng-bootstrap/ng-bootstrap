@@ -37,7 +37,7 @@
 			</p>
 		</ng-template>
 	</li>
-	<li [ngbNavItem]="4" [disabled]="disabled">
+	<li [ngbNavItem]="4" [disabled]="disabled()">
 		<button ngbNavLink>I'm disabled</button>
 		<ng-template ngbNavContent>
 			<p>
@@ -56,10 +56,10 @@
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
 <div class="mb-3">
-	<button class="btn btn-sm btn-outline-primary" [disabled]="active === 2" (click)="nav.select(2)">
+	<button class="btn btn-sm btn-outline-primary" [disabled]="active() === 2" (click)="nav.select(2)">
 		Select second tab
 	</button>
 	<button class="btn btn-sm btn-outline-primary ms-2" (click)="toggleDisabled()">Toggle last disabled</button>
 </div>
 
-<pre>Active: {{ active }}</pre>
+<pre>Active: {{ active() }}</pre>

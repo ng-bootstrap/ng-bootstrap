@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
@@ -7,6 +7,6 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 	templateUrl: './toast-prevent-autohide.html',
 })
 export class NgbdToastPreventAutohide {
-	show = false;
-	autohide = true;
+	readonly show = signal(false);
+	readonly autohide = signal(true);
 }

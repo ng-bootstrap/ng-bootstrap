@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
 	NgbAccordionConfig,
 	NgbAccordionButton,
@@ -25,8 +25,8 @@ import {
 	providers: [NgbAccordionConfig],
 })
 export class NgbdAccordionConfig {
-	constructor(config: NgbAccordionConfig) {
+	constructor() {
 		// customize default values of accordions used by this component tree
-		config.closeOthers = true;
+		inject(NgbAccordionConfig).closeOthers = true;
 	}
 }

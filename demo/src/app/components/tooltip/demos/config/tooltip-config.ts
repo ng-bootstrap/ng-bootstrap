@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbTooltipConfig, NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip';
 
 @Component({
@@ -8,8 +8,9 @@ import { NgbTooltipConfig, NgbTooltip } from '@ng-bootstrap/ng-bootstrap/tooltip
 	providers: [NgbTooltipConfig],
 })
 export class NgbdTooltipConfig {
-	constructor(config: NgbTooltipConfig) {
+	constructor() {
 		// customize default values of tooltips used by this component tree
+		const config = inject(NgbTooltipConfig);
 		config.placement = 'end';
 		config.triggers = 'click';
 	}

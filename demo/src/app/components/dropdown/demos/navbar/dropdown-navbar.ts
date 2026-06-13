@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem } from '@ng-bootstrap/ng-bootstrap/dropdown';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbDropdown, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem } from
 	templateUrl: './dropdown-navbar.html',
 })
 export class NgbdDropdownNavbar {
-	collapsed = true;
+	readonly collapsed = signal(true);
 }

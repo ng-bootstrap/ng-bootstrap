@@ -29,7 +29,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 	`,
 })
 export class NgbdModalConfirm {
-	modal = inject(NgbActiveModal);
+	readonly modal = inject(NgbActiveModal);
 }
 
 @Component({
@@ -61,7 +61,7 @@ export class NgbdModalConfirm {
 	`,
 })
 export class NgbdModalConfirmAutofocus {
-	modal = inject(NgbActiveModal);
+	readonly modal = inject(NgbActiveModal);
 }
 
 const MODALS: { [name: string]: Type<any> } = {
@@ -74,7 +74,7 @@ const MODALS: { [name: string]: Type<any> } = {
 	templateUrl: './modal-focus.html',
 })
 export class NgbdModalFocus {
-	private modalService = inject(NgbModal);
+	private readonly modalService = inject(NgbModal);
 
 	open(name: string) {
 		this.modalService.open(MODALS[name]);

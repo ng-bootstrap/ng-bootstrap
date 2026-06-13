@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 	templateUrl: './toast-inline.html',
 })
 export class NgbdToastInline {
-	show = true;
+	readonly show = signal(true);
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -19,8 +19,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 	`,
 })
 export class NgbdModal1Content {
-	private modalService = inject(NgbModal);
-	activeModal = inject(NgbActiveModal);
+	private readonly modalService = inject(NgbModal);
+	readonly activeModal = inject(NgbActiveModal);
 
 	open() {
 		this.modalService.open(NgbdModal2Content, { size: 'lg' });
@@ -42,7 +42,7 @@ export class NgbdModal1Content {
 	`,
 })
 export class NgbdModal2Content {
-	activeModal = inject(NgbActiveModal);
+	readonly activeModal = inject(NgbActiveModal);
 }
 
 @Component({
@@ -50,8 +50,8 @@ export class NgbdModal2Content {
 	templateUrl: './modal-stacked.html',
 })
 export class NgbdModalStacked {
-	private modalService = inject(NgbModal);
-	modalsNumber: WritableSignal<number> = signal(0);
+	private readonly modalService = inject(NgbModal);
+	readonly modalsNumber = signal(0);
 
 	constructor() {
 		this.modalService.activeInstances.pipe(takeUntilDestroyed()).subscribe((list) => {

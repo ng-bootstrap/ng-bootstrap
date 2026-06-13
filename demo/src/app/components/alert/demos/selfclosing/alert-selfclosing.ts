@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
@@ -12,22 +12,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class NgbdAlertSelfclosing {
 	private _message$ = new Subject<string>();
 
-	staticAlertClosed = false;
-	successMessage = '';
+	readonly staticAlertClosed = signal(false);
+	readonly successMessage = signal('');
 
-	@ViewChild('staticAlert', { static: false }) staticAlert: NgbAlert;
-	@ViewChild('selfClosingAlert', { static: false }) selfClosingAlert: NgbAlert;
+	readonly staticAlert = viewChild<NgbAlert>('staticAlert');
+	readonly selfClosingAlert = viewChild<NgbAlert>('selfClosingAlert');
 
 	constructor() {
-		setTimeout(() => this.staticAlert.close(), 20000);
+		setTimeout(() => this.staticAlert()?.close(), 20000);
 
 		this._message$
 			.pipe(
 				takeUntilDestroyed(),
-				tap((message) => (this.successMessage = message)),
+				tap((message) => this.successMessage.set(message)),
 				debounceTime(5000),
 			)
-			.subscribe(() => this.selfClosingAlert?.close());
+			.subscribe(() => this.selfClosingAlert()?.close());
 	}
 
 	public changeSuccessMessage() {

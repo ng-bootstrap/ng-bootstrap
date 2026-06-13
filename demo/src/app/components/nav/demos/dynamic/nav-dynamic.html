@@ -1,5 +1,5 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-	@for (id of navs; track id) {
+	@for (id of navs(); track id) {
 		<li [ngbNavItem]="id">
 			<button ngbNavLink>
 				Tab {{ id }}
@@ -17,4 +17,4 @@
 
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-<pre>Active: {{ active }}</pre>
+<pre>Active: {{ active() }}</pre>

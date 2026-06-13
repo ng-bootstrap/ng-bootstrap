@@ -1,4 +1,4 @@
-import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap/offcanvas';
@@ -9,8 +9,8 @@ import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstra
 	templateUrl: './offcanvas-basic.html',
 })
 export class NgbdOffcanvasBasic {
-	private offcanvasService = inject(NgbOffcanvas);
-	closeResult: WritableSignal<string> = signal('');
+	private readonly offcanvasService = inject(NgbOffcanvas);
+	readonly closeResult = signal('');
 
 	open(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title' }).result.then(

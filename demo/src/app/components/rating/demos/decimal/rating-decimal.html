@@ -13,6 +13,6 @@
 <ngb-rating [(rate)]="rating" [starTemplate]="t" [readonly]="true" [max]="5" [ariaValueText]="ariaValueText" />
 
 <hr />
-<pre>Rate: <b>{{ rating }}</b></pre>
-<button class="btn btn-sm btn-outline-primary me-2" (click)="rating = 1.35">1.35</button>
-<button class="btn btn-sm btn-outline-primary me-2" (click)="rating = 4.72">4.72</button>
+<pre>Rate: <b>{{ rating() }}</b></pre>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="rating.set(1.35)">1.35</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="rating.set(4.72)">4.72</button>

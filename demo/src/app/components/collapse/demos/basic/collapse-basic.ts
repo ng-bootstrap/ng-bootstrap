@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 	templateUrl: './collapse-basic.html',
 })
 export class NgbdCollapseBasic {
-	isCollapsed = false;
+	readonly isCollapsed = signal(false);
 }

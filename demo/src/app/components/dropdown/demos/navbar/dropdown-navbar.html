@@ -32,14 +32,14 @@
 			class="navbar-toggler"
 			type="button"
 			aria-controls="navbarContent"
-			[attr.aria-expanded]="!collapsed"
+			[attr.aria-expanded]="!collapsed()"
 			aria-label="Toggle navigation"
-			(click)="collapsed = !collapsed"
+			(click)="collapsed.update((v) => !v)"
 		>
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<div class="navbar-collapse" [class.collapse]="collapsed" id="navbarContent">
+		<div class="navbar-collapse" [class.collapse]="collapsed()" id="navbarContent">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item" ngbDropdown>
 					<a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button"> Static </a>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgbPaginationConfig, NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
@@ -8,10 +8,11 @@ import { NgbPaginationConfig, NgbPagination } from '@ng-bootstrap/ng-bootstrap/p
 	providers: [NgbPaginationConfig],
 })
 export class NgbdPaginationConfig {
-	page = 4;
+	readonly page = signal(4);
 
-	constructor(config: NgbPaginationConfig) {
+	constructor() {
 		// customize default values of paginations used by this component tree
+		const config = inject(NgbPaginationConfig);
 		config.size = 'sm';
 		config.boundaryLinks = true;
 	}

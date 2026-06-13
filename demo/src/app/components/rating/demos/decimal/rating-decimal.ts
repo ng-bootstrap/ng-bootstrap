@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
@@ -24,7 +24,7 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 	`,
 })
 export class NgbdRatingDecimal {
-	rating = 3.14;
+	readonly rating = signal(3.14);
 
 	ariaValueText(current: number, max: number) {
 		return `${current} out of ${max} hearts`;

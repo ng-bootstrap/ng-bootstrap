@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
@@ -7,10 +7,10 @@ import { NgbToast } from '@ng-bootstrap/ng-bootstrap/toast';
 	templateUrl: './toast-closeable.html',
 })
 export class NgbdToastCloseable {
-	show = true;
+	readonly show = signal(true);
 
 	close() {
-		this.show = false;
-		setTimeout(() => (this.show = true), 3000);
+		this.show.set(false);
+		setTimeout(() => this.show.set(true), 3000);
 	}
 }

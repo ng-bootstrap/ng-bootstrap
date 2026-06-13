@@ -10,7 +10,7 @@ import { ToastsContainer } from './toasts-container.component';
 	templateUrl: './toast-global.component.html',
 })
 export class NgbdToastGlobal implements OnDestroy {
-	toastService = inject(ToastService);
+	private readonly toastService = inject(ToastService);
 
 	showStandard(template: TemplateRef<any>) {
 		this.toastService.show({ template });

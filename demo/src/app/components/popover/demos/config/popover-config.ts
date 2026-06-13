@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbPopoverConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 
 @Component({
@@ -8,8 +8,9 @@ import { NgbPopoverConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover
 	providers: [NgbPopoverConfig],
 })
 export class NgbdPopoverConfig {
-	constructor(config: NgbPopoverConfig) {
+	constructor() {
 		// customize default values of popovers used by this component tree
+		const config = inject(NgbPopoverConfig);
 		config.placement = 'end';
 		config.triggers = 'hover';
 

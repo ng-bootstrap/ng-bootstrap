@@ -1,8 +1,8 @@
 <ngb-carousel
 	#carousel
 	[interval]="1000"
-	[pauseOnHover]="pauseOnHover"
-	[pauseOnFocus]="pauseOnFocus"
+	[pauseOnHover]="pauseOnHover()"
+	[pauseOnFocus]="pauseOnFocus()"
 	(slide)="onSlide($event)"
 >
 	@for (img of images; track img; let i = $index) {
@@ -38,5 +38,5 @@
 	<label class="form-check-label" for="pauseOnIndicator">Pause when clicking on navigation indicator</label>
 </div>
 <button type="button" (click)="togglePaused()" class="btn btn-outline-secondary btn-sm">
-	{{ paused ? 'Cycle' : 'Pause' }}
+	{{ paused() ? 'Cycle' : 'Pause' }}
 </button>

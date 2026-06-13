@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 	templateUrl: './pagination-advanced.html',
 })
 export class NgbdPaginationAdvanced {
-	page = 1;
+	readonly page = signal(1);
 }

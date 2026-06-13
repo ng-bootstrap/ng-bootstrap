@@ -34,7 +34,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 	`,
 })
 export class NgbdModalContent {
-	activeModal = inject(NgbActiveModal);
+	readonly activeModal = inject(NgbActiveModal);
 	@Input() name: string;
 }
 
@@ -43,7 +43,7 @@ export class NgbdModalContent {
 	templateUrl: './modal-updatable-options.html',
 })
 export class NgbdModalUpdatableOptions {
-	private modalService = inject(NgbModal);
+	private readonly modalService = inject(NgbModal);
 
 	open() {
 		const modalRef = this.modalService.open(NgbdModalContent);

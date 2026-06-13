@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbToast, NgbToastHeader } from '@ng-bootstrap/ng-bootstrap/toast';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbToast, NgbToastHeader } from '@ng-bootstrap/ng-bootstrap/toast';
 	templateUrl: './toast-custom-header.html',
 })
 export class NgbdToastCustomHeader {
-	show = true;
+	readonly show = signal(true);
 }

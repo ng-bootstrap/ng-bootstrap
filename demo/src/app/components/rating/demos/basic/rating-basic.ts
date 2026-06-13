@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
@@ -7,5 +7,5 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 	templateUrl: './rating-basic.html',
 })
 export class NgbdRatingBasic {
-	rating = 8;
+	readonly rating = signal(8);
 }

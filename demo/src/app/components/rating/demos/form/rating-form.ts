@@ -8,7 +8,7 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 	templateUrl: './rating-form.html',
 })
 export class NgbdRatingForm {
-	ctrl = new FormControl<number | null>(null, Validators.required);
+	readonly ctrl = new FormControl<number | null>(null, Validators.required);
 
 	toggle() {
 		if (this.ctrl.disabled) {

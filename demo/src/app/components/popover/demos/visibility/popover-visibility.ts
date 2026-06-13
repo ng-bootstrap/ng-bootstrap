@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap/popover';
 import { DatePipe } from '@angular/common';
 
@@ -8,14 +8,14 @@ import { DatePipe } from '@angular/common';
 	templateUrl: './popover-visibility.html',
 })
 export class NgbdPopoverVisibility {
-	lastShown: Date;
-	lastHidden: Date;
+	readonly lastShown = signal<Date | null>(null);
+	readonly lastHidden = signal<Date | null>(null);
 
 	recordShown() {
-		this.lastShown = new Date();
+		this.lastShown.set(new Date());
 	}
 
 	recordHidden() {
-		this.lastHidden = new Date();
+		this.lastHidden.set(new Date());
 	}
 }
