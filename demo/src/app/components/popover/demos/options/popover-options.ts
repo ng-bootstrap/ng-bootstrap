@@ -8,7 +8,7 @@ import { Options } from '@popperjs/core';
 	templateUrl: './popover-options.html',
 })
 export class NgbdPopoverOptions {
-	popperOptions = (options: Partial<Options>) => {
+	readonly popperOptions = (options: Partial<Options>) => {
 		// customize placement
 		options.placement = 'bottom';
 

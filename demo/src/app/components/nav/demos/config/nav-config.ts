@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
 	NgbNavConfig,
 	NgbNavContent,
@@ -17,8 +17,9 @@ import {
 	providers: [NgbNavConfig],
 })
 export class NgbdNavConfig {
-	constructor(config: NgbNavConfig) {
+	constructor() {
 		// customize default values of navs used by this component tree
+		const config = inject(NgbNavConfig);
 		config.destroyOnHide = false;
 		config.roles = false;
 	}

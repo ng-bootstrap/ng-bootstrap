@@ -1,4 +1,4 @@
-@for (alert of alerts; track alert) {
+@for (alert of alerts(); track alert) {
 	<ngb-alert [type]="alert.type" (closed)="close(alert)">{{ alert.message }}</ngb-alert>
 }
 <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>

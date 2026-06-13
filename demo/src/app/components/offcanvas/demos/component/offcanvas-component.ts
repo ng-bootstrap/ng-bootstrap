@@ -30,7 +30,7 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/off
 	`,
 })
 export class NgbdOffcanvasContent {
-	activeOffcanvas = inject(NgbActiveOffcanvas);
+	readonly activeOffcanvas = inject(NgbActiveOffcanvas);
 	@Input() name: string;
 }
 
@@ -39,7 +39,7 @@ export class NgbdOffcanvasContent {
 	templateUrl: './offcanvas-component.html',
 })
 export class NgbdOffcanvasComponent {
-	private offcanvasService = inject(NgbOffcanvas);
+	private readonly offcanvasService = inject(NgbOffcanvas);
 
 	open() {
 		const offcanvasRef = this.offcanvasService.open(NgbdOffcanvasContent);

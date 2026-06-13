@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgbCarouselConfig, NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap/carousel';
 
 @Component({
@@ -8,12 +8,13 @@ import { NgbCarouselConfig, NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-boots
 	providers: [NgbCarouselConfig],
 })
 export class NgbdCarouselNavigation {
-	showNavigationArrows = false;
-	showNavigationIndicators = false;
+	readonly showNavigationArrows = signal(false);
+	readonly showNavigationIndicators = signal(false);
 	images = [1055, 194, 368].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
-	constructor(config: NgbCarouselConfig) {
+	constructor() {
 		// customize default values of carousels used by this component tree
+		const config = inject(NgbCarouselConfig);
 		config.showNavigationArrows = true;
 		config.showNavigationIndicators = true;
 	}

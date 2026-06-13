@@ -3,7 +3,7 @@
 		type="button"
 		class="btn btn-outline-primary"
 		(click)="collapse.toggle()"
-		[attr.aria-expanded]="!isCollapsed"
+		[attr.aria-expanded]="!isCollapsed()"
 		aria-controls="collapseExample"
 	>
 		Toggle with Function
@@ -11,8 +11,8 @@
 	<button
 		type="button"
 		class="btn btn-outline-primary ms-2"
-		(click)="isCollapsed = !isCollapsed"
-		[attr.aria-expanded]="!isCollapsed"
+		(click)="isCollapsed.update((v) => !v)"
+		[attr.aria-expanded]="!isCollapsed()"
 		aria-controls="collapseExample"
 	>
 		Toggle with Two Way Binding

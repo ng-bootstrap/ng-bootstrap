@@ -24,6 +24,4 @@ import {
 	],
 	templateUrl: './accordion-keep-content.html',
 })
-export class NgbdAccordionKeepContent {
-	remove = true;
-}
+export class NgbdAccordionKeepContent {}

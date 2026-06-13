@@ -17,7 +17,7 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap/off
 	`,
 })
 export class NgbdOffcanvasFirstFocus {
-	offcanvas = inject(NgbActiveOffcanvas);
+	readonly offcanvas = inject(NgbActiveOffcanvas);
 }
 
 @Component({
@@ -38,7 +38,7 @@ export class NgbdOffcanvasFirstFocus {
 	`,
 })
 export class NgbdOffcanvasAutoFocus {
-	offcanvas = inject(NgbActiveOffcanvas);
+	readonly offcanvas = inject(NgbActiveOffcanvas);
 }
 
 @Component({
@@ -46,7 +46,7 @@ export class NgbdOffcanvasAutoFocus {
 	templateUrl: './offcanvas-focus.html',
 })
 export class NgbdOffcanvasFocus {
-	private offcanvasService = inject(NgbOffcanvas);
+	private readonly offcanvasService = inject(NgbOffcanvas);
 
 	openFirstFocus() {
 		this.offcanvasService.open(NgbdOffcanvasFirstFocus);

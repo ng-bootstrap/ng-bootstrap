@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap/offcanvas';
 
 @Component({
@@ -8,11 +8,11 @@ import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap/off
 	providers: [NgbOffcanvasConfig, NgbOffcanvas],
 })
 export class NgbdOffcanvasConfig {
-	constructor(
-		config: NgbOffcanvasConfig,
-		private offcanvasService: NgbOffcanvas,
-	) {
+	private readonly offcanvasService = inject(NgbOffcanvas);
+
+	constructor() {
 		// customize default values of offcanvas used by this component tree
+		const config = inject(NgbOffcanvasConfig);
 		config.position = 'end';
 		config.backdropClass = 'bg-info';
 		config.keyboard = false;

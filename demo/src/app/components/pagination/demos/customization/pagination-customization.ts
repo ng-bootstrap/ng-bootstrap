@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	NgbPagination,
 	NgbPaginationNext,
@@ -15,14 +15,14 @@ const FILTER_PAG_REGEX = /[^0-9]/g;
 	templateUrl: './pagination-customization.html',
 })
 export class NgbdPaginationCustomization {
-	page = 4;
+	readonly page = signal(4);
 
 	getPageSymbol(current: number) {
 		return ['A', 'B', 'C', 'D', 'E', 'F', 'G'][current - 1];
 	}
 
 	selectPage(page: string) {
-		this.page = parseInt(page, 10) || 1;
+		this.page.set(parseInt(page, 10) || 1);
 	}
 
 	formatInput(input: HTMLInputElement) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	NgbNavChangeEvent,
 	NgbNavContent,
@@ -16,8 +16,8 @@ import {
 	templateUrl: './nav-selection.html',
 })
 export class NgbdNavSelection {
-	active;
-	disabled = true;
+	readonly active = signal(1);
+	readonly disabled = signal(true);
 
 	onNavChange(changeEvent: NgbNavChangeEvent) {
 		if (changeEvent.nextId === 3) {
@@ -26,9 +26,9 @@ export class NgbdNavSelection {
 	}
 
 	toggleDisabled() {
-		this.disabled = !this.disabled;
-		if (this.disabled) {
-			this.active = 1;
+		this.disabled.update((value) => !value);
+		if (this.disabled()) {
+			this.active.set(1);
 		}
 	}
 }

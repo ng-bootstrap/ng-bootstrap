@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal';
 	`,
 })
 export class NgbdModalOptions {
-	private modalService = inject(NgbModal);
+	private readonly modalService = inject(NgbModal);
 
 	openBackDropCustomClass(content: TemplateRef<any>) {
 		this.modalService.open(content, { backdropClass: 'light-blue-backdrop' });

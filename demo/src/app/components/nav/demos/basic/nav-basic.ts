@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -15,5 +15,5 @@ import {
 	templateUrl: './nav-basic.html',
 })
 export class NgbdNavBasic {
-	active = 1;
+	readonly active = signal(1);
 }

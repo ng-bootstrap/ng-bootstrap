@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert';
 
 interface Alert {
@@ -47,17 +47,13 @@ const ALERTS: Alert[] = [
 	templateUrl: './alert-closeable.html',
 })
 export class NgbdAlertCloseable {
-	alerts: Alert[];
-
-	constructor() {
-		this.reset();
-	}
+	readonly alerts = signal<Alert[]>(ALERTS);
 
 	close(alert: Alert) {
-		this.alerts.splice(this.alerts.indexOf(alert), 1);
+		this.alerts.update((alerts) => alerts.filter((a) => a !== alert));
 	}
 
 	reset() {
-		this.alerts = Array.from(ALERTS);
+		this.alerts.set(Array.from(ALERTS));
 	}
 }

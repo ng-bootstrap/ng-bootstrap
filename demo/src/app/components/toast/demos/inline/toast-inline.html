@@ -3,8 +3,8 @@
 	<ngb-toast [autohide]="false"> I am a simple static toast. </ngb-toast>
 
 	<h6 class="mt-4">With a text header</h6>
-	@if (show) {
-		<ngb-toast header="Hello" [autohide]="false" (hidden)="show = false">
+	@if (show()) {
+		<ngb-toast header="Hello" [autohide]="false" (hidden)="show.set(false)">
 			I am a simple static toast with a header.
 		</ngb-toast>
 	}

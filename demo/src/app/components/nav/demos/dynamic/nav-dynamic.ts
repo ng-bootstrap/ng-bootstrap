@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -25,18 +25,18 @@ import {
 	`,
 })
 export class NgbdNavDynamic {
-	navs = [1, 2, 3, 4, 5];
-	counter = this.navs.length + 1;
-	active: number;
+	readonly navs = signal([1, 2, 3, 4, 5]);
+	private counter = this.navs().length + 1;
+	readonly active = signal(1);
 
 	close(event: MouseEvent, toRemove: number) {
-		this.navs = this.navs.filter((id) => id !== toRemove);
+		this.navs.update((navs) => navs.filter((id) => id !== toRemove));
 		event.preventDefault();
 		event.stopImmediatePropagation();
 	}
 
 	add(event: MouseEvent) {
-		this.navs.push(this.counter++);
+		this.navs.update((navs) => [...navs, this.counter++]);
 		event.preventDefault();
 	}
 }

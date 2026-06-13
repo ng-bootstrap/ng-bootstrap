@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap/collapse';
 import { RouterLink } from '@angular/router';
 
@@ -12,5 +12,5 @@ export class NgbdCollapseNavbar {
 	// Create a property to track whether the menu is open.
 	// Start with the menu collapsed so that it does not
 	// appear initially when the page loads on a small screen!
-	isMenuCollapsed = true;
+	readonly isMenuCollapsed = signal(true);
 }

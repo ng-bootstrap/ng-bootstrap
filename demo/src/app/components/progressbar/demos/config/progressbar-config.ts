@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbProgressbarConfig, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap/progressbar';
 
 @Component({
@@ -8,8 +8,9 @@ import { NgbProgressbarConfig, NgbProgressbar } from '@ng-bootstrap/ng-bootstrap
 	providers: [NgbProgressbarConfig],
 })
 export class NgbdProgressbarConfig {
-	constructor(config: NgbProgressbarConfig) {
+	constructor() {
 		// customize default values of progress bars used by this component tree
+		const config = inject(NgbProgressbarConfig);
 		config.max = 1000;
 		config.striped = true;
 		config.animated = true;

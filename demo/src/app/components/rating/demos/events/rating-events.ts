@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
@@ -7,7 +7,7 @@ import { NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 	templateUrl: './rating-events.html',
 })
 export class NgbdRatingEvents {
-	selected = 0;
-	hovered = 0;
-	readonly = false;
+	readonly selected = signal(0);
+	readonly hovered = signal(0);
+	readonly readonly = signal(false);
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbRatingConfig, NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 
 @Component({
@@ -8,8 +8,9 @@ import { NgbRatingConfig, NgbRating } from '@ng-bootstrap/ng-bootstrap/rating';
 	providers: [NgbRatingConfig],
 })
 export class NgbdRatingConfig {
-	constructor(config: NgbRatingConfig) {
+	constructor() {
 		// customize default values of ratings used by this component tree
+		const config = inject(NgbRatingConfig);
 		config.max = 5;
 		config.readonly = true;
 	}

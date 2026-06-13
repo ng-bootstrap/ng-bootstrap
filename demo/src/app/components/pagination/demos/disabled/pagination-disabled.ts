@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 
 @Component({
@@ -7,10 +7,10 @@ import { NgbPagination } from '@ng-bootstrap/ng-bootstrap/pagination';
 	templateUrl: './pagination-disabled.html',
 })
 export class NgbdPaginationDisabled {
-	page = 3;
-	isDisabled = true;
+	readonly page = signal(3);
+	readonly isDisabled = signal(true);
 
 	toggleDisabled() {
-		this.isDisabled = !this.isDisabled;
+		this.isDisabled.update((value) => !value);
 	}
 }

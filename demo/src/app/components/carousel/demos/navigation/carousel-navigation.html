@@ -1,5 +1,5 @@
 @if (images) {
-	<ngb-carousel [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators">
+	<ngb-carousel [showNavigationArrows]="showNavigationArrows()" [showNavigationIndicators]="showNavigationIndicators()">
 		@for (image of images; track image) {
 			<ng-template ngbSlide>
 				<div class="picsum-img-wrapper">
@@ -17,14 +17,10 @@
 <hr />
 
 <div class="btn-group" role="group" aria-label="Carousel toggle controls">
-	<button type="button" (click)="showNavigationArrows = !showNavigationArrows" class="btn btn-outline-secondary btn-sm">
+	<button type="button" (click)="showNavigationArrows.update((v) => !v)" class="btn btn-outline-secondary btn-sm">
 		Toggle navigation arrows
 	</button>
-	<button
-		type="button"
-		(click)="showNavigationIndicators = !showNavigationIndicators"
-		class="btn btn-outline-secondary btn-sm"
-	>
+	<button type="button" (click)="showNavigationIndicators.update((v) => !v)" class="btn btn-outline-secondary btn-sm">
 		Toggle navigation indicators
 	</button>
 </div>

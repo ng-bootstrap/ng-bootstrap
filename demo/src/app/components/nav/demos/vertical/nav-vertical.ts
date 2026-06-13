@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
 	NgbNavContent,
 	NgbNav,
@@ -27,5 +27,5 @@ import {
 	templateUrl: './nav-vertical.html',
 })
 export class NgbdNavVertical {
-	active = 'top';
+	readonly active = signal('top');
 }
