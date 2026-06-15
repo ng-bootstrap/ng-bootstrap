@@ -41,10 +41,10 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/forms": "^21.0.0",
-    "@angular/localize": "^21.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/localize": "^22.0.0",
     "@popperjs/core": "^2.11.8",
     "rxjs": "^6.5.3 || ^7.4.0"
   },
