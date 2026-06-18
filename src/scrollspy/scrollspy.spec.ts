@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
 import {
 	NgbScrollSpy,
 	NgbScrollSpyItem,
@@ -8,14 +7,13 @@ import {
 	NgbScrollSpyService,
 } from './scrollspy.module';
 import { By } from '@angular/platform-browser';
-import { createGenericTestComponent, isBrowserVisible } from '../test/common';
+import { createGenericAsyncTestComponent, isBrowserVisible } from '../test/common';
 import { firstValueFrom } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { server } from 'vitest/browser';
 
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestComponent);
 
 describe('ScrollSpy Directives (mocked service integration)', () => {
 	let observe: Mock<any>;
@@ -47,15 +45,15 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('should start scrollspy with no fragments', () => {
-		createTestComponent(`<div class="container" ngbScrollSpy></div>`);
+	it('should start scrollspy with no fragments', async () => {
+		await createTestComponent(`<div class="container" ngbScrollSpy></div>`);
 
 		expect(callSpy).toHaveBeenCalledTimes(1);
 		expect(observe).not.toHaveBeenCalled();
 	});
 
-	it('should start simple scrollspy', () => {
-		let { debugElement } = createTestComponent(`
+	it('should start simple scrollspy', async () => {
+		let { debugElement } = await createTestComponent(`
 			<div class="container" ngbScrollSpy>
 				<div ngbScrollSpyFragment="one">one</div>
 				<div ngbScrollSpyFragment="two">two</div>
@@ -74,8 +72,8 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		expect(observe).toHaveBeenCalledTimes(2);
 	});
 
-	it('should allow using items with global service', () => {
-		let fixture = createTestComponent(`
+	it('should allow using items with global service', async () => {
+		let fixture = await createTestComponent(`
 			<button ngbScrollSpyItem="one"></button>
 			<div id="one">fragment</div>
 		`);
@@ -97,8 +95,8 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop, behavior: 'smooth' });
 	});
 
-	it('should scroll to fragments when clicking on items', () => {
-		let fixture = createTestComponent(`
+	it('should scroll to fragments when clicking on items', async () => {
+		let fixture = await createTestComponent(`
 			<button class="item" [ngbScrollSpyItem]="[s, 'one']"></button>
 			<div class="container" ngbScrollSpy #s="ngbScrollSpy">
 				<div>spacer</div>
@@ -116,8 +114,8 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop - container.offsetTop, behavior: 'smooth' });
 	});
 
-	it('should scroll to fragments when clicking on items with different arguments', () => {
-		let { debugElement, nativeElement } = createTestComponent(`
+	it('should scroll to fragments when clicking on items with different arguments', async () => {
+		let { debugElement, nativeElement } = await createTestComponent(`
 			<button [ngbScrollSpyItem]="[s, 'one']"></button>
 			<div class="container" ngbScrollSpy #s="ngbScrollSpy">
 				<div>spacer</div>
@@ -143,8 +141,8 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 		expect(spy).toHaveBeenCalledWith({ top: fragment.offsetTop - container.offsetTop, behavior: 'auto' });
 	});
 
-	it('should scroll to fragments when clicking on items (fragment input)', () => {
-		let { nativeElement } = createTestComponent(`
+	it('should scroll to fragments when clicking on items (fragment input)', async () => {
+		let { nativeElement } = await createTestComponent(`
 			<button class="item" [ngbScrollSpyItem]="s" fragment="one"></button>
 			<div class="container" ngbScrollSpy #s="ngbScrollSpy">
 				<div>spacer</div>
@@ -163,7 +161,7 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 	});
 
 	it('should pass scrollspy inputs to the service', async () => {
-		let { debugElement, nativeElement } = createTestComponent(`
+		let { debugElement, nativeElement } = await createTestComponent(`
 			<div class="container" ngbScrollSpy rootMargin='16px' scrollBehavior='auto' [threshold]='[2]'>
 				<div class="fragment one" ngbScrollSpyFragment="one">one</div>
 				<div class="fragment two" ngbScrollSpyFragment="two">two</div>
@@ -189,14 +187,14 @@ describe('ScrollSpy Directives (mocked service integration)', () => {
 
 if (isBrowserVisible('ScrollSpy directives')) {
 	describe('ScrollSpy Directives', () => {
-		it('should start an empty scrollspy', () => {
-			let { debugElement } = createTestComponent(`<div ngbScrollSpy></div>`);
+		it('should start an empty scrollspy', async () => {
+			let { debugElement } = await createTestComponent(`<div ngbScrollSpy></div>`);
 			let scrollSpy = debugElement.query(By.directive(NgbScrollSpy)).injector.get(NgbScrollSpy);
 			expect(scrollSpy.active).toBe('');
 		});
 
 		it('should start a scrollspy with one element', async () => {
-			let { debugElement } = createTestComponent(`
+			let { debugElement } = await createTestComponent(`
 				<div ngbScrollSpy>
 					<div ngbScrollSpyFragment="one">one</div>
 				</div>
@@ -211,7 +209,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		it.skipIf(server.browser === 'firefox')(
 			'should handle the case where first fragment might have something before it',
 			async () => {
-				let { debugElement, nativeElement } = createTestComponent(`
+				let { debugElement, nativeElement } = await createTestComponent(`
 			<div class="container" ngbScrollSpy style='height: 200px;'>
 				<div style='height: 500px;'>spacer</div>
 				<div ngbScrollSpyFragment="one">fragment</div>
@@ -235,7 +233,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		);
 
 		it('should handle the case when scrolling in-between fragments', async () => {
-			let { debugElement, nativeElement } = createTestComponent(`
+			let { debugElement, nativeElement } = await createTestComponent(`
 			<style>
 				.fragment {
 					height: 20px;
@@ -274,7 +272,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		});
 
 		it('should change active value via imperative APIs', async () => {
-			let fixture = createTestComponent(`
+			let fixture = await createTestComponent(`
 			<span class="item one" [ngbScrollSpyItem]="s" fragment="one"></span>
 			<span class="item two" [ngbScrollSpyItem]="[s, 'two']"></span>
 			<span class="item three" [ngbScrollSpyItem]="[s, 'three']" #i="ngbScrollSpyItem"></span>
@@ -305,14 +303,14 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			// one is active by default
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
 			expect(scrollSpy.active).toBe('one');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(itemOne.classList.contains('active')).toBe(true);
 
 			// scroll to two
 			scrollToTwo.click();
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
 			expect(scrollSpy.active).toBe('two');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(scrollSpyActive.textContent).toBe('two');
 			expect(threeIsActive.textContent).toBe('false');
 
@@ -320,13 +318,13 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			scrollToThree.click();
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('three');
 			expect(scrollSpy.active).toBe('three');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(scrollSpyActive.textContent).toBe('three');
 			expect(threeIsActive.textContent).toBe('true');
 		});
 
 		it('should change active value via [active] binding', async () => {
-			let fixture = createTestComponent(`
+			let fixture = await createTestComponent(`
 			<div class="container" ngbScrollSpy active='two'>
 				<div class="fragment one" ngbScrollSpyFragment="one">one</div>
 				<div class="fragment two" ngbScrollSpyFragment="two">two</div>
@@ -343,7 +341,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		});
 
 		it('should update active when scroll position changes', async () => {
-			let fixture = createTestComponent(`
+			let fixture = await createTestComponent(`
 			<style>
 			  .container {
 					height: 100px;
@@ -377,7 +375,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		});
 
 		it('should change active fragment/active class when clicking on items', async () => {
-			let fixture = createTestComponent(`
+			let fixture = await createTestComponent(`
 			<style>
 			  .container {
 					height: 100px;
@@ -404,7 +402,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			let [one, two, three] = nativeElement.querySelectorAll('span') as HTMLElement[];
 
 			scrollSpy.scrollBehavior = 'auto';
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(scrollSpy.active).toBe('');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
@@ -412,25 +410,25 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			two.click();
 			expect(scrollSpy.active).toBe('one');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(two.classList.contains('active')).toBe(true);
 
 			three.click();
 			expect(scrollSpy.active).toBe('two');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('three');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(three.classList.contains('active')).toBe(true);
 
 			// back to one
 			one.click();
 			expect(scrollSpy.active).toBe('three');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(one.classList.contains('active')).toBe(true);
 		});
 
 		it('should change active value hierarchically', async () => {
-			let fixture = createTestComponent(`
+			let fixture = await createTestComponent(`
 			<div class="menu" [ngbScrollSpyMenu]="s">
 				<span class="one" ngbScrollSpyItem fragment="one"></span>
 				<span class="two" [ngbScrollSpyItem]="[s, 'two']"></span>
@@ -459,13 +457,13 @@ if (isBrowserVisible('ScrollSpy directives')) {
 
 			// one is active by default
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(one.classList.contains('active')).toBe(true);
 
 			// scroll to two
 			scrollSpy.scrollTo('two');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(two.classList.contains('active')).toBe(true);
 			expect(three.classList.contains('active')).toBe(false);
 			expect(four.classList.contains('active')).toBe(false);
@@ -474,7 +472,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			// scroll to three
 			scrollSpy.scrollTo('three');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('three');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(two.classList.contains('active')).toBe(true);
 			expect(three.classList.contains('active')).toBe(true);
 			expect(four.classList.contains('active')).toBe(false);
@@ -483,7 +481,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			// scroll to four
 			scrollSpy.scrollTo('four');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('four');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(two.classList.contains('active')).toBe(true);
 			expect(three.classList.contains('active')).toBe(false);
 			expect(four.classList.contains('active')).toBe(true);
@@ -492,7 +490,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 			// scroll to five
 			scrollSpy.scrollTo('five');
 			expect(await firstValueFrom(scrollSpy.active$)).toBe('five');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(two.classList.contains('active')).toBe(true);
 			expect(three.classList.contains('active')).toBe(false);
 			expect(four.classList.contains('active')).toBe(false);
@@ -500,7 +498,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 		});
 
 		it('should allow overriding scrollspy logic', async () => {
-			let { debugElement } = createTestComponent(`
+			let { debugElement } = await createTestComponent(`
 				<div class="container" ngbScrollSpy [processChanges]='processChanges'>
 					<div ngbScrollSpyFragment="one">fragment</div>
 				</div>
@@ -518,9 +516,7 @@ if (isBrowserVisible('ScrollSpy directives')) {
 	template: ``,
 })
 class TestComponent {
-	rootScrollSpyService = inject(NgbScrollSpyService);
-	active = 'two';
-	visible = true;
+	readonly rootScrollSpyService = inject(NgbScrollSpyService);
 	processChanges = (_: any, changeActive: (active: string) => void) => {
 		changeActive('overridden!');
 	};
