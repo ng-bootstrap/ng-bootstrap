@@ -25,7 +25,7 @@
     "scripts:test": "node --import tsx --test misc/*.spec.ts",
     "e2e-app:serve": "ng serve e2e-app",
     "ngb:static": "ts-node --project misc/tsconfig.json misc/copy-static-files.ts",
-    "ngb:test": "ng test -c other-browsers --watch=false && ng test -c zone-other-browsers --watch=false && ng test -c zone --watch=false && ng test ng-bootstrap --coverage --watch=false",
+    "ngb:test": "ng test -c other-browsers --watch=false && ng test ng-bootstrap --coverage --watch=false",
     "ngb:tdd": "ng test ng-bootstrap",
     "ngb:e2e": "playwright test -c e2e-app",
     "ngb:build": "ng build ng-bootstrap -c production && node misc/unexposeUtils.mjs && yarn schematics:build && yarn ngb:static",
