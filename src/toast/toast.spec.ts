@@ -1,4 +1,4 @@
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
@@ -21,7 +21,7 @@ const getToastBodyElement = (element: HTMLElement): Element => getElementWithSel
 
 describe('ngb-toast', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 		vi.useFakeTimers();
 	});
 
@@ -110,12 +110,12 @@ describe('ngb-toast', () => {
 				`<ngb-toast header="header" [autohide]="autohide" (hidden)="hide()">body</ngb-toast>`,
 			);
 			vi.advanceTimersByTime(250);
-			fixture.componentInstance.autohide = false;
+			fixture.componentInstance.autohide.set(false);
 			fixture.detectChanges();
 			vi.advanceTimersByTime(250);
 			fixture.detectChanges();
 			expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
-			fixture.componentInstance.autohide = true;
+			fixture.componentInstance.autohide.set(true);
 			fixture.detectChanges();
 			vi.advanceTimersByTime(5000);
 			fixture.detectChanges();
@@ -131,10 +131,10 @@ if (isBrowserVisible('ngb-toast animations')) {
 			template: ` <ngb-toast header="Hello" [autohide]="false" (shown)="onShown()" (hidden)="onHidden()"
 				>Cool!</ngb-toast
 			>`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onShown = () => {};
 			onHidden = () => {};
 		}
@@ -154,7 +154,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 		[true, false].forEach((reduceMotion) => {
 			it(`should run the transition when creating a toast (force-reduced-motion = ${reduceMotion})`, () => {
 				const fixture = TestBed.createComponent(TestAnimationComponent);
-				fixture.componentInstance.reduceMotion = reduceMotion;
+				fixture.componentInstance.reduceMotion.set(reduceMotion);
 				fixture.detectChanges();
 
 				const toastEl = getToastElement(fixture.nativeElement);
@@ -179,7 +179,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 
 			it(`should run the transition when closing a toast (force-reduced-motion = ${reduceMotion})`, async () => {
 				const fixture = TestBed.createComponent(TestAnimationComponent);
-				fixture.componentInstance.reduceMotion = reduceMotion;
+				fixture.componentInstance.reduceMotion.set(reduceMotion);
 
 				const onShown = new Promise<void>((resolve) => {
 					vi.spyOn(fixture.componentInstance, 'onShown').mockImplementation(() => {
@@ -218,7 +218,6 @@ if (isBrowserVisible('ngb-toast animations')) {
 	template: '',
 })
 export class TestComponent {
-	visible = true;
-	autohide = true;
-	hide = vi.fn();
+	readonly autohide = signal(true);
+	readonly hide = vi.fn();
 }

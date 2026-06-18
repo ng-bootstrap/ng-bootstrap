@@ -1,4 +1,4 @@
-import { inject, Service, Injector } from '@angular/core';
+import { Binding, inject, Service, Injector } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
 /**
@@ -46,6 +46,28 @@ export interface NgbOffcanvasOptions {
 	 * then the offcanvas won't be dismissed.
 	 */
 	beforeDismiss?: () => boolean | Promise<boolean>;
+
+	/**
+	 * Bind values and functions of parent component to the offcanvas component's inputs and outputs. Use Angular's
+	 * [`inputBinding`](https://angular.dev/api/core/inputBinding), [`twoWayBinding`](https://angular.dev/api/core/twoWayBinding)
+	 * and [`outputBinding`](https://angular.dev/api/core/outputBinding) functions.
+	 *
+	 * @since 22.0.0
+	 *
+	 * @example
+	 * ```ts
+	 * const response = signal('');
+	 *
+	 * NgbOffcanvas.open(OffcanvasComponent, {
+	 *   bindings: [
+	 *     inputBinding('name', () => 'World'),
+	 *     twoWayBinding('response', response),
+	 *     outputBinding('send', (value) => console.log('Response sent: ' + value)),
+	 *   ]
+	 * })
+	 * ```
+	 */
+	bindings?: Binding[];
 
 	/**
 	 * A selector specifying the element all new offcanvas panels and backdrops should be appended to.
@@ -100,6 +122,7 @@ export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
 	backdrop: boolean | 'static' = true;
 	backdropClass: string;
 	beforeDismiss: () => boolean | Promise<boolean>;
+	bindings: Binding[];
 	container: string | HTMLElement;
 	injector: Injector;
 	keyboard = true;

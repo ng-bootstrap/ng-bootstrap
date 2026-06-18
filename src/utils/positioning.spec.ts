@@ -173,7 +173,7 @@ describe('positioning', () => {
 			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
 
 			tooltip.open();
-			await Promise.resolve();
+			await fixture.whenStable();
 
 			let windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-end');
@@ -182,7 +182,7 @@ describe('positioning', () => {
 			rtlMock.isRTL = () => true;
 
 			tooltip.open();
-			await Promise.resolve();
+			await fixture.whenStable();
 
 			windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
 			expect(windowEl).toHaveCssClass('bs-tooltip-start');

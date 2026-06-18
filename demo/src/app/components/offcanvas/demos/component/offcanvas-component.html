@@ -1,8 +1,17 @@
-<p>You can pass an existing component as content of the offcanvas panel.</p>
+<p>
+	You can pass an existing component as content of the offcanvas panel. Bind component's inputs and
+	outputs with Angular's
+	<a href="https://angular.dev/api/core/inputBinding" target="_blank"><code>inputBinding</code></a>,
+	<a href="https://angular.dev/api/core/twoWayBinding" target="_blank"><code>twoWayBinding</code></a>
+	and <a href="https://angular.dev/api/core/outputBinding" target="_blank"><code>outputBinding</code></a>
+	functions to the parent component.
+</p>
 
 <p>
 	Note that when using a component as content, the additional node introduced in the markup requires the component to
 	have additional CSS styles to be applied if you want the content to be scrollable. See the code sample for details.
 </p>
+
+<pre>Response: {{ response() }}</pre>
 
 <button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo offcanvas</button>

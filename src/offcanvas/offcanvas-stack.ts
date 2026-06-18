@@ -75,7 +75,7 @@ export class NgbOffcanvasStack {
 		}
 
 		const activeOffcanvas = new NgbActiveOffcanvas();
-		const contentRef = this._getContentRef(options.injector || contentInjector, content, activeOffcanvas);
+		const contentRef = this._getContentRef(options.injector || contentInjector, content, activeOffcanvas, options);
 
 		let backdropCmptRef: ComponentRef<NgbOffcanvasBackdrop> | undefined =
 			options.backdrop !== false ? this._attachBackdrop(containerEl) : undefined;
@@ -161,6 +161,7 @@ export class NgbOffcanvasStack {
 		contentInjector: Injector,
 		content: Type<any> | TemplateRef<any> | string,
 		activeOffcanvas: NgbActiveOffcanvas,
+		options: NgbOffcanvasOptions
 	): ContentRef {
 		if (!content) {
 			return new ContentRef([]);
@@ -169,7 +170,7 @@ export class NgbOffcanvasStack {
 		} else if (isString(content)) {
 			return this._createFromString(content);
 		} else {
-			return this._createFromComponent(contentInjector, content, activeOffcanvas);
+			return this._createFromComponent(contentInjector, content, activeOffcanvas, options);
 		}
 	}
 
@@ -197,6 +198,7 @@ export class NgbOffcanvasStack {
 		contentInjector: Injector,
 		componentType: Type<any>,
 		context: NgbActiveOffcanvas,
+		options: NgbOffcanvasOptions
 	): ContentRef {
 		const elementInjector = Injector.create({
 			providers: [{ provide: NgbActiveOffcanvas, useValue: context }],
@@ -205,6 +207,7 @@ export class NgbOffcanvasStack {
 		const componentRef = createComponent(componentType, {
 			environmentInjector: this._applicationRef.injector,
 			elementInjector,
+			bindings: options.bindings
 		});
 		const componentNativeEl = componentRef.location.nativeElement;
 		this._applicationRef.attachView(componentRef.hostView);
