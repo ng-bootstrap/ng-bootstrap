@@ -357,7 +357,6 @@ describe('ngb-progressbar', () => {
 
 		it('should initialize inputs with provided config', () => {
 			const fixture = TestBed.createComponent(NgbProgressbar);
-			fixture.detectChanges();
 
 			let progressbar = fixture.componentInstance;
 			expect(progressbar.max).toBe(config.max);
@@ -382,7 +381,6 @@ describe('ngb-progressbar', () => {
 
 		it('should initialize inputs with provided config as provider', () => {
 			const fixture = TestBed.createComponent(NgbProgressbar);
-			fixture.detectChanges();
 
 			let progressbar = fixture.componentInstance;
 			expect(progressbar.max).toBe(config.max);
@@ -400,11 +398,10 @@ describe('ngb-progressbar', () => {
 	template: '',
 })
 class TestComponent {
-	value = signal(10);
-	max = signal(50);
-	animated = signal(true);
-	striped = signal(true);
-
-	textType = signal('light');
-	type = signal('warning');
+	readonly value = signal(10);
+	readonly max = signal(50);
+	readonly animated = signal(true);
+	readonly striped = signal(true);
+	readonly textType = signal('light');
+	readonly type = signal('warning');
 }
