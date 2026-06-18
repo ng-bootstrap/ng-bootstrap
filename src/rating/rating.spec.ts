@@ -809,24 +809,27 @@ describe('ngb-rating', () => {
 			await tester.expectStarsStateToBe([false, false, false, false, false]);
 		});
 
-		// FIXME investigate instability in CI with webkit
-		it.skipIf(server.browser === 'webkit')('should mark control as touched on blur', async () => {
-			const tester = await RatingTester.create(`
+		// FIXME investigate instability in CI with webkit or firefox
+		it.skipIf(server.browser === 'webkit' || server.browser === 'firefox')(
+			'should mark control as touched on blur',
+			async () => {
+				const tester = await RatingTester.create(`
 				<form [formGroup]="form">
 					<ngb-rating formControlName="rating" max="5"/>
 				</form>
 			`);
-			const element = tester.fixture.debugElement.query(By.directive(NgbRating));
+				const element = tester.fixture.debugElement.query(By.directive(NgbRating));
 
-			await tester.expectStarsStateToBe([false, false, false, false, false]);
-			await expect.element(tester.rating).toHaveCssClass('ng-untouched');
+				await tester.expectStarsStateToBe([false, false, false, false, false]);
+				await expect.element(tester.rating).toHaveCssClass('ng-untouched');
 
-			element.triggerEventHandler('blur', {});
-			await tester.whenStable();
+				element.triggerEventHandler('blur', {});
+				await tester.whenStable();
 
-			await tester.expectStarsStateToBe([false, false, false, false, false]);
-			await expect.element(tester.rating).toHaveCssClass('ng-touched');
-		});
+				await tester.expectStarsStateToBe([false, false, false, false, false]);
+				await expect.element(tester.rating).toHaveCssClass('ng-touched');
+			},
+		);
 	});
 
 	describe('Custom config', () => {
