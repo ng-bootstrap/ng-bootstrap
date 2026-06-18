@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { createGenericTestComponent, isBrowserVisible } from '../test/common';
+import { createGenericAsyncTestComponent, isBrowserVisible } from '../test/common';
 
 import { Component, ElementRef, Inject, input, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 
@@ -18,8 +18,7 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { assert, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestComponent);
 
 function getCollapses(element: HTMLElement): HTMLDivElement[] {
 	return <HTMLDivElement[]>Array.from(element.querySelectorAll('.accordion-item > .accordion-collapse'));
@@ -123,9 +122,9 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
-	it('should have no open panels', () => {
+	it('should have no open panels', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const el = fixture.nativeElement;
 		expectOpenPanels(el, [false, false, false]);
@@ -133,7 +132,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should have proper css classes', () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const accordion = fixture.debugElement.query(By.directive(NgbAccordionDirective));
 		expect(accordion.nativeElement).toHaveCssClass('accordion');
@@ -141,7 +139,7 @@ describe('ngb-accordion directive', () => {
 
 	it('should have the appropriate collapse', () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+
 		const el = fixture.nativeElement;
 		const collapses = getCollapses(el);
 		const buttons = getPanelsButtons(el);
@@ -153,7 +151,7 @@ describe('ngb-accordion directive', () => {
 
 	it('should toggle panels independently', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const el = fixture.nativeElement;
 
@@ -166,7 +164,7 @@ describe('ngb-accordion directive', () => {
 		expectOpenPanels(el, [true, true, false]);
 
 		getButton(el, 1).click();
-		fixture.detectChanges();
+
 		await fixture.whenStable();
 		expectOpenPanels(el, [true, false, false]);
 
@@ -183,9 +181,9 @@ describe('ngb-accordion directive', () => {
 		expectOpenPanels(el, [false, false, false]);
 	});
 
-	it('should allow only one panel to be active with "closeOthers" flag', () => {
+	it('should allow only one panel to be active with "closeOthers" flag', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		fixture.componentRef.setInput('closeOthers', true);
 		const el = fixture.nativeElement;
@@ -197,9 +195,9 @@ describe('ngb-accordion directive', () => {
 		expectOpenPanels(el, [false, true, false]);
 	});
 
-	it('should have the appropriate heading', () => {
+	it('should have the appropriate heading', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const el = fixture.nativeElement;
 
@@ -210,20 +208,20 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
-	it('should not crash for an empty accordion', () => {
-		const fixture = createTestComponent('<div ngbAccordion></div>');
-		fixture.detectChanges();
+	it('should not crash for an empty accordion', async () => {
+		const fixture = await createTestComponent('<div ngbAccordion></div>');
+
 		expect(getCollapses(fixture.nativeElement).length).toBe(0);
 	});
 
-	it('should not crash for panels without content', () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+	it('should not crash for panels without content', async () => {
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				<div ngbAccordionItem>
 					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
 					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`);
-		fixture.detectChanges();
+
 		const panelsContent = getCollapseContent(fixture.nativeElement);
 
 		expect(panelsContent.length).toBe(1);
@@ -232,7 +230,7 @@ describe('ngb-accordion directive', () => {
 
 	it('should have the appropriate content', () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+
 		fixture.componentInstance.items.forEach((item) => item.destroyOnHide.set(false));
 
 		getCollapses(fixture.nativeElement).forEach((collapse, idx) => {
@@ -242,7 +240,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should remove body content from DOM', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		fixture.componentInstance.items.forEach((item) => item.destroyOnHide.set(true));
 		await fixture.whenStable();
@@ -252,8 +249,8 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
-	it('should not remove body content if destroyOnHide is false on the accordion and unset for the items', () => {
-		const fixture = createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
+	it('should not remove body content if destroyOnHide is false on the accordion and unset for the items', async () => {
+		const fixture = await createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
 				@for (item of items; track item) {
 					<div ngbAccordionItem>
 						<h2 ngbAccordionHeader>
@@ -265,7 +262,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
 
 		getCollapses(fixture.nativeElement).forEach((collapse, idx) => {
 			expect(getCollapseBodyContent(collapse)).toBe(fixture.componentInstance.items[idx].body);
@@ -273,7 +269,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should respect destroyOnHide on the accordion-item if is set in accordion and accordion-item', async () => {
-		const fixture = createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
+		const fixture = await createTestComponent(`<div ngbAccordion [destroyOnHide]="false">
 				@for (item of items; track item) {
 					<div ngbAccordionItem [destroyOnHide]="item.destroyOnHide()">
 						<h2 ngbAccordionHeader>
@@ -285,7 +281,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
 
 		fixture.componentInstance.items[0].destroyOnHide.set(true);
 		await fixture.whenStable();
@@ -296,7 +291,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow customizing headers with 'NgbAccordionToggle'`, async () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item; let index = $index) {
 					<div [ngbAccordionItem]="'custom-' + index">
 						<div ngbAccordionHeader class='accordion-button'>
@@ -308,7 +303,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
 
 		const el = fixture.nativeElement;
 		expectOpenPanels(el, [false, false, false]);
@@ -323,8 +317,8 @@ describe('ngb-accordion directive', () => {
 		expectOpenPanels(el, [false, false, false]);
 	});
 
-	it(`should no allow clicking on disabled headers with 'NgbAccordionToggle'`, () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+	it(`should no allow clicking on disabled headers with 'NgbAccordionToggle'`, async () => {
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				<div ngbAccordionItem [disabled]="true">
 					<div ngbAccordionHeader class="accordion-button">
 						<button type='button' ngbAccordionToggle>Toggle</button>
@@ -334,7 +328,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				</div>
 			</div>`);
-		fixture.detectChanges();
 
 		const el = fixture.nativeElement;
 		expectOpenPanels(el, [false]);
@@ -346,7 +339,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should remove body content from DOM only for the first collapse', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const originalItems = fixture.componentInstance.items;
 		originalItems[0].destroyOnHide.set(true);
@@ -361,8 +353,8 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
-	it('should have a custom panel id', () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+	it('should have a custom panel id', async () => {
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item; let index = $index) {
 					<div [ngbAccordionItem]="'custom-' + index">
 						<h2 ngbAccordionHeader>
@@ -374,12 +366,12 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
+
 		expect(getItemsIds(fixture.nativeElement)).toEqual(['custom-0', 'custom-1', 'custom-2']);
 	});
 
-	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-item', () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-item', async () => {
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				@for (item of items; track item) {
 					<div ngbAccordionItem>
 						<h2 ngbAccordionHeader>
@@ -391,7 +383,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
 
 		getCollapses(fixture.nativeElement).forEach((collapse) => {
 			expect(getCollapseBodyContent(collapse)).toBe('');
@@ -400,7 +391,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should not toggle disabled items', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		fixture.componentInstance.items[0].disabled.set(true);
 		await fixture.whenStable();
@@ -414,7 +404,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should not change collapse when panels are disabled', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const oItems = fixture.componentInstance.items;
 		const el = fixture.nativeElement;
@@ -438,7 +427,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should have correct disabled state', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const oItems = fixture.componentInstance.items;
 		const el = fixture.nativeElement;
@@ -457,7 +445,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow using 'ngbAccordionItem' from the template`, async () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+		const fixture = await createTestComponent(`<div ngbAccordion>
 					<div ngbAccordionItem='item' #item='ngbAccordionItem' [collapsed]='false'>
 						<h2 ngbAccordionHeader>
 							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
@@ -468,7 +456,6 @@ describe('ngb-accordion directive', () => {
 				<button id="btn-toggle" (click)='item.toggle()'></button>
 				<button id="btn-expand" (click)='item.collapsed = false'></button>
 				<button id="btn-disable" (click)='item.disabled = true'></button>`);
-		fixture.detectChanges();
 
 		const el = fixture.nativeElement;
 
@@ -491,7 +478,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should allow using 'ngbAccordionItem' from the template in a loop`, async () => {
-		const fixture = createTestComponent(`<div ngbAccordion>
+		const fixture = await createTestComponent(`<div ngbAccordion>
 				@for (i of items; track i) {
 					<div ngbAccordionItem #item='ngbAccordionItem'[collapsed]='i.collapsed()' [disabled]='i.disabled()'>
 						<h2 ngbAccordionHeader>
@@ -501,7 +488,6 @@ describe('ngb-accordion directive', () => {
 					</div>
 				}
 			</div>`);
-		fixture.detectChanges();
 
 		const el = fixture.nativeElement;
 
@@ -514,9 +500,9 @@ describe('ngb-accordion directive', () => {
 		expect(getPanelsTitle(el)).toEqual(['expanded-enabled', 'collapsed-disabled', 'collapsed-enabled']);
 	});
 
-	it('should emit panel events when toggling panels', () => {
+	it('should emit panel events when toggling panels', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		const el = fixture.nativeElement;
 		const ci = fixture.componentInstance;
@@ -547,7 +533,6 @@ describe('ngb-accordion directive', () => {
 
 	it('should have the proper roles', async () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const el = fixture.nativeElement;
 		fixture.componentInstance.items.forEach((item) => item.collapsed.set(false));
@@ -559,7 +544,7 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it(`should toggle '.collapsed' class on header when panel is toggled`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
 			<div ngbAccordion>
 				<div ngbAccordionItem [collapsed]="false">
 					<div ngbAccordionHeader><button ngbAccordionToggle>Toggle</button></div>
@@ -567,7 +552,6 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>
 		`);
-		fixture.detectChanges();
 
 		const header = fixture.nativeElement.querySelector('[ngbAccordionHeader]');
 		const toggle = fixture.nativeElement.querySelector('[ngbAccordionToggle]');
@@ -618,10 +602,10 @@ describe('ngb-accordion directive', () => {
 			) {}
 		}
 
-		it(`should allow expanding one panel initially`, () => {
+		it(`should allow expanding one panel initially`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'false', 'true']);
 		});
@@ -629,7 +613,7 @@ describe('ngb-accordion directive', () => {
 		it(`should work with one panel opened initially + collapse on click`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			getButton(fixture.nativeElement, 1).click();
 			await fixture.whenStable();
@@ -639,7 +623,7 @@ describe('ngb-accordion directive', () => {
 		it(`should work with one panel opened initially + collapse on item.toggle()`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.items.get(1)!.toggle();
 			await fixture.whenStable();
@@ -649,7 +633,7 @@ describe('ngb-accordion directive', () => {
 		it(`should work with one panel opened initially + collapse on item.collapse = true`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.items.get(1)!.collapsed = true;
 			await fixture.whenStable();
@@ -659,61 +643,61 @@ describe('ngb-accordion directive', () => {
 		it(`should work with one panel opened initially + collapse on accordion.toggle(item)`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.accordion.toggle('two');
 			await fixture.whenStable();
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'true', 'true']);
 		});
 
-		it(`should work with one panel opened initially + expand on click`, () => {
+		it(`should work with one panel opened initially + expand on click`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			getButton(fixture.nativeElement, 0).click();
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
 		});
 
-		it(`should work with one panel opened initially + expand on item.toggle()`, () => {
+		it(`should work with one panel opened initially + expand on item.toggle()`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.items.get(0)!.toggle();
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
 		});
 
-		it(`should work with one panel opened initially + expand on item.collapse = false`, () => {
+		it(`should work with one panel opened initially + expand on item.collapse = false`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.items.get(0)!.collapsed = false;
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
 		});
 
-		it(`should work with one panel opened initially + expand on accordion.toggle(item)`, () => {
+		it(`should work with one panel opened initially + expand on accordion.toggle(item)`, async () => {
 			TestBed.overrideProvider('state', { useValue: [true, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.accordion.toggle('one');
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
 		});
 
-		it(`should not allow expanding multiple panels initially`, () => {
+		it(`should not allow expanding multiple panels initially`, async () => {
 			TestBed.overrideProvider('state', { useValue: [false, false, false, true] });
 			const fixture = TestBed.createComponent(CloseOthersComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true', 'true']);
 		});
 	});
 
 	describe('imperative API', () => {
-		function createTestImperativeAccordion(testHtml: string) {
-			const fixture = createTestComponent(testHtml);
-			fixture.detectChanges();
+		async function createTestImperativeAccordion(testHtml: string) {
+			const fixture = await createTestComponent(testHtml);
+
 			const directiveEl = fixture.debugElement.query(By.directive(NgbAccordionDirective));
 			const accordionDirective = directiveEl.injector.get(NgbAccordionDirective);
 			const nativeElement = fixture.nativeElement;
@@ -732,7 +716,7 @@ describe('ngb-accordion directive', () => {
 			});
 		});
 
-		it('should check if a panel with a given id is expanded', () => {
+		it('should check if a panel with a given id is expanded', async () => {
 			const html = `
 				<div ngbAccordion>
 					<div ngbAccordionItem [collapsed]="false">
@@ -744,7 +728,7 @@ describe('ngb-accordion directive', () => {
 						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 				</div>`;
-			const { accordionDirective, nativeElement } = createTestImperativeAccordion(html);
+			const { accordionDirective, nativeElement } = await createTestImperativeAccordion(html);
 			expectOpenPanels(nativeElement, [true, false]);
 			const ids = getItemsIds(nativeElement);
 			expect(accordionDirective.isExpanded(ids[0])).toBe(true);
@@ -764,7 +748,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>
 			`;
-			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(html);
+			const { accordionDirective, nativeElement, fixture } = await createTestImperativeAccordion(html);
 			const ids = getItemsIds(nativeElement);
 
 			expectOpenPanels(nativeElement, [false, false]);
@@ -780,7 +764,7 @@ describe('ngb-accordion directive', () => {
 			expectOpenPanels(nativeElement, [true, false]);
 		});
 
-		it('should not expand / collapse if already expanded / collapsed', () => {
+		it('should not expand / collapse if already expanded / collapsed', async () => {
 			const testHtml = `
 			<div ngbAccordion (hidden)="hiddenCallback($event)" (shown)="shownCallback($event)">
 				<div ngbAccordionItem [collapsed]="false">
@@ -793,7 +777,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>`;
 
-			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement, fixture } = await createTestImperativeAccordion(testHtml);
 			const ids = getItemsIds(nativeElement);
 			expectOpenPanels(nativeElement, [true, false]);
 
@@ -809,7 +793,7 @@ describe('ngb-accordion directive', () => {
 			expect(fixture.componentInstance.hiddenCallback).not.toHaveBeenCalled();
 		});
 
-		it('should close panel open when close others is true and another one gets toggled', () => {
+		it('should close panel open when close others is true and another one gets toggled', async () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
@@ -821,14 +805,14 @@ describe('ngb-accordion directive', () => {
 					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
-			const { accordionDirective, nativeElement } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement } = await createTestImperativeAccordion(testHtml);
 			const ids = getItemsIds(nativeElement);
 			expectOpenPanels(nativeElement, [false, true]);
 			accordionDirective.expand(ids[0]);
 			expectOpenPanels(nativeElement, [true, false]);
 		});
 
-		it('should expand disabled panels', () => {
+		it('should expand disabled panels', async () => {
 			const testHtml = `
 			<div ngbAccordion (shown)="shownCallback($event)">
 				<div ngbAccordionItem [disabled]="true">
@@ -836,7 +820,7 @@ describe('ngb-accordion directive', () => {
 					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
-			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement, fixture } = await createTestImperativeAccordion(testHtml);
 			const ids = getItemsIds(nativeElement);
 
 			expectOpenPanels(nativeElement, [false]);
@@ -848,7 +832,7 @@ describe('ngb-accordion directive', () => {
 			expect(fixture.componentInstance.shownCallback).toHaveBeenCalled();
 		});
 
-		it('should expandAll when closeOthers is false', () => {
+		it('should expandAll when closeOthers is false', async () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="false">
 				<div ngbAccordionItem>
@@ -861,7 +845,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>`;
 
-			const { accordionDirective, nativeElement } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement } = await createTestImperativeAccordion(testHtml);
 
 			expectOpenPanels(nativeElement, [false, false]);
 
@@ -869,7 +853,7 @@ describe('ngb-accordion directive', () => {
 			expectOpenPanels(nativeElement, [true, true]);
 		});
 
-		it('should expand only first panel when closeOthers is true and none of panels is expanded', () => {
+		it('should expand only first panel when closeOthers is true and none of panels is expanded', async () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
@@ -882,7 +866,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>`;
 
-			const { accordionDirective, nativeElement } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement } = await createTestImperativeAccordion(testHtml);
 
 			expectOpenPanels(nativeElement, [false, false]);
 
@@ -890,7 +874,7 @@ describe('ngb-accordion directive', () => {
 			expectOpenPanels(nativeElement, [true, false]);
 		});
 
-		it('should do nothing if closeOthers is true and one panel is expanded', () => {
+		it('should do nothing if closeOthers is true and one panel is expanded', async () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
@@ -903,7 +887,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>`;
 
-			const { accordionDirective, nativeElement } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement } = await createTestImperativeAccordion(testHtml);
 
 			expectOpenPanels(nativeElement, [false, true]);
 
@@ -924,7 +908,7 @@ describe('ngb-accordion directive', () => {
 				</div>
 			</div>`;
 
-			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(testHtml);
+			const { accordionDirective, nativeElement, fixture } = await createTestImperativeAccordion(testHtml);
 
 			expectOpenPanels(nativeElement, [false, true]);
 
@@ -964,9 +948,9 @@ describe('on push change detection strategy', () => {
 		],
 	})
 	class TestOnPushComponent {}
-	it('Update the other panels accordingly', () => {
+	it('Update the other panels accordingly', async () => {
 		const fixture = TestBed.createComponent(TestOnPushComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 		const buttons = fixture.nativeElement.querySelectorAll('.accordion-header > .accordion-button');
 		expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
@@ -981,7 +965,7 @@ describe('on push change detection strategy', () => {
 	});
 });
 
-it(`should allow querying from the body template`, () => {
+it(`should allow querying from the body template`, async () => {
 	@Component({
 		selector: 'query-test-cmp',
 		imports: [
@@ -1015,7 +999,7 @@ it(`should allow querying from the body template`, () => {
 	}
 
 	let cmp = TestBed.createComponent(QueryTestComponent);
-	cmp.detectChanges();
+	await cmp.whenStable();
 	expect(cmp.componentInstance.bar).toBeDefined();
 	expect(cmp.componentInstance.bar.nativeElement.textContent).toBe('Bar');
 });
@@ -1030,7 +1014,6 @@ describe('Custom config', () => {
 
 	it('should initialize inputs with provided config', () => {
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
 
 		const directiveEl = fixture.debugElement.query(By.directive(NgbAccordionDirective));
 		const directive = directiveEl.injector.get(NgbAccordionDirective);
@@ -1045,7 +1028,6 @@ it('should initialize inputs with provided config', () => {
 	config.destroyOnHide = false;
 
 	const fixture = TestBed.createComponent(TestComponent);
-	fixture.detectChanges();
 
 	const directive = fixture.debugElement.query(By.directive(NgbAccordionDirective)).injector.get(NgbAccordionDirective);
 	expect(directive.closeOthers).toBe(config.closeOthers);
@@ -1076,10 +1058,10 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 					</div>
 				</div>
 			`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onShown = (panelId) => panelId;
 			onHidden = (panelId) => panelId;
 			onCollapseShown = () => {};
@@ -1093,8 +1075,8 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 		it(`should run collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(false);
+			await fixture.whenStable();
 
 			const el = fixture.nativeElement;
 			const id = getItemsIds(el)[0];
@@ -1150,10 +1132,10 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 			await expandPromise;
 		});
 
-		it(`should run collapsing transition (force-reduced-motion = true)`, () => {
+		it(`should run collapsing transition (force-reduced-motion = true)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = true;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(true);
+			await fixture.whenStable();
 
 			const el = fixture.nativeElement;
 			const id = getItemsIds(el)[0];
@@ -1191,8 +1173,8 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 		it(`should run revert collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(false);
+			await fixture.whenStable();
 
 			const el = fixture.nativeElement;
 			const id = getItemsIds(el)[0];
@@ -1256,9 +1238,9 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 	],
 })
 class TestComponent {
-	destroyOnHide = input(true);
-	closeOthers = input(false);
-	items = [
+	readonly destroyOnHide = input(true);
+	readonly closeOthers = input(false);
+	readonly items = [
 		{
 			disabled: signal(false),
 			header: 'Panel 1',
