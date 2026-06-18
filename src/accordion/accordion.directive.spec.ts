@@ -1076,10 +1076,10 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 					</div>
 				</div>
 			`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onShown = (panelId) => panelId;
 			onHidden = (panelId) => panelId;
 			onCollapseShown = () => {};
@@ -1093,7 +1093,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 		it(`should run collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
+			fixture.componentInstance.reduceMotion.set(false);
 			fixture.detectChanges();
 
 			const el = fixture.nativeElement;
@@ -1152,7 +1152,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 		it(`should run collapsing transition (force-reduced-motion = true)`, () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = true;
+			fixture.componentInstance.reduceMotion.set(true);
 			fixture.detectChanges();
 
 			const el = fixture.nativeElement;
@@ -1191,7 +1191,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 
 		it(`should run revert collapsing transition (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
+			fixture.componentInstance.reduceMotion.set(false);
 			fixture.detectChanges();
 
 			const el = fixture.nativeElement;
@@ -1256,9 +1256,9 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 	],
 })
 class TestComponent {
-	destroyOnHide = input(true);
-	closeOthers = input(false);
-	items = [
+	readonly destroyOnHide = input(true);
+	readonly closeOthers = input(false);
+	readonly items = [
 		{
 			disabled: signal(false),
 			header: 'Panel 1',

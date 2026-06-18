@@ -693,7 +693,7 @@ describe('ngb-rating', () => {
 				readonly fixture = createGenericTestComponent(
 					`
 					<ngb-rating [(ngModel)]="model" class="control" max="5"/>
-          			<ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled/>	
+					<ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled/>
 				`,
 					TestComponent,
 					false,
@@ -881,14 +881,14 @@ describe('ngb-rating', () => {
 	template: '',
 })
 class TestComponent {
-	changed = signal(false);
-	disabled = signal(false);
-	readonly = signal(false);
-	form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });
-	formControl = new FormControl(0);
-	max = signal(10);
-	model = signal<undefined | number>(undefined);
-	rate = signal(3);
-	tabindex = signal<undefined | string | number>(3);
+	readonly changed = signal(false);
+	readonly disabled = signal(false);
+	readonly readonly = signal(false);
+	readonly form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });
+	readonly formControl = new FormControl(0);
+	readonly max = signal(10);
+	readonly model = signal<undefined | number>(undefined);
+	readonly rate = signal(3);
+	readonly tabindex = signal<undefined | string | number>(3);
 	customAriaValueTextFunction = (current: number, max: number) => `Rating: ${current} out of ${max} stars`;
 }

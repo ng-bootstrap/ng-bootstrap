@@ -1299,11 +1299,11 @@ if (isBrowserVisible('ngb-nav animations')) {
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = signal(false);
-			onItemHiddenSpy = vi.fn();
-			onItemShownSpy = vi.fn();
-			onNavHiddenSpy = vi.fn();
-			onNavShownSpy = vi.fn();
+			readonly reduceMotion = signal(false);
+			readonly onItemHiddenSpy = vi.fn();
+			readonly onItemShownSpy = vi.fn();
+			readonly onNavHiddenSpy = vi.fn();
+			readonly onNavShownSpy = vi.fn();
 		}
 
 		class NavAnimationTester {
@@ -1594,12 +1594,12 @@ if (isBrowserVisible('ngb-nav animations')) {
 	],
 })
 class TestComponent {
-	activeId = signal<number | boolean | string | undefined>(undefined);
-	disabled = signal(true);
-	items = signal([1, 2]);
-	orientation = signal('horizontal');
-	roles = signal<'tablist' | false>('tablist');
-	visible = signal(false);
+	readonly activeId = signal<number | boolean | string | undefined>(undefined);
+	readonly disabled = signal(true);
+	readonly items = signal([1, 2]);
+	readonly orientation = signal('horizontal');
+	readonly roles = signal<'tablist' | false>('tablist');
+	readonly visible = signal(false);
 	onActiveIdChange = (id) => {};
 	onNavChange = () => {};
 	onItemHidden = () => {};

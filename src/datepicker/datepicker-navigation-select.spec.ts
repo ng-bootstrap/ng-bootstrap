@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
-import { Component, provideZoneChangeDetection } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDate } from './ngb-date';
@@ -21,12 +21,12 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 
 describe('ngb-datepicker-navigation-select', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 	});
 
 	it('should generate month options correctly', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="months()" [years]="years()">`,
 		);
 		expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
 			'1',
@@ -41,7 +41,7 @@ describe('ngb-datepicker-navigation-select', () => {
 			'10',
 		]);
 
-		fixture.componentInstance.months = [1, 2, 3];
+		fixture.componentInstance.months.set([1, 2, 3]);
 		fixture.detectChanges();
 		expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual(['1', '2', '3']);
 	});
@@ -49,20 +49,20 @@ describe('ngb-datepicker-navigation-select', () => {
 	it('should generate year options correctly', () => {
 		ignoreTrackWarnings();
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="months()" [years]="years()">`,
 		);
 
 		const yearSelect = getYearSelect(fixture.nativeElement);
 		expect(getOptionValues(yearSelect)).toEqual(['2015', '2016', '2017']);
 
-		fixture.componentInstance.years = [2001, 2002, 2003];
+		fixture.componentInstance.years.set([2001, 2002, 2003]);
 		fixture.detectChanges();
 		expect(getOptionValues(yearSelect)).toEqual(['2001', '2002', '2003']);
 	});
 
 	it('should send date selection events', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years" (select)="onSelect($event)">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="months()" [years]="years()" (select)="onSelect($event)">`,
 		);
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
@@ -85,19 +85,19 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should select months and years when date changes', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="months()" [years]="years()">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
 
-		fixture.componentInstance.date = new NgbDate(2017, 9, 22);
+		fixture.componentInstance.date.set(new NgbDate(2017, 9, 22));
 		fixture.detectChanges();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('9');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2017');
 
 		// out of range
-		fixture.componentInstance.date = new NgbDate(2222, 22, 22);
+		fixture.componentInstance.date.set(new NgbDate(2222, 22, 22));
 		fixture.detectChanges();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('');
@@ -105,7 +105,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have disabled select boxes when disabled', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [disabled]="true" [date]="date" [months]="months" [years]="years">`,
+			`<ngb-datepicker-navigation-select [disabled]="true" [date]="date()" [months]="months()" [years]="years()">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).disabled).toBe(true);
@@ -114,17 +114,17 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have correct aria attributes on select options', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="[7, 8, 9]" [years]="years()">`,
 		);
 
 		getOptions(getMonthSelect(fixture.nativeElement)).forEach((option, index) => {
-			expect(option.getAttribute('aria-label')).toBe(fixture.componentInstance.ariaMonths[index]);
+			expect(option.getAttribute('aria-label')).toBe(fixture.componentInstance.ariaMonths()[index]);
 		});
 	});
 
 	it('should have correct aria attributes on select elements', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="[7, 8, 9]" [years]="years()">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).getAttribute('aria-label')).toBe('Select month');
@@ -133,7 +133,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have correct title attributes on select elements', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-datepicker-navigation-select [date]="date()" [months]="[7, 8, 9]" [years]="years()">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).getAttribute('title')).toBe('Select month');
@@ -147,10 +147,10 @@ describe('ngb-datepicker-navigation-select', () => {
 	template: '',
 })
 class TestComponent {
-	date = new NgbDate(2016, 8, 22);
-	months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-	ariaMonths = ['July', 'August', 'September'];
-	years = [2015, 2016, 2017];
+	readonly date = signal(new NgbDate(2016, 8, 22));
+	readonly months = signal([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+	readonly ariaMonths = signal(['July', 'August', 'September']);
+	readonly years = signal([2015, 2016, 2017]);
 
 	onSelect = (event) => {};
 }

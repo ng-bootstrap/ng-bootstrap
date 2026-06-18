@@ -116,8 +116,8 @@ if (isBrowserVisible('ngb-collapse animations')) {
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			collapsed = signal(false);
-			reduceMotion = signal(true);
+			readonly collapsed = signal(false);
+			readonly reduceMotion = signal(true);
 			onCollapse = () => {};
 			onShown = () => {};
 			onHidden = () => {};
@@ -273,6 +273,6 @@ if (isBrowserVisible('ngb-collapse animations')) {
 	template: '<div [ngbCollapse]="collapsed()"></div>',
 })
 class TestComponent {
-	collapsed = signal(false);
-	horizontal = signal(false);
+	readonly collapsed = signal(false);
+	readonly horizontal = signal(false);
 }

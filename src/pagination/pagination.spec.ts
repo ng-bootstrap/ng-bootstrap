@@ -900,16 +900,16 @@ describe('ngb-pagination', () => {
 	template: '',
 })
 class TestComponent {
-	disabled = signal(false);
-	pageSize = signal<number | null>(10);
-	collectionSize = signal<number | null>(100);
-	page = signal<number | null>(1);
-	boundaryLinks = signal(false);
-	directionLinks = signal(false);
-	size = signal<string | null>('');
-	maxSize = signal<number | null>(0);
-	ellipses = signal(true);
-	rotate = signal(false);
+	readonly disabled = signal(false);
+	readonly pageSize = signal<number | null>(10);
+	readonly collectionSize = signal<number | null>(100);
+	readonly page = signal<number | null>(1);
+	readonly boundaryLinks = signal(false);
+	readonly directionLinks = signal(false);
+	readonly size = signal<string | null>('');
+	readonly maxSize = signal<number | null>(0);
+	readonly ellipses = signal(true);
+	readonly rotate = signal(false);
 
 	onPageChange = () => {};
 }

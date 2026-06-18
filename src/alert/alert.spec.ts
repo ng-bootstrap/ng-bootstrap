@@ -192,10 +192,10 @@ if (isBrowserVisible('ngb-alert animations')) {
 		@Component({
 			imports: [NgbAlert],
 			template: ` <ngb-alert type="success" (closed)="onClose()">Cool!</ngb-alert>`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onClose = () => {};
 		}
 		let transitionTimerDelayMs: Mock;
@@ -216,7 +216,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 				`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`,
 				async () => {
 					const fixture = TestBed.createComponent(TestAnimationComponent);
-					fixture.componentInstance.reduceMotion = reduceMotion;
+					fixture.componentInstance.reduceMotion.set(reduceMotion);
 					fixture.detectChanges();
 
 					const alertEl = getAlertElement(fixture.nativeElement);
@@ -247,6 +247,6 @@ if (isBrowserVisible('ngb-alert animations')) {
 	template: '',
 })
 class TestComponent {
-	closed = signal(false);
-	type = signal('success');
+	readonly closed = signal(false);
+	readonly type = signal('success');
 }
