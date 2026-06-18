@@ -2,7 +2,7 @@ import { NgbCalendar } from './ngb-calendar';
 import { NgbDate } from './ngb-date';
 import { NgbDateStruct } from './ngb-date-struct';
 import { DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './datepicker-view-model';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { isInteger, toInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { Observable, Subject } from 'rxjs';
 import {
@@ -35,7 +35,7 @@ export type DatepickerServiceInputs = Partial<{
 	weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
 }>;
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDatepickerService {
 	private _VALIDATORS: {
 		[K in keyof DatepickerServiceInputs]: (v: DatepickerServiceInputs[K]) => Partial<DatepickerViewModel> | void;

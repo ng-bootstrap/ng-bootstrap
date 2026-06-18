@@ -1,6 +1,6 @@
 import { padNumber, toInteger, isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbDateStruct } from './ngb-date-struct';
-import { Injectable, Service } from '@angular/core';
+import { Service } from '@angular/core';
 
 export function NGB_DATEPICKER_PARSER_FORMATTER_FACTORY() {
 	return new NgbDateISOParserFormatter();
@@ -40,7 +40,7 @@ export abstract class NgbDateParserFormatter {
 	abstract format(date: NgbDateStruct | null): string;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDateISOParserFormatter extends NgbDateParserFormatter {
 	parse(value: string): NgbDateStruct | null {
 		if (value != null) {

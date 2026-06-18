@@ -1,9 +1,9 @@
 import { NgbDate } from '../ngb-date';
 import { NgbPeriod, NgbCalendar } from '../ngb-calendar';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 
-@Injectable()
+@Service({ autoProvided: false })
 export abstract class NgbCalendarHijri extends NgbCalendar {
 	/**
 	 * Returns the number of days in a specific Hijri month.

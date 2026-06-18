@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Injectable, Type } from '@angular/core';
+import { Component, Service, Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {
 	NgbDatepicker,
@@ -17,7 +17,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ngb-datepicker integration', () => {
 	it('should allow overriding datepicker calendar', () => {
-		@Injectable()
+		@Service({ autoProvided: false })
 		class FixedTodayCalendar extends NgbCalendarGregorian {
 			getToday() {
 				return new NgbDate(2000, 7, 1);
@@ -40,7 +40,7 @@ describe('ngb-datepicker integration', () => {
 	describe('i18n', () => {
 		const ALPHABET = 'ABCDEFGHIJKLMNOPRSTQUVWXYZ';
 
-		@Injectable()
+		@Service({ autoProvided: false })
 		class CustomI18n extends NgbDatepickerI18nDefault {
 			// alphabetic months: Jan -> A, Feb -> B, etc
 			getMonthShortName(month: number) {
@@ -141,7 +141,7 @@ describe('ngb-datepicker integration', () => {
 	});
 
 	describe('i18n-month-label', () => {
-		@Injectable()
+		@Service({ autoProvided: false })
 		class CustomI18n extends NgbDatepickerI18nDefault {
 			getMonthLabel(date: NgbDateStruct): string {
 				return `${date.month}-${date.year}`;
@@ -176,7 +176,7 @@ describe('ngb-datepicker integration', () => {
 	});
 
 	describe('keyboard service', () => {
-		@Injectable()
+		@Service({ autoProvided: false })
 		class CustomKeyboardService extends NgbDatepickerKeyboardService {
 			processKey(event: KeyboardEvent, service: NgbDatepicker) {
 				const state = service.state;

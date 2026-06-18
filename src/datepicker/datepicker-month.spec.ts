@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
+import { Component, Service, provideZoneChangeDetection } from '@angular/core';
 
 import { NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth } from './datepicker.module';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
@@ -53,7 +53,7 @@ function expectWeekLabel(element: HTMLElement, weekLabel: string) {
 	expect(result).toEqual(weekLabel);
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 class MockDatepickerService extends NgbDatepickerService {
 	getMonth(struct: NgbDateStruct) {
 		return {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDateStruct } from '../ngb-date-struct';
 import { NgbDateNativeAdapter } from './ngb-date-native-adapter';
 
@@ -7,7 +7,7 @@ import { NgbDateNativeAdapter } from './ngb-date-native-adapter';
  *
  * @since 3.2.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDateNativeUTCAdapter extends NgbDateNativeAdapter {
 	protected _fromNativeDate(date: Date): NgbDateStruct {
 		return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };

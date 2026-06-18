@@ -1,4 +1,4 @@
-import { Injectable, Service } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDateStruct } from '../ngb-date-struct';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
@@ -31,7 +31,7 @@ export abstract class NgbDateAdapter<D> {
 	abstract toModel(date: NgbDateStruct | null): D | null;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
 	/**
 	 * Converts a NgbDateStruct value into NgbDateStruct value

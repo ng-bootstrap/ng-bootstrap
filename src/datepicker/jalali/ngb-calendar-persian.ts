@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDate } from '../ngb-date';
 import { NgbCalendar, NgbPeriod } from '../ngb-calendar';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 import { fromGregorian, setJalaliDay, setJalaliMonth, setJalaliYear, toGregorian } from './jalali';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarPersian extends NgbCalendar {
 	getDaysPerWeek() {
 		return 7;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, DebugElement, Injectable, provideZoneChangeDetection } from '@angular/core';
+import { Component, DebugElement, Service, provideZoneChangeDetection } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -1651,7 +1651,7 @@ class TestComponent {
 })
 class TestComponentOnPush {}
 
-@Injectable()
+@Service({ autoProvided: false })
 class StringTimeAdapter extends NgbTimeAdapter<string> {
 	fromModel(value: string): NgbTimeStruct | null {
 		if (!value) {
@@ -1673,7 +1673,7 @@ class StringTimeAdapter extends NgbTimeAdapter<string> {
 	}
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 class TestI18n extends NgbTimepickerI18n {
 	getMorningPeriod(): string {
 		return 'morning';

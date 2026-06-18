@@ -1,7 +1,7 @@
-import { Component, inject, Injectable, Injector, OnDestroy } from '@angular/core';
+import { Component, inject, Service, Injector, OnDestroy } from '@angular/core';
 import { NgbOffcanvas } from '../offcanvas/offcanvas';
 
-@Injectable()
+@Service({ autoProvided: false })
 class LazyService {
 	get text() {
 		return 'lazy offcanvas';

@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, Injectable, provideZoneChangeDetection } from '@angular/core';
+import { Component, Service, provideZoneChangeDetection } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 import {
@@ -1238,7 +1238,7 @@ describe('NgbInputDatepicker', () => {
 	});
 });
 
-@Injectable()
+@Service({ autoProvided: false })
 class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 	fromModel(date: Date): NgbDateStruct | null {
 		return date && date.getFullYear

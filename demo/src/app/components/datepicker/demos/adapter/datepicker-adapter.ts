@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Service } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbDateAdapter,
@@ -13,7 +13,7 @@ import { JsonPipe } from '@angular/common';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class CustomAdapter extends NgbDateAdapter<string> {
 	readonly DELIMITER = '-';
 
@@ -37,7 +37,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
 	readonly DELIMITER = '/';
 

@@ -1,4 +1,4 @@
-import { inject, Injectable, Service, LOCALE_ID } from '@angular/core';
+import { inject, Service, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { NgbDateStruct } from './ngb-date-struct';
 
@@ -99,7 +99,7 @@ export abstract class NgbDatepickerI18n {
  *
  * @since 9.1.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 	private _locale = inject(LOCALE_ID);
 

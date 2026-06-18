@@ -1,4 +1,4 @@
-import { Injectable, Service } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbTimeStruct } from './ngb-time-struct';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
@@ -32,7 +32,7 @@ export abstract class NgbTimeAdapter<T> {
 	abstract toModel(time: NgbTimeStruct | null): T | null;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbTimeStructAdapter extends NgbTimeAdapter<NgbTimeStruct> {
 	/**
 	 * Converts a NgbTimeStruct value into NgbTimeStruct value

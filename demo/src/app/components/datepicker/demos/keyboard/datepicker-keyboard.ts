@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Service } from '@angular/core';
 import { NgbDatepicker, NgbDatepickerKeyboardService, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker';
 import { FormsModule } from '@angular/forms';
 
@@ -9,7 +9,7 @@ const Key = {
 	Home: 'Home',
 };
 
-@Injectable()
+@Service({ autoProvided: false })
 export class CustomKeyboardService extends NgbDatepickerKeyboardService {
 	processKey(event: KeyboardEvent, dp: NgbDatepicker) {
 		const state = dp.state;

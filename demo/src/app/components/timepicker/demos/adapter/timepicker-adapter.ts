@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Service } from '@angular/core';
 import { NgbTimeStruct, NgbTimeAdapter, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap/timepicker';
 import { FormsModule } from '@angular/forms';
 
@@ -7,7 +7,7 @@ const pad = (i: number): string => (i < 10 ? `0${i}` : `${i}`);
 /**
  * Example of a String Time adapter
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 	fromModel(value: string | null): NgbTimeStruct | null {
 		if (!value) {

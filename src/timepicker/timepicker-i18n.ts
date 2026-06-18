@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Injectable, LOCALE_ID, Service, inject } from '@angular/core';
+import { Service, LOCALE_ID, inject } from '@angular/core';
 
 /**
  * Type of the service supplying day periods (for example, 'AM' and 'PM') to NgbTimepicker component.
@@ -21,7 +21,7 @@ export abstract class NgbTimepickerI18n {
 	abstract getAfternoonPeriod(): string;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbTimepickerI18nDefault extends NgbTimepickerI18n {
 	private _locale = inject(LOCALE_ID);
 
