@@ -1,6 +1,6 @@
 import { NgbDate } from '../ngb-date';
 import { fromJSDate, NgbCalendar, NgbPeriod, toJSDate } from '../ngb-calendar';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/utils';
 import {
 	fromGregorian,
@@ -15,7 +15,7 @@ import {
 /**
  * @since 3.2.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarHebrew extends NgbCalendar {
 	getDaysPerWeek() {
 		return 7;

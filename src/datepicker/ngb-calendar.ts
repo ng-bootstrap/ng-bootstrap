@@ -1,5 +1,5 @@
 import { NgbDate } from './ngb-date';
-import { Injectable, Service } from '@angular/core';
+import { Service } from '@angular/core';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 
 export function fromJSDate(jsDate: Date) {
@@ -88,7 +88,7 @@ export abstract class NgbCalendar {
 	abstract isValid(date?: NgbDate | null): boolean;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarGregorian extends NgbCalendar {
 	getDaysPerWeek() {
 		return 7;

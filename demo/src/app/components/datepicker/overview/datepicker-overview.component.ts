@@ -85,7 +85,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
 		adapter: Snippet({
 			lang: 'typescript',
 			code: `
-        @Injectable()
+        @Service({autoProvided: false})
         export abstract class NgbDateAdapter<D> {
           abstract fromModel(value: D): NgbDateStruct; // from your model -> internal model
           abstract toModel(date: NgbDateStruct): D; // from internal model -> your mode
@@ -98,7 +98,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
 		formatter: Snippet({
 			lang: 'typescript',
 			code: `
-        @Injectable()
+        @Service({autoProvided: false})
         export abstract class NgbDateParserFormatter {
           abstract parse(value: string): NgbDateStruct; // from input -> internal model
           abstract format(date: NgbDateStruct): string; // from internal model -> string
@@ -182,7 +182,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
 		i18n: Snippet({
 			lang: 'typescript',
 			code: `
-        @Injectable()
+        @Service({autoProvided: false})
         export abstract class NgbDatepickerI18n {
           abstract getWeekdayShortName(weekday: number): string;
           abstract getMonthShortName(month: number): string;

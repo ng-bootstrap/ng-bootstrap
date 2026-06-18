@@ -1,6 +1,6 @@
 import { NgbCalendarHijri } from './ngb-calendar-hijri';
 import { NgbDate } from '../ngb-date';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
 /**
  * Checks if islamic year is a leap year
@@ -50,7 +50,7 @@ function mod(a: number, b: number): number {
 const GREGORIAN_EPOCH = 1721425.5;
 const ISLAMIC_EPOCH = 1948439.5;
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarIslamicCivil extends NgbCalendarHijri {
 	/**
 	 * Returns the equivalent islamic(civil) date value for a give input Gregorian date.

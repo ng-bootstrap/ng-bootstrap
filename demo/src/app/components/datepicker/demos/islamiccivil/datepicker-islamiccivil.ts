@@ -1,4 +1,4 @@
-import { Component, inject, Injectable } from '@angular/core';
+import { Component, inject, Service } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarIslamicCivil,
@@ -25,7 +25,7 @@ const MONTHS = [
 	'ذو الحجة',
 ];
 
-@Injectable()
+@Service({ autoProvided: false })
 export class IslamicI18n extends NgbDatepickerI18n {
 	getMonthShortName(month: number) {
 		return MONTHS[month - 1];

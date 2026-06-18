@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbCalendar, NgbPeriod } from '../ngb-calendar';
 import { NgbDate } from '../ngb-date';
@@ -14,7 +14,7 @@ import {
 /**
  * @since 16.0.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarEthiopian extends NgbCalendar {
 	getDaysPerWeek(): number {
 		return 7;

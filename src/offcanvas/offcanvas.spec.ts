@@ -1,4 +1,4 @@
-import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Service, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -11,12 +11,12 @@ import { firstValueFrom } from 'rxjs';
 
 const NOOP = () => {};
 
-@Injectable()
+@Service({ autoProvided: false })
 class SpyService {
 	called = false;
 }
 
-@Injectable()
+@Service({ autoProvided: false })
 class CustomSpyService {
 	called = false;
 }

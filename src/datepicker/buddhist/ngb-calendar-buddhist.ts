@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
 import { NgbCalendarGregorian, NgbPeriod } from '../ngb-calendar';
 import { NgbDate } from '../ngb-date';
@@ -7,7 +7,7 @@ import { fromGregorian, toGregorian } from './buddhist';
 /**
  * @since 9.1.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbCalendarBuddhist extends NgbCalendarGregorian {
 	getToday(): NgbDate {
 		return fromGregorian(new Date());

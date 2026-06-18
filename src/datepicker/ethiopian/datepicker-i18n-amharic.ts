@@ -1,5 +1,5 @@
 import { NgbDatepickerI18n } from '../datepicker-i18n';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDateStruct } from '../ngb-date-struct';
 
 const WEEKDAYS = ['እሑድ', 'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሓሙስ', 'ዓርብ', 'ቅዳሜ'];
@@ -8,7 +8,7 @@ const MONTHS = ['መስከረም', 'ጥቅምት', 'ኅዳር', 'ታህሣሥ', 
 /**
  * @since 16.0.0
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDatepickerI18nAmharic extends NgbDatepickerI18n {
 	getMonthShortName(month: number, year?: number | undefined): string {
 		return this.getMonthFullName(month, year);

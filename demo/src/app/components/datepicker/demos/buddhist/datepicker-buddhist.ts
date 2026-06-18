@@ -1,4 +1,4 @@
-import { Component, inject, Injectable } from '@angular/core';
+import { Component, inject, Service } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarBuddhist,
@@ -10,7 +10,7 @@ import localeThai from '@angular/common/locales/th';
 import { formatDate, JsonPipe, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 	private _locale = 'th';
 	private _weekdaysShort: readonly string[];

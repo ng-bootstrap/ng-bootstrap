@@ -7,7 +7,7 @@ import { By } from '@angular/platform-browser';
 import {
 	Component,
 	ViewChild,
-	Injectable,
+	Service,
 	OnDestroy,
 	TemplateRef,
 	ViewContainerRef,
@@ -23,7 +23,7 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { Options } from '@popperjs/core';
 
-@Injectable()
+@Service({ autoProvided: false })
 class SpyService {
 	called = false;
 }

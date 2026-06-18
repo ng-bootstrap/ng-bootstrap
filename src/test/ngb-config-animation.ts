@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbConfigAnimation extends NgbConfig {
 	animation = true;
 }

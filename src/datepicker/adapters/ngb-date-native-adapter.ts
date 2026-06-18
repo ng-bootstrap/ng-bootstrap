@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { NgbDateAdapter } from './ngb-date-adapter';
 import { NgbDateStruct } from '../ngb-date-struct';
 import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
@@ -7,7 +7,7 @@ import { isInteger } from '@ng-bootstrap/ng-bootstrap/utils';
  * [`NgbDateAdapter`](#/components/datepicker/api#NgbDateAdapter) implementation that uses
  * native javascript dates as a user date model.
  */
-@Injectable()
+@Service({ autoProvided: false })
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 	/**
 	 * Converts a native `Date` to a `NgbDateStruct`.
