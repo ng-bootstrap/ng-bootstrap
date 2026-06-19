@@ -15,7 +15,7 @@ class CollapseTester {
 	readonly content: Locator;
 
 	constructor(html: string) {
-		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.fixture = createGenericTestComponent(html, TestComponent);
 		this.componentInstance = this.fixture.componentInstance;
 		this.content = page.elementLocator(this.fixture.nativeElement).getByCss('div');
 	}

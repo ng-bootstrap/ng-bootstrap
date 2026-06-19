@@ -1,17 +1,9 @@
 import { DebugElement } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-export function createGenericTestComponent<T>(
-	html: string,
-	type: { new (...args: any[]): T },
-	detectChanges = true,
-): ComponentFixture<T> {
+export function createGenericTestComponent<T>(html: string, type: { new (...args: any[]): T }): ComponentFixture<T> {
 	TestBed.overrideComponent(type, { set: { template: html } });
-	const fixture = TestBed.createComponent(type);
-	if (detectChanges) {
-		fixture.detectChanges();
-	}
-	return fixture as ComponentFixture<T>;
+	return TestBed.createComponent(type);
 }
 
 export async function createGenericAsyncTestComponent<T>(
@@ -19,7 +11,7 @@ export async function createGenericAsyncTestComponent<T>(
 	type: { new (...args: any[]): T },
 	waitForStable = true,
 ): Promise<ComponentFixture<T>> {
-	const fixture = createGenericTestComponent(html, type, false);
+	const fixture = createGenericTestComponent(html, type);
 	if (waitForStable) {
 		await fixture.whenStable();
 	}

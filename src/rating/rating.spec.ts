@@ -32,7 +32,7 @@ class RatingTester {
 	readonly ariaStars: Locator;
 
 	constructor(html: string) {
-		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.fixture = createGenericTestComponent(html, TestComponent);
 		this.componentInstance = this.fixture.componentInstance;
 		this.root = page.elementLocator(this.fixture.nativeElement);
 		this.rating = this.root.getByCss('ngb-rating');
@@ -696,7 +696,6 @@ describe('ngb-rating', () => {
 					<ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled/>
 				`,
 					TestComponent,
-					false,
 				);
 				readonly componentInstance = this.fixture.componentInstance;
 				readonly root = page.elementLocator(this.fixture.nativeElement);

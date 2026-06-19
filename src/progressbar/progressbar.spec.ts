@@ -149,7 +149,7 @@ describe('ngb-progressbar', () => {
 			readonly progressBar = page.getByCss('.progress-bar');
 
 			constructor(html: string) {
-				this.fixture = createGenericTestComponent(html, TestComponent, false);
+				this.fixture = createGenericTestComponent(html, TestComponent);
 				this.componentInstance = this.fixture.componentInstance;
 			}
 
