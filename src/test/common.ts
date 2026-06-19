@@ -14,6 +14,18 @@ export function createGenericTestComponent<T>(
 	return fixture as ComponentFixture<T>;
 }
 
+export async function createGenericAsyncTestComponent<T>(
+	html: string,
+	type: { new (...args: any[]): T },
+	waitForStable = true,
+): Promise<ComponentFixture<T>> {
+	const fixture = createGenericTestComponent(html, type, false);
+	if (waitForStable) {
+		await fixture.whenStable();
+	}
+	return fixture;
+}
+
 export function isBrowserVisible(suiteName: string) {
 	if (document.hidden) {
 		console.warn(`${suiteName} tests were skipped because browser tab running these tests is hidden or inactive`);
