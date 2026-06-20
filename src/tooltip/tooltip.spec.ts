@@ -45,7 +45,12 @@ describe('ngb-tooltip-window', () => {
 	});
 
 	it('should render tooltip on top by default', async () => {
-		const fixture = TestBed.createComponent(NgbTooltipWindow);
+		const fixture = TestBed.createComponent(NgbTooltipWindow, {
+			bindings: [
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
+		});
 		await fixture.whenStable();
 
 		expect(fixture.nativeElement).toHaveCssClass('tooltip');
@@ -58,7 +63,11 @@ describe('ngb-tooltip-window', () => {
 	it('should optionally have a custom class', async () => {
 		const tooltipClass = signal<string | undefined>(undefined);
 		const fixture = TestBed.createComponent(NgbTooltipWindow, {
-			bindings: [inputBinding('tooltipClass', tooltipClass)],
+			bindings: [
+				inputBinding('tooltipClass', tooltipClass),
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
 		});
 		await fixture.whenStable();
 
