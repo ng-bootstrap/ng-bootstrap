@@ -822,6 +822,8 @@ describe('ngb-rating', () => {
 				await tester.expectStarsStateToBe([false, false, false, false, false]);
 				await expect.element(tester.rating).toHaveCssClass('ng-untouched');
 
+				// Hover over the root element instead of any stars to not to trigger mouseenter event on blur
+				await tester.root.hover();
 				element.triggerEventHandler('blur', {});
 				await tester.whenStable();
 
