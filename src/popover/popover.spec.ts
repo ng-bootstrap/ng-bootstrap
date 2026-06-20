@@ -53,7 +53,11 @@ describe('ngb-popover-window', () => {
 
 	it('should render popover on top by default', async () => {
 		const fixture = TestBed.createComponent(NgbPopoverWindow, {
-			bindings: [inputBinding('title', () => 'Test title')],
+			bindings: [
+				inputBinding('title', () => 'Test title'),
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
 		});
 		await fixture.whenStable();
 
@@ -68,7 +72,11 @@ describe('ngb-popover-window', () => {
 	it('should optionally have a custom class', async () => {
 		const popoverClass = signal<string | undefined>(undefined);
 		const fixture = TestBed.createComponent(NgbPopoverWindow, {
-			bindings: [inputBinding('popoverClass', popoverClass)],
+			bindings: [
+				inputBinding('popoverClass', popoverClass),
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
 		});
 		await fixture.whenStable();
 
