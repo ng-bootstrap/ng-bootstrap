@@ -10,6 +10,7 @@ import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { NgbSlideEventDirection } from './carousel-transition';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { server } from 'vitest/browser';
 
 const createTestComponent = (html: string, waitForStable = true) =>
 	createGenericAsyncTestComponent(html, TestComponent, waitForStable);
@@ -577,8 +578,11 @@ describe('ngb-carousel', () => {
 		expectActiveSlides(fixture.nativeElement, [true, false]);
 	});
 
-	it('should change slide with different rate when interval value changed', async () => {
-		const html = `
+	// FIXME On Firefox mouseenter event is fired after slide is changed after the 5 second wait causing the carousel to pause
+	it.skipIf(server.browser === 'firefox')(
+		'should change slide with different rate when interval value changed',
+		async () => {
+			const html = `
       <ngb-carousel [interval]="interval()">
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
@@ -586,23 +590,24 @@ describe('ngb-carousel', () => {
       </ngb-carousel>
     `;
 
-		const fixture = await createTestComponent(html);
-		fixture.componentInstance.interval.set(5000);
-		await fixture.whenStable();
+			const fixture = await createTestComponent(html);
+			fixture.componentInstance.interval.set(5000);
+			await fixture.whenStable();
 
-		expectActiveSlides(fixture.nativeElement, [true, false, false]);
+			expectActiveSlides(fixture.nativeElement, [true, false, false]);
 
-		vi.advanceTimersByTime(5001);
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [false, true, false]);
+			vi.advanceTimersByTime(5001);
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
-		fixture.componentInstance.interval.set(1000);
-		await fixture.whenStable();
+			fixture.componentInstance.interval.set(1000);
+			await fixture.whenStable();
 
-		vi.advanceTimersByTime(1001);
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [false, false, true]);
-	});
+			vi.advanceTimersByTime(1001);
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [false, false, true]);
+		},
+	);
 
 	it('should listen to mouse events based on pauseOnHover attribute', async () => {
 		const html = `
@@ -677,36 +682,40 @@ describe('ngb-carousel', () => {
 		expectActiveSlides(fixture.nativeElement, [false, true]);
 	});
 
-	it('should pause / resume slide change with time passage on focusin / focusout', async () => {
-		const html = `
+	// FIXME On Firefox after focusout event is triggered, pointer is still hovering over the slide causing carousel to still be paused
+	it.skipIf(server.browser === 'firefox')(
+		'should pause / resume slide change with time passage on focusin / focusout',
+		async () => {
+			const html = `
       <ngb-carousel>
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
-		const fixture = await createTestComponent(html);
+			const fixture = await createTestComponent(html);
 
-		const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+			const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
 
-		expectActiveSlides(fixture.nativeElement, [true, false]);
+			expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		carouselDebugEl.triggerEventHandler('focusin', {});
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [true, false]);
+			carouselDebugEl.triggerEventHandler('focusin', {});
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		vi.advanceTimersByTime(6000);
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [true, false]);
+			vi.advanceTimersByTime(6000);
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		carouselDebugEl.triggerEventHandler('focusout', {});
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [true, false]);
+			carouselDebugEl.triggerEventHandler('focusout', {});
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [true, false]);
 
-		vi.advanceTimersByTime(6000);
-		await fixture.whenStable();
-		expectActiveSlides(fixture.nativeElement, [false, true]);
-	});
+			vi.advanceTimersByTime(6000);
+			await fixture.whenStable();
+			expectActiveSlides(fixture.nativeElement, [false, true]);
+		},
+	);
 
 	it('should wrap slide changes by default', async () => {
 		const html = `
