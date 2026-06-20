@@ -5,6 +5,7 @@ import { Component, signal, ViewChild } from '@angular/core';
 import { NgbTypeaheadWindow } from './typeahead-window';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
 import { describe, expect, it } from 'vitest';
+import { server } from 'vitest/browser';
 
 const createTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestComponent);
 
@@ -109,7 +110,9 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['bar', 'baz']);
 		});
 
-		it('should change active row on mouseenter', async () => {
+		// FIXME: Firefox sometimes fires two mouseenter events: first for expected link and second for the first element,
+		// causing the first element to stay active
+		it.skipIf(server.browser === 'firefox')('should change active row on mouseenter', async () => {
 			const fixture = await createTestComponent(
 				`<ngb-typeahead-window [results]="results()" [term]="term()"></ngb-typeahead-window>`,
 			);
