@@ -1,4 +1,4 @@
-import {provideHttpClient, withNoXsrfProtection} from '@angular/common/http';
+import {provideHttpClient} from '@angular/common/http';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {provideBrowserGlobalErrorListeners} from '@angular/core';
 import {<%=className%>} from '<%=tsImportName%>';
@@ -6,6 +6,6 @@ import {<%=className%>} from '<%=tsImportName%>';
 bootstrapApplication(<%=className%>, {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withNoXsrfProtection()),
+    provideHttpClient(),
   ],
 }).catch(err => console.error(err));
