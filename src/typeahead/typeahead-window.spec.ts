@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 
 import { NgbTypeaheadWindow } from './typeahead-window';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
@@ -128,7 +128,7 @@ describe('ngb-typeahead-window', () => {
 	describe('result selection', () => {
 		it('should select a given row on click', () => {
 			const fixture = createTestComponent(
-				'<ngb-typeahead-window [results]="results" [term]="term" (select)="selected = $event"></ngb-typeahead-window>',
+				'<ngb-typeahead-window [results]="results" [term]="term" (select)="selected.set($event)"></ngb-typeahead-window>',
 			);
 			const links = getWindowLinks(fixture.debugElement);
 
@@ -136,12 +136,12 @@ describe('ngb-typeahead-window', () => {
 
 			links[1].triggerEventHandler('click', {});
 			fixture.detectChanges();
-			expect(fixture.componentInstance.selected).toBe('baz');
+			expect(fixture.componentInstance.selected()).toBe('baz');
 		});
 
 		it('should return selected row via getActive()', () => {
 			const html = `
-           <button (click)="active = w.getActive()">getActive</button>
+           <button (click)="active.set(w.getActive())">getActive</button>
            <button (click)="w.next()">+</button>
            <ngb-typeahead-window [results]="results" [term]="term" #w="ngbTypeaheadWindow"></ngb-typeahead-window>`;
 			const fixture = createTestComponent(html);
@@ -152,13 +152,13 @@ describe('ngb-typeahead-window', () => {
 
 			activeBtn.click();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
-			expect(fixture.componentInstance.active).toBe('bar');
+			expect(fixture.componentInstance.active()).toBe('bar');
 
 			nextBtn.click();
 			activeBtn.click();
 			fixture.detectChanges();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
-			expect(fixture.componentInstance.active).toBe('baz');
+			expect(fixture.componentInstance.active()).toBe('baz');
 		});
 
 		it('should have buttons of type button', () => {
@@ -199,10 +199,10 @@ describe('ngb-typeahead-window', () => {
 	template: '',
 })
 class TestComponent {
-	active: string;
+	active = signal<string | undefined>(undefined);
 	results = ['bar', 'baz'];
 	term = 'ba';
-	selected: string;
+	selected = signal<string | undefined>(undefined);
 
 	@ViewChild(NgbTypeaheadWindow, { static: true }) popup: NgbTypeaheadWindow;
 

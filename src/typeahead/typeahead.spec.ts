@@ -1,4 +1,4 @@
-import { Component, DebugElement, provideZoneChangeDetection, ViewChild } from '@angular/core';
+import { Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -66,7 +66,7 @@ describe('ngb-typeahead', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
 		TestBed.configureTestingModule({
-			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }, provideZoneChangeDetection()],
+			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }],
 		});
 	});
 
@@ -82,17 +82,17 @@ describe('ngb-typeahead', () => {
 			const comp = fixture.componentInstance;
 			expectInputValue(el, '');
 
-			comp.model = 'text';
+			comp.model.set('text');
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, 'text');
 
-			comp.model = null;
+			comp.model.set(null);
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, '');
 
-			comp.model = {};
+			comp.model.set({});
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, '[object Object]');
@@ -105,12 +105,12 @@ describe('ngb-typeahead', () => {
 			const comp = fixture.componentInstance;
 			expectInputValue(el, '');
 
-			comp.model = null;
+			comp.model.set(null);
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, '');
 
-			comp.model = { value: 'text' };
+			comp.model.set({ value: 'text' });
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, 'TEXT');
@@ -123,17 +123,17 @@ describe('ngb-typeahead', () => {
 			const comp = fixture.componentInstance;
 			expectInputValue(el, '');
 
-			comp.model = null;
+			comp.model.set(null);
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, '');
 
-			comp.model = 0;
+			comp.model.set(0);
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, '0');
 
-			comp.model = false;
+			comp.model.set(false);
 			fixture.detectChanges();
 			await Promise.resolve();
 			expectInputValue(el, 'FALSE');
@@ -151,7 +151,7 @@ describe('ngb-typeahead', () => {
 			const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
 			const compiled = fixture.nativeElement;
 
-			fixture.componentInstance.model = 'one';
+			fixture.componentInstance.model.set('one');
 			fixture.detectChanges();
 			await Promise.resolve();
 			expect(getWindow(compiled)).toBeNull();
@@ -165,7 +165,7 @@ describe('ngb-typeahead', () => {
 			changeInput(compiled, 'one');
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 		});
 
 		it('should be closed when there no results', () => {
@@ -188,14 +188,14 @@ describe('ngb-typeahead', () => {
 		});
 
 		it('should allow changing ngbTypeahead value', () => {
-			const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findRef"/>`);
+			const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findRef()"/>`);
 			const compiled = fixture.nativeElement;
 
 			// null initially
 			expect(getWindow(compiled)).toBeNull();
 
 			// real value
-			fixture.componentInstance.findRef = (_: Observable<string>) => of(['one', 'one more']);
+			fixture.componentInstance.findRef.set((_: Observable<string>) => of(['one', 'one more']));
 			fixture.detectChanges();
 
 			changeInput(compiled, 'one');
@@ -203,7 +203,7 @@ describe('ngb-typeahead', () => {
 			expectWindowResults(compiled, ['+one', 'one more']);
 
 			// back to null
-			fixture.componentInstance.findRef = undefined;
+			fixture.componentInstance.findRef.set(undefined);
 			fixture.detectChanges();
 
 			expect(getWindow(compiled)).toBeNull();
@@ -232,7 +232,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expectInputValue(compiled, 'one');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 
 			// clicking not selected
 			changeInput(compiled, 'o');
@@ -260,7 +260,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expectInputValue(compiled, 'one');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 			expect(event.preventDefault).toHaveBeenCalled();
 			expect(event.stopPropagation).toHaveBeenCalled();
 		});
@@ -278,7 +278,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expectInputValue(compiled, 'one');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 			expect(event.preventDefault).toHaveBeenCalled();
 			expect(event.stopPropagation).toHaveBeenCalled();
 		});
@@ -425,7 +425,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expectInputValue(compiled, 'o');
-			expect(fixture.componentInstance.model).toBe('o');
+			expect(fixture.componentInstance.model()).toBe('o');
 			expect(event.preventDefault).not.toHaveBeenCalled();
 		});
 
@@ -470,15 +470,17 @@ describe('ngb-typeahead', () => {
 		});
 
 		it('should modify the popper options', async () => {
-			const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" />`);
-
-			const typeahead = fixture.debugElement.query(By.directive(NgbTypeahead)).injector.get(NgbTypeahead);
+			const fixture = createTestComponent(
+				`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [popperOptions]="popperOptions()" />`,
+			);
 
 			const spy = vi.fn();
-			typeahead.popperOptions = (options: Partial<Options>) => {
+			fixture.componentInstance.popperOptions.set((options: Partial<Options>) => {
 				options.modifiers!.push({ name: 'test', enabled: true, phase: 'main', fn: spy });
 				return options;
-			};
+			});
+			fixture.detectChanges();
+
 			const compiled = fixture.nativeElement;
 			changeInput(compiled, 'one');
 
@@ -562,7 +564,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expect(getNativeInput(compiled).value).toBe('1 one');
-			expect(fixture.componentInstance.model).toEqual({ id: 1, value: 'one' });
+			expect(fixture.componentInstance.model()).toEqual({ id: 1, value: 'one' });
 		});
 
 		it('should allow to assign ngModel custom objects', async () => {
@@ -571,7 +573,7 @@ describe('ngb-typeahead', () => {
                     [inputFormatter]="formatter" [resultFormatter]="uppercaseObjFormatter"/>`);
 			const compiled = fixture.nativeElement;
 
-			fixture.componentInstance.model = { id: 1, value: 'one' };
+			fixture.componentInstance.model.set({ id: 1, value: 'one' });
 			fixture.detectChanges();
 			await Promise.resolve();
 			expect(getWindow(compiled)).toBeNull();
@@ -643,14 +645,14 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeNull();
+			expect(fixture.componentInstance.model()).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 		});
 
 		it('should clear model on user input when the editable option is on', async () => {
@@ -669,20 +671,20 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeNull();
+			expect(fixture.componentInstance.model()).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 
 			changeInput(compiled, 'tw');
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeNull();
+			expect(fixture.componentInstance.model()).toBeNull();
 		});
 
 		it('should clear model on user input when the editable option is on and no search was triggered', async () => {
@@ -701,20 +703,20 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeNull();
+			expect(fixture.componentInstance.model()).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBe('one');
+			expect(fixture.componentInstance.model()).toBe('one');
 
 			changeInput(compiled, '');
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeNull();
+			expect(fixture.componentInstance.model()).toBeNull();
 		});
 
 		it('should use null and not undefined as value to make sure the form group value is valid (issue 4777)', () => {
@@ -745,7 +747,7 @@ describe('ngb-typeahead', () => {
 			getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
 			fixture.detectChanges();
 
-			expect(fixture.componentInstance.selectEventValue).toBe('one');
+			expect(fixture.componentInstance.selectEventValue()).toBe('one');
 		});
 
 		it('should not propagate model when preventDefault() is called on selectEvent', async () => {
@@ -759,7 +761,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
 			fixture.detectChanges();
-			expect(fixture.componentInstance.model).toBe('o');
+			expect(fixture.componentInstance.model()).toBe('o');
 		});
 	});
 
@@ -777,7 +779,7 @@ describe('ngb-typeahead', () => {
 
 		it('should properly destroy typeahead window when the "container" option is used', () => {
 			const selector = 'body';
-			const fixture = createTestComponent(`@if (show) {
+			const fixture = createTestComponent(`@if (show()) {
 					<input [ngbTypeahead]="find" container="${selector}"/>
 				}`);
 
@@ -787,7 +789,7 @@ describe('ngb-typeahead', () => {
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(getWindow(document.querySelector(selector))).not.toBeNull();
 
-			fixture.componentInstance.show = false;
+			fixture.componentInstance.show.set(false);
 			fixture.detectChanges();
 
 			expect(getWindow(fixture.nativeElement)).toBeNull();
@@ -967,7 +969,7 @@ describe('ngb-typeahead', () => {
 
 					expectInputValue(compiled, showHint ? 'one' : 'on');
 
-					fixture.componentInstance.model = '';
+					fixture.componentInstance.model.set('');
 					fixture.detectChanges();
 					await Promise.resolve();
 
@@ -1068,7 +1070,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
 			expect(inputEl.value).toBe('10 one more');
-			expect(fixture.componentInstance.model).toEqual({ id: 10, value: 'one more' });
+			expect(fixture.componentInstance.model()).toEqual({ id: 10, value: 'one more' });
 		});
 
 		it('should not select the only existing result when it doesn`t match the user input', () => {
@@ -1108,6 +1110,27 @@ describe('ngb-typeahead', () => {
 			expect(fixture.componentInstance.form.controls.control.valid).toBe(false);
 		});
 	});
+
+	it('should refresh host bindings when the popup is dismissed without manual change detection (zoneless)', async () => {
+		vi.useRealTimers();
+		const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+		const input = getNativeInput(fixture.nativeElement);
+		await fixture.whenStable();
+
+		changeInput(fixture.nativeElement, 'one');
+		await fixture.whenStable();
+		expect(getWindow(fixture.nativeElement)).not.toBeNull();
+		expect(input.classList).toContain('open');
+
+		// a term with no matches emits an empty result list, which closes the popup from outside Angular
+		changeInput(fixture.nativeElement, 'zzz');
+		await fixture.whenStable();
+
+		expect(getWindow(fixture.nativeElement)).toBeNull();
+		expect(input.classList).not.toContain('open');
+		expect(input.getAttribute('aria-expanded')).toBe('false');
+		expect(input.getAttribute('aria-controls')).toBeNull();
+	});
 });
 
 @Component({
@@ -1124,9 +1147,10 @@ class TestComponent {
 		{ id: 3, value: 'three' },
 	];
 
-	model: any;
-	selectEventValue: any;
-	show = true;
+	model = signal<any>(undefined);
+	selectEventValue = signal<any>(undefined);
+	show = signal(true);
+	popperOptions = signal<(options: Partial<Options>) => Partial<Options>>((options) => options);
 
 	form = new UntypedFormGroup({ control: new UntypedFormControl('', Validators.required) });
 
@@ -1137,7 +1161,7 @@ class TestComponent {
 	focus$ = new Subject<string>();
 	click$ = new Subject<string>();
 
-	findRef: OperatorFunction<string, readonly any[]> | null | undefined = null;
+	findRef = signal<OperatorFunction<string, readonly any[]> | null | undefined>(null);
 
 	find = (text$: Observable<string>) => {
 		const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
@@ -1185,7 +1209,7 @@ class TestComponent {
 	};
 
 	onSelect($event) {
-		this.selectEventValue = $event;
+		this.selectEventValue.set($event);
 	}
 }
 
