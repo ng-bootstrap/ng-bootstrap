@@ -631,6 +631,28 @@ describe('ngb-popover', () => {
 			fixture.detectChanges();
 			expect(getWindow(document.querySelector(selector))).toBeNull();
 		});
+
+		it('should close popover when the anchor element becomes hidden', async () => {
+			const fixture = createTestComponent(`
+				<div id="wrapper">
+					<div ngbPopover="Great tip!" container="body" triggers="manual"></div>
+				</div>
+			`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+			const popover = directive.injector.get(NgbPopover);
+
+			popover.open();
+			fixture.detectChanges();
+			await fixture.whenStable();
+			expect(getWindow(document.body)).not.toBeNull();
+
+			// Hide the wrapper, simulating a dropdown closing
+			fixture.nativeElement.querySelector('#wrapper').style.display = 'none';
+			fixture.detectChanges();
+			await fixture.whenStable();
+
+			expect(getWindow(document.body)).toBeNull();
+		});
 	});
 
 	describe('visibility', () => {

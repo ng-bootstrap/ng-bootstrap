@@ -648,6 +648,28 @@ describe('ngb-tooltip', () => {
 			fixture.detectChanges();
 			expect(getWindow(document.querySelector(selector))).toBeNull();
 		});
+
+		it('should close tooltip when the anchor element becomes hidden', async () => {
+			const fixture = createTestComponent(`
+				<div id="wrapper">
+					<div ngbTooltip="Great tip!" container="body" triggers="manual"></div>
+				</div>
+			`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+			const tooltip = directive.injector.get(NgbTooltip);
+
+			tooltip.open();
+			fixture.detectChanges();
+			await fixture.whenStable();
+			expect(getWindow(document.body)).not.toBeNull();
+
+			// Hide the wrapper, simulating a dropdown closing
+			fixture.nativeElement.querySelector('#wrapper').style.display = 'none';
+			fixture.detectChanges();
+			await fixture.whenStable();
+
+			expect(getWindow(document.body)).toBeNull();
+		});
 	});
 
 	describe('visibility', () => {
