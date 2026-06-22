@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512">
+  <defs>
+    <linearGradient id="c">
+      <stop offset="0" stop-color="#012253"/>
+      <stop offset="1" stop-color="#014885"/>
+    </linearGradient>
+    <linearGradient id="b">
+      <stop offset="0" stop-color="#01337b"/>
+      <stop offset="1" stop-color="#025eac"/>
+    </linearGradient>
+    <linearGradient xlink:href="#a" id="g" gradientUnits="userSpaceOnUse" x1="-111" y1="967.862" x2="-110.5" y2="617.362" gradientTransform="translate(188.762 204.313) scale(.62893)"/>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#0143a3"/>
+      <stop offset="1" stop-color="#0273d4"/>
+    </linearGradient>
+    <linearGradient xlink:href="#b" id="f" gradientUnits="userSpaceOnUse" gradientTransform="translate(402.832 202.494) scale(.62893)" x1="-111" y1="967.862" x2="-110.5" y2="617.362"/>
+    <linearGradient xlink:href="#c" id="e" gradientUnits="userSpaceOnUse" gradientTransform="translate(404.651 431.725) scale(.62893)" x1="-111" y1="967.862" x2="-110.5" y2="617.362"/>
+    <filter id="d" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity=".235" flood-color="#000" result="flood"/>
+      <feComposite in="flood" in2="SourceGraphic" operator="in" result="composite1"/>
+      <feGaussianBlur in="composite1" stdDeviation="3" result="blur"/>
+      <feOffset dx="-3" dy="3" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" result="composite2"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1.42666 -.88642 1.5564 .92591 -1654.818 -267.206)" filter="url(#d)" fill-rule="evenodd">
+    <path d="M334.713 820.424l97.629 38.297-9.44 128.643-87.65 53.399-88.189-53.939-9.17-127.834z" fill="url(#e)"/>
+    <path d="M334.446 820.403l.607 219.83 87.932-53.365 8.793-128.26z" fill-opacity=".098"/>
+  </g>
+  <g transform="matrix(1.42666 -.88642 1.5564 .92591 -1295.447 -96.233)" filter="url(#d)" fill-rule="evenodd">
+    <path d="M332.894 591.194l97.628 38.296-9.439 128.643-87.65 53.4-88.19-53.94-9.169-127.833z" fill="url(#f)"/>
+    <path d="M332.627 591.172l.606 219.831 87.933-53.366 8.793-128.26z" fill-opacity=".098"/>
+  </g>
+  <g transform="matrix(1.42666 -.88642 1.5564 .92591 -992.166 -330.767)" filter="url(#d)">
+    <path d="M118.824 593.013l97.628 38.296-9.439 128.643-87.65 53.4-88.189-53.939-9.17-127.834z" fill="url(#g)" fill-rule="evenodd"/>
+    <path d="M118.557 592.991l.606 219.831 87.933-53.366 8.793-128.26z" fill-opacity=".098" fill-rule="evenodd"/>
+    <path d="M102.059 701.248v36.513h21.628q10.88 0 16.087-4.472 5.273-4.54 5.273-13.818 0-9.345-5.273-13.75-5.207-4.473-16.087-4.473h-21.628zm0-40.985V690.3h19.959q9.879 0 14.685-3.671 4.873-3.738 4.873-11.348 0-7.543-4.873-11.281-4.806-3.738-14.685-3.738h-19.959zm-13.484-11.081h34.444q15.42 0 23.764 6.408t8.344 18.223q0 9.145-4.273 14.552-4.272 5.407-12.549 6.742 9.946 2.136 15.42 8.945 5.54 6.742 5.54 16.888 0 13.35-9.078 20.626-9.078 7.276-25.833 7.276H88.575v-99.66z" fill="#fff"/>
+  </g>
+</svg>
