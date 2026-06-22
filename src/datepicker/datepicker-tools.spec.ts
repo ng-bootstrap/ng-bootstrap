@@ -596,6 +596,14 @@ describe(`datepicker-tools`, () => {
 			// both are not set
 			test(null, new NgbDate(2018, 1, 1), null, range(2008, 2028));
 			test(null, new NgbDate(2000, 1, 1), null, range(1990, 2010));
+
+			// when single digit year set
+			// both 'min' and 'max' are not set
+			test(null, new NgbDate(9, 1, 1), null, range(1, 19));
+			// 'min' is not set
+			test(null, new NgbDate(9, 1, 1), new NgbDate(15, 1, 1), range(1, 15));
+			// 'max' is not set
+			test(new NgbDate(-5, 1, 1), new NgbDate(1, 1, 1), null, range(1, 11));
 		});
 	});
 
