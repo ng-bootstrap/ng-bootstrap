@@ -95,7 +95,7 @@ export class NgbToast implements AfterContentInit, OnChanges {
 
 	/**
 	 * Delay after which the toast will hide (ms).
-	 * default: `500` (ms) (inherited from NgbToastConfig)
+	 * default: `5000` (ms) (inherited from NgbToastConfig)
 	 */
 	@Input() delay = this._config.delay;
 
