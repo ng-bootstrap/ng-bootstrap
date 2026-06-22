@@ -1,3 +1,15 @@
+# [21.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/20.0.0...21.0.0) (2026-06-22)
+
+This release candidate version bumps minimum required versions to Angular 22.0.0
+
+### Breaking Changes
+
+* **accordion:** changeDetection strategy changed from `Eager` to `OnPush`
+
+### Bug Fixes
+
+* **dropdown:** `open` method not working as expected in zoneless
+
 # [20.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/19.0.1...20.0.0) (2025-12-12)
 
 This release bumps minimum required versions to Angular `21.0.0`
