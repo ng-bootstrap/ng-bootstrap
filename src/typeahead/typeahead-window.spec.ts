@@ -38,7 +38,7 @@ describe('ngb-typeahead-window', () => {
 	});
 
 	describe('active row', () => {
-		it('should change active row on prev / next method call', () => {
+		it('should change active row on prev / next method call', async () => {
 			const html = `
            <button (click)="w.next()">+</button>
            <button (click)="w.prev()">-</button>
@@ -49,15 +49,15 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			buttons[0].click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 
 			buttons[1].click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 		});
 
-		it('should wrap active row on prev / next method call', () => {
+		it('should wrap active row on prev / next method call', async () => {
 			const html = `
            <button (click)="w.next()">+</button>
            <button (click)="w.prev()">-</button>
@@ -68,15 +68,15 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			buttons[1].click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 
 			buttons[0].click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 		});
 
-		it('should wrap active row on prev / next method call for [focusFirst]="false"', () => {
+		it('should wrap active row on prev / next method call for [focusFirst]="false"', async () => {
 			const html = `
            <button (click)="w.next()">+</button>
            <button (click)="w.prev()">-</button>
@@ -87,31 +87,31 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['bar', 'baz']);
 
 			buttons[0].click(); // next
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			buttons[0].click(); // next
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 
 			buttons[0].click(); // next
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', 'baz']);
 
 			buttons[1].click(); // prev
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 
 			buttons[1].click(); // prev
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			buttons[1].click(); // prev
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', 'baz']);
 		});
 
-		it('should change active row on mouseenter', () => {
+		it('should change active row on mouseenter', async () => {
 			const fixture = createTestComponent(
 				`<ngb-typeahead-window [results]="results" [term]="term"></ngb-typeahead-window>`,
 			);
@@ -120,13 +120,13 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			links[1].triggerEventHandler('mouseenter', {});
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 		});
 	});
 
 	describe('result selection', () => {
-		it('should select a given row on click', () => {
+		it('should select a given row on click', async () => {
 			const fixture = createTestComponent(
 				'<ngb-typeahead-window [results]="results" [term]="term" (select)="selected.set($event)"></ngb-typeahead-window>',
 			);
@@ -135,11 +135,11 @@ describe('ngb-typeahead-window', () => {
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
 			links[1].triggerEventHandler('click', {});
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.selected()).toBe('baz');
 		});
 
-		it('should return selected row via getActive()', () => {
+		it('should return selected row via getActive()', async () => {
 			const html = `
            <button (click)="active.set(w.getActive())">getActive</button>
            <button (click)="w.next()">+</button>
@@ -151,12 +151,13 @@ describe('ngb-typeahead-window', () => {
 			const nextBtn = buttons[1];
 
 			activeBtn.click();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['+bar', 'baz']);
 			expect(fixture.componentInstance.active()).toBe('bar');
 
 			nextBtn.click();
 			activeBtn.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expectResults(fixture.nativeElement, ['bar', '+baz']);
 			expect(fixture.componentInstance.active()).toBe('baz');
 		});
