@@ -359,6 +359,9 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			this._closed$.next();
 			this._windowRef = null;
 			this.activeDescendant = null;
+			// Closing destroys the popup view, which does not schedule change detection on its own. The host
+			// bindings (`open` class, `aria-*`) therefore have to be refreshed explicitly to support zoneless apps.
+			this._changeDetector.markForCheck();
 		});
 	}
 
