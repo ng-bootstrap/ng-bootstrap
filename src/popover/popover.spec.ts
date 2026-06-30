@@ -1,5 +1,5 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent, isBrowserVisible, triggerEvent } from '../test/common';
+import { TestBed } from '@angular/core/testing';
+import { createGenericAsyncTestComponent, isBrowserVisible, triggerEvent } from '../test/common';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { environment } from '../utils/transition/ngbTransition';
 
@@ -12,8 +12,9 @@ import {
 	TemplateRef,
 	ViewContainerRef,
 	AfterViewInit,
-	NgZone,
-	provideZoneChangeDetection,
+	signal,
+	inputBinding,
+	inject,
 } from '@angular/core';
 
 import { NgbPopover, NgbPopoverWindow } from './popover';
@@ -28,11 +29,9 @@ class SpyService {
 	called = false;
 }
 
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestComponent);
 
-const createOnPushTestComponent = (html: string) =>
-	<ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
+const createOnPushTestComponent = (html: string) => createGenericAsyncTestComponent(html, TestOnPushComponent);
 
 function getWindow(element) {
 	return element.querySelector('ngb-popover-window');
@@ -40,7 +39,7 @@ function getWindow(element) {
 
 describe('ngb-popover-window', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
+		TestBed.configureTestingModule({});
 	});
 
 	afterEach(() => {
@@ -52,10 +51,15 @@ describe('ngb-popover-window', () => {
 		});
 	});
 
-	it('should render popover on top by default', () => {
-		const fixture = TestBed.createComponent(NgbPopoverWindow);
-		fixture.componentInstance.title = 'Test title';
-		fixture.detectChanges();
+	it('should render popover on top by default', async () => {
+		const fixture = TestBed.createComponent(NgbPopoverWindow, {
+			bindings: [
+				inputBinding('title', () => 'Test title'),
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
+		});
+		await fixture.whenStable();
 
 		expect(fixture.nativeElement).toHaveCssClass('popover');
 		expect(fixture.nativeElement).not.toHaveCssClass('show');
@@ -65,14 +69,21 @@ describe('ngb-popover-window', () => {
 		expect(fixture.nativeElement.querySelector('.popover-header').textContent).toBe('Test title');
 	});
 
-	it('should optionally have a custom class', () => {
-		const fixture = TestBed.createComponent(NgbPopoverWindow);
-		fixture.detectChanges();
+	it('should optionally have a custom class', async () => {
+		const popoverClass = signal<string | undefined>(undefined);
+		const fixture = TestBed.createComponent(NgbPopoverWindow, {
+			bindings: [
+				inputBinding('popoverClass', popoverClass),
+				// Firefox may fire mouseenter event causing the test to fail because of missing function input
+				inputBinding('onMouseEnter', () => () => {}),
+			],
+		});
+		await fixture.whenStable();
 
 		expect(fixture.nativeElement).not.toHaveCssClass('my-custom-class');
 
-		fixture.componentInstance.popoverClass = 'my-custom-class';
-		fixture.detectChanges();
+		popoverClass.set('my-custom-class');
+		await fixture.whenStable();
 
 		expect(fixture.nativeElement).toHaveCssClass('my-custom-class');
 	});
@@ -81,19 +92,18 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [SpyService, provideZoneChangeDetection()],
+			providers: [SpyService],
 		});
 	});
 
 	describe('basic functionality', () => {
 		it('should open and close a popover - default settings and content as string', async () => {
-			const fixture = createTestComponent(
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" popoverTitle="Title" style="margin-top: 110px;"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 
 			const windowEl = getWindow(fixture.nativeElement);
@@ -109,19 +119,18 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings and content from a template', async () => {
-			const fixture = createTestComponent(`
-          <ng-template #t>Hello, {{name}}!</ng-template>
+			const fixture = await createTestComponent(`
+          <ng-template #t>Hello, {{name()}}!</ng-template>
           <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
@@ -134,20 +143,19 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings, content from a template and context supplied', async () => {
-			const fixture = createTestComponent(`
+			const fixture = await createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
           <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			directive.context.popover.open({ name: 'John' });
-			fixture.detectChanges();
-			await Promise.resolve();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
 
@@ -159,20 +167,19 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings, content from a template and template context object supplied by markup', async () => {
-			const fixture = createTestComponent(`
+			const fixture = await createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
           <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			directive.context.popover.open();
-			fixture.detectChanges();
-			await Promise.resolve();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
 
@@ -184,20 +191,19 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings, content from a template and template context object supplied by markup, open by click', async () => {
-			const fixture = createTestComponent(`
+			const fixture = await createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
           <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
-			await Promise.resolve();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
 
@@ -209,20 +215,19 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings, content from a template and template context object supplied can be override with open method', async () => {
-			const fixture = createTestComponent(`
+			const fixture = await createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
           <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			directive.context.popover.open({ name: 'World' });
-			fixture.detectChanges();
-			await Promise.resolve();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
 
@@ -234,18 +239,17 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
 		it('should open and close a popover - default settings and custom class', async () => {
-			const fixture = createTestComponent(`
+			const fixture = await createTestComponent(`
         <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class" style="margin-top: 150px;"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			const id = windowEl.getAttribute('id');
@@ -259,243 +263,242 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		});
 
-		it('should propagate popoverClass changes to the window', () => {
-			const fixture = createTestComponent(
-				`<div ngbPopover="Great tip!" popoverTitle="Title" [popoverClass]="popoverClass"></div>`,
+		it('should propagate popoverClass changes to the window', async () => {
+			const fixture = await createTestComponent(
+				`<div ngbPopover="Great tip!" popoverTitle="Title" [popoverClass]="popoverClass()"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			expect(windowEl).not.toHaveCssClass('my-popover-class');
 
-			fixture.componentInstance.popoverClass = 'my-popover-class';
-			fixture.detectChanges();
+			fixture.componentInstance.popoverClass.set('my-popover-class');
+			await fixture.whenStable();
 			expect(windowEl).toHaveCssClass('my-popover-class');
 		});
 
-		it('should accept a template for the title and properly destroy it when closing', () => {
-			const fixture = createTestComponent(`
-          <ng-template #t>Hello, {{name}}! <destroyable-cmpt></destroyable-cmpt></ng-template>
+		it('should accept a template for the title and properly destroy it when closing', async () => {
+			const fixture = await createTestComponent(`
+          <ng-template #t>Hello, {{name()}}! <destroyable-cmpt></destroyable-cmpt></ng-template>
           <div ngbPopover="Body" [popoverTitle]="t"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 			const spyService = fixture.debugElement.injector.get(SpyService);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			expect(windowEl.textContent.trim()).toBe('Hello, World! Some contentBody');
 			expect(spyService.called).toBeFalsy();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(spyService.called).toBeTruthy();
 		});
 
-		it('should pass the context to the template for the title', () => {
-			const fixture = createTestComponent(`
-          <ng-template #t let-greeting="greeting">{{greeting}}, {{name}}!</ng-template>
+		it('should pass the context to the template for the title', async () => {
+			const fixture = await createTestComponent(`
+          <ng-template #t let-greeting="greeting">{{greeting}}, {{name()}}!</ng-template>
           <div ngbPopover="!!" [popoverTitle]="t"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-			fixture.componentInstance.name = 'tout le monde';
+			fixture.componentInstance.name.set('tout le monde');
 			fixture.componentInstance.popover.open({ greeting: 'Bonjour' });
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			expect(windowEl.textContent.trim()).toBe('Bonjour, tout le monde!!!');
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should properly destroy TemplateRef content', () => {
-			const fixture = createTestComponent(`
+		it('should properly destroy TemplateRef content', async () => {
+			const fixture = await createTestComponent(`
           <ng-template #t><destroyable-cmpt></destroyable-cmpt></ng-template>
           <div [ngbPopover]="t" popoverTitle="Title"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 			const spyService = fixture.debugElement.injector.get(SpyService);
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 			expect(spyService.called).toBeFalsy();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(spyService.called).toBeTruthy();
 		});
 
-		it('should not show a header if title is empty', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle=""></div>`);
+		it('should not show a header if title is empty', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" popoverTitle=""></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			expect(windowEl.querySelector('.popover-header')).toBeNull();
 		});
 
-		it('should not show a header if title is falsy', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+		it('should not show a header if title is falsy', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 			expect(windowEl.querySelector('.popover-header')).toBeNull();
 		});
 
-		it('should not open a popover if content and title are empty', () => {
-			const fixture = createTestComponent(`<div [ngbPopover]="" [popoverTitle]=""></div>`);
+		it('should not open a popover if content and title are empty', async () => {
+			const fixture = await createTestComponent(`<div [ngbPopover]="" [popoverTitle]=""></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
 			expect(windowEl).toBeNull();
 		});
 
-		it('should not open a popover if [disablePopover] flag', () => {
-			const fixture = createTestComponent(`<div [ngbPopover]="Disabled!" [disablePopover]="true"></div>`);
+		it('should not open a popover if [disablePopover] flag', async () => {
+			const fixture = await createTestComponent(`<div [ngbPopover]="Disabled!" [disablePopover]="true"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
 			expect(windowEl).toBeNull();
 		});
 
-		it('should close the popover if content and title become empty', () => {
-			const fixture = createTestComponent(`<div [ngbPopover]="name" [popoverTitle]="title"></div>`);
+		it('should close the popover if content and title become empty', async () => {
+			const fixture = await createTestComponent(`<div [ngbPopover]="name()" [popoverTitle]="title()"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
-			fixture.componentInstance.name = '';
-			fixture.componentInstance.title = '';
-			fixture.detectChanges();
+			fixture.componentInstance.name.set('');
+			fixture.componentInstance.title.set('');
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should open the popover if content is empty but title has value', () => {
-			const fixture = createTestComponent(`<div [ngbPopover]="" popoverTitle="title"></div>`);
+		it('should open the popover if content is empty but title has value', async () => {
+			const fixture = await createTestComponent(`<div [ngbPopover]="" popoverTitle="title"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
 			expect(windowEl).not.toBeNull();
 		});
 
-		it('should not close the popover if content becomes empty but title has value', () => {
-			const fixture = createTestComponent(`<div [ngbPopover]="name" popoverTitle="title"></div>`);
+		it('should not close the popover if content becomes empty but title has value', async () => {
+			const fixture = await createTestComponent(`<div [ngbPopover]="name()" popoverTitle="title"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
-			fixture.componentInstance.name = '';
-			fixture.detectChanges();
+			fixture.componentInstance.name.set('');
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 		});
 
-		it('should allow re-opening previously closed popovers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
+		it('should allow re-opening previously closed popovers', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 		});
 
-		it('should not leave dangling popovers in the DOM', () => {
-			const fixture = createTestComponent(`@if (show) {
+		it('should not leave dangling popovers in the DOM', async () => {
+			const fixture = await createTestComponent(`@if (show()) {
 					<div ngbPopover="Great tip!" popoverTitle="Title"></div>
 				}`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
-			fixture.componentInstance.show = false;
-			fixture.detectChanges();
+			fixture.componentInstance.show.set(false);
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should properly cleanup popovers with manual triggers', () => {
-			const fixture = createTestComponent(`@if (show) {
+		it('should properly cleanup popovers with manual triggers', async () => {
+			const fixture = await createTestComponent(`@if (show()) {
 					<div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
 				}`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'mouseenter');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
-			fixture.componentInstance.show = false;
-			fixture.detectChanges();
+			fixture.componentInstance.show.set(false);
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should open popover from hooks', () => {
+		it('should open popover from hooks', async () => {
 			const fixture = TestBed.createComponent(TestHooksComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const popoverWindow = fixture.debugElement.query(By.directive(NgbPopoverWindow));
 			expect(popoverWindow.nativeElement).toHaveCssClass('popover');
 		});
 
-		it('should cleanup popover when parent container is destroyed', () => {
-			const fixture = createTestComponent(`@if (show) {
+		it('should cleanup popover when parent container is destroyed', async () => {
+			const fixture = await createTestComponent(`@if (show()) {
            <div ngbPopover="Great popover!" [animation]="true"></div>
          }`);
 			const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
 
 			popover.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			const hiddenSpy = vi.fn();
 			popover.hidden.subscribe(hiddenSpy);
 
 			// should close synchronously even with animations ON
-			fixture.componentInstance.show = false;
-			fixture.detectChanges();
+			fixture.componentInstance.show.set(false);
+			await fixture.whenStable();
 			expect(hiddenSpy).toHaveBeenCalledTimes(1);
 		});
 	});
 
 	describe('positioning', () => {
 		it('should use requested position', async () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -505,12 +508,11 @@ describe('ngb-popover', () => {
 		});
 
 		it('should properly position popovers when a component is using the OnPush strategy', async () => {
-			const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
-			fixture.detectChanges();
+			const fixture = await createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
+			await fixture.whenStable();
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -520,11 +522,10 @@ describe('ngb-popover', () => {
 		});
 
 		it('should have proper arrow placement', async () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="end-top"></div>`);
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" placement="end-top"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -535,13 +536,12 @@ describe('ngb-popover', () => {
 		});
 
 		it('should accept placement in array (second value of the array should be applied)', async () => {
-			const fixture = createTestComponent(
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -552,13 +552,12 @@ describe('ngb-popover', () => {
 		});
 
 		it('should accept placement with space separated values (second value should be applied)', async () => {
-			const fixture = createTestComponent(
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -569,11 +568,10 @@ describe('ngb-popover', () => {
 		});
 
 		it('should apply auto placement', async () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="auto"></div>`);
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" placement="auto"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
 			await fixture.whenStable();
 			const windowEl = getWindow(fixture.nativeElement);
 
@@ -584,7 +582,7 @@ describe('ngb-popover', () => {
 		});
 
 		it('should modify the popper options', async () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="right">Trigger</div>`);
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" placement="right">Trigger</div>`);
 			const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
 
 			const spy = vi.fn();
@@ -605,38 +603,38 @@ describe('ngb-popover', () => {
 	});
 
 	describe('container', () => {
-		it('should be appended to the element matching the selector passed to "container"', () => {
+		it('should be appended to the element matching the selector passed to "container"', async () => {
 			const selector = 'body';
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" container="` + selector + `"></div>`);
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" container="` + selector + `"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(getWindow(window.document.querySelector(selector))).not.toBeNull();
 		});
 
-		it('should properly destroy popovers when the "container" option is used', () => {
+		it('should properly destroy popovers when the "container" option is used', async () => {
 			const selector = 'body';
-			const fixture = createTestComponent(`@if (show) {
+			const fixture = await createTestComponent(`@if (show()) {
 					<div ngbPopover="Great tip!" container="${selector}"></div>
 				}`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(getWindow(document.querySelector(selector))).not.toBeNull();
-			fixture.componentRef.instance.show = false;
-			fixture.detectChanges();
+			fixture.componentRef.instance.show.set(false);
+			await fixture.whenStable();
 			expect(getWindow(document.querySelector(selector))).toBeNull();
 		});
 	});
 
 	describe('visibility', () => {
-		it('should stay open if the popover is hovered before the closeDelay times out', () => {
-			vi.useFakeTimers();
-			const fixture = createTestComponent(
+		it('should stay open if the popover is hovered before the closeDelay times out', async () => {
+			vi.useFakeTimers({ shouldAdvanceTime: true });
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" triggers="hover" [closeDelay]="200" style="margin-top: 110px;"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
@@ -657,8 +655,8 @@ describe('ngb-popover', () => {
 			vi.useRealTimers();
 		});
 
-		it('should emit events when showing and hiding popover', () => {
-			const fixture = createTestComponent(
+		it('should emit events when showing and hiding popover', async () => {
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
@@ -667,18 +665,18 @@ describe('ngb-popover', () => {
 			let hiddenSpy = vi.spyOn(fixture.componentInstance, 'hidden');
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 			expect(shownSpy).toHaveBeenCalled();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(hiddenSpy).toHaveBeenCalled();
 		});
 
-		it('should not emit close event when already closed', () => {
-			const fixture = createTestComponent(
+		it('should not emit close event when already closed', async () => {
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`,
 			);
 
@@ -686,10 +684,10 @@ describe('ngb-popover', () => {
 			let hiddenSpy = vi.spyOn(fixture.componentInstance, 'hidden');
 
 			fixture.componentInstance.popover.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			fixture.componentInstance.popover.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 			expect(shownSpy).toHaveBeenCalled();
@@ -697,8 +695,8 @@ describe('ngb-popover', () => {
 			expect(hiddenSpy).not.toHaveBeenCalled();
 		});
 
-		it('should not emit open event when already opened', () => {
-			const fixture = createTestComponent(
+		it('should not emit open event when already opened', async () => {
+			const fixture = await createTestComponent(
 				`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`,
 			);
 
@@ -706,130 +704,132 @@ describe('ngb-popover', () => {
 			let hiddenSpy = vi.spyOn(fixture.componentInstance, 'hidden');
 
 			fixture.componentInstance.popover.close();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 			expect(shownSpy).not.toHaveBeenCalled();
 			expect(hiddenSpy).not.toHaveBeenCalled();
 		});
 
-		it('should report correct visibility', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual"></div>`);
-			fixture.detectChanges();
+		it('should report correct visibility', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" triggers="manual"></div>`);
+			await fixture.whenStable();
 
 			expect(fixture.componentInstance.popover.isOpen()).toBeFalsy();
 
 			fixture.componentInstance.popover.open();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.popover.isOpen()).toBeTruthy();
 
 			fixture.componentInstance.popover.close();
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.popover.isOpen()).toBeFalsy();
 		});
 	});
 
 	describe('triggers', () => {
-		it('should support toggle triggers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click"></div>`);
+		it('should support toggle triggers', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" triggers="click"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should non-default toggle triggers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:click"></div>`);
+		it('should non-default toggle triggers', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:click"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'mouseenter');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should support multiple triggers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:mouseleave click"></div>`);
+		it('should support multiple triggers', async () => {
+			const fixture = await createTestComponent(
+				`<div ngbPopover="Great tip!" triggers="mouseenter:mouseleave click"></div>`,
+			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'mouseenter');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(directive, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should not use default for manual triggers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual"></div>`);
+		it('should not use default for manual triggers', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" triggers="manual"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'mouseenter');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should allow toggling for manual triggers', () => {
-			const fixture = createTestComponent(`
+		it('should allow toggling for manual triggers', async () => {
+			const fixture = await createTestComponent(`
                 <div ngbPopover="Great tip!" triggers="manual" #t="ngbPopover"></div>
                 <button (click)="t.toggle()">T</button>`);
 			const button = fixture.nativeElement.querySelector('button');
 
 			triggerEvent(button, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(button, 'click');
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should allow open / close for manual triggers', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" #t="ngbPopover"></div>
+		it('should allow open / close for manual triggers', async () => {
+			const fixture = await createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" #t="ngbPopover"></div>
                 <button (click)="t.open()">O</button>
                 <button (click)="t.close()">C</button>`);
 			const buttons = fixture.nativeElement.querySelectorAll('button');
 
 			triggerEvent(buttons[0], 'click'); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(buttons[1], 'click'); // close
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 
-		it('should not throw when open called for manual triggers and open popover', () => {
-			const fixture = createTestComponent(`
+		it('should not throw when open called for manual triggers and open popover', async () => {
+			const fixture = await createTestComponent(`
                 <div ngbPopover="Great tip!" triggers="manual" #t="ngbPopover"></div>
                 <button (click)="t.open()">O</button>`);
 			const button = fixture.nativeElement.querySelector('button');
 
 			triggerEvent(button, 'click'); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
 			triggerEvent(button, 'click'); // open
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).not.toBeNull();
 		});
 
-		it('should not throw when closed called for manual triggers and closed popover', () => {
-			const fixture = createTestComponent(`
+		it('should not throw when closed called for manual triggers and closed popover', async () => {
+			const fixture = await createTestComponent(`
                 <div ngbPopover="Great tip!" triggers="manual" #t="ngbPopover"></div>
                 <button (click)="t.close()">C</button>`);
 			const button = fixture.nativeElement.querySelector('button');
 
 			triggerEvent(button, 'click'); // close
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
 	});
@@ -849,9 +849,9 @@ describe('ngb-popover', () => {
 			config.popoverClass = 'my-custom-class';
 		});
 
-		it('should initialize inputs with provided config', () => {
+		it('should initialize inputs with provided config', async () => {
 			const fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			const popover = fixture.componentInstance.popover;
 
@@ -883,8 +883,8 @@ describe('ngb-popover', () => {
 		 * Under very specific conditions ngOnDestroy can be invoked without calling ngOnInit first.
 		 * See discussion in https://github.com/ng-bootstrap/ng-bootstrap/issues/2199 for more details.
 		 */
-		it('should not try to call listener cleanup function when no listeners registered', () => {
-			const fixture = createTestComponent(`
+		it('should not try to call listener cleanup function when no listeners registered', async () => {
+			const fixture = await createTestComponent(`
          <ng-template #tpl><div ngbPopover="Great tip!"></div></ng-template>
          <button (click)="createAndDestroyTplWithAPopover(tpl)"></button>
        `);
@@ -896,8 +896,8 @@ describe('ngb-popover', () => {
 		 * See https://github.com/ng-bootstrap/ng-bootstrap/issues/4494 for more details
 		 * It moves the 'after' span to a new line when the popover is shown
 		 */
-		it('it should not move things to a new line when wrapped in a DOM element', () => {
-			const fixture = createTestComponent(`
+		it('it should not move things to a new line when wrapped in a DOM element', async () => {
+			const fixture = await createTestComponent(`
         <span>before</span><span><span id="popover" ngbPopover='popover' triggers='click:blur'></span></span><span id='after'>after</span>
       `);
 
@@ -925,7 +925,7 @@ describe('popover positionTarget', () => {
 	}
 
 	it(`should be 'undefined' by default`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
         <div style="height: 50px" ngbPopover="Great tip!" placement="bottom">Popover positionTarget</div>
     `);
 
@@ -934,14 +934,14 @@ describe('popover positionTarget', () => {
 		expect(popover.positionTarget).toBeUndefined();
 
 		popover.open();
-		await Promise.resolve();
+		await fixture.whenStable();
 		// window should be positioned at the bottom of the target element
 		expectPopoverBePositionedAtHeightPx(50);
 		popover.close();
 	});
 
 	it(`should be positioned against element reference`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
         <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" [positionTarget]="t">Popover positionTarget</div>
         <div class="target" #t style="height: 50px"></div>
     `);
@@ -951,7 +951,7 @@ describe('popover positionTarget', () => {
 		expect(popover.positionTarget).toBe(fixture.nativeElement.querySelector('.target'));
 
 		popover.open();
-		await Promise.resolve();
+		await fixture.whenStable();
 
 		// window should be positioned at the bottom of the target element
 		expectPopoverBePositionedAtHeightPx(100);
@@ -959,7 +959,7 @@ describe('popover positionTarget', () => {
 	});
 
 	it(`should be positioned against element selector`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
         <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" positionTarget=".target">Popover positionTarget</div>
         <div class="target" style="height: 50px"></div>
     `);
@@ -968,7 +968,7 @@ describe('popover positionTarget', () => {
 		const popover = popoverElement.injector.get(NgbPopover);
 
 		popover.open();
-		await Promise.resolve();
+		await fixture.whenStable();
 
 		// window should be positioned at the bottom of the target element
 		expectPopoverBePositionedAtHeightPx(100);
@@ -976,7 +976,7 @@ describe('popover positionTarget', () => {
 	});
 
 	it(`should fallback to initial position with invalid selector target`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
         <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" positionTarget=".invalid-selector">Popover positionTarget</div>
     `);
 
@@ -984,7 +984,7 @@ describe('popover positionTarget', () => {
 		const popover = popoverElement.injector.get(NgbPopover);
 
 		popover.open();
-		await Promise.resolve();
+		await fixture.whenStable();
 
 		// window should be positioned at the bottom of the target element
 		expectPopoverBePositionedAtHeightPx(50);
@@ -992,7 +992,7 @@ describe('popover positionTarget', () => {
 	});
 
 	it(`should fallback to initial position with invalid element target`, async () => {
-		const fixture = createTestComponent(`
+		const fixture = await createTestComponent(`
         <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" [positionTarget]="null">Popover positionTarget</div>
     `);
 
@@ -1000,7 +1000,7 @@ describe('popover positionTarget', () => {
 		const popover = popoverElement.injector.get(NgbPopover);
 
 		popover.open();
-		await Promise.resolve();
+		await fixture.whenStable();
 
 		// window should be positioned at the bottom of the target element
 		expectPopoverBePositionedAtHeightPx(50);
@@ -1009,8 +1009,10 @@ describe('popover positionTarget', () => {
 });
 
 describe('popover-tooltip', () => {
-	it(`should work when attached on the same element and container='body'`, () => {
-		const fixture = createTestComponent(`<button ngbPopover="Popover" ngbTooltip="Tooltip" container="body"></button>`);
+	it(`should work when attached on the same element and container='body'`, async () => {
+		const fixture = await createTestComponent(
+			`<button ngbPopover="Popover" ngbTooltip="Tooltip" container="body"></button>`,
+		);
 		const button = fixture.nativeElement.querySelector('button');
 		const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
 		const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
@@ -1030,10 +1032,10 @@ if (isBrowserVisible('ngb-popover animations')) {
 		@Component({
 			imports: [NgbPopover],
 			template: `<button ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			shown = () => {};
 			hidden = () => {};
 		}
@@ -1057,10 +1059,10 @@ if (isBrowserVisible('ngb-popover animations')) {
 			transitionTimerDelayMs.mockRestore();
 		});
 
-		it(`should run transition when toggling popover (force-reduced-motion = true)`, () => {
+		it(`should run transition when toggling popover (force-reduced-motion = true)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = true;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(true);
+			await fixture.whenStable();
 
 			const buttonEl = fixture.nativeElement.querySelector('button');
 			expect(getWindow(fixture.nativeElement)).toBeNull();
@@ -1070,7 +1072,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 			// 1. Opening popover
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(shownSpy).toHaveBeenCalledTimes(1);
 			expect(hiddenSpy).not.toHaveBeenCalled();
@@ -1078,7 +1080,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 			// 2. Closing popover
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expect(shownSpy).toHaveBeenCalledTimes(1);
 			expect(hiddenSpy).toHaveBeenCalledTimes(1);
@@ -1087,8 +1089,8 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 		it(`should run transition when toggling popover (force-reduced-motion = false)`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(false);
+			await fixture.whenStable();
 
 			const buttonEl = fixture.nativeElement.querySelector('button');
 			expect(getWindow(fixture.nativeElement)).toBeNull();
@@ -1099,7 +1101,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 			);
 
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
 			await shownPromise;
@@ -1111,7 +1113,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 			);
 
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expectPopover(getWindow(fixture.nativeElement), ['fade'], ['show'], '1');
 			await hiddenPromise;
@@ -1120,8 +1122,8 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 		it(`should revert popover opening`, async () => {
 			const fixture = TestBed.createComponent(TestAnimationComponent);
-			fixture.componentInstance.reduceMotion = false;
-			fixture.detectChanges();
+			fixture.componentInstance.reduceMotion.set(false);
+			await fixture.whenStable();
 
 			const buttonEl = fixture.nativeElement.querySelector('button');
 			expect(getWindow(fixture.nativeElement)).toBeNull();
@@ -1130,7 +1132,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 			// 1. Opening popover
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
 
@@ -1140,7 +1142,7 @@ if (isBrowserVisible('ngb-popover animations')) {
 			);
 
 			buttonEl.click();
-			fixture.detectChanges();
+			await fixture.whenStable();
 
 			expectPopover(getWindow(fixture.nativeElement), ['fade'], ['show'], '0');
 
@@ -1152,9 +1154,12 @@ if (isBrowserVisible('ngb-popover animations')) {
 	});
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({
+	selector: 'destroyable-cmpt',
+	template: 'Some content',
+})
 export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
+	private readonly _spyService = inject(SpyService);
 
 	ngOnDestroy(): void {
 		this._spyService.called = true;
@@ -1167,28 +1172,24 @@ export class DestroyableCmpt implements OnDestroy {
 	template: ``,
 })
 export class TestComponent {
-	name = 'World';
-	show = true;
-	title: string;
-	placement: string;
-	popoverClass: string;
+	readonly name = signal('World');
+	readonly show = signal(true);
+	readonly title = signal<string | undefined>(undefined);
+	readonly placement = signal<string | undefined>(undefined);
+	readonly popoverClass = signal<string | undefined>(undefined);
 
 	@ViewChild(NgbPopover, { static: true })
 	popover: NgbPopover;
 
-	constructor(private _vcRef: ViewContainerRef) {}
+	private readonly _vcRef = inject(ViewContainerRef);
 
 	createAndDestroyTplWithAPopover(tpl: TemplateRef<any>) {
 		this._vcRef.createEmbeddedView(tpl, {}, 0);
 		this._vcRef.remove(0);
 	}
 
-	shown() {
-		expect(NgZone.isInAngularZone(), `'shown' should run inside the Angular zone`).toBe(true);
-	}
-	hidden() {
-		expect(NgZone.isInAngularZone(), `'hidden' should run inside the Angular zone`).toBe(true);
-	}
+	shown = () => {};
+	hidden = () => {};
 }
 
 @Component({

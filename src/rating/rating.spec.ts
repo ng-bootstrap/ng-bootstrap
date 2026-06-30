@@ -32,7 +32,7 @@ class RatingTester {
 	readonly ariaStars: Locator;
 
 	constructor(html: string) {
-		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.fixture = createGenericTestComponent(html, TestComponent);
 		this.componentInstance = this.fixture.componentInstance;
 		this.root = page.elementLocator(this.fixture.nativeElement);
 		this.rating = this.root.getByCss('ngb-rating');
@@ -693,10 +693,9 @@ describe('ngb-rating', () => {
 				readonly fixture = createGenericTestComponent(
 					`
 					<ngb-rating [(ngModel)]="model" class="control" max="5"/>
-          			<ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled/>	
+					<ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled/>
 				`,
 					TestComponent,
-					false,
 				);
 				readonly componentInstance = this.fixture.componentInstance;
 				readonly root = page.elementLocator(this.fixture.nativeElement);
@@ -823,6 +822,8 @@ describe('ngb-rating', () => {
 				await tester.expectStarsStateToBe([false, false, false, false, false]);
 				await expect.element(tester.rating).toHaveCssClass('ng-untouched');
 
+				// Hover over the root element instead of any stars to not to trigger mouseenter event on blur
+				await tester.root.hover();
 				element.triggerEventHandler('blur', {});
 				await tester.whenStable();
 
@@ -866,7 +867,6 @@ describe('ngb-rating', () => {
 
 		it('should initialize inputs with provided config as provider', () => {
 			const fixture = TestBed.createComponent(NgbRating);
-			fixture.detectChanges();
 
 			let rating = fixture.componentInstance;
 			expect(rating.max).toBe(config.max);
@@ -881,14 +881,14 @@ describe('ngb-rating', () => {
 	template: '',
 })
 class TestComponent {
-	changed = signal(false);
-	disabled = signal(false);
-	readonly = signal(false);
-	form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });
-	formControl = new FormControl(0);
-	max = signal(10);
-	model = signal<undefined | number>(undefined);
-	rate = signal(3);
-	tabindex = signal<undefined | string | number>(3);
+	readonly changed = signal(false);
+	readonly disabled = signal(false);
+	readonly readonly = signal(false);
+	readonly form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });
+	readonly formControl = new FormControl(0);
+	readonly max = signal(10);
+	readonly model = signal<undefined | number>(undefined);
+	readonly rate = signal(3);
+	readonly tabindex = signal<undefined | string | number>(3);
 	customAriaValueTextFunction = (current: number, max: number) => `Rating: ${current} out of ${max} stars`;
 }

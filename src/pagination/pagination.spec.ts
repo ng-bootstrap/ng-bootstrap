@@ -24,7 +24,7 @@ class PaginationTester {
 	readonly paginationDirective: NgbPagination;
 	readonly componentInstance: TestComponent;
 	constructor(html: string) {
-		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.fixture = createGenericTestComponent(html, TestComponent);
 		this.root = page.elementLocator(this.fixture.nativeElement);
 		this.paginationDirective = this.fixture.debugElement.query(By.directive(NgbPagination)).injector.get(NgbPagination);
 		this.componentInstance = this.fixture.componentInstance;

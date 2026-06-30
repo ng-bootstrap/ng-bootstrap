@@ -28,7 +28,7 @@ class NavTester {
 	readonly navDirective: NgbNav;
 
 	constructor(html: string) {
-		this.fixture = createGenericTestComponent(html, TestComponent, false);
+		this.fixture = createGenericTestComponent(html, TestComponent);
 		this.root = page.elementLocator(this.fixture.nativeElement);
 		this.componentInstance = this.fixture.componentInstance;
 		this.navDirective = this.fixture.debugElement.query(By.directive(NgbNav)).injector.get(NgbNav);

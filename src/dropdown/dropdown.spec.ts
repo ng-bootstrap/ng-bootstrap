@@ -30,7 +30,7 @@ class DropdownTester {
 		this.fixture =
 			fixtureOrHtml instanceof ComponentFixture
 				? fixtureOrHtml
-				: createGenericTestComponent(fixtureOrHtml, TestComponent, false);
+				: createGenericTestComponent(fixtureOrHtml, TestComponent);
 		this.componentInstance = this.fixture.componentInstance;
 		this.root = page.elementLocator(this.fixture.nativeElement);
 		this.dropdown = page.getByCss('[ngbDropdown]');

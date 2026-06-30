@@ -1,7 +1,7 @@
-import { Component, provideZoneChangeDetection } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
-import { createGenericTestComponent, isBrowserVisible } from '../test/common';
+import { createGenericAsyncTestComponent, isBrowserVisible } from '../test/common';
 
 import { NgbToast, NgbToastHeader } from './toast';
 import { NgbConfig } from '@ng-bootstrap/ng-bootstrap/config';
@@ -9,8 +9,8 @@ import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { environment } from '../utils/transition/ngbTransition';
 
-const createTestComponent = (html: string) =>
-	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string, waitForStable = true) =>
+	createGenericAsyncTestComponent(html, TestComponent, waitForStable);
 
 const getElementWithSelector = (element: HTMLElement, className) => element.querySelector(className);
 
@@ -21,8 +21,8 @@ const getToastBodyElement = (element: HTMLElement): Element => getElementWithSel
 
 describe('ngb-toast', () => {
 	beforeEach(() => {
-		TestBed.configureTestingModule({ providers: [provideZoneChangeDetection()] });
-		vi.useFakeTimers();
+		TestBed.configureTestingModule({});
+		vi.useFakeTimers({ shouldAdvanceTime: true });
 	});
 
 	afterEach(() => {
@@ -30,13 +30,13 @@ describe('ngb-toast', () => {
 	});
 
 	describe('via declarative usage', () => {
-		it('should be instantiable declaratively', () => {
-			const fixture = createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
+		it('should be instantiable declaratively', async () => {
+			const fixture = await createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
 			expect(fixture.componentInstance).toBeTruthy();
 		});
 
-		it('should have default classnames', () => {
-			const fixture = createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
+		it('should have default classnames', async () => {
+			const fixture = await createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
 			// Below getter are using Bootstrap classnames
 			const toast = getToastElement(fixture.nativeElement);
 			const header = getToastHeaderElement(fixture.nativeElement);
@@ -50,20 +50,20 @@ describe('ngb-toast', () => {
 			expect(body).toBeDefined();
 		});
 
-		it('should not generate a header element when header input is not specified', () => {
-			const fixture = createTestComponent(`<ngb-toast>body</ngb-toast>`);
+		it('should not generate a header element when header input is not specified', async () => {
+			const fixture = await createTestComponent(`<ngb-toast>body</ngb-toast>`);
 			const toastHeader = getToastHeaderElement(fixture.nativeElement);
 			expect(toastHeader).toBeNull();
 		});
 
-		it('should contain a close button when header is specified', () => {
-			const fixture = createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
+		it('should contain a close button when header is specified', async () => {
+			const fixture = await createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
 			const toastHeader = getToastHeaderElement(fixture.nativeElement);
 			expect(toastHeader.querySelector('button.btn-close')).toBeDefined();
 		});
 
-		it('should contain a close button when ngbToastHeader is used', () => {
-			const fixture = createTestComponent(`<ngb-toast>
+		it('should contain a close button when ngbToastHeader is used', async () => {
+			const fixture = await createTestComponent(`<ngb-toast>
         <ng-template ngbToastHeader>{{header}}</ng-template>
         body
       </ngb-toast>`);
@@ -71,54 +71,54 @@ describe('ngb-toast', () => {
 			expect(toastHeader.querySelector('button.btn-close')).toBeDefined();
 		});
 
-		it('should emit hide output when close is clicked', () => {
-			const fixture = createTestComponent(
+		it('should emit hide output when close is clicked', async () => {
+			const fixture = await createTestComponent(
 				`<ngb-toast header="header" [autohide]="false" (hidden)="hide()">body</ngb-toast>`,
 			);
 
 			const toast = getToastElement(fixture.nativeElement);
 			const closeButton = toast.querySelector('button.btn-close') as HTMLElement;
 			closeButton.click();
-			fixture.detectChanges();
 			expect(fixture.componentInstance.hide).toHaveBeenCalled();
 		});
 
-		it('should emit hide output after default delay (5000ms)', () => {
-			const fixture = createTestComponent(`<ngb-toast header="header" (hidden)="hide()">body</ngb-toast>`);
+		it('should emit hide output after default delay (5000ms)', async () => {
+			const fixture = await createTestComponent(`<ngb-toast header="header" (hidden)="hide()">body</ngb-toast>`, false);
 			vi.advanceTimersByTime(4999);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
 			vi.advanceTimersByTime(5000);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
 		});
 
-		it('should emit hide output after a custom delay in ms', () => {
-			const fixture = createTestComponent(
+		it('should emit hide output after a custom delay in ms', async () => {
+			const fixture = await createTestComponent(
 				`<ngb-toast header="header" [delay]="10000" (hidden)="hide()">body</ngb-toast>`,
+				false,
 			);
 			vi.advanceTimersByTime(9999);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
 			vi.advanceTimersByTime(10000);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
 		});
 
-		it('should emit hide only one time regardless of autohide toggling', () => {
-			const fixture = createTestComponent(
+		it('should emit hide only one time regardless of autohide toggling', async () => {
+			const fixture = await createTestComponent(
 				`<ngb-toast header="header" [autohide]="autohide" (hidden)="hide()">body</ngb-toast>`,
 			);
 			vi.advanceTimersByTime(250);
-			fixture.componentInstance.autohide = false;
-			fixture.detectChanges();
+			fixture.componentInstance.autohide.set(false);
+			await fixture.whenStable();
 			vi.advanceTimersByTime(250);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
-			fixture.componentInstance.autohide = true;
-			fixture.detectChanges();
+			fixture.componentInstance.autohide.set(true);
+			await fixture.whenStable();
 			vi.advanceTimersByTime(5000);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
 		});
 	});
@@ -131,10 +131,10 @@ if (isBrowserVisible('ngb-toast animations')) {
 			template: ` <ngb-toast header="Hello" [autohide]="false" (shown)="onShown()" (hidden)="onHidden()"
 				>Cool!</ngb-toast
 			>`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
+			host: { '[class.ngb-reduce-motion]': 'reduceMotion()' },
 		})
 		class TestAnimationComponent {
-			reduceMotion = true;
+			readonly reduceMotion = signal(true);
 			onShown = () => {};
 			onHidden = () => {};
 		}
@@ -152,10 +152,10 @@ if (isBrowserVisible('ngb-toast animations')) {
 		});
 
 		[true, false].forEach((reduceMotion) => {
-			it(`should run the transition when creating a toast (force-reduced-motion = ${reduceMotion})`, () => {
+			it(`should run the transition when creating a toast (force-reduced-motion = ${reduceMotion})`, async () => {
 				const fixture = TestBed.createComponent(TestAnimationComponent);
-				fixture.componentInstance.reduceMotion = reduceMotion;
-				fixture.detectChanges();
+				fixture.componentInstance.reduceMotion.set(reduceMotion);
+				await fixture.whenStable();
 
 				const toastEl = getToastElement(fixture.nativeElement);
 
@@ -179,7 +179,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 
 			it(`should run the transition when closing a toast (force-reduced-motion = ${reduceMotion})`, async () => {
 				const fixture = TestBed.createComponent(TestAnimationComponent);
-				fixture.componentInstance.reduceMotion = reduceMotion;
+				fixture.componentInstance.reduceMotion.set(reduceMotion);
 
 				const onShown = new Promise<void>((resolve) => {
 					vi.spyOn(fixture.componentInstance, 'onShown').mockImplementation(() => {
@@ -191,7 +191,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 						resolve();
 					});
 				});
-				fixture.detectChanges();
+				await fixture.whenStable();
 				await onShown;
 
 				const toastEl = getToastElement(fixture.nativeElement);
@@ -218,7 +218,6 @@ if (isBrowserVisible('ngb-toast animations')) {
 	template: '',
 })
 export class TestComponent {
-	visible = true;
-	autohide = true;
-	hide = vi.fn();
+	readonly autohide = signal(true);
+	readonly hide = vi.fn();
 }

@@ -16,7 +16,7 @@ import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('ngb-datepicker integration', () => {
-	it('should allow overriding datepicker calendar', () => {
+	it('should allow overriding datepicker calendar', async () => {
 		@Service({ autoProvided: false })
 		class FixedTodayCalendar extends NgbCalendarGregorian {
 			getToday() {
@@ -31,7 +31,7 @@ describe('ngb-datepicker integration', () => {
 			},
 		});
 		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+		await fixture.whenStable();
 
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('7');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2000');
@@ -75,7 +75,7 @@ describe('ngb-datepicker integration', () => {
 
 		let fixture: ComponentFixture<TestComponent>;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -90,7 +90,7 @@ describe('ngb-datepicker integration', () => {
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 
 		it('should allow overriding month names', () => {
@@ -150,7 +150,7 @@ describe('ngb-datepicker integration', () => {
 
 		let fixture: ComponentFixture<TestComponent>;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -165,7 +165,7 @@ describe('ngb-datepicker integration', () => {
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 		});
 
 		it('should allow overriding month labels', () => {
@@ -201,7 +201,7 @@ describe('ngb-datepicker integration', () => {
 		let mv: NgbDatepickerMonth;
 		let startDate: NgbDate = new NgbDate(2018, 1, 1);
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -211,7 +211,7 @@ describe('ngb-datepicker integration', () => {
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			calendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker).calendar;
 			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
 
@@ -237,7 +237,7 @@ describe('ngb-datepicker integration', () => {
 		let startDate: NgbDate = new NgbDate(2018, 1, 1);
 		let ngbCalendar: NgbCalendar;
 
-		beforeEach(() => {
+		beforeEach(async () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -250,7 +250,7 @@ describe('ngb-datepicker integration', () => {
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
-			fixture.detectChanges();
+			await fixture.whenStable();
 			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
 			ngbCalendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbCalendar as Type<NgbCalendar>);
 

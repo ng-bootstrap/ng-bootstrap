@@ -45,21 +45,11 @@
 						"coverageExclude": ["src/test/**"],
 						"coverageReporters": ["lcov"],
 						"browsers": ["ChromiumHeadless"],
-						"runnerConfig": "src/vitest.config.ts",
-						"include": ["src/(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
+						"runnerConfig": "src/vitest.config.ts"
 					},
 					"configurations": {
 						"other-browsers": {
 							"browsers": ["FirefoxHeadless", "WebkitHeadless"]
-						},
-						"zone": {
-							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
-						},
-						"zone-other-browsers": {
-							"browsers": ["FirefoxHeadless", "WebkitHeadless"],
-							"setupFiles": ["src/setup-zone-test.ts"],
-							"include": ["src/!(accordion|alert|collapse|dropdown|pagination|progressbar|nav|rating)/**/*.spec.ts"]
 						}
 					}
 				}
