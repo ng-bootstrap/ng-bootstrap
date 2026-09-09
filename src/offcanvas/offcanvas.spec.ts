@@ -316,6 +316,173 @@ describe('ngb-offcanvas', () => {
 			});
 		});
 
+		describe('stacked offcanvas', () => {
+			it('should not leak scroll locks when content creation fails', () => {
+				@Component({ template: '' })
+				class ThrowingContent {
+					constructor() {
+						throw new Error('cannot create content');
+					}
+				}
+				const service = fixture.componentInstance.offcanvasService;
+				const initialOverflow = document.body.style.overflow;
+				expect(() => service.open(ThrowingContent)).toThrow('cannot create content');
+				const ref = service.open('content');
+				fixture.detectChanges();
+				ref.close();
+				expect(document.body.style.overflow).toBe(initialOverflow);
+			});
+
+			it('should restore focus to a surviving panel when the previous opener was removed', async () => {
+				const first = fixture.componentInstance.openTplImplicitContext();
+				fixture.detectChanges();
+				const buttons = document.querySelector('ngb-offcanvas-panel')!.querySelectorAll('button');
+				const middle = fixture.componentInstance.open('middle');
+				fixture.detectChanges();
+				const last = fixture.componentInstance.open('last');
+				fixture.detectChanges();
+				try {
+					middle.close();
+					last.close();
+					await new Promise((resolve) => setTimeout(resolve));
+					expect(document.activeElement).toBe(buttons[0]);
+					const tab = new KeyboardEvent('keydown', {
+						key: 'Tab',
+						shiftKey: true,
+						bubbles: true,
+						cancelable: true,
+					});
+					buttons[0].dispatchEvent(tab);
+					expect(tab.defaultPrevented).toBe(true);
+					expect(document.activeElement).toBe(buttons[1]);
+				} finally {
+					last.close();
+					middle.close();
+					first.close();
+				}
+			});
+
+			(['close', 'dismiss'] as const).forEach((action) => {
+				it(`should restore the previous active instance on ${action}`, async () => {
+					const service = fixture.componentInstance.offcanvasService;
+					const active = vi.fn();
+					service.activeInstance.subscribe(active);
+					const first = service.open('first');
+					const second = service.open('second');
+					fixture.detectChanges();
+					try {
+						expect(active.mock.calls.map(([ref]) => ref)).toEqual([first, second]);
+						second[action]();
+						await fixture.whenStable();
+						expect(active).toHaveBeenLastCalledWith(first);
+						expect(service.hasOpenOffcanvas()).toBe(true);
+						expect(fixture.nativeElement).toHaveOffcanvas('first');
+
+						service.dismiss('last');
+						await fixture.whenStable();
+						expect(active).toHaveBeenLastCalledWith(undefined);
+						expect(service.hasOpenOffcanvas()).toBe(false);
+						expect(fixture.nativeElement).not.toHaveOffcanvas();
+					} finally {
+						second.close();
+						first.close();
+					}
+				});
+			});
+
+			it('should retain the active instance when an earlier offcanvas closes', async () => {
+				const service = fixture.componentInstance.offcanvasService;
+				const active = vi.fn();
+				service.activeInstance.subscribe(active);
+				const first = service.open('first');
+				const middle = service.open('middle');
+				const last = service.open('last');
+				fixture.detectChanges();
+				try {
+					middle.close();
+					await fixture.whenStable();
+					expect(active).toHaveBeenLastCalledWith(last);
+					expect(service.hasOpenOffcanvas()).toBe(true);
+					last.close();
+					await fixture.whenStable();
+					expect(active).toHaveBeenLastCalledWith(first);
+				} finally {
+					last.close();
+					middle.close();
+					first.close();
+				}
+			});
+
+			[false, true].forEach((firstScroll) => {
+				[false, true].forEach((secondScroll) => {
+					[0, 1].forEach((closedIndex) => {
+						it(`should retain only remaining scroll locks (scroll: ${firstScroll}, ${secondScroll}; close: ${closedIndex})`, () => {
+							const service = fixture.componentInstance.offcanvasService;
+							const initialOverflow = document.body.style.overflow;
+							const scroll = [firstScroll, secondScroll];
+							const refs = scroll.map((scroll) => service.open('content', { scroll }));
+							fixture.detectChanges();
+							try {
+								refs[closedIndex].close();
+								expect(document.body.style.overflow).toBe(scroll[1 - closedIndex] ? initialOverflow : 'hidden');
+							} finally {
+								refs.forEach((ref) => ref.close());
+							}
+							expect(document.body.style.overflow).toBe(initialOverflow);
+						});
+					});
+				});
+			});
+
+			it('should trap focus in the remaining panel after the active panel closes', () => {
+				const first = fixture.componentInstance.openTplImplicitContext();
+				fixture.detectChanges();
+				const panel = document.querySelector('ngb-offcanvas-panel')!;
+				const buttons = panel.querySelectorAll('button');
+				const second = fixture.componentInstance.open('second');
+				fixture.detectChanges();
+				try {
+					second.close();
+					buttons[1].focus();
+					const tab = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+					buttons[1].dispatchEvent(tab);
+					expect(tab.defaultPrevented).toBe(true);
+					expect(document.activeElement).toBe(buttons[0]);
+				} finally {
+					second.close();
+					first.close();
+				}
+			});
+
+			it('should keep focus in the active panel when an earlier panel closes', async () => {
+				fixture.detectChanges();
+				const opener = fixture.nativeElement.querySelector('#open') as HTMLButtonElement;
+				opener.focus();
+				const first = fixture.componentInstance.open('first');
+				fixture.detectChanges();
+				const second = fixture.componentInstance.openTplImplicitContext();
+				fixture.detectChanges();
+				const focused = document.activeElement;
+				try {
+					first.close();
+					await new Promise((resolve) => setTimeout(resolve));
+					expect(document.activeElement).toBe(focused);
+					const tab = new KeyboardEvent('keydown', {
+						key: 'Tab',
+						shiftKey: true,
+						bubbles: true,
+						cancelable: true,
+					});
+					focused!.dispatchEvent(tab);
+					expect(tab.defaultPrevented).toBe(true);
+					expect(document.activeElement).toBe(document.querySelector('ngb-offcanvas-panel button#dismiss'));
+				} finally {
+					second.close();
+					first.close();
+				}
+			});
+		});
+
 		describe('backdrop options', () => {
 			it('should have backdrop by default', () => {
 				const offcanvasInstance = fixture.componentInstance.open('foo');
@@ -752,6 +919,59 @@ describe('ngb-offcanvas', () => {
 			});
 
 			afterEach(() => document.body.classList.remove('ngb-reduce-motion'));
+
+			it('should retain scroll locks until every closing offcanvas is hidden', async () => {
+				const service = TestBed.inject(NgbOffcanvas);
+				const component = TestBed.createComponent(TestAnimationComponent);
+				const first = service.open('first');
+				const second = service.open('second', { animation: false });
+				const shown = firstValueFrom(first.shown);
+				component.detectChanges();
+				await shown;
+				const hidden = firstValueFrom(first.hidden);
+				first.close();
+				second.close();
+				try {
+					expect(document.body.style.overflow).toBe('hidden');
+				} finally {
+					await hidden;
+				}
+				expect(document.body.style.overflow).not.toBe('hidden');
+			});
+
+			it('should restore focus and its trap after the active offcanvas finishes hiding', async () => {
+				const component = TestBed.createComponent(TestComponent);
+				component.detectChanges();
+				const first = component.componentInstance.openTplImplicitContext();
+				let shown = firstValueFrom(first.shown);
+				component.detectChanges();
+				await shown;
+				const buttons = document.querySelector('ngb-offcanvas-panel')!.querySelectorAll('button');
+				const second = component.componentInstance.open('second');
+				shown = firstValueFrom(second.shown);
+				component.detectChanges();
+				await shown;
+				try {
+					const hidden = firstValueFrom(second.hidden);
+					second.close();
+					await hidden;
+					await new Promise((resolve) => setTimeout(resolve));
+					expect(document.activeElement).toBe(buttons[0]);
+					const tab = new KeyboardEvent('keydown', {
+						key: 'Tab',
+						shiftKey: true,
+						bubbles: true,
+						cancelable: true,
+					});
+					buttons[0].dispatchEvent(tab);
+					expect(tab.defaultPrevented).toBe(true);
+					expect(document.activeElement).toBe(buttons[1]);
+				} finally {
+					const hidden = firstValueFrom(first.hidden);
+					first.close();
+					await hidden;
+				}
+			});
 
 			[true, false].forEach((reduceMotion) => {
 				it(`should run transform transition when opening/closing offcanvas (force-reduced-motion = ${reduceMotion})`, async () => {

@@ -94,9 +94,38 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 		});
 
 		this._disableEventHandling();
-		this._restoreFocus();
 
 		return offcanvasTransition$;
+	}
+
+	restoreFocus(fallback?: HTMLElement) {
+		const body = this._document.body;
+		const elWithFocus = this._elWithFocus;
+		const { nativeElement } = this._elRef;
+		const activeElement = this._document.activeElement;
+		this._elWithFocus = null;
+
+		// Keep focus if it has already moved outside the closing panel.
+		if (activeElement !== body && !nativeElement.contains(activeElement)) {
+			return;
+		}
+
+		let elementToFocus;
+		if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
+			elementToFocus = elWithFocus;
+		} else if (fallback) {
+			elementToFocus = getFocusableBoundaryElements(fallback)[0] || fallback;
+		} else {
+			elementToFocus = body;
+		}
+		this._zone.runOutsideAngular(() => {
+			setTimeout(() => {
+				const activeElement = this._document.activeElement;
+				if (activeElement === body || nativeElement.contains(activeElement)) {
+					elementToFocus.focus();
+				}
+			});
+		});
 	}
 
 	private _show() {
@@ -157,21 +186,5 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 			const elementToFocus = autoFocusable || firstFocusable || nativeElement;
 			elementToFocus.focus();
 		}
-	}
-
-	private _restoreFocus() {
-		const body = this._document.body;
-		const elWithFocus = this._elWithFocus;
-
-		let elementToFocus;
-		if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
-			elementToFocus = elWithFocus;
-		} else {
-			elementToFocus = body;
-		}
-		this._zone.runOutsideAngular(() => {
-			setTimeout(() => elementToFocus.focus());
-			this._elWithFocus = null;
-		});
 	}
 }
