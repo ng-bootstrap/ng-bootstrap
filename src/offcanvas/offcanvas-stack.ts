@@ -29,18 +29,20 @@ export class NgbOffcanvasStack {
 
 	private _activePanelCmptHasChanged = new Subject<void>();
 	private _scrollBarRestoreFn: null | (() => void) = null;
+	private _scrollBarLocks = 0;
 	private _backdropAttributes = ['animation', 'backdropClass'];
-	private _offcanvasRef?: NgbOffcanvasRef;
+	private _offcanvasRefs: NgbOffcanvasRef[] = [];
 	private _panelAttributes = ['animation', 'ariaDescribedBy', 'ariaLabelledBy', 'keyboard', 'panelClass', 'position'];
-	private _panelCmpt?: ComponentRef<NgbOffcanvasPanel>;
+	private _panelCmpts: ComponentRef<NgbOffcanvasPanel>[] = [];
 	private _activeInstance: EventEmitter<NgbOffcanvasRef | undefined> = new EventEmitter();
 
 	constructor() {
 		const ngZone = inject(NgZone);
 		// Trap focus on active PanelCmpt
 		this._activePanelCmptHasChanged.subscribe(() => {
-			if (this._panelCmpt) {
-				ngbFocusTrap(ngZone, this._panelCmpt.location.nativeElement, this._activePanelCmptHasChanged);
+			const activePanelCmpt = this._panelCmpts[this._panelCmpts.length - 1];
+			if (activePanelCmpt) {
+				ngbFocusTrap(ngZone, activePanelCmpt.location.nativeElement, this._activePanelCmptHasChanged);
 			}
 		});
 	}
@@ -70,10 +72,6 @@ export class NgbOffcanvasStack {
 			throw new Error(`The specified offcanvas container "${options.container || 'body'}" was not found in the DOM.`);
 		}
 
-		if (!options.scroll) {
-			this._hideScrollBar();
-		}
-
 		const activeOffcanvas = new NgbActiveOffcanvas();
 		const contentRef = this._getContentRef(options.injector || contentInjector, content, activeOffcanvas);
 
@@ -87,9 +85,24 @@ export class NgbOffcanvasStack {
 			options.beforeDismiss,
 		);
 
+		if (!options.scroll) {
+			this._scrollBarLocks++;
+			this._hideScrollBar();
+		}
+
 		this._registerOffcanvasRef(ngbOffcanvasRef);
 		this._registerPanelCmpt(panelCmptRef);
-		ngbOffcanvasRef.hidden.pipe(finalize(() => this._restoreScrollBar())).subscribe();
+		if (!options.scroll) {
+			ngbOffcanvasRef.hidden
+				.pipe(
+					finalize(() => {
+						if (--this._scrollBarLocks === 0) {
+							this._restoreScrollBar();
+						}
+					}),
+				)
+				.subscribe();
+		}
 		activeOffcanvas.close = (result: any) => {
 			ngbOffcanvasRef.close(result);
 		};
@@ -112,11 +125,11 @@ export class NgbOffcanvasStack {
 	}
 
 	dismiss(reason?: any) {
-		this._offcanvasRef?.dismiss(reason);
+		this._offcanvasRefs[this._offcanvasRefs.length - 1]?.dismiss(reason);
 	}
 
 	hasOpenOffcanvas(): boolean {
-		return !!this._offcanvasRef;
+		return this._offcanvasRefs.length > 0;
 	}
 
 	private _attachBackdrop(containerEl: Element): ComponentRef<NgbOffcanvasBackdrop> {
@@ -213,21 +226,30 @@ export class NgbOffcanvasStack {
 
 	private _registerOffcanvasRef(ngbOffcanvasRef: NgbOffcanvasRef) {
 		const unregisterOffcanvasRef = () => {
-			this._offcanvasRef = undefined;
-			this._activeInstance.emit(this._offcanvasRef);
+			const index = this._offcanvasRefs.indexOf(ngbOffcanvasRef);
+			if (index > -1) {
+				this._offcanvasRefs.splice(index, 1);
+				this._activeInstance.emit(this._offcanvasRefs[this._offcanvasRefs.length - 1]);
+			}
 		};
-		this._offcanvasRef = ngbOffcanvasRef;
-		this._activeInstance.emit(this._offcanvasRef);
+		this._offcanvasRefs.push(ngbOffcanvasRef);
+		this._activeInstance.emit(ngbOffcanvasRef);
 		ngbOffcanvasRef.result.then(unregisterOffcanvasRef, unregisterOffcanvasRef);
 	}
 
 	private _registerPanelCmpt(ngbPanelCmpt: ComponentRef<NgbOffcanvasPanel>) {
-		this._panelCmpt = ngbPanelCmpt;
+		this._panelCmpts.push(ngbPanelCmpt);
 		this._activePanelCmptHasChanged.next();
 
 		ngbPanelCmpt.onDestroy(() => {
-			this._panelCmpt = undefined;
-			this._activePanelCmptHasChanged.next();
+			const index = this._panelCmpts.indexOf(ngbPanelCmpt);
+			if (index > -1) {
+				this._panelCmpts.splice(index, 1);
+				if (index === this._panelCmpts.length) {
+					this._activePanelCmptHasChanged.next();
+					ngbPanelCmpt.instance.restoreFocus(this._panelCmpts[this._panelCmpts.length - 1]?.location.nativeElement);
+				}
+			}
 		});
 	}
 }

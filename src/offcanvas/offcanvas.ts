@@ -34,13 +34,16 @@ export class NgbOffcanvas {
 
 	/**
 	 * Returns an observable that holds the active offcanvas instance.
+	 *
+	 * When multiple offcanvas panels are open, the most recently opened one is active.
+	 * Closing or dismissing it makes the previous open offcanvas active again.
 	 */
 	get activeInstance() {
 		return this._offcanvasStack.activeInstance;
 	}
 
 	/**
-	 * Dismisses the currently displayed offcanvas with the supplied reason.
+	 * Dismisses the active offcanvas with the supplied reason.
 	 */
 	dismiss(reason?: any) {
 		this._offcanvasStack.dismiss(reason);
