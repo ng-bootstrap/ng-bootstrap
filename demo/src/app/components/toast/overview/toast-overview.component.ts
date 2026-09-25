@@ -73,10 +73,10 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
       @Service()
       export class AppToastService {
         private readonly _toasts = signal<ToastInfo[]>([]);
-        readonly toasts = this.toasts.asReadonly();
+        readonly toasts = this._toasts.asReadonly();
 
         show(header: string, body: string) {
-          this._toasts.push({ header, body });
+          this._toasts.update(toasts => [...toasts, { header, body }]);
         }
       }`,
 	});
