@@ -75,9 +75,9 @@ export class NgbdToastOverviewComponent extends NgbdOverviewPage {
         private readonly _toasts = signal<ToastInfo[]>([]);
         readonly toasts = this._toasts.asReadonly();
 
-		show(header: string, body: string) {
-		  this._toasts.update(toasts => [...toasts, { header, body }]);
-		}
+        show(header: string, body: string) {
+          this._toasts.update(toasts => [...toasts, { header, body }]);
+        }
       }`,
 	});
 
