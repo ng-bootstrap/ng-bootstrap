@@ -363,6 +363,10 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	}
 
 	private _selectResult(result: any) {
+		if (this._nativeElement.disabled) {
+			return;
+		}
+
 		let defaultPrevented = false;
 		this.selectItem.emit({
 			item: result,
