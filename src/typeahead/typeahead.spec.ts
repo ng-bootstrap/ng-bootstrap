@@ -627,6 +627,28 @@ describe('ngb-typeahead', () => {
 			expect(getNativeInput(compiled).disabled).toBeTruthy();
 		});
 
+		it('should ignore a result when the form control becomes disabled while open', () => {
+			const fixture = createTestComponent(`
+				<form [formGroup]="form">
+					<input formControlName="control" [ngbTypeahead]="find" (selectItem)="onSelect($event.item)" />
+				</form>`);
+			const control = fixture.componentInstance.form.controls.control;
+
+			changeInput(fixture.nativeElement, 'o');
+			fixture.detectChanges();
+			const result = getWindowLinks(fixture.debugElement)[0];
+			expect(result).toBeDefined();
+
+			control.disable();
+			fixture.detectChanges();
+			expect(getNativeInput(fixture.nativeElement).disabled).toBe(true);
+			result.triggerEventHandler('click', {});
+			fixture.detectChanges();
+
+			expect(control.value).toBe('o');
+			expect(fixture.componentInstance.selectEventValue).toBeUndefined();
+		});
+
 		it('should only propagate model changes on select when the editable option is on', async () => {
 			const html = `
             <form>
