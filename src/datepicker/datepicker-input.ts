@@ -113,14 +113,14 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 14.2.0
 	 */
-	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
+	@Input() contentTemplate?: TemplateRef<ContentTemplateContext> | null;
 
 	/**
 	 * An optional class applied to the datepicker popup element.
 	 *
 	 * @since 9.1.0
 	 */
-	@Input() datepickerClass: string;
+	@Input() datepickerClass?: string | null;
 
 	/**
 	 * The reference to a custom template for the day.
@@ -129,7 +129,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
 	 */
-	@Input() dayTemplate: TemplateRef<DayTemplateContext>;
+	@Input() dayTemplate?: TemplateRef<DayTemplateContext> | null;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
@@ -139,26 +139,26 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 3.3.0
 	 */
-	@Input() dayTemplateData: (date: NgbDate, current?: { year: number; month: number }) => any;
+	@Input() dayTemplateData?: ((date: NgbDate, current?: { year: number; month: number }) => any) | null;
 
 	/**
 	 * The number of months to display.
 	 */
-	@Input() displayMonths: number;
+	@Input() displayMonths?: number | null;
 
 	/**
 	 * The first day of the week.
 	 *
 	 * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
 	 */
-	@Input() firstDayOfWeek: number;
+	@Input() firstDayOfWeek?: number | null;
 
 	/**
 	 * The reference to the custom template for the datepicker footer.
 	 *
 	 * @since 3.3.0
 	 */
-	@Input() footerTemplate: TemplateRef<any>;
+	@Input() footerTemplate?: TemplateRef<any> | null;
 
 	/**
 	 * The callback to mark some dates as disabled.
@@ -167,21 +167,21 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * `current` is the month that is currently displayed by the datepicker.
 	 */
-	@Input() markDisabled: (date: NgbDate, current?: { year: number; month: number }) => boolean;
+	@Input() markDisabled?: ((date: NgbDate, current?: { year: number; month: number }) => boolean) | null;
 
 	/**
 	 * The earliest date that can be displayed or selected. Also used for form validation.
 	 *
 	 * If not provided, 'year' select box will display 10 years before the current month.
 	 */
-	@Input() minDate: NgbDateStruct;
+	@Input() minDate?: NgbDateStruct | null;
 
 	/**
 	 * The latest date that can be displayed or selected. Also used for form validation.
 	 *
 	 * If not provided, 'year' select box will display 10 years after the current month.
 	 */
-	@Input() maxDate: NgbDateStruct;
+	@Input() maxDate?: NgbDateStruct | null;
 
 	/**
 	 * Navigation type.
@@ -190,7 +190,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * * `"arrows"` - only navigation arrows
 	 * * `"none"` - no navigation visible at all
 	 */
-	@Input() navigation: 'select' | 'arrows' | 'none';
+	@Input() navigation?: 'select' | 'arrows' | 'none' | null;
 
 	/**
 	 * The way of displaying days that don't belong to the current month.
@@ -201,7 +201,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * For the 2+ months view, days in between months are never shown.
 	 */
-	@Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
+	@Input() outsideDays?: 'visible' | 'collapsed' | 'hidden' | null;
 
 	/**
 	 * The preferred placement of the datepicker popup, among the [possible values](#/guides/positioning#api).
@@ -228,12 +228,12 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 5.2.0
 	 */
-	@Input() restoreFocus: true | string | HTMLElement;
+	@Input() restoreFocus?: true | string | HTMLElement | null;
 
 	/**
 	 * If `true`, week numbers will be displayed.
 	 */
-	@Input() showWeekNumbers: boolean;
+	@Input() showWeekNumbers?: boolean | null;
 
 	/**
 	 * The date to open calendar with.
@@ -243,7 +243,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * You could use `navigateTo(date)` method as an alternative.
 	 */
-	@Input() startDate: { year: number; month: number; day?: number };
+	@Input() startDate?: { year: number; month: number; day?: number } | null;
 
 	/**
 	 * A selector specifying the element the datepicker popup should be appended to.
@@ -270,7 +270,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 9.1.0
 	 */
-	@Input() weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
+	@Input() weekdays?: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean | null;
 
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.
@@ -560,7 +560,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		datepickerComponentRef.setInput('startDate', this.startDate || this._model);
 	}
 
-	private _applyPopupClass(newClass: string, oldClass?: string) {
+	private _applyPopupClass(newClass?: string | null, oldClass?: string | null) {
 		const popupEl = this._cRef?.location.nativeElement as HTMLElement;
 		if (popupEl) {
 			if (newClass) {
