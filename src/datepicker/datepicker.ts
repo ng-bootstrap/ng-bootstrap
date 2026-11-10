@@ -320,7 +320,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 *
 	 * @since 14.2.0
 	 */
-	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
+	@Input() contentTemplate?: TemplateRef<ContentTemplateContext>;
 	@ContentChild(NgbDatepickerContent, { static: true }) contentTemplateFromContent?: NgbDatepickerContent;
 
 	/**
@@ -568,7 +568,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 *
 	 * Use the `[startDate]` input as an alternative.
 	 */
-	navigateTo(date?: { year: number; month: number; day?: number }) {
+	navigateTo(date?: { year: number; month: number; day?: number } | null) {
 		this._service.open(NgbDate.from(date ? (date.day ? (date as NgbDateStruct) : { ...date, day: 1 }) : null));
 	}
 
